@@ -1,6 +1,5 @@
 
 using UnityEngine;
-using UnityEngine.Tilemaps;
 
 public class WorldGenerator : MonoBehaviour
 {
@@ -8,17 +7,18 @@ public class WorldGenerator : MonoBehaviour
     public int worldWidth = 100;
     public int worldHeight = 100;
     public int surfaceLevel = 80;
+    public float cellSize = 0.05f; // 타일(오브젝트)의 크기 및 간격
 
     [Header("Generation Settings")]
     [Range(0f, 1f)]
-    public float stoneProbability = 0.5f; // Chance for a tile to be stone instead of dirt in the stone layer
+    public float stoneProbability = 0.5f;
+    [Range(0f, 1f)]
+    public float gemSpawnChance = 0.05f; // 5% chance to spawn a gem
 
-    [Header("Tilemap References")]
-    public Tilemap groundTilemap;
-
-    [Header("Tile Assets")]
-    public TileBase dirtTile;
-    public TileBase stoneTile;
+    [Header("Object Prefabs")]
+    public GameObject dirtPrefab;
+    public GameObject stonePrefab;
+    public GameObject gemPrefab;
 
     void Start()
     {
@@ -27,9 +27,9 @@ public class WorldGenerator : MonoBehaviour
 
     void GenerateWorld()
     {
-        if (groundTilemap == null || dirtTile == null || stoneTile == null)
+        if (dirtPrefab == null || stonePrefab == null || gemPrefab == null)
         {
-            Debug.LogError("Required references are not set in the WorldGenerator!");
+            Debug.LogError("Prefabs are not set in the WorldGenerator!");
             return;
         }
 
@@ -37,16 +37,35 @@ public class WorldGenerator : MonoBehaviour
         {
             for (int y = -200; y < surfaceLevel; y++)
             {
-                Vector3Int tilePosition = new Vector3Int(x, y, 0);
-                TileBase tileToPlace = dirtTile; // Default to dirt
+                // cellSize를 곱하여 실제 월드 좌표 계산
+                Vector3 spawnPosition = new Vector3(x * cellSize, y * cellSize, 0);
+                GameObject tileToPlace;
 
-                // If deep enough (more than 2 tiles below surface), randomly place stone
-                if (y < surfaceLevel - 2 && Random.Range(0f, 1f) < stoneProbability)
+                if (y < surfaceLevel - 2 && Random.value < stoneProbability)
                 {
-                    tileToPlace = stoneTile;
+                    tileToPlace = stonePrefab;
+                }
+                else
+                {
+                    tileToPlace = dirtPrefab;
                 }
 
-                groundTilemap.SetTile(tilePosition, tileToPlace);
+                GameObject spawnedTile = Instantiate(tileToPlace, spawnPosition, Quaternion.identity, this.transform);
+
+                if (tileToPlace == dirtPrefab)
+                {
+                    if (Random.value < gemSpawnChance)
+                    {
+                        GameObject gem = Instantiate(gemPrefab, spawnPosition, Quaternion.identity, this.transform);
+                        gem.SetActive(false);
+
+                        DirtTile dirtTileScript = spawnedTile.GetComponent<DirtTile>();
+                        if (dirtTileScript != null)
+                        { 
+                            dirtTileScript.hiddenGem = gem;
+                        }
+                    }
+                }
             }
         }
     }

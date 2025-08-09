@@ -1,83 +1,77 @@
-
 using UnityEngine;
-using UnityEngine.Tilemaps;
 
 public class DiggingController : MonoBehaviour
 {
-    [Header("References")]
-    public Camera mainCamera;
-    public Tilemap groundTilemap;
-
     [Header("Digging Settings")]
-    public int digRadius = 1; // 클릭한 곳 주변으로 파는 전체 범위
-    public int guaranteedDigRadius = 0; // 이 반지름 내의 타일은 무조건 파짐 (0이면 무조건 파지는 영역 없음)
-    [Range(0f, 1f)]
-    public float digRandomness = 0.8f; // 중심에서 타일을 팔 최대 확률 (guaranteedDigRadius 바깥 영역부터 적용)
-    [Range(0f, 1f)]
-    public float minDigProbability = 0.1f; // 가장자리에서 타일을 팔 최소 확률
+    public KeyCode digKey = KeyCode.Space; // 땅 파기 키
+    public float digRadius = 1.0f;         // 파내는 원의 반지름
+    public float digOffset = 0.5f;         // 플레이어 중심에서 파기 시작 위치까지의 거리
+
+    private Vector2 lastDirection = Vector2.right; // 마지막으로 입력된 방향 (기본값: 오른쪽)
 
     void Update()
     {
-        // Check for left mouse button click
-        if (Input.GetMouseButtonDown(0))
+        UpdateDirection();
+
+        // 지정된 키가 눌렸을 때 Dig() 함수 호출
+        if (Input.GetKeyDown(digKey))
         {
             Dig();
         }
     }
 
+    void UpdateDirection()
+    {
+        // 키보드 입력 받기 (W,A,S,D 또는 방향키)
+        float horizontalInput = Input.GetAxisRaw("Horizontal");
+        float verticalInput = Input.GetAxisRaw("Vertical");
+
+        Vector2 currentDirection = new Vector2(horizontalInput, verticalInput).normalized;
+
+        // 실제 입력이 있을 때만 마지막 방향을 업데이트
+        if (currentDirection != Vector2.zero)
+        {
+            lastDirection = currentDirection;
+        }
+    }
+
     void Dig()
     {
-        if (mainCamera == null || groundTilemap == null)
+        // 플레이어 위치를 기준으로, 마지막 입력 방향으로 오프셋을 적용한 파기 중심 위치 계산
+        Vector2 digCenter = (Vector2)transform.position + (lastDirection * digOffset);
+
+        // 파기 중심 위치 주변의 모든 콜라이더를 감지
+        Collider2D[] hitColliders = Physics2D.OverlapCircleAll(digCenter, digRadius);
+
+        foreach (var hitCollider in hitColliders)
         {
-            Debug.LogError("References not set in DiggingController!");
-            return;
-        }
-
-        // 마우스 위치 찾기
-        Vector2 mouseWorldPos = mainCamera.ScreenToWorldPoint(Input.mousePosition);
-
-        // world 위치를 tilemap의 cell 위치로 변환
-        Vector3Int clickedCellPosition = groundTilemap.WorldToCell(mouseWorldPos);
-
-        // 원을 포함할만큼 충분히 큰 사각형을 순회
-        for (int x = -digRadius; x <= digRadius; x++)
-        {
-            for (int y = -digRadius; y <= digRadius; y++)
+            // 감지된 콜라이더에서 플레이어 자신은 제외
+            if (hitCollider.transform == this.transform)
             {
-                Vector3Int currentCell = new Vector3Int(clickedCellPosition.x + x, clickedCellPosition.y + y, 0);
+                continue;
+            }
 
-                // 클릭한 셀 중심에서 현재 셀 중심까지의 거리를 계산
-                Vector2 distanceVector = new Vector2(x, y);
-                float distance = distanceVector.magnitude;
-
-                if (distance <= digRadius) // 전체 파기 범위 내에 있는 경우
-                {
-                    if (distance <= guaranteedDigRadius) // 무조건 파지는 영역인 경우
-                    {                        // 무조건 파기
-                        TileBase tile = groundTilemap.GetTile(currentCell);
-                        if (tile != null)
-                        { groundTilemap.SetTile(currentCell, null);
-                        }
-                    }
-                    else // 확률적으로 파지는 영역인 경우
-                    {
-                        // 확률 변화가 시작되는 지점부터 digRadius까지의 거리를 기준으로 정규화
-                        // normalizedDistance는 guaranteedDigRadius에서 digRadius까지 0에서 1로 변화
-                        float normalizedDistance = (distance - guaranteedDigRadius) / (digRadius - guaranteedDigRadius);
-                        // Mathf.Clamp01을 사용하여 0과 1 사이로 값을 제한 (나누기 0 방지 및 범위 보장)
-                        normalizedDistance = Mathf.Clamp01(normalizedDistance);
-
-                        // 거리에 따른 파기 확률 계산 (guaranteedDigRadius 바깥부터 확률 감소)
-                        float actualDigProbability = Mathf.Lerp(digRandomness, minDigProbability, normalizedDistance);
-
-                        // 실제 파기 확률과 Random.value를 비교하여 타일을 팔지 결정
-                        if (Random.value < actualDigProbability){
-                            TileBase tile = groundTilemap.GetTile(currentCell);
-                            if (tile != null) groundTilemap.SetTile(currentCell, null);
-                        }
-                    }
+            // 해당 콜라이더의 게임 오브젝트가 흙 타일인지 확인
+            DirtTile dirtTile = hitCollider.GetComponent<DirtTile>();
+            if (dirtTile != null)
+            {
+                // 숨겨진 보석이 있다면 활성화
+                if (dirtTile.hiddenGem != null)
+                { 
+                    dirtTile.hiddenGem.SetActive(true);
                 }
+                // 흙 오브젝트 파괴
+                Destroy(hitCollider.gameObject);
             }
         }
+    }
+
+    // 디버깅용: 파내는 범위를 씬(Scene) 뷰에 시각적으로 표시
+    void OnDrawGizmosSelected()
+    {
+        Vector2 digCenter = (Vector2)transform.position + (lastDirection * digOffset);
+        
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(digCenter, digRadius);
     }
 }
