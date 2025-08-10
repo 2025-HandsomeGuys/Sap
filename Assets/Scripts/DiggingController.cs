@@ -3,75 +3,68 @@ using UnityEngine;
 public class DiggingController : MonoBehaviour
 {
     [Header("Digging Settings")]
-    public KeyCode digKey = KeyCode.Space; // 땅 파기 키
     public float digRadius = 1.0f;         // 파내는 원의 반지름
     public float digOffset = 0.5f;         // 플레이어 중심에서 파기 시작 위치까지의 거리
 
-    private Vector2 lastDirection = Vector2.right; // 마지막으로 입력된 방향 (기본값: 오른쪽)
+    private Vector2 currentDigDirection = Vector2.right; // 현재 파기 방향
 
     void Update()
     {
-        UpdateDirection();
+        // 마우스 위치를 월드 좌표로 변환합니다.
+        Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        
+        // 플레이어 위치에서 마우스 위치를 향하는 방향 벡터를 계산하고 저장합니다.
+        // 마우스가 플레이어와 정확히 같은 위치에 있을 때 0으로 나누는 것을 방지합니다.
+        if ((mousePosition - (Vector2)transform.position).sqrMagnitude > 0.01f)
+        {
+            currentDigDirection = (mousePosition - (Vector2)transform.position).normalized;
+        }
 
-        // 지정된 키가 눌렸을 때 Dig() 함수 호출
-        if (Input.GetKeyDown(digKey))
+        // 마우스 왼쪽 버튼이 눌렸을 때 Dig() 함수를 호출합니다.
+        if (Input.GetMouseButtonDown(0)) // 0 = 왼쪽 마우스 버튼
         {
             Dig();
         }
     }
 
-    void UpdateDirection()
-    {
-        // 키보드 입력 받기 (W,A,S,D 또는 방향키)
-        float horizontalInput = Input.GetAxisRaw("Horizontal");
-        float verticalInput = Input.GetAxisRaw("Vertical");
-
-        Vector2 currentDirection = new Vector2(horizontalInput, verticalInput).normalized;
-
-        // 실제 입력이 있을 때만 마지막 방향을 업데이트
-        if (currentDirection != Vector2.zero)
-        {
-            lastDirection = currentDirection;
-        }
-    }
-
     void Dig()
     {
-        // 플레이어 위치를 기준으로, 마지막 입력 방향으로 오프셋을 적용한 파기 중심 위치 계산
-        Vector2 digCenter = (Vector2)transform.position + (lastDirection * digOffset);
+        // 플레이어 위치를 기준으로, 마우스 방향으로 오프셋을 적용한 파기 중심 위치를 계산합니다.
+        Vector2 digCenter = (Vector2)transform.position + (currentDigDirection * digOffset);
 
-        // 파기 중심 위치 주변의 모든 콜라이더를 감지
+        // 파기 중심 위치 주변의 모든 콜라이더를 감지합니다.
         Collider2D[] hitColliders = Physics2D.OverlapCircleAll(digCenter, digRadius);
 
         foreach (var hitCollider in hitColliders)
         {
-            // 감지된 콜라이더에서 플레이어 자신은 제외
+            // 감지된 콜라이더에서 플레이어 자신은 제외합니다.
             if (hitCollider.transform == this.transform)
             {
                 continue;
             }
 
-            // 해당 콜라이더의 게임 오브젝트가 흙 타일인지 확인
+            // 해당 콜라이더의 게임 오브젝트가 흙 타일인지 확인합니다.
             DirtTile dirtTile = hitCollider.GetComponent<DirtTile>();
             if (dirtTile != null)
             {
-                // 숨겨진 보석이 있다면 활성화
+                // 숨겨진 보석이 있다면 활성화합니다.
                 if (dirtTile.hiddenGem != null)
                 { 
                     dirtTile.hiddenGem.SetActive(true);
                 }
-                // 흙 오브젝트 파괴
+                // 흙 오브젝트를 파괴합니다.
                 Destroy(hitCollider.gameObject);
             }
         }
     }
 
-    // 디버깅용: 파내는 범위를 씬(Scene) 뷰에 시각적으로 표시
+    // 디버깅용: 파내는 범위를 씬(Scene) 뷰에 시각적으로 표시합니다.
     void OnDrawGizmosSelected()
     {
-        Vector2 digCenter = (Vector2)transform.position + (lastDirection * digOffset);
+        // 에디터에서 실시간으로 방향을 보여주기 위해 현재 방향을 사용합니다.
+        Vector2 digCenter = (Vector2)transform.position + (currentDigDirection * digOffset);
         
-        Gizmos.color = Color.red;
+        Gizmos.color = Color.yellow; // 색상을 노란색으로 변경하여 구분
         Gizmos.DrawWireSphere(digCenter, digRadius);
     }
 }
