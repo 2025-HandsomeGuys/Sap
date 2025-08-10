@@ -23,33 +23,41 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
     }
 
+    private bool jumpRequested = false;
+
     void Update()
     {
         // Get horizontal input
         moveInput = Input.GetAxis("Horizontal");
 
+        // Check if the player is on the ground
+        isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
+
         // Handle jumping input
         if (isGrounded && (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow)))
         {
-            // 기존 y속도를 0으로 만들고 힘을 가해 일관적인 점프 높이를 보장
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0f);
-            rb.AddForce(new Vector2(0f, jumpForce), ForceMode2D.Impulse);
+            jumpRequested = true;
         }
     }
 
     void FixedUpdate()
     {
-        // Check if the player is on the ground
-        isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
-
         // Apply horizontal movement
         rb.linearVelocity = new Vector2(moveInput * moveSpeed, rb.linearVelocity.y);
+
+        // Apply jump force
+        if (jumpRequested)
+        {
+            // Reset vertical velocity to ensure consistent jump height
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0f);
+            rb.AddForce(new Vector2(0f, jumpForce), ForceMode2D.Impulse);
+            jumpRequested = false;
+        }
     }
 
-    // groundCheck 범위를 시각적으로 표시하기 위한 Gizmos
+    // Draw a visual representation of the groundCheck radius in the editor
     void OnDrawGizmosSelected()
     {
-        Debug.Log("OnDrawGizmosSelected called. groundCheck is: " + (groundCheck != null ? groundCheck.name : "NULL"));
         if (groundCheck == null) return;
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
