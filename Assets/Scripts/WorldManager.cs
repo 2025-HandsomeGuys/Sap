@@ -13,6 +13,7 @@ public class WorldManager : MonoBehaviour
 
     private Vector2Int currentPlayerChunkCoord;
     private HashSet<Vector2Int> generatedChunks = new HashSet<Vector2Int>();
+    private Dictionary<Vector2Int, List<GameObject>> activeChunkObjects = new Dictionary<Vector2Int, List<GameObject>>();
 
     void Start()
     {
@@ -51,7 +52,7 @@ public class WorldManager : MonoBehaviour
     {
         currentPlayerChunkCoord = GetChunkCoordFromPosition(playerTransform.position);
 
-        // Loop through all chunk positions within the view distance
+        // --- Load/Generate new chunks --- 
         for (int xOffset = -viewDistanceInChunks; xOffset <= viewDistanceInChunks; xOffset++)
         {
             for (int yOffset = -viewDistanceInChunks; yOffset <= viewDistanceInChunks; yOffset++)
@@ -64,12 +65,64 @@ public class WorldManager : MonoBehaviour
                 // If this chunk has not been generated yet, generate it
                 if (!generatedChunks.Contains(chunkToGenerate))
                 {
-                    worldGenerator.GenerateChunk(chunkToGenerate);
+                    List<GameObject> spawned = worldGenerator.GenerateChunk(chunkToGenerate);
+                    activeChunkObjects.Add(chunkToGenerate, spawned);
                     generatedChunks.Add(chunkToGenerate);
-                    
+                    Debug.Log("Generated Chunk: " + chunkToGenerate);
                 }
             }
         }
-        // TODO: Add logic here to unload chunks that are too far away
+
+        // --- Unload chunks that are too far away ---
+        List<Vector2Int> chunksToUnload = new List<Vector2Int>();
+        foreach (Vector2Int chunkCoord in generatedChunks)
+        {
+            int xDiff = Mathf.Abs(chunkCoord.x - currentPlayerChunkCoord.x);
+            int yDiff = Mathf.Abs(chunkCoord.y - currentPlayerChunkCoord.y);
+
+            // If chunk is outside the view distance, mark for unloading
+            // We use viewDistanceInChunks + 1 to create a buffer zone
+            if (xDiff > viewDistanceInChunks + 1 || yDiff > viewDistanceInChunks + 1)
+            {
+                chunksToUnload.Add(chunkCoord);
+            }
+        }
+
+        foreach (Vector2Int chunkCoord in chunksToUnload)
+        {
+            UnloadChunk(chunkCoord);
+        }
+    }
+
+    void UnloadChunk(Vector2Int chunkCoord)
+    {
+        if (activeChunkObjects.ContainsKey(chunkCoord))
+        {
+            foreach (GameObject obj in activeChunkObjects[chunkCoord])
+            {
+                if (obj != null) // Check if object still exists (e.g., not dug up)
+                {
+                    // Determine tag to return to pool
+                    string tag = "";
+                    if (obj.CompareTag("dirt")) tag = "dirt";
+                    else if (obj.CompareTag("stone")) tag = "stone";
+                    else if (obj.CompareTag("gem")) tag = "gem";
+
+                    if (!string.IsNullOrEmpty(tag))
+                    {
+                        ObjectPooler.Instance.ReturnToPool(tag, obj);
+                    }
+                    else
+                    {
+                        // If object has no recognized tag, just destroy it (or log a warning)
+                        Debug.LogWarning("Object in chunk " + chunkCoord + " has no recognized tag for pooling: " + obj.name);
+                        Destroy(obj);
+                    }
+                }
+            }
+            activeChunkObjects.Remove(chunkCoord);
+            generatedChunks.Remove(chunkCoord);
+            Debug.Log("Unloaded Chunk: " + chunkCoord);
+        }
     }
 }

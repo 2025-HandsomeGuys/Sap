@@ -1,9 +1,10 @@
+using System.Collections.Generic; // Added for List
 using UnityEngine;
 
 public class WorldGenerator : MonoBehaviour
 {
     [Header("Chunk Settings")]
-    public const int chunkSize = 64; // The size of one chunk in tiles (64x64)
+    public const int chunkSize = 32; // The size of one chunk in tiles (64x64)
 
     [Header("World Generation Settings")]
     public int surfaceLevel = 80;
@@ -16,8 +17,10 @@ public class WorldGenerator : MonoBehaviour
     public float gemSpawnChance = 0.05f;
 
     // This method generates a single chunk based on its coordinate
-    public void GenerateChunk(Vector2Int chunkCoord)
+    public List<GameObject> GenerateChunk(Vector2Int chunkCoord) // Changed return type
     {
+        List<GameObject> spawnedObjects = new List<GameObject>(); // New list to store spawned objects
+
         // Calculate the starting world grid coordinates for this chunk
         int startX = chunkCoord.x * chunkSize;
         int startY = chunkCoord.y * chunkSize;
@@ -54,6 +57,7 @@ public class WorldGenerator : MonoBehaviour
                 if (tile != null)
                 {
                     tile.transform.SetParent(this.transform);
+                    spawnedObjects.Add(tile); // Add spawned tile to the list
                 }
 
                 // --- Gem Generation (within the same loop for efficiency) ---
@@ -64,9 +68,11 @@ public class WorldGenerator : MonoBehaviour
                     if (gem != null)
                     {
                         gem.transform.SetParent(this.transform);
+                        spawnedObjects.Add(gem); // Add spawned gem to the list
                     }
                 }
             }
         }
+        return spawnedObjects; // Return the list of spawned objects
     }
 }
