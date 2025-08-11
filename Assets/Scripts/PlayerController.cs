@@ -1,4 +1,6 @@
 using UnityEngine;
+using System.Collections.Generic;
+using System.Linq;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerController : MonoBehaviour
@@ -17,13 +19,13 @@ public class PlayerController : MonoBehaviour
 
     private Rigidbody2D rb;
     private float moveInput;
+    private List<GameObject> collectibleGems = new List<GameObject>();
+    private bool jumpRequested = false;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
     }
-
-    private bool jumpRequested = false;
 
     void Update()
     {
@@ -37,6 +39,12 @@ public class PlayerController : MonoBehaviour
         if (isGrounded && (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow)))
         {
             jumpRequested = true;
+        }
+
+        // Handle gem collection input
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            CollectClosestGem();
         }
     }
 
@@ -52,6 +60,37 @@ public class PlayerController : MonoBehaviour
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0f);
             rb.AddForce(new Vector2(0f, jumpForce), ForceMode2D.Impulse);
             jumpRequested = false;
+        }
+    }
+
+    public void AddCollectibleGem(GameObject gem)
+    {
+        if (!collectibleGems.Contains(gem))
+        {
+            collectibleGems.Add(gem);
+        }
+    }
+
+    public void RemoveCollectibleGem(GameObject gem)
+    {
+        collectibleGems.Remove(gem);
+    }
+
+    private void CollectClosestGem()
+    {
+        // 리스트에 보석이 없으면 아무것도 하지 않음
+        if (collectibleGems.Count == 0) return;
+
+        // 가장 가까운 보석 찾기
+        GameObject closestGem = collectibleGems
+            .OrderBy(g => Vector2.Distance(this.transform.position, g.transform.position))
+            .FirstOrDefault();
+
+        if (closestGem != null)
+        {
+            // 리스트에서 제거하고 파괴
+            collectibleGems.Remove(closestGem);
+            Destroy(closestGem);
         }
     }
 
