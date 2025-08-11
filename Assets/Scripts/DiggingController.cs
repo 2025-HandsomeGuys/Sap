@@ -47,11 +47,6 @@ public class DiggingController : MonoBehaviour
             DirtTile dirtTile = hitCollider.GetComponent<DirtTile>();
             if (dirtTile != null)
             {
-                // 숨겨진 보석이 있다면 활성화합니다.
-                if (dirtTile.hiddenGem != null)
-                { 
-                    dirtTile.hiddenGem.SetActive(true);
-                }
                 // 흙 오브젝트를 파괴합니다.
                 Destroy(hitCollider.gameObject);
             }

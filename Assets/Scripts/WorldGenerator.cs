@@ -50,21 +50,22 @@ public class WorldGenerator : MonoBehaviour
                     tileToPlace = dirtPrefab;
                 }
 
-                GameObject spawnedTile = Instantiate(tileToPlace, spawnPosition, Quaternion.identity, this.transform);
+                Instantiate(tileToPlace, spawnPosition, Quaternion.identity, this.transform);
+            }
+        }
+        GenerateGems();
+    }
 
-                if (tileToPlace == dirtPrefab)
+    void GenerateGems()
+    {
+        for (int x = -200; x < worldWidth; x++)
+        {
+            for (int y = -200; y < surfaceLevel; y++)
+            {
+                if (Random.value < gemSpawnChance)
                 {
-                    if (Random.value < gemSpawnChance)
-                    {
-                        GameObject gem = Instantiate(gemPrefab, spawnPosition, Quaternion.identity, this.transform);
-                        gem.SetActive(false);
-
-                        DirtTile dirtTileScript = spawnedTile.GetComponent<DirtTile>();
-                        if (dirtTileScript != null)
-                        { 
-                            dirtTileScript.hiddenGem = gem;
-                        }
-                    }
+                    Vector3 spawnPosition = new Vector3(x * cellSize, y * cellSize, 0);
+                    Instantiate(gemPrefab, spawnPosition, Quaternion.identity, this.transform);
                 }
             }
         }

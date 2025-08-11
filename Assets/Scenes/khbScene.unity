@@ -518,7 +518,7 @@ MonoBehaviour:
   surfaceLevel: 10
   cellSize: 0.05
   stoneProbability: 0
-  gemSpawnChance: 0.005
+  gemSpawnChance: 0.0005
   dirtPrefab: {fileID: 8832497869943913428, guid: e4fab9eff2b8b044a96df4d5f53ee50c, type: 3}
   stonePrefab: {fileID: 9121701038931659755, guid: a5081b3008973d44b923575d29d4f70d, type: 3}
   gemPrefab: {fileID: 8019674470882275667, guid: e6f2061ee9a59f748ab04277e0eecf28, type: 3}
