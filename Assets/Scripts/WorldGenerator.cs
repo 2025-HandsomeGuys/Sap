@@ -2,37 +2,46 @@ using UnityEngine;
 
 public class WorldGenerator : MonoBehaviour
 {
-    [Header("World Settings")]
-    public int worldStartX = -200;
-    public int worldEndX = 100;
-    public int worldStartY = -200;
-    public int worldHeight = 100; // Note: This is not currently used in generation loops
-    public int surfaceLevel = 80;
-    public float cellSize = 0.05f; // 타일(오브젝트)의 크기 및 간격
+    [Header("Chunk Settings")]
+    public const int chunkSize = 64; // The size of one chunk in tiles (64x64)
 
-    [Header("Generation Settings")]
+    [Header("World Generation Settings")]
+    public int surfaceLevel = 80;
+    public float cellSize = 0.05f;
+
+    [Header("Tile Probabilities")]
     [Range(0f, 1f)]
     public float stoneProbability = 0.5f;
     [Range(0f, 1f)]
-    public float gemSpawnChance = 0.05f; // 5% chance to spawn a gem
+    public float gemSpawnChance = 0.05f;
 
-    // Prefab references are now managed by the ObjectPooler
-
-    void Start()
+    // This method generates a single chunk based on its coordinate
+    public void GenerateChunk(Vector2Int chunkCoord)
     {
-        GenerateWorld();
-    }
+        // Calculate the starting world grid coordinates for this chunk
+        int startX = chunkCoord.x * chunkSize;
+        int startY = chunkCoord.y * chunkSize;
 
-    void GenerateWorld()
-    {
-        for (int x = worldStartX; x < worldEndX; x++)
+        // Loop through all the tile positions within this chunk
+        for (int x = 0; x < chunkSize; x++)
         {
-            for (int y = worldStartY; y < surfaceLevel; y++)
+            for (int y = 0; y < chunkSize; y++)
             {
-                Vector3 spawnPosition = new Vector3(x * cellSize, y * cellSize, 0);
+                // Calculate the absolute grid coordinate for the tile
+                int worldGridX = startX + x;
+                int worldGridY = startY + y;
+
+                // Only generate tiles below the surface level
+                if (worldGridY >= surfaceLevel)
+                {
+                    continue;
+                }
+
+                // --- Tile Generation ---
+                Vector3 spawnPosition = new Vector3(worldGridX * cellSize, worldGridY * cellSize, 0);
                 string tagToSpawn;
 
-                if (y < surfaceLevel - 2 && Random.value < stoneProbability)
+                if (worldGridY < surfaceLevel - 2 && Random.value < stoneProbability)
                 {
                     tagToSpawn = "stone";
                 }
@@ -41,31 +50,16 @@ public class WorldGenerator : MonoBehaviour
                     tagToSpawn = "dirt";
                 }
 
-                // Log the spawn position for every 20th column to avoid spamming the console
-                if (x % 20 == 0 && y == worldStartY)
-                {
-                    Debug.Log("Calculating spawn position for tile at column x=" + x + ": " + spawnPosition);
-                }
-
                 GameObject tile = ObjectPooler.Instance.SpawnFromPool(tagToSpawn, spawnPosition, Quaternion.identity);
                 if (tile != null)
                 {
                     tile.transform.SetParent(this.transform);
                 }
-            }
-        }
-        GenerateGems();
-    }
 
-    void GenerateGems()
-    {
-        for (int x = worldStartX; x < worldEndX; x++)
-        {
-            for (int y = worldStartY; y < surfaceLevel; y++)
-            {
+                // --- Gem Generation (within the same loop for efficiency) ---
                 if (Random.value < gemSpawnChance)
                 {
-                    Vector3 spawnPosition = new Vector3(x * cellSize, y * cellSize, 0);
+                    // We can use the same spawnPosition for the gem
                     GameObject gem = ObjectPooler.Instance.SpawnFromPool("gem", spawnPosition, Quaternion.identity);
                     if (gem != null)
                     {
