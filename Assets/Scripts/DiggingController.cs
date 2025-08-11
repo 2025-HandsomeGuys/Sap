@@ -43,12 +43,12 @@ public class DiggingController : MonoBehaviour
                 continue;
             }
 
-            // 해당 콜라이더의 게임 오브젝트가 흙 타일인지 확인합니다.
-            DirtTile dirtTile = hitCollider.GetComponent<DirtTile>();
-            if (dirtTile != null)
+            // 오브젝트의 태그를 확인하여 파낼 수 있는 타일인지 확인합니다.
+            string tag = hitCollider.gameObject.tag;
+            if (tag == "dirt" || tag == "stone")
             {
-                // 흙 오브젝트를 파괴합니다.
-                Destroy(hitCollider.gameObject);
+                // 오브젝트를 파괴하는 대신, 오브젝트 풀에 반납합니다.
+                ObjectPooler.Instance.ReturnToPool(tag, hitCollider.gameObject);
             }
         }
     }

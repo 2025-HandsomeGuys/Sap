@@ -629,6 +629,60 @@ MonoBehaviour:
   m_CropFrameX: 0
   m_CropFrameY: 0
   m_StretchFill: 0
+--- !u!1 &579115388
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 579115390}
+  - component: {fileID: 579115389}
+  m_Layer: 0
+  m_Name: ObjectPooler
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &579115389
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 579115388}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc640ac1719b5c946998c7302423b56d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pools:
+  - tag: dirt
+    prefab: {fileID: 7004643235767300634, guid: f57a986ec6c224b409a624833a4f78b3, type: 3}
+    size: 10000
+  - tag: stone
+    prefab: {fileID: 9121701038931659755, guid: 45f63dc38ae7d0b409a198d54068dbc2, type: 3}
+    size: 10000
+  - tag: gem
+    prefab: {fileID: 8019674470882275667, guid: 5c13f6080b0311549b526d357e343c00, type: 3}
+    size: 500
+--- !u!4 &579115390
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 579115388}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -6.7929816, y: -2.2881682, z: 2.2828248}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &619394800
 GameObject:
   m_ObjectHideFlags: 0
@@ -830,15 +884,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c8f14a7ea8b62d4d8a4864b7b69655a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  worldWidth: 100
-  worldHeight: 100
+  worldStartX: -400
+  worldEndX: 200
+  worldStartY: -400
+  worldHeight: 200
   surfaceLevel: 10
   cellSize: 0.05
   stoneProbability: 0
   gemSpawnChance: 0.00005
-  dirtPrefab: {fileID: 8832497869943913428, guid: e4fab9eff2b8b044a96df4d5f53ee50c, type: 3}
-  stonePrefab: {fileID: 9121701038931659755, guid: a5081b3008973d44b923575d29d4f70d, type: 3}
-  gemPrefab: {fileID: 8019674470882275667, guid: e6f2061ee9a59f748ab04277e0eecf28, type: 3}
 --- !u!4 &1223317398
 Transform:
   m_ObjectHideFlags: 0
@@ -1066,3 +1119,4 @@ SceneRoots:
   - {fileID: 937967234}
   - {fileID: 368958610}
   - {fileID: 21826008}
+  - {fileID: 579115390}

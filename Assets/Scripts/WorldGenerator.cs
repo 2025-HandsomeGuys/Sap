@@ -16,10 +16,7 @@ public class WorldGenerator : MonoBehaviour
     [Range(0f, 1f)]
     public float gemSpawnChance = 0.05f; // 5% chance to spawn a gem
 
-    [Header("Object Prefabs")]
-    public GameObject dirtPrefab;
-    public GameObject stonePrefab;
-    public GameObject gemPrefab;
+    // Prefab references are now managed by the ObjectPooler
 
     void Start()
     {
@@ -28,30 +25,33 @@ public class WorldGenerator : MonoBehaviour
 
     void GenerateWorld()
     {
-        if (dirtPrefab == null || stonePrefab == null || gemPrefab == null)
-        {
-            Debug.LogError("Prefabs are not set in the WorldGenerator!");
-            return;
-        }
-
         for (int x = worldStartX; x < worldEndX; x++)
         {
             for (int y = worldStartY; y < surfaceLevel; y++)
             {
-                // cellSize를 곱하여 실제 월드 좌표 계산
                 Vector3 spawnPosition = new Vector3(x * cellSize, y * cellSize, 0);
-                GameObject tileToPlace;
+                string tagToSpawn;
 
                 if (y < surfaceLevel - 2 && Random.value < stoneProbability)
                 {
-                    tileToPlace = stonePrefab;
+                    tagToSpawn = "stone";
                 }
                 else
                 {
-                    tileToPlace = dirtPrefab;
+                    tagToSpawn = "dirt";
                 }
 
-                Instantiate(tileToPlace, spawnPosition, Quaternion.identity, this.transform);
+                // Log the spawn position for every 20th column to avoid spamming the console
+                if (x % 20 == 0 && y == worldStartY)
+                {
+                    Debug.Log("Calculating spawn position for tile at column x=" + x + ": " + spawnPosition);
+                }
+
+                GameObject tile = ObjectPooler.Instance.SpawnFromPool(tagToSpawn, spawnPosition, Quaternion.identity);
+                if (tile != null)
+                {
+                    tile.transform.SetParent(this.transform);
+                }
             }
         }
         GenerateGems();
@@ -66,7 +66,11 @@ public class WorldGenerator : MonoBehaviour
                 if (Random.value < gemSpawnChance)
                 {
                     Vector3 spawnPosition = new Vector3(x * cellSize, y * cellSize, 0);
-                    Instantiate(gemPrefab, spawnPosition, Quaternion.identity, this.transform);
+                    GameObject gem = ObjectPooler.Instance.SpawnFromPool("gem", spawnPosition, Quaternion.identity);
+                    if (gem != null)
+                    {
+                        gem.transform.SetParent(this.transform);
+                    }
                 }
             }
         }
