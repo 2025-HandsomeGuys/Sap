@@ -1,10 +1,11 @@
-using System.Collections.Generic; // Added for List
+using System.Collections; // Added for IEnumerator
+using System.Collections.Generic; // Still needed for List (though not returned)
 using UnityEngine;
 
 public class WorldGenerator : MonoBehaviour
 {
     [Header("Chunk Settings")]
-    public const int chunkSize = 32; // The size of one chunk in tiles (64x64)
+    public const int chunkSize = 32; // The size of one chunk in tiles (32x32)
 
     [Header("World Generation Settings")]
     public int surfaceLevel = 80;
@@ -16,14 +17,17 @@ public class WorldGenerator : MonoBehaviour
     [Range(0f, 1f)]
     public float gemSpawnChance = 0.05f;
 
-    // This method generates a single chunk based on its coordinate
-    public List<GameObject> GenerateChunk(Vector2Int chunkCoord) // Changed return type
-    {
-        List<GameObject> spawnedObjects = new List<GameObject>(); // New list to store spawned objects
+    [Header("Performance Settings")]
+    public int tilesPerFrame = 100; // How many tiles/gems to spawn per frame during incremental loading
 
+    // This method generates a single chunk based on its coordinate incrementally
+    public IEnumerator GenerateChunk(Vector2Int chunkCoord) // Changed return type to IEnumerator
+    {
         // Calculate the starting world grid coordinates for this chunk
         int startX = chunkCoord.x * chunkSize;
         int startY = chunkCoord.y * chunkSize;
+
+        int currentTilesSpawnedInFrame = 0; // Counter for incremental loading
 
         // Loop through all the tile positions within this chunk
         for (int x = 0; x < chunkSize; x++)
@@ -57,7 +61,7 @@ public class WorldGenerator : MonoBehaviour
                 if (tile != null)
                 {
                     tile.transform.SetParent(this.transform);
-                    spawnedObjects.Add(tile); // Add spawned tile to the list
+                    // spawnedObjects.Add(tile); // Removed: no longer returning list
                 }
 
                 // --- Gem Generation (within the same loop for efficiency) ---
@@ -68,11 +72,19 @@ public class WorldGenerator : MonoBehaviour
                     if (gem != null)
                     {
                         gem.transform.SetParent(this.transform);
-                        spawnedObjects.Add(gem); // Add spawned gem to the list
+                        // spawnedObjects.Add(gem); // Removed: no longer returning list
                     }
+                }
+
+                // Incremental loading logic
+                currentTilesSpawnedInFrame++;
+                if (currentTilesSpawnedInFrame >= tilesPerFrame)
+                {
+                    currentTilesSpawnedInFrame = 0;
+                    yield return null; // Pause execution for one frame
                 }
             }
         }
-        return spawnedObjects; // Return the list of spawned objects
+        // yield return spawnedObjects; // Removed: no longer returning list
     }
 }

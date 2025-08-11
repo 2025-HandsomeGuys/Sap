@@ -13,7 +13,7 @@ public class WorldManager : MonoBehaviour
 
     private Vector2Int currentPlayerChunkCoord;
     private HashSet<Vector2Int> generatedChunks = new HashSet<Vector2Int>();
-    private Dictionary<Vector2Int, List<GameObject>> activeChunkObjects = new Dictionary<Vector2Int, List<GameObject>>();
+    private HashSet<Vector2Int> loadingChunks = new HashSet<Vector2Int>(); // To track chunks currently being loaded
 
     void Start()
     {
@@ -43,8 +43,12 @@ public class WorldManager : MonoBehaviour
 
     Vector2Int GetChunkCoordFromPosition(Vector3 position)
     {
-        int x = Mathf.FloorToInt(position.x / (WorldGenerator.chunkSize * worldGenerator.cellSize));
-        int y = Mathf.FloorToInt(position.y / (WorldGenerator.chunkSize * worldGenerator.cellSize));
+        // Ensure worldGenerator.cellSize is not zero to prevent division by zero
+        float effectiveCellSize = worldGenerator.cellSize > 0 ? worldGenerator.cellSize : 1f; 
+        float chunkSizeInWorldUnits = WorldGenerator.chunkSize * effectiveCellSize;
+
+        int x = Mathf.FloorToInt(position.x / chunkSizeInWorldUnits);
+        int y = Mathf.FloorToInt(position.y / chunkSizeInWorldUnits);
         return new Vector2Int(x, y);
     }
 
@@ -62,13 +66,11 @@ public class WorldManager : MonoBehaviour
                     currentPlayerChunkCoord.y + yOffset
                 );
 
-                // If this chunk has not been generated yet, generate it
-                if (!generatedChunks.Contains(chunkToGenerate))
+                // If this chunk has not been generated yet and is not currently loading, start generation
+                if (!generatedChunks.Contains(chunkToGenerate) && !loadingChunks.Contains(chunkToGenerate))
                 {
-                    List<GameObject> spawned = worldGenerator.GenerateChunk(chunkToGenerate);
-                    activeChunkObjects.Add(chunkToGenerate, spawned);
-                    generatedChunks.Add(chunkToGenerate);
-                    Debug.Log("Generated Chunk: " + chunkToGenerate);
+                    loadingChunks.Add(chunkToGenerate);
+                    StartCoroutine(GenerateChunkCoroutineWrapper(chunkToGenerate));
                 }
             }
         }
@@ -94,35 +96,55 @@ public class WorldManager : MonoBehaviour
         }
     }
 
+    IEnumerator GenerateChunkCoroutineWrapper(Vector2Int chunkCoord)
+    {
+        // Call the WorldGenerator's coroutine
+        yield return StartCoroutine(worldGenerator.GenerateChunk(chunkCoord));
+
+        // Once the generation coroutine is complete, move from loading to generated
+        loadingChunks.Remove(chunkCoord);
+        generatedChunks.Add(chunkCoord);
+        Debug.Log("Finished Loading Chunk: " + chunkCoord);
+    }
+
     void UnloadChunk(Vector2Int chunkCoord)
     {
-        if (activeChunkObjects.ContainsKey(chunkCoord))
+        // Iterate through all children of the WorldGenerator to find objects in this chunk
+        // This is less efficient than having a direct list, but necessary for this approach
+        List<GameObject> objectsInChunk = new List<GameObject>();
+        // Iterate backwards to safely remove children if needed, though we are just collecting here
+        for (int i = worldGenerator.transform.childCount - 1; i >= 0; i--)
         {
-            foreach (GameObject obj in activeChunkObjects[chunkCoord])
+            Transform child = worldGenerator.transform.GetChild(i);
+            Vector2Int childChunkCoord = GetChunkCoordFromPosition(child.position);
+            if (childChunkCoord == chunkCoord)
             {
-                if (obj != null) // Check if object still exists (e.g., not dug up)
-                {
-                    // Determine tag to return to pool
-                    string tag = "";
-                    if (obj.CompareTag("dirt")) tag = "dirt";
-                    else if (obj.CompareTag("stone")) tag = "stone";
-                    else if (obj.CompareTag("gem")) tag = "gem";
+                objectsInChunk.Add(child.gameObject);
+            }
+        }
 
-                    if (!string.IsNullOrEmpty(tag))
-                    {
-                        ObjectPooler.Instance.ReturnToPool(tag, obj);
-                    }
-                    else
-                    {
-                        // If object has no recognized tag, just destroy it (or log a warning)
-                        Debug.LogWarning("Object in chunk " + chunkCoord + " has no recognized tag for pooling: " + obj.name);
-                        Destroy(obj);
-                    }
+        foreach (GameObject obj in objectsInChunk)
+        {
+            if (obj != null) // Check if object still exists (e.g., not dug up)
+            {
+                string tag = "";
+                if (obj.CompareTag("dirt")) tag = "dirt";
+                else if (obj.CompareTag("stone")) tag = "stone";
+                else if (obj.CompareTag("gem")) tag = "gem";
+
+                if (!string.IsNullOrEmpty(tag))
+                {
+                    ObjectPooler.Instance.ReturnToPool(tag, obj);
+                }
+                else
+                {
+                    Debug.LogWarning("Object in chunk " + chunkCoord + " has no recognized tag for pooling: " + obj.name);
+                    Destroy(obj); // Fallback if tag is not recognized
                 }
             }
-            activeChunkObjects.Remove(chunkCoord);
-            generatedChunks.Remove(chunkCoord);
-            Debug.Log("Unloaded Chunk: " + chunkCoord);
         }
+        // Remove from generatedChunks (loadingChunks is handled by wrapper)
+        generatedChunks.Remove(chunkCoord);
+        Debug.Log("Unloaded Chunk: " + chunkCoord);
     }
 }
