@@ -1,11 +1,12 @@
-
 using UnityEngine;
 
 public class WorldGenerator : MonoBehaviour
 {
     [Header("World Settings")]
-    public int worldWidth = 100;
-    public int worldHeight = 100;
+    public int worldStartX = -200;
+    public int worldEndX = 100;
+    public int worldStartY = -200;
+    public int worldHeight = 100; // Note: This is not currently used in generation loops
     public int surfaceLevel = 80;
     public float cellSize = 0.05f; // 타일(오브젝트)의 크기 및 간격
 
@@ -33,9 +34,9 @@ public class WorldGenerator : MonoBehaviour
             return;
         }
 
-        for (int x = -200; x < worldWidth; x++)
+        for (int x = worldStartX; x < worldEndX; x++)
         {
-            for (int y = -200; y < surfaceLevel; y++)
+            for (int y = worldStartY; y < surfaceLevel; y++)
             {
                 // cellSize를 곱하여 실제 월드 좌표 계산
                 Vector3 spawnPosition = new Vector3(x * cellSize, y * cellSize, 0);
@@ -58,9 +59,9 @@ public class WorldGenerator : MonoBehaviour
 
     void GenerateGems()
     {
-        for (int x = -200; x < worldWidth; x++)
+        for (int x = worldStartX; x < worldEndX; x++)
         {
-            for (int y = -200; y < surfaceLevel; y++)
+            for (int y = worldStartY; y < surfaceLevel; y++)
             {
                 if (Random.value < gemSpawnChance)
                 {
