@@ -1,4 +1,5 @@
 using UnityEngine;
+using static Constants;
 
 public class Gem : MonoBehaviour
 {
@@ -6,7 +7,7 @@ public class Gem : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag(TAG_PLAYER))
         {
             PlayerController player = other.GetComponent<PlayerController>();
             if (player != null)

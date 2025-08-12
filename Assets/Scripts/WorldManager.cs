@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static TileType;
+using static Constants;
 
 public class WorldManager : MonoBehaviour
 {
@@ -30,14 +32,14 @@ public class WorldManager : MonoBehaviour
     // New: Data structure to hold chunk state
     public class ChunkData
         {
-            public byte[,] tileStates; // 0: empty, 1: dirt, 2: stone
+            public TileType[,] tileStates; // 0: empty, 1: dirt, 2: stone
             public Vector2Int chunkCoord; // Store chunk coordinates for easy reference
             public List<GameObject> spawnedTiles; // New: Store references to spawned tiles in this chunk
 
             public ChunkData(Vector2Int coord, int chunkSize)
             {
                 chunkCoord = coord;
-                tileStates = new byte[chunkSize, chunkSize];
+                tileStates = new TileType[chunkSize, chunkSize];
                 spawnedTiles = new List<GameObject>(); // Initialize the list
             }
         }
@@ -162,9 +164,9 @@ public class WorldManager : MonoBehaviour
                 if (obj != null) // Check if object still exists (e.g., not dug up)
                 {
                     string tag = "";
-                    if (obj.CompareTag("dirt")) tag = "dirt";
-                    else if (obj.CompareTag("stone")) tag = "stone";
-                    else if (obj.CompareTag("gem")) tag = "gem";
+                    if (obj.CompareTag(TAG_DIRT)) tag = TAG_DIRT;
+                    else if (obj.CompareTag(TAG_STONE)) tag = TAG_STONE;
+                    else if (obj.CompareTag(TAG_GEM)) tag = TAG_GEM;
 
                     if (!string.IsNullOrEmpty(tag))
                     {
@@ -186,7 +188,7 @@ public class WorldManager : MonoBehaviour
     }
 
     // New: Method to update chunk data when a tile is dug
-    public void TileDug(Vector3 worldPosition)
+    public void TileDug(Vector3 worldPosition, GameObject dugGameObject)
     {
         Vector2Int chunkCoord = GetChunkCoordFromPosition(worldPosition);
         if (chunkDataMap.TryGetValue(chunkCoord, out ChunkData chunkData))
@@ -205,7 +207,13 @@ public class WorldManager : MonoBehaviour
             if (localX >= 0 && localX < WorldGenerator.chunkSize &&
                 localY >= 0 && localY < WorldGenerator.chunkSize)
             {
-                chunkData.tileStates[localX, localY] = 0; // Set to empty
+                chunkData.tileStates[localX, localY] = TileType.Empty; // Set to empty
+
+                // Remove the dug tile from the spawnedTiles list directly
+                if (dugGameObject != null)
+                {
+                    chunkData.spawnedTiles.Remove(dugGameObject);
+                }
                 Debug.Log("Tile dug at " + worldPosition + " in chunk " + chunkCoord + " (local: " + localX + "," + localY + ")");
             }
         }

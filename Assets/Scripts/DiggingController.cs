@@ -1,4 +1,5 @@
 using UnityEngine;
+using static Constants;
 
 public class DiggingController : MonoBehaviour
 {
@@ -48,11 +49,12 @@ public class DiggingController : MonoBehaviour
 
             
             string tag = hitCollider.gameObject.tag;
-            if (tag == "dirt" || tag == "stone")
+            if (tag == TAG_DIRT || tag == TAG_STONE)
             {
                 
+                hitCollider.gameObject.SetActive(false); // Explicitly deactivate before returning to pool
                 ObjectPooler.Instance.ReturnToPool(tag, hitCollider.gameObject);
-                WorldManager.Instance.TileDug(hitCollider.transform.position);
+                WorldManager.Instance.TileDug(hitCollider.transform.position, hitCollider.gameObject);
             }
         }
     }
