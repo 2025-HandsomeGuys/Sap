@@ -75,6 +75,9 @@ public class ObjectPooler : MonoBehaviour
         }
 
         objectToReturn.SetActive(false);
+        objectToReturn.transform.SetParent(null); // Clear parent
+        objectToReturn.transform.localScale = Vector3.one; // Reset scale
+        objectToReturn.transform.localRotation = Quaternion.identity; // Reset rotation
         poolDictionary[tag].Enqueue(objectToReturn);
     }
 }

@@ -1,5 +1,5 @@
-using System.Collections; // Added for IEnumerator
-using System.Collections.Generic; // Still needed for List (though not returned)
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class WorldGenerator : MonoBehaviour
@@ -21,7 +21,8 @@ public class WorldGenerator : MonoBehaviour
     public int tilesPerFrame = 100; // How many tiles/gems to spawn per frame during incremental loading
 
     // This method generates a single chunk based on its coordinate incrementally
-    public IEnumerator GenerateChunk(Vector2Int chunkCoord) // Changed return type to IEnumerator
+    // It now uses ChunkData to determine what to spawn
+    public IEnumerator GenerateChunk(Vector2Int chunkCoord, WorldManager.ChunkData chunkData) // Added ChunkData parameter
     {
         // Calculate the starting world grid coordinates for this chunk
         int startX = chunkCoord.x * chunkSize;
@@ -38,41 +39,43 @@ public class WorldGenerator : MonoBehaviour
                 int worldGridX = startX + x;
                 int worldGridY = startY + y;
 
-                // Only generate tiles below the surface level
-                if (worldGridY >= surfaceLevel)
+                // --- Tile Generation based on ChunkData ---
+                byte tileState = chunkData.tileStates[x, y]; // Get state from ChunkData
+
+                if (tileState == 0) // If state is 0 (empty/dug), skip spawning
                 {
                     continue;
                 }
 
-                // --- Tile Generation ---
                 Vector3 spawnPosition = new Vector3(worldGridX * cellSize, worldGridY * cellSize, 0);
-                string tagToSpawn;
+                string tagToSpawn = "";
 
-                if (worldGridY < surfaceLevel - 2 && Random.value < stoneProbability)
-                {
-                    tagToSpawn = "stone";
-                }
-                else
+                if (tileState == 1) // Dirt
                 {
                     tagToSpawn = "dirt";
                 }
-
-                GameObject tile = ObjectPooler.Instance.SpawnFromPool(tagToSpawn, spawnPosition, Quaternion.identity);
-                if (tile != null)
+                else if (tileState == 2) // Stone
                 {
-                    tile.transform.SetParent(this.transform);
-                    // spawnedObjects.Add(tile); // Removed: no longer returning list
+                    tagToSpawn = "stone";
                 }
 
-                // --- Gem Generation (within the same loop for efficiency) ---
+                if (!string.IsNullOrEmpty(tagToSpawn))
+                {
+                    GameObject tile = ObjectPooler.Instance.SpawnFromPool(tagToSpawn, spawnPosition, Quaternion.identity);
+                    if (tile != null)
+                    {
+                        tile.transform.SetParent(this.transform);
+                        chunkData.spawnedTiles.Add(tile); // Add to ChunkData's list
+                    }
+                }
+
+                // --- Gem Generation (still random, not stored in ChunkData) ---
                 if (Random.value < gemSpawnChance)
                 {
-                    // We can use the same spawnPosition for the gem
                     GameObject gem = ObjectPooler.Instance.SpawnFromPool("gem", spawnPosition, Quaternion.identity);
                     if (gem != null)
                     {
                         gem.transform.SetParent(this.transform);
-                        // spawnedObjects.Add(gem); // Removed: no longer returning list
                     }
                 }
 
@@ -85,6 +88,40 @@ public class WorldGenerator : MonoBehaviour
                 }
             }
         }
-        // yield return spawnedObjects; // Removed: no longer returning list
+    }
+
+    public void InitializeChunkData(WorldManager.ChunkData chunkData)
+    {
+        // Use a seeded random number generator for deterministic terrain generation per chunk
+        // The seed should be based on chunk coordinates to ensure consistency
+        System.Random random = new System.Random(chunkData.chunkCoord.x * 10000 + chunkData.chunkCoord.y);
+
+        int startX = chunkData.chunkCoord.x * chunkSize;
+        int startY = chunkData.chunkCoord.y * chunkSize;
+
+        for (int x = 0; x < chunkSize; x++)
+        {
+            for (int y = 0; y < chunkSize; y++)
+            {
+                int worldGridY = startY + y;
+
+                if (worldGridY >= surfaceLevel)
+                {
+                    chunkData.tileStates[x, y] = 0; // Empty (air)
+                }
+                else
+                {
+                    // Apply stone probability using the seeded random
+                    if (worldGridY < surfaceLevel - 2 && random.NextDouble() < stoneProbability)
+                    {
+                        chunkData.tileStates[x, y] = 2; // Stone
+                    }
+                    else
+                    {
+                        chunkData.tileStates[x, y] = 1; // Dirt
+                    }
+                }
+            }
+        }
     }
 }

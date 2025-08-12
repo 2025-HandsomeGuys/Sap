@@ -975,6 +975,7 @@ MonoBehaviour:
   cellSize: 0.05
   stoneProbability: 0
   gemSpawnChance: 0.00005
+  tilesPerFrame: 100
 --- !u!4 &1223317398
 Transform:
   m_ObjectHideFlags: 0
