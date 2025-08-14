@@ -20,6 +20,10 @@ public class PlayerController : MonoBehaviour
     public TextMeshProUGUI interactionPromptText; // Drag your TextMeshPro UI element here
     public TextMeshProUGUI totalWeightText; // Drag your TextMeshPro UI element here to display total weight
 
+    [Header("Inventory UI")]
+    public GameObject inventoryPanel;
+    public TextMeshProUGUI inventoryContentText;
+
     [Header("Status (Read-Only)")]
     public bool isGrounded;
 
@@ -27,6 +31,7 @@ public class PlayerController : MonoBehaviour
     private float moveInput;
     private List<GameObject> collectibleGems = new List<GameObject>();
     private bool jumpRequested = false;
+    private bool isInventoryOpen = false;
 
     public Inventory playerInventory; // Reference to the player's inventory
 
@@ -38,31 +43,103 @@ public class PlayerController : MonoBehaviour
         {
             interactionPromptText.gameObject.SetActive(false);
         }
+        // Hide inventory panel at start
+        if (inventoryPanel != null)
+        {
+            inventoryPanel.SetActive(false);
+        }
+        UpdateUI(); // Initial UI update
     }
 
     void Update()
     {
-        // Get horizontal input
-        moveInput = Input.GetAxis("Horizontal");
-
-        // Check if the player is on the ground
-        isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
-
-        // Handle jumping input
-        if (isGrounded && (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow)))
+        // Handle inventory toggle input
+        if (Input.GetKeyDown(KeyCode.I)) // 'I' for Inventory
         {
-            jumpRequested = true;
+            ToggleInventory();
         }
 
-        // Handle gem collection input
-        if (Input.GetKeyDown(KeyCode.E))
+        if (!isInventoryOpen) // Only process player input if inventory is NOT open
         {
-            CollectClosestGem();
+            // Get horizontal input
+            moveInput = Input.GetAxis("Horizontal");
+
+            // Check if the player is on the ground
+            isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
+
+            // Handle jumping input
+            if (isGrounded && (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow)))
+            {
+                jumpRequested = true;
+            }
+
+            // Handle gem collection input
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                CollectClosestGem();
+            }
+        }
+
+        // Handle inventory toggle input
+        if (Input.GetKeyDown(KeyCode.I)) // 'I' for Inventory
+        {
+            ToggleInventory();
+        }
+    }
+
+    private void ToggleInventory()
+    {
+        if (inventoryPanel != null)
+        {
+            isInventoryOpen = !isInventoryOpen; // Toggle the flag
+            inventoryPanel.SetActive(isInventoryOpen); // Set panel active state
+
+            if (isInventoryOpen) // If opening inventory
+            {
+                Time.timeScale = 0f; // Pause game
+                UpdateInventoryDisplay(); // Update content when opened
+            }
+            else // If closing inventory
+            {
+                Time.timeScale = 1f; // Resume game
+            }
+        }
+    }
+
+    private void UpdateInventoryDisplay()
+    {
+        if (inventoryContentText != null && playerInventory != null)
+        {
+            System.Text.StringBuilder sb = new System.Text.StringBuilder();
+            sb.AppendLine("--- Inventory ---");
+            if (playerInventory.collectedGems.Count == 0)
+            {
+                sb.AppendLine("Empty");
+            }
+            else
+            {
+                foreach (Gem gem in playerInventory.collectedGems)
+                {
+                    if (gem != null)
+                    {
+                        Debug.Log($"Inventory item: {gem.name} (Weight: {gem.weight:F1})"); // Add this line
+                        sb.AppendLine($"- {gem.name} (Weight: {gem.weight:F1})");
+                    }
+                }
+            }
+            sb.AppendLine($"Total Weight: {playerInventory.TotalWeight:F1}");
+            inventoryContentText.text = sb.ToString();
         }
     }
 
     void FixedUpdate()
     {
+        if (isInventoryOpen) // If inventory is open, prevent movement
+        {
+            rb.linearVelocity = Vector2.zero; // Stop all movement
+            return;
+        }
+
         // Apply horizontal movement
         rb.linearVelocity = new Vector2(moveInput * moveSpeed, rb.linearVelocity.y);
 
