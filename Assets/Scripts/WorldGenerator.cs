@@ -1,52 +1,133 @@
-
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Tilemaps;
+using static TileType;
 
 public class WorldGenerator : MonoBehaviour
 {
-    [Header("World Settings")]
-    public int worldWidth = 100;
-    public int worldHeight = 100;
+    [Header("Chunk Settings")]
+    public const int chunkSize = 32; // The size of one chunk in tiles (32x32)
+
+    [Header("World Generation Settings")]
     public int surfaceLevel = 80;
+    public float cellSize = 0.05f;
 
-    [Header("Generation Settings")]
+    [Header("Tile Probabilities")]
     [Range(0f, 1f)]
-    public float stoneProbability = 0.5f; // Chance for a tile to be stone instead of dirt in the stone layer
+    public float stoneProbability = 0.5f;
+    [Range(0f, 1f)]
+    public float gemSpawnChance = 0.05f;
 
-    [Header("Tilemap References")]
-    public Tilemap groundTilemap;
+    [Header("Performance Settings")]
+    public int tilesPerFrame = 200; // How many tiles/gems to spawn per frame during incremental loading
 
-    [Header("Tile Assets")]
-    public TileBase dirtTile;
-    public TileBase stoneTile;
-
-    void Start()
+    // This method generates a single chunk based on its coordinate incrementally
+    // It now uses ChunkData to determine what to spawn
+    public IEnumerator GenerateChunk(Vector2Int chunkCoord, WorldManager.ChunkData chunkData) // Added ChunkData parameter
     {
-        GenerateWorld();
-    }
+        // Calculate the starting world grid coordinates for this chunk
+        int startX = chunkCoord.x * chunkSize;
+        int startY = chunkCoord.y * chunkSize;
 
-    void GenerateWorld()
-    {
-        if (groundTilemap == null || dirtTile == null || stoneTile == null)
-        {
-            Debug.LogError("Required references are not set in the WorldGenerator!");
-            return;
-        }
+        int currentTilesSpawnedInFrame = 0; // Counter for incremental loading
 
-        for (int x = -200; x < worldWidth; x++)
+        // Loop through all the tile positions within this chunk
+        for (int x = 0; x < chunkSize; x++)
         {
-            for (int y = -200; y < surfaceLevel; y++)
+            for (int y = 0; y < chunkSize; y++)
             {
-                Vector3Int tilePosition = new Vector3Int(x, y, 0);
-                TileBase tileToPlace = dirtTile; // Default to dirt
+                // Calculate the absolute grid coordinate for the tile
+                int worldGridX = startX + x;
+                int worldGridY = startY + y;
 
-                // If deep enough (more than 2 tiles below surface), randomly place stone
-                if (y < surfaceLevel - 2 && Random.Range(0f, 1f) < stoneProbability)
+                // --- Tile Generation based on ChunkData ---
+                TileType tileState = chunkData.tileStates[x, y]; // Get state from ChunkData
+
+                if (tileState == TileType.Empty) // If state is Empty, skip spawning
                 {
-                    tileToPlace = stoneTile;
+                    continue;
                 }
 
-                groundTilemap.SetTile(tilePosition, tileToPlace);
+                Vector3 spawnPosition = new Vector3(worldGridX * cellSize, worldGridY * cellSize, 0);
+                string tagToSpawn = "";
+
+                if (tileState == TileType.Dirt) // Dirt
+                {
+                    tagToSpawn = "dirt";
+                }
+                else if (tileState == TileType.Stone) // Stone
+                {
+                    tagToSpawn = "stone";
+                }
+                else if (tileState == TileType.Gem) // Gem
+                {
+                    tagToSpawn = "gem";
+                }
+
+                if (!string.IsNullOrEmpty(tagToSpawn))
+                {
+                    GameObject tile = ObjectPooler.Instance.SpawnFromPool(tagToSpawn, spawnPosition, Quaternion.identity);
+                    if (tile != null)
+                    {
+                        tile.transform.SetParent(this.transform);
+                        // Only add non-gem tiles to spawnedTiles for unloading, as gems are not dug up like dirt/stone
+                        if (tileState != TileType.Gem)
+                        {
+                            chunkData.spawnedTiles.Add(tile); // Add to ChunkData's list
+                        }
+                    }
+                }
+
+                // Incremental loading logic
+                currentTilesSpawnedInFrame++;
+                if (currentTilesSpawnedInFrame >= tilesPerFrame)
+                {
+                    currentTilesSpawnedInFrame = 0;
+                    yield return null; // Pause execution for one frame
+                }
+            }
+        }
+    }
+
+    public void InitializeChunkData(WorldManager.ChunkData chunkData)
+    {
+        // Use a seeded random number generator for deterministic terrain generation per chunk
+        // The seed should be based on chunk coordinates to ensure consistency
+        System.Random random = new System.Random(chunkData.chunkCoord.x * 10000 + chunkData.chunkCoord.y);
+
+        int startX = chunkData.chunkCoord.x * chunkSize;
+        int startY = chunkData.chunkCoord.y * chunkSize;
+
+        for (int x = 0; x < chunkSize; x++)
+        {
+            for (int y = 0; y < chunkSize; y++)
+            {
+                int worldGridY = startY + y;
+
+                if (worldGridY >= surfaceLevel)
+                {
+                    chunkData.tileStates[x, y] = TileType.Empty; // Empty (air)
+                }
+                else
+                {
+                    TileType assignedTileType;
+                    // Apply stone probability using the seeded random
+                    if (worldGridY < surfaceLevel - 2 && random.NextDouble() < stoneProbability)
+                    {
+                        assignedTileType = TileType.Stone; // Stone
+                    }
+                    else
+                    {
+                        assignedTileType = TileType.Dirt; // Dirt
+                    }
+
+                    // Check for gem spawn chance after determining base tile type
+                    if (random.NextDouble() < gemSpawnChance)
+                    {
+                        assignedTileType = TileType.Gem; // Gem
+                    }
+                    chunkData.tileStates[x, y] = assignedTileType;
+                }
             }
         }
     }
