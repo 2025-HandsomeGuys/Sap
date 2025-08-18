@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using static TileType;
+using static Constants; // Gem 태그 사용을 위해 추가
 
 public class WorldManager : MonoBehaviour
 {
@@ -34,11 +35,13 @@ public class WorldManager : MonoBehaviour
     {
         public TileType[,] tileStates;
         public Vector2Int chunkCoord;
+        public List<GameObject> spawnedGems; // Gem 프리팹을 추적하기 위한 리스트
 
         public ChunkData(Vector2Int coord, int chunkSize)
         {
             chunkCoord = coord;
             tileStates = new TileType[chunkSize, chunkSize];
+            spawnedGems = new List<GameObject>(); // 리스트 초기화
         }
     }
 
@@ -76,10 +79,7 @@ public class WorldManager : MonoBehaviour
 
     Vector2Int GetChunkCoordFromPosition(Vector3 position)
     {
-        // Convert world position to tilemap cell position
         Vector3Int cellPos = groundTilemap.WorldToCell(position);
-
-        // Now calculate chunk coordinate from cell position
         int x = Mathf.FloorToInt((float)cellPos.x / WorldGenerator.chunkSize);
         int y = Mathf.FloorToInt((float)cellPos.y / WorldGenerator.chunkSize);
         return new Vector2Int(x, y);
@@ -140,6 +140,17 @@ public class WorldManager : MonoBehaviour
     {
         if (generatedChunks.Remove(chunkCoord))
         {
+            // Unload Gem Prefabs from the chunk
+            if (chunkDataMap.TryGetValue(chunkCoord, out ChunkData chunkData))
+            {
+                foreach (GameObject gem in chunkData.spawnedGems)
+                {
+                    ObjectPooler.Instance.ReturnToPool(TAG_GEM, gem);
+                }
+                chunkData.spawnedGems.Clear();
+            }
+
+            // Unload tiles from the tilemap
             int startX = chunkCoord.x * WorldGenerator.chunkSize;
             int startY = chunkCoord.y * WorldGenerator.chunkSize;
 

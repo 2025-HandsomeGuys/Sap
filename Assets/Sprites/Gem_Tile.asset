@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Gem_Tile
   m_EditorClassIdentifier: 
   m_DefaultSprite: {fileID: 0}
-  m_DefaultGameObject: {fileID: 0}
+  m_DefaultGameObject: {fileID: 8019674470882275667, guid: e6f2061ee9a59f748ab04277e0eecf28, type: 3}
   m_DefaultColliderType: 1
   m_TilingRules: []
