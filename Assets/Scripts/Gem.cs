@@ -3,9 +3,9 @@ using static Constants;
 
 public class Gem : MonoBehaviour
 {
-    public float weight = 1.0f; // 기본 무게, 나중에 보석 종류별로 다르게 설정 가능
+    public Item itemData; // 이 보석의 데이터를 담고 있는 Item 에셋 참조
 
-    private void OnTriggerEnter2D(Collider2D other)
+    private void OnTriggerStay2D(Collider2D other)
     {
         if (other.CompareTag(TAG_PLAYER))
         {

@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: -3228600659704947540}
   m_Layer: 9
   m_Name: Gem_0
-  m_TagString: Untagged
+  m_TagString: gem
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -101,7 +101,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebe603a6b5a805c48986d0a9ad26c842, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weight: 1
+  itemData: {fileID: 11400000, guid: f5fd8d8f7041b0d4695dc1fbcd4bcc7e, type: 2}
 --- !u!60 &-3228600659704947540
 PolygonCollider2D:
   m_ObjectHideFlags: 0

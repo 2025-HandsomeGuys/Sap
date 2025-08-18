@@ -1,4 +1,4 @@
-using System.Collections.Generic; // 추가된 부분
+using System.Collections.Generic;
 using UnityEngine;
 using static Constants;
 
@@ -7,13 +7,26 @@ public class DiggingController : MonoBehaviour
     [Header("Digging Settings")]
     public float digRadius = 1.0f;
     public float digOffset = 0.5f;
-    public float digCooldown = 0.2f; // 땅 파기 쿨타임
+    public float digCooldown = 0.2f;
 
     private Vector2 currentDigDirection = Vector2.right;
-    private float nextDigTime = 0f; // 다음 땅 파기 가능 시간
+    private float nextDigTime = 0f;
+    private PlayerController playerController; // PlayerController 참조 변수 추가
+
+    void Start()
+    {
+        // 같은 게임 오브젝트에 있는 PlayerController 컴포넌트를 자동으로 찾아옴
+        playerController = GetComponent<PlayerController>();
+    }
 
     void Update()
     {
+        // 인벤토리가 열려있으면 아무것도 하지 않음
+        if (playerController != null && playerController.IsInventoryOpen())
+        {
+            return;
+        }
+
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
         if ((mousePosition - (Vector2)transform.position).sqrMagnitude > 0.01f)
@@ -21,10 +34,9 @@ public class DiggingController : MonoBehaviour
             currentDigDirection = (mousePosition - (Vector2)transform.position).normalized;
         }
 
-        // GetMouseButton으로 변경하고, 쿨타임 확인
         if (Input.GetMouseButton(0) && Time.time >= nextDigTime)
         {
-            nextDigTime = Time.time + digCooldown; // 다음 파기 시간 설정
+            nextDigTime = Time.time + digCooldown;
             Dig();
         }
     }
@@ -35,11 +47,9 @@ public class DiggingController : MonoBehaviour
 
         HashSet<Vector3Int> cellsToDig = new HashSet<Vector3Int>();
 
-        // 타일 크기를 기반으로 스캔 정밀도 결정하여 더 정확한 모양 생성
         float scanStep = WorldManager.Instance.groundTilemap.cellSize.x / 2f;
-        if (scanStep <= 0) scanStep = 0.1f; // cellSize가 0일 경우를 대비한 안전장치
+        if (scanStep <= 0) scanStep = 0.1f;
 
-        // digRadius 내의 모든 점을 확인하여 해당하는 셀을 찾음
         for (float x = -digRadius; x <= digRadius; x += scanStep)
         {
             for (float y = -digRadius; y <= digRadius; y += scanStep)
@@ -54,7 +64,6 @@ public class DiggingController : MonoBehaviour
 
         foreach (Vector3Int cellPos in cellsToDig)
         {
-            // 셀의 중앙 월드 좌표를 가져와서 TileDug에 전달
             Vector3 cellWorldCenter = WorldManager.Instance.groundTilemap.GetCellCenterWorld(cellPos);
             WorldManager.Instance.TileDug(cellWorldCenter);
         }
