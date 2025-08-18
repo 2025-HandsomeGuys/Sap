@@ -5,6 +5,7 @@ using System.Linq;
 using static Constants;
 
 [RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(Animator))] // Animator 컴포넌트도 필수로 요구
 public class PlayerController : MonoBehaviour
 {
     [Header("Movement Settings")]
@@ -28,6 +29,7 @@ public class PlayerController : MonoBehaviour
     public bool isGrounded;
 
     private Rigidbody2D rb;
+    private Animator anim; // 애니메이터 변수 추가
     private float moveInput;
     private List<GameObject> collectibleGems = new List<GameObject>();
     private bool jumpRequested = false;
@@ -38,6 +40,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>(); // Animator 컴포넌트 가져오기
         // Hide the prompt text at the start
         if (interactionPromptText != null)
         {
@@ -64,13 +67,28 @@ public class PlayerController : MonoBehaviour
             // Get horizontal input
             moveInput = Input.GetAxis("Horizontal");
 
+            // 애니메이션 파라미터 설정
+            anim.SetBool("ismoving", moveInput != 0);
+            anim.SetBool("isjumping", !isGrounded);
+
+            // 이동 방향에 따라 캐릭터 뒤집기
+            if (moveInput > 0)
+            {
+                transform.localScale = new Vector3(-1, 1, 1);
+            }
+            else if (moveInput < 0)
+            {
+                transform.localScale = new Vector3(1, 1, 1);
+            }
+
             // Check if the player is on the ground
             isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
 
-            // Handle jumping input
-            if (isGrounded && (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow)))
+            // Handle jumping input (스페이스 바로 변경)
+            if (isGrounded && Input.GetKeyDown(KeyCode.Space))
             {
                 jumpRequested = true;
+                anim.SetTrigger("jump"); // 점프 애니메이션 트리거
             }
 
             // Handle gem collection input
@@ -78,12 +96,6 @@ public class PlayerController : MonoBehaviour
             {
                 CollectClosestGem();
             }
-        }
-
-        // Handle inventory toggle input
-        if (Input.GetKeyDown(KeyCode.I)) // 'I' for Inventory
-        {
-            ToggleInventory();
         }
     }
 

@@ -1,71 +1,67 @@
+using System.Collections.Generic; // 추가된 부분
 using UnityEngine;
 using static Constants;
 
 public class DiggingController : MonoBehaviour
 {
     [Header("Digging Settings")]
-    public float digRadius = 1.0f;         
-    public float digOffset = 0.5f;        
+    public float digRadius = 1.0f;
+    public float digOffset = 0.5f;
+    public float digCooldown = 0.2f; // 땅 파기 쿨타임
 
-    private Vector2 currentDigDirection = Vector2.right; 
+    private Vector2 currentDigDirection = Vector2.right;
+    private float nextDigTime = 0f; // 다음 땅 파기 가능 시간
 
     void Update()
     {
-      
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        
-        
+
         if ((mousePosition - (Vector2)transform.position).sqrMagnitude > 0.01f)
         {
             currentDigDirection = (mousePosition - (Vector2)transform.position).normalized;
         }
 
-        
-        if (Input.GetMouseButtonDown(0)) 
+        // GetMouseButton으로 변경하고, 쿨타임 확인
+        if (Input.GetMouseButton(0) && Time.time >= nextDigTime)
         {
+            nextDigTime = Time.time + digCooldown; // 다음 파기 시간 설정
             Dig();
         }
     }
 
     void Dig()
     {
-        
         Vector2 digCenter = (Vector2)transform.position + (currentDigDirection * digOffset);
 
-       
-        Collider2D[] hitColliders = Physics2D.OverlapCircleAll(digCenter, digRadius);
+        // 중복된 셀 파괴를 방지하기 위한 HashSet
+        HashSet<Vector3Int> cellsToDig = new HashSet<Vector3Int>();
 
-        foreach (var hitCollider in hitColliders)
+        // digRadius 내의 모든 점을 확인하여 해당하는 셀을 찾음
+        for (float x = -digRadius; x <= digRadius; x += 0.1f) // 0.1f는 스캔 정밀도
         {
-            if (hitCollider == null || hitCollider.gameObject == null) // Add null checks
+            for (float y = -digRadius; y <= digRadius; y += 0.1f)
             {
-                continue;
+                if (x * x + y * y <= digRadius * digRadius)
+                {
+                    Vector2 checkPos = digCenter + new Vector2(x, y);
+                    cellsToDig.Add(WorldManager.Instance.WorldToCell(checkPos));
+                }
             }
-            
-            if (hitCollider.transform == this.transform)
-            {
-                continue;
-            }
+        }
 
-            
-            string tag = hitCollider.gameObject.tag;
-            if (tag == TAG_DIRT || tag == TAG_STONE)
-            {
-                
-                hitCollider.gameObject.SetActive(false); // Explicitly deactivate before returning to pool
-                ObjectPooler.Instance.ReturnToPool(tag, hitCollider.gameObject);
-                WorldManager.Instance.TileDug(hitCollider.transform.position, hitCollider.gameObject);
-            }
+        foreach (Vector3Int cellPos in cellsToDig)
+        {
+            // 셀의 중앙 월드 좌표를 가져와서 TileDug에 전달
+            Vector3 cellWorldCenter = WorldManager.Instance.groundTilemap.GetCellCenterWorld(cellPos);
+            WorldManager.Instance.TileDug(cellWorldCenter);
         }
     }
 
-    
     void OnDrawGizmosSelected()
     {
-        
         Vector2 digCenter = (Vector2)transform.position + (currentDigDirection * digOffset);
         
-        Gizmos.color = Color.yellow; 
+        Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(digCenter, digRadius);
     }
 }
