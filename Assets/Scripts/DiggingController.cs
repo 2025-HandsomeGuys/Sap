@@ -33,13 +33,16 @@ public class DiggingController : MonoBehaviour
     {
         Vector2 digCenter = (Vector2)transform.position + (currentDigDirection * digOffset);
 
-        // 중복된 셀 파괴를 방지하기 위한 HashSet
         HashSet<Vector3Int> cellsToDig = new HashSet<Vector3Int>();
 
+        // 타일 크기를 기반으로 스캔 정밀도 결정하여 더 정확한 모양 생성
+        float scanStep = WorldManager.Instance.groundTilemap.cellSize.x / 2f;
+        if (scanStep <= 0) scanStep = 0.1f; // cellSize가 0일 경우를 대비한 안전장치
+
         // digRadius 내의 모든 점을 확인하여 해당하는 셀을 찾음
-        for (float x = -digRadius; x <= digRadius; x += 0.1f) // 0.1f는 스캔 정밀도
+        for (float x = -digRadius; x <= digRadius; x += scanStep)
         {
-            for (float y = -digRadius; y <= digRadius; y += 0.1f)
+            for (float y = -digRadius; y <= digRadius; y += scanStep)
             {
                 if (x * x + y * y <= digRadius * digRadius)
                 {
