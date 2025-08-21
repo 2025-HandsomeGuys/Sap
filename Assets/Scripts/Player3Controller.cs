@@ -28,7 +28,7 @@ public class Player3Controller : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space) == true)
+        if (Input.GetKeyDown(KeyCode.Space) == true&& !anim.GetBool("isjumping"))
         {
             playerRigidbody.AddForce(Vector3.up * jumpPower, ForceMode2D.Impulse);
             anim.SetTrigger("jump");
