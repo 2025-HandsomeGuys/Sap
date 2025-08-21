@@ -1923,10 +1923,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 1986582472}
-  fill: {fileID: 0}
-  used: {fileID: 0}
-  maxReduction: {fileID: 0}
-  staminaText: {fileID: 0}
+  fill: {fileID: 1025966690}
+  used: {fileID: 516064794}
+  maxReduction: {fileID: 339971494}
+  staminaText: {fileID: 910144849}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
