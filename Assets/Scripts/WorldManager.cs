@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 using static TileType;
-using static Constants;
+using static Constants; // Gem 태그 사용을 위해 추가
 
 public class WorldManager : MonoBehaviour
 {
@@ -25,49 +26,45 @@ public class WorldManager : MonoBehaviour
     [Header("References")]
     public Transform playerTransform;
     public WorldGenerator worldGenerator;
+    public Tilemap groundTilemap;
 
     [Header("Settings")]
-    public int viewDistanceInChunks = 2;
+    public int viewDistanceInChunks = 1;
 
-    // New: Data structure to hold chunk state
     public class ChunkData
-        {
-            public TileType[,] tileStates; // 0: empty, 1: dirt, 2: stone
-            public Vector2Int chunkCoord; // Store chunk coordinates for easy reference
-            public List<GameObject> spawnedTiles; // New: Store references to spawned tiles in this chunk
+    {
+        public TileType[,] tileStates;
+        public Vector2Int chunkCoord;
+        public List<GameObject> spawnedGems; // Gem 프리팹을 추적하기 위한 리스트
 
-            public ChunkData(Vector2Int coord, int chunkSize)
-            {
-                chunkCoord = coord;
-                tileStates = new TileType[chunkSize, chunkSize];
-                spawnedTiles = new List<GameObject>(); // Initialize the list
-            }
+        public ChunkData(Vector2Int coord, int chunkSize)
+        {
+            chunkCoord = coord;
+            tileStates = new TileType[chunkSize, chunkSize];
+            spawnedGems = new List<GameObject>(); // 리스트 초기화
         }
+    }
 
     private Vector2Int currentPlayerChunkCoord;
     private HashSet<Vector2Int> generatedChunks = new HashSet<Vector2Int>();
     private HashSet<Vector2Int> loadingChunks = new HashSet<Vector2Int>();
-    private Dictionary<Vector2Int, ChunkData> chunkDataMap = new Dictionary<Vector2Int, ChunkData>(); // New: Stores the state of each chunk
+    private Dictionary<Vector2Int, ChunkData> chunkDataMap = new Dictionary<Vector2Int, ChunkData>();
 
     void Start()
     {
-        if (playerTransform == null || worldGenerator == null)
+        if (playerTransform == null || worldGenerator == null || groundTilemap == null)
         {
-            Debug.LogError("Player Transform or World Generator not assigned in WorldManager!");
-            this.enabled = false; // Disable this script if references are missing
+            Debug.LogError("Player Transform, World Generator, or Ground Tilemap not assigned in WorldManager!");
+            this.enabled = false;
             return;
         }
 
-        // Initial chunk generation around the player
         UpdateChunks();
     }
 
     void Update()
     {
-        // Calculate the player's current chunk coordinate
         Vector2Int playerChunk = GetChunkCoordFromPosition(playerTransform.position);
-
-        // If the player has moved to a new chunk, update the world
         if (playerChunk != currentPlayerChunkCoord)
         {
             currentPlayerChunkCoord = playerChunk;
@@ -75,14 +72,16 @@ public class WorldManager : MonoBehaviour
         }
     }
 
+    public Vector3Int WorldToCell(Vector3 worldPos)
+    {
+        return groundTilemap.WorldToCell(worldPos);
+    }
+
     Vector2Int GetChunkCoordFromPosition(Vector3 position)
     {
-        // Ensure worldGenerator.cellSize is not zero to prevent division by zero
-        float effectiveCellSize = worldGenerator.cellSize > 0 ? worldGenerator.cellSize : 1f; 
-        float chunkSizeInWorldUnits = WorldGenerator.chunkSize * effectiveCellSize;
-
-        int x = Mathf.FloorToInt(position.x / chunkSizeInWorldUnits);
-        int y = Mathf.FloorToInt(position.y / chunkSizeInWorldUnits);
+        Vector3Int cellPos = groundTilemap.WorldToCell(position);
+        int x = Mathf.FloorToInt((float)cellPos.x / WorldGenerator.chunkSize);
+        int y = Mathf.FloorToInt((float)cellPos.y / WorldGenerator.chunkSize);
         return new Vector2Int(x, y);
     }
 
@@ -90,46 +89,34 @@ public class WorldManager : MonoBehaviour
     {
         currentPlayerChunkCoord = GetChunkCoordFromPosition(playerTransform.position);
 
-        // --- Load/Generate new chunks --- 
         for (int xOffset = -viewDistanceInChunks; xOffset <= viewDistanceInChunks; xOffset++)
         {
             for (int yOffset = -viewDistanceInChunks; yOffset <= viewDistanceInChunks; yOffset++)
             {
-                Vector2Int chunkToGenerate = new Vector2Int(
-                    currentPlayerChunkCoord.x + xOffset,
-                    currentPlayerChunkCoord.y + yOffset
-                );
-
-                // If this chunk has not been generated yet and is not currently loading, start generation
+                Vector2Int chunkToGenerate = new Vector2Int(currentPlayerChunkCoord.x + xOffset, currentPlayerChunkCoord.y + yOffset);
                 if (!generatedChunks.Contains(chunkToGenerate) && !loadingChunks.Contains(chunkToGenerate))
                 {
                     loadingChunks.Add(chunkToGenerate);
-                    Debug.Log($"Attempting to generate chunk: {chunkToGenerate}");
-
-                    // Get or create ChunkData for this chunk
+                    
                     ChunkData chunkData;
                     if (!chunkDataMap.TryGetValue(chunkToGenerate, out chunkData))
                     {
-                        // If ChunkData doesn't exist, create new default data
-                        chunkData = new ChunkData(chunkToGenerate, WorldGenerator.chunkSize); // Updated constructor call
-                        worldGenerator.InitializeChunkData(chunkData); // Initialize tileStates
+                        chunkData = new ChunkData(chunkToGenerate, WorldGenerator.chunkSize);
+                        worldGenerator.InitializeChunkData(chunkData);
                         chunkDataMap.Add(chunkToGenerate, chunkData);
                     }
 
-                    StartCoroutine(GenerateChunkCoroutineWrapper(chunkToGenerate, chunkData)); // Pass chunkData
+                    StartCoroutine(GenerateChunkCoroutineWrapper(chunkToGenerate, chunkData));
                 }
             }
         }
 
-        // --- Unload chunks that are too far away ---
         List<Vector2Int> chunksToUnload = new List<Vector2Int>();
         foreach (Vector2Int chunkCoord in generatedChunks)
         {
             int xDiff = Mathf.Abs(chunkCoord.x - currentPlayerChunkCoord.x);
             int yDiff = Mathf.Abs(chunkCoord.y - currentPlayerChunkCoord.y);
 
-            // If chunk is outside the view distance, mark for unloading
-            // We use viewDistanceInChunks + 1 to create a buffer zone
             if (xDiff > viewDistanceInChunks + 1 || yDiff > viewDistanceInChunks + 1)
             {
                 chunksToUnload.Add(chunkCoord);
@@ -142,79 +129,61 @@ public class WorldManager : MonoBehaviour
         }
     }
 
-    IEnumerator GenerateChunkCoroutineWrapper(Vector2Int chunkCoord, ChunkData chunkData) // Pass chunkData
+    IEnumerator GenerateChunkCoroutineWrapper(Vector2Int chunkCoord, ChunkData chunkData)
     {
-        Debug.Log($"Starting generation for chunk: {chunkCoord}");
-        // Call the WorldGenerator's coroutine
-        yield return StartCoroutine(worldGenerator.GenerateChunk(chunkCoord, chunkData)); // Pass chunkData
-
-        // Once the generation coroutine is complete, move from loading to generated
+        yield return StartCoroutine(worldGenerator.GenerateChunk(chunkCoord, chunkData, groundTilemap));
         loadingChunks.Remove(chunkCoord);
         generatedChunks.Add(chunkCoord);
-        Debug.Log($"Finished Loading Chunk: {chunkCoord}");
     }
 
     void UnloadChunk(Vector2Int chunkCoord)
     {
-        Debug.Log($"Attempting to unload chunk: {chunkCoord}");
-        if (chunkDataMap.TryGetValue(chunkCoord, out ChunkData chunkData))
+        if (generatedChunks.Remove(chunkCoord))
         {
-            foreach (GameObject obj in chunkData.spawnedTiles)
+            // Unload Gem Prefabs from the chunk
+            if (chunkDataMap.TryGetValue(chunkCoord, out ChunkData chunkData))
             {
-                if (obj != null) // Check if object still exists (e.g., not dug up)
+                foreach (GameObject gem in chunkData.spawnedGems)
                 {
-                    string tag = "";
-                    if (obj.CompareTag(TAG_DIRT)) tag = TAG_DIRT;
-                    else if (obj.CompareTag(TAG_STONE)) tag = TAG_STONE;
-                    else if (obj.CompareTag(TAG_GEM)) tag = TAG_GEM;
+                    ObjectPooler.Instance.ReturnToPool(TAG_GEM, gem);
+                }
+                chunkData.spawnedGems.Clear();
+            }
 
-                    if (!string.IsNullOrEmpty(tag))
-                    {
-                        ObjectPooler.Instance.ReturnToPool(tag, obj);
-                    }
-                    else
-                    {
-                        // If object has no recognized tag, just destroy it (or log a warning)
-                        Debug.LogWarning("Object in chunk " + chunkCoord + " has no recognized tag for pooling: " + obj.name);
-                        Destroy(obj);
-                    }
+            // Unload tiles from the tilemap
+            int startX = chunkCoord.x * WorldGenerator.chunkSize;
+            int startY = chunkCoord.y * WorldGenerator.chunkSize;
+
+            for (int x = 0; x < WorldGenerator.chunkSize; x++)
+            {
+                for (int y = 0; y < WorldGenerator.chunkSize; y++)
+                {
+                    Vector3Int cellPosition = new Vector3Int(startX + x, startY + y, 0);
+                    groundTilemap.SetTile(cellPosition, null);
                 }
             }
-            chunkData.spawnedTiles.Clear(); // Clear the list after returning objects to pool
+            Debug.Log($"Unloaded Chunk: {chunkCoord}");
         }
-        // Remove from generatedChunks (loadingChunks is handled by wrapper)
-        generatedChunks.Remove(chunkCoord);
-        Debug.Log($"Unloaded Chunk: {chunkCoord}");
     }
 
-    // New: Method to update chunk data when a tile is dug
-    public void TileDug(Vector3 worldPosition, GameObject dugGameObject)
+    public void TileDug(Vector3 worldPosition)
     {
+        Vector3Int cellPosition = groundTilemap.WorldToCell(worldPosition);
         Vector2Int chunkCoord = GetChunkCoordFromPosition(worldPosition);
+
         if (chunkDataMap.TryGetValue(chunkCoord, out ChunkData chunkData))
         {
-            // Calculate tile's local coordinates within the chunk
-            float effectiveCellSize = worldGenerator.cellSize > 0 ? worldGenerator.cellSize : 1f;
-            // No need for chunkSizeInWorldUnits here, just effectiveCellSize
+            int localX = cellPosition.x - (chunkCoord.x * WorldGenerator.chunkSize);
+            int localY = cellPosition.y - (chunkCoord.y * WorldGenerator.chunkSize);
 
-            int tileX = Mathf.FloorToInt(worldPosition.x / effectiveCellSize);
-            int tileY = Mathf.FloorToInt(worldPosition.y / effectiveCellSize);
-
-            // Convert world grid coords to local chunk grid coords
-            int localX = tileX - (chunkCoord.x * WorldGenerator.chunkSize);
-            int localY = tileY - (chunkCoord.y * WorldGenerator.chunkSize);
-
-            if (localX >= 0 && localX < WorldGenerator.chunkSize &&
-                localY >= 0 && localY < WorldGenerator.chunkSize)
+            if (localX >= 0 && localX < WorldGenerator.chunkSize && localY >= 0 && localY < WorldGenerator.chunkSize)
             {
-                chunkData.tileStates[localX, localY] = TileType.Empty; // Set to empty
-
-                // Remove the dug tile from the spawnedTiles list directly
-                if (dugGameObject != null)
+                if(chunkData.tileStates[localX, localY] != TileType.Empty)
                 {
-                    chunkData.spawnedTiles.Remove(dugGameObject);
+                    chunkData.tileStates[localX, localY] = TileType.Empty;
+                    groundTilemap.SetTile(cellPosition, null);
+                    Debug.Log("Tile dug at " + cellPosition + " in chunk " + chunkCoord);
                 }
-                Debug.Log("Tile dug at " + worldPosition + " in chunk " + chunkCoord + " (local: " + localX + "," + localY + ")");
             }
         }
     }
