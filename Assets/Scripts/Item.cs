@@ -6,6 +6,8 @@ public class Item : ScriptableObject
 {
     [Header("기본 정보")]
     public string itemName = "새 아이템";
+    [TextArea(3, 10)] // 인스펙터에서 여러 줄로 편집할 수 있도록 설정
+    public string description = "아이템 설명";
     public Sprite icon = null;
     public float weight = 1f;
 
@@ -13,4 +15,7 @@ public class Item : ScriptableObject
     public bool stackable = false; // 아이템을 겹칠 수 있는지 여부
     [Range(1, 999)]
     public int maxStackSize = 1; // 최대 몇 개까지 겹칠 수 있는지
+
+    [Header("월드 프리팹")]
+    public GameObject itemPrefab; // 월드에 떨어졌을 때 생성될 프리팹
 }

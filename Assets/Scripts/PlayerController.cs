@@ -21,7 +21,6 @@ public class PlayerController : MonoBehaviour
 
     [Header("Interaction Settings")]
     public TextMeshProUGUI interactionPromptText;
-    public TextMeshProUGUI totalWeightText;
 
     [Header("Inventory UI")]
     public GameObject inventoryPanel;
@@ -120,7 +119,7 @@ public class PlayerController : MonoBehaviour
         if (inventoryContentText != null && playerInventory != null)
         {
             System.Text.StringBuilder sb = new System.Text.StringBuilder();
-            sb.AppendLine($"Weight: {playerInventory.TotalWeight:F1} / {playerInventory.maxWeightLimit:F1} kg"); // maxWeightLimit 사용
+            sb.AppendLine($"Weight: {playerInventory.TotalWeight:F1} / {playerInventory.maxWeightLimit:F1} "); // maxWeightLimit 사용
             sb.AppendLine("-----------------");
 
             if (playerInventory.items.Count == 0)
@@ -133,7 +132,7 @@ public class PlayerController : MonoBehaviour
                 {
                     if (slot.item != null)
                     {
-                        sb.AppendLine($"- {slot.item.itemName} x{slot.quantity} ({(slot.item.weight * slot.quantity):F1} kg)");
+                        sb.AppendLine($"- {slot.item.itemName} x{slot.quantity} ({(slot.item.weight * slot.quantity):F1} )");
                     }
                 }
             }
@@ -221,10 +220,7 @@ public class PlayerController : MonoBehaviour
             interactionPromptText.gameObject.SetActive(collectibleGems.Count > 0);
         }
 
-        if (totalWeightText != null && playerInventory != null)
-        {
-            totalWeightText.text = $"Weight: {playerInventory.TotalWeight:F1} / {playerInventory.maxWeightLimit:F1} kg";
-        }
+        
     }
 
     void OnDrawGizmosSelected()

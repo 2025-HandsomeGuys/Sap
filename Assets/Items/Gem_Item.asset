@@ -13,7 +13,9 @@ MonoBehaviour:
   m_Name: Gem_Item
   m_EditorClassIdentifier: 
   itemName: Gem
+  description: shining gem. simple one
   icon: {fileID: -4080278737599844964, guid: dea4e69f16786de48a0a81ed07b9fd72, type: 3}
   weight: 1
   stackable: 1
   maxStackSize: 64
+  itemPrefab: {fileID: 0}

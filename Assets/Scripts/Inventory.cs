@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using System; // Action을 사용하기 위해 추가
 
 [System.Serializable]
 public class InventorySlot
@@ -22,12 +23,16 @@ public class InventorySlot
 
 public class Inventory : MonoBehaviour
 {
+    // 인벤토리 변경 시 호출될 이벤트
+    public event Action OnInventoryChanged;
+
     [Header("무게 설정")]
     public float encumbranceThreshold = 25f; // 이 무게를 초과하면 속도가 느려짐
     public float maxWeightLimit = 40f;       // 이 무게 이상이면 아이템을 더 주울 수 없음
 
     [Header("인벤토리 아이템 목록")]
     public List<InventorySlot> items = new List<InventorySlot>();
+    public Transform playerTransform; // 플레이어의 Transform을 여기에 할당하세요.
 
     public float TotalWeight
     {
@@ -66,11 +71,13 @@ public class Inventory : MonoBehaviour
             if (existingSlot != null)
             {
                 existingSlot.AddQuantity(quantity);
+                OnInventoryChanged?.Invoke(); // 이벤트 호출
                 return true;
             }
         }
         
         items.Add(new InventorySlot(itemToAdd, quantity));
+        OnInventoryChanged?.Invoke(); // 이벤트 호출
         return true;
     }
 
@@ -87,6 +94,32 @@ public class Inventory : MonoBehaviour
             {
                 items.Remove(slotToRemove);
             }
+            OnInventoryChanged?.Invoke(); // 이벤트 호출
         }
+    }
+
+    public void DropItem(InventorySlot slotToDrop)
+    {
+        if (slotToDrop == null) return;
+
+        // 인벤토리에서 슬롯 전체 제거
+        items.Remove(slotToDrop);
+        OnInventoryChanged?.Invoke(); // 인벤토리 변경 이벤트 호출
+    }
+
+    public void DropSingleItem(InventorySlot slotToDrop)
+    {
+        if (slotToDrop == null) return;
+
+        // 수량을 1 감소
+        slotToDrop.quantity--;
+
+        // 수량이 0 이하면 슬롯 제거
+        if (slotToDrop.quantity <= 0)
+        {
+            items.Remove(slotToDrop);
+        }
+
+        OnInventoryChanged?.Invoke(); // 인벤토리 변경 이벤트 호출
     }
 }
