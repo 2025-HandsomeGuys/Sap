@@ -11,6 +11,9 @@ public class Item : ScriptableObject
     public Sprite icon = null;
     public float weight = 1f;
 
+    [Header("효과")]
+    public float staminaReduction = 0f; // 이 아이템을 획득했을 때 감소할 최대 스태미나 양
+
     [Header("스택 관련 정보")]
     public bool stackable = false; // 아이템을 겹칠 수 있는지 여부
     [Range(1, 999)]

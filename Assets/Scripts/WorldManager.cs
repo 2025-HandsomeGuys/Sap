@@ -182,7 +182,6 @@ public class WorldManager : MonoBehaviour
                 {
                     chunkData.tileStates[localX, localY] = TileType.Empty;
                     groundTilemap.SetTile(cellPosition, null);
-                    Debug.Log("Tile dug at " + cellPosition + " in chunk " + chunkCoord);
                 }
             }
         }

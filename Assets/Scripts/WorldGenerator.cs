@@ -69,6 +69,7 @@ public class WorldGenerator : MonoBehaviour
                     GameObject gemObject = ObjectPooler.Instance.SpawnFromPool(TAG_GEM, spawnPosition, Quaternion.identity);
                     if (gemObject != null)
                     {
+                        gemObject.transform.localScale = Vector3.one * cellSize;
                         // WorldManager가 추적할 수 있도록 리스트에 추가
                         chunkData.spawnedGems.Add(gemObject);
                     }

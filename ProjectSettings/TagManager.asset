@@ -7,6 +7,7 @@ TagManager:
   - dirt
   - stone
   - gem
+  - Wall
   layers:
   - Default
   - TransparentFX
@@ -15,13 +16,13 @@ TagManager:
   - Water
   - UI
   - 
-  - 
+  - Player
   - Ground
   - Gem
   - Items
   - 
   - 
-  - 
+  - Wall
   - 
   - 
   - 
