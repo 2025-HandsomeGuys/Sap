@@ -8,14 +8,6 @@ using static Constants;
 [RequireComponent(typeof(Animator))]
 public class PlayerController : MonoBehaviour
 {
-    [Header("Movement Settings")]
-    public float moveSpeed = 5f;
-    public float jumpForce = 15f;
-    public float wallClimbingSpeed = 3f;
-    public float staminaCostPerSecond = 10f;
-    [Range(0.1f, 1f)]
-    public float encumberedSpeedMultiplier = 0.5f; // 과적 상태일 때의 속도 배율
-
     [Header("Ground Check Settings")]
     public Transform groundCheck;
     public float groundCheckRadius = 0.2f;
@@ -112,9 +104,9 @@ public class PlayerController : MonoBehaviour
                 isWallClimbing = false;
             }
 
-            if (isWallClimbing)
+            if (isWallClimbing && (moveInput != 0 || verticalInput != 0))
             {
-                playerStats.UseStamina(staminaCostPerSecond * Time.deltaTime);
+                playerStats.UseStamina(playerStats.staminaCostPerSecond * Time.deltaTime);
             }
 
             // TODO: "isClimbing" 애니메이션 파라미터가 있다면 주석 해제
@@ -141,18 +133,18 @@ public class PlayerController : MonoBehaviour
         {
             // 벽 타기 상태일 때: 중력 0, 수직/수평 이동 처리
             rb.gravityScale = 0f;
-            float verticalVelocity = verticalInput * wallClimbingSpeed;
-            rb.linearVelocity = new Vector2(moveInput * moveSpeed, verticalVelocity);
+            float verticalVelocity = verticalInput * playerStats.wallClimbingSpeed;
+            rb.linearVelocity = new Vector2(moveInput * playerStats.moveSpeed, verticalVelocity);
         }
         else
         {
             // 평상시 상태일 때: 원래 중력 적용, 일반 이동 및 점프 처리
             rb.gravityScale = originalGravityScale;
 
-            float currentMoveSpeed = moveSpeed;
+            float currentMoveSpeed = playerStats.moveSpeed;
             if (playerInventory != null && playerInventory.IsEncumbered)
             {
-                currentMoveSpeed *= encumberedSpeedMultiplier;
+                currentMoveSpeed *= playerStats.encumberedSpeedMultiplier;
             }
 
             rb.linearVelocity = new Vector2(moveInput * currentMoveSpeed, rb.linearVelocity.y);
@@ -160,7 +152,7 @@ public class PlayerController : MonoBehaviour
             if (jumpRequested)
             {
                 rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0f);
-                rb.AddForce(new Vector2(0f, jumpForce), ForceMode2D.Impulse);
+                rb.AddForce(new Vector2(0f, playerStats.jumpForce), ForceMode2D.Impulse);
                 jumpRequested = false;
             }
         }
@@ -271,6 +263,12 @@ public class PlayerController : MonoBehaviour
 
         if (playerInventory.AddItem(gemComponent.itemData, 1))
         {
+            // 아이템 획득에 성공하면 스태미나 감소 로직 실행
+            if (gemComponent.itemData.staminaReduction > 0)
+            {
+                playerStats.ReduceMaxStamina(gemComponent.itemData.staminaReduction);
+            }
+
             collectibleGems.Remove(closestGemObject);
             ObjectPooler.Instance.ReturnToPool(TAG_GEM, closestGemObject);
             UpdateUI();

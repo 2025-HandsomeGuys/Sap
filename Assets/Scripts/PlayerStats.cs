@@ -6,16 +6,22 @@ public class PlayerStats : MonoBehaviour
     public float originalMaxStamina = 500f;
     public float maxStamina;
     public float currentStamina;
+    public float originalStaminaCostPerSecond = 10f;
+    public float staminaCostPerSecond;
 
     [Header("Movement")]
     public float originalMoveSpeed = 5f;
     public float moveSpeed;
-
     public float originalJumpForce = 7f;
     public float jumpForce;
+    public float originalWallClimbingSpeed = 3f;
+    public float wallClimbingSpeed;
+    [Range(0.1f, 1f)]
+    public float originalEncumberedSpeedMultiplier = 0.5f;
+    public float encumberedSpeedMultiplier;
 
     [Header("Inventory")]
-    public int originalInventorySize = 20; // ÀÎº¥Åä¸® Áõ°¡´Â ¾øÀ» °Í °°À½
+    public int originalInventorySize = 20; // ì¸ë²¤í† ë¦¬ í¬ê¸°ë¥¼ ìœ„í•œ ìµœì†Œ í¬ê¸°
     public int inventorySize;
 
     [Header("Mining")]
@@ -33,16 +39,19 @@ public class PlayerStats : MonoBehaviour
         // Stamina
         maxStamina = originalMaxStamina;
         currentStamina = maxStamina;
+        staminaCostPerSecond = originalStaminaCostPerSecond;
 
         // Movement
         moveSpeed = originalMoveSpeed;
         jumpForce = originalJumpForce;
+        wallClimbingSpeed = originalWallClimbingSpeed;
+        encumberedSpeedMultiplier = originalEncumberedSpeedMultiplier;
 
         // Inventory
         inventorySize = Mathf.Max(1, originalInventorySize);
 
         // Mining
-        miningEfficiency = Mathf.Max(0.1f, originalMiningEfficiency); // ¹èÀ² ÇÏÇÑ
+        miningEfficiency = Mathf.Max(0.1f, originalMiningEfficiency); // ìµœì†Œ í–¥ìƒ
         miningPower = originalMiningPower;
     }
 
@@ -59,7 +68,7 @@ public class PlayerStats : MonoBehaviour
             gold -= amount;
             return true;
         }
-        Debug.Log("°ñµå ºÎÁ·!");
+        Debug.Log("ê¸ˆí™” ë¶€ì¡±!");
         return false;
     }
 
@@ -71,7 +80,7 @@ public class PlayerStats : MonoBehaviour
             originalMaxStamina += increaseAmount;
             maxStamina += increaseAmount;
             currentStamina += increaseAmount;
-            Debug.Log($"MaxStamina ¾÷±×·¹ÀÌµå! ÇöÀç: {maxStamina}");
+            Debug.Log($"MaxStamina ì—…ê·¸ë ˆì´ë“œ! í˜„ì¬: {maxStamina}");
         }
     }
 
@@ -81,7 +90,7 @@ public class PlayerStats : MonoBehaviour
         {
             originalMoveSpeed += increaseAmount;
             moveSpeed = originalMoveSpeed;
-            Debug.Log($"MoveSpeed ¾÷±×·¹ÀÌµå! ÇöÀç: {moveSpeed}");
+            Debug.Log($"MoveSpeed ì—…ê·¸ë ˆì´ë“œ! í˜„ì¬: {moveSpeed}");
         }
     }
 
@@ -91,7 +100,7 @@ public class PlayerStats : MonoBehaviour
         {
             originalJumpForce += increaseAmount;
             jumpForce = originalJumpForce;
-            Debug.Log($"jumpForce ¾÷±×·¹ÀÌµå! ÇöÀç: {jumpForce}");
+            Debug.Log($"jumpForce ì—…ê·¸ë ˆì´ë“œ! í˜„ì¬: {jumpForce}");
         }
     }
 
@@ -101,7 +110,7 @@ public class PlayerStats : MonoBehaviour
         {
             originalMiningEfficiency = Mathf.Clamp(miningEfficiency + increaseAmount, 0.1f, 10f);
             miningEfficiency = originalMiningEfficiency;
-            Debug.Log($"MiningEfficiency ¾÷±×·¹ÀÌµå! ÇöÀç: {miningEfficiency}");
+            Debug.Log($"MiningEfficiency ì—…ê·¸ë ˆì´ë“œ! í˜„ì¬: {miningEfficiency}");
         }
     }
 
@@ -111,7 +120,7 @@ public class PlayerStats : MonoBehaviour
         {
             originalMiningPower += increaseAmount;
             miningPower = originalMiningPower;
-            Debug.Log($"MiningPower ¾÷±×·¹ÀÌµå! ÇöÀç: {miningPower}");
+            Debug.Log($"MiningPower ì—…ê·¸ë ˆì´ë“œ! í˜„ì¬: {miningPower}");
         }
     }
 
@@ -138,61 +147,27 @@ public class PlayerStats : MonoBehaviour
         maxStamina = Mathf.Min(originalMaxStamina, maxStamina + amount);
     }
 
-    //// ------------ Movement ------------
-    //public void SetMoveSpeed(float value)
-    //{
-    //    moveSpeed = Mathf.Max(0f, value);
-    //}
-
-    //public void SetJumpForce(float value)
-    //{
-    //    jumpForce = Mathf.Max(0f, value);
-    //}
-
-    //// ------------ Inventory ------------
-    //public void SetInventorySize(int size)
-    //{
-    //    inventorySize = Mathf.Max(1, size);
-    //}
-
-    //// ------------ Mining ------------
-    //// ¹èÀ²(°ö)·Î °ü¸®: 1.0 = ±âº», 2.0 = 2¹è ¼Óµµ
-    //public void SetMiningEfficiency(float multiplier)
-    //{
-    //    miningEfficiency = Mathf.Clamp(multiplier, 0.1f, 10f);
-    //}
-
-    //// µµ±¸ ÆÄ¿ö¿¡ ´õÇØÁö´Â °¡»ê°ª
-    //public void AddMiningPower(int delta)
-    //{
-    //    miningPower = Mathf.Max(0, miningPower + delta);
-    //}
-
-    // ÇïÆÛ: µµ±¸ ±âº» ¼Óµµ¿Í ¼ÒÀç º¸³Ê½º¸¦ ¹Ş¾Æ ½ÇÁ¦ ¼Óµµ ¹İÈ¯
+    // ì‚¬ìš© ì˜ˆì‹œ: ê³µê²© í–¥ìƒ ì†ë„
     public float GetEffectiveMineSpeed(float toolBaseSpeed, float materialBonus = 0f)
     {
-        // materialBonus ¿¹½Ã: Èë +0.2f(20%), µ¹ -0.1f(-10%)
+        // materialBonus ì˜ˆì‹œ: ë‹¤ì´ì•„ +0.2f(20%), ëŒ -0.1f(-10%)
         float effective = toolBaseSpeed * miningEfficiency * (1f + materialBonus);
         return Mathf.Max(0.01f, effective);
     }
 
-    // ÇïÆÛ: ÇöÀç ÆÄ¿ö·Î ÇØ´ç °æµµ¸¦ Ä¶ ¼ö ÀÖ´ÂÁö
+    // ì‚¬ìš© ì˜ˆì‹œ: ê³µê²© íŒŒì›Œê°€ í•´ë‹¹ ê²½ë„ë¥¼ êº¨ ìˆ˜ ìˆëŠ”ì§€
     public bool CanBreak(int toolPower, int materialHardness)
     {
         return (toolPower + miningPower) >= materialHardness;
     }
 
-    // ¿øº» °ªÀ¸·Î ÀÏºÎ/ÀüÃ¼ ÃÊ±âÈ­°¡ ÇÊ¿äÇÒ ¶§ »ç¿ë
+    // ìƒíƒœ ì´ìƒì´ ë°œìƒí•˜ê±°ë‚˜ ì „ì²´ ì´ˆê¸°í™”ê°€ í•„ìš”í•  ë•Œ ì‚¬ìš©
     public void ResetToOriginals()
     {
         maxStamina = originalMaxStamina;
         currentStamina = Mathf.Min(currentStamina, maxStamina);
+        staminaCostPerSecond = originalStaminaCostPerSecond;
 
         moveSpeed = originalMoveSpeed;
-        jumpForce = originalJumpForce;
-        inventorySize = Mathf.Max(1, originalInventorySize);
-
-        miningEfficiency = Mathf.Max(0.1f, originalMiningEfficiency);
-        miningPower = originalMiningPower;
     }
 }
