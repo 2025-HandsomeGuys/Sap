@@ -11,7 +11,7 @@ public enum UpgradeType
     MiningPower
 }
 
-public class UpgradeStatButton : MonoBehaviour
+public class UpgradeStat : MonoBehaviour
 {
     [Header("References")]
     public PlayerStats playerStats;   // 플레이어 스탯 참조
