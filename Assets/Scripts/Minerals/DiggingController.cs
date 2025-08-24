@@ -43,6 +43,8 @@ public class DiggingController : MonoBehaviour
 
     void Dig()
     {
+        SoundManager.Instance.PlaySound("Dig"); // Play digging sound
+
         Vector2 digCenter = (Vector2)transform.position + (currentDigDirection * digOffset);
 
         HashSet<Vector3Int> cellsToDig = new HashSet<Vector3Int>();

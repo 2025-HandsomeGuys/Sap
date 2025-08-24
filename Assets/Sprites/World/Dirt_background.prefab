@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 3378186507085759818}
   - component: {fileID: 4248297477182590646}
   m_Layer: 0
-  m_Name: Tilemap
+  m_Name: Dirt_background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
