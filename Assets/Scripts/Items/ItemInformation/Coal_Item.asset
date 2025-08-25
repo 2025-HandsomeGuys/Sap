@@ -21,4 +21,4 @@ MonoBehaviour:
   stackable: 1
   maxStackSize: 64
   poolType: 2
-  itemPrefab: {fileID: 0}
+  itemPrefab: {fileID: 8938240606074066591, guid: 474578fb7d1311246997eec173c9514b, type: 3}

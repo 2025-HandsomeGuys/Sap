@@ -1251,18 +1251,30 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pools:
-  - type: 0
-    prefab: {fileID: 8832497869943913428, guid: e4fab9eff2b8b044a96df4d5f53ee50c, type: 3}
-    size: 0
+  - type: 2
+    prefab: {fileID: 8938240606074066591, guid: 474578fb7d1311246997eec173c9514b, type: 3}
+    size: 500
   - type: 0
     prefab: {fileID: 9121701038931659755, guid: 45f63dc38ae7d0b409a198d54068dbc2, type: 3}
     size: 0
-  - type: 2
-    prefab: {fileID: 8019674470882275667, guid: e6f2061ee9a59f748ab04277e0eecf28, type: 3}
+  - type: 3
+    prefab: {fileID: 6763117563879433081, guid: 798df6828bfd4ae4d8dceac66993c3c9, type: 3}
+    size: 10
+  - type: 4
+    prefab: {fileID: 2179218083167017138, guid: 1336089250338bf4280c61800cdc25a9, type: 3}
+    size: 100
+  - type: 5
+    prefab: {fileID: 7651248375382586064, guid: d97a1221e6098a44fa724bbc603b195c, type: 3}
     size: 500
-  - type: 2
-    prefab: {fileID: 8019674470882275667, guid: e6f2061ee9a59f748ab04277e0eecf28, type: 3}
-    size: 500
+  - type: 6
+    prefab: {fileID: 8329078198098122442, guid: 2d069dbe4191d8444869ee431fcb3674, type: 3}
+    size: 100
+  - type: 7
+    prefab: {fileID: 8019674470882275667, guid: 5c13f6080b0311549b526d357e343c00, type: 3}
+    size: 50
+  - type: 8
+    prefab: {fileID: 5856741498514625634, guid: 525919d2c0fc0f449a56de6e6eb9d2a3, type: 3}
+    size: 100
 --- !u!4 &579115390
 Transform:
   m_ObjectHideFlags: 0
@@ -1976,12 +1988,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c8f14a7ea8b62d4d8a4864b7b69655a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  generationProfile: {fileID: 11400000, guid: 49474183ad0e9a24693e872cc027339f, type: 2}
   surfaceLevel: 10
   cellSize: 0.05
-  stoneProbability: 0
-  gemSpawnChance: 0.005
   dirtTile: {fileID: 11400000, guid: cc7cda007d0fc3a44b6a3120fef1feb4, type: 2}
-  stoneTile: {fileID: 11400000, guid: 94aabdbb11c72014da6b7c453fa0c2ec, type: 2}
   tilesPerFrame: 100
 --- !u!4 &1223317398
 Transform:
