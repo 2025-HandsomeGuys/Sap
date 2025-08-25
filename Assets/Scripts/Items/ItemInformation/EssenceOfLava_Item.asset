@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c1657dea0a896944b69b7e73c714cf9, type: 3}
+  m_Name: EssenceOfLava_Item
+  m_EditorClassIdentifier: 
+  itemID: 4
+  itemName: essence of lava
+  description: The source created by the power of lava
+  icon: {fileID: -2439699522794326382, guid: 68c6a184f17e1bb41a8b256df0c0b1d1, type: 3}
+  weight: 5
+  staminaReduction: 50
+  stackable: 1
+  maxStackSize: 5
+  poolType: 3
+  itemPrefab: {fileID: 0}

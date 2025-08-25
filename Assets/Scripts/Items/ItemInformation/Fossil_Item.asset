@@ -10,13 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5c1657dea0a896944b69b7e73c714cf9, type: 3}
-  m_Name: Gem_Item
+  m_Name: Fossil_Item
   m_EditorClassIdentifier: 
-  itemName: Gem
-  description: shining gem. simple one
-  icon: {fileID: -4080278737599844964, guid: dea4e69f16786de48a0a81ed07b9fd72, type: 3}
-  weight: 1
-  staminaReduction: 10
+  itemID: 5
+  itemName: fossil
+  description: Traces of a creature that lived on Earth long ago
+  icon: {fileID: 7262862185157205153, guid: f6b6c48c3e583d84f8ec5bd559b0f175, type: 3}
+  weight: 2
+  staminaReduction: 20
   stackable: 1
   maxStackSize: 64
+  poolType: 4
   itemPrefab: {fileID: 0}

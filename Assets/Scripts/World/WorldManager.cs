@@ -145,7 +145,7 @@ public class WorldManager : MonoBehaviour
             {
                 foreach (GameObject gem in chunkData.spawnedGems)
                 {
-                    ObjectPooler.Instance.ReturnToPool(TAG_GEM, gem);
+                    ObjectPooler.Instance.ReturnToPool(PoolableType.Gem, gem);
                 }
                 chunkData.spawnedGems.Clear();
             }

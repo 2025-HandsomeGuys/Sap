@@ -66,7 +66,7 @@ public class WorldGenerator : MonoBehaviour
 
                     // 그리고 Gem 프리팹을 생성
                     Vector3 spawnPosition = new Vector3(worldGridX * cellSize, worldGridY * cellSize, 0);
-                    GameObject gemObject = ObjectPooler.Instance.SpawnFromPool(TAG_GEM, spawnPosition, Quaternion.identity);
+                    GameObject gemObject = ObjectPooler.Instance.SpawnFromPool(PoolableType.Gem, spawnPosition, Quaternion.identity);
                     if (gemObject != null)
                     {
                         gemObject.transform.localScale = Vector3.one * cellSize;

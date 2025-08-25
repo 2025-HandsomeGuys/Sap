@@ -1,14 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static Constants;
 
 public class ObjectPooler : MonoBehaviour
 {
     [System.Serializable]
     public class Pool
     {
-        public string tag;
+        public PoolableType type; // Changed from string tag
         public GameObject prefab;
         public int size;
     }
@@ -20,8 +19,7 @@ public class ObjectPooler : MonoBehaviour
     {
         Instance = this;
 
-        // Initialize the pool dictionary and create all the objects
-        poolDictionary = new Dictionary<string, Queue<GameObject>>();
+        poolDictionary = new Dictionary<PoolableType, Queue<GameObject>>();
 
         foreach (Pool pool in pools)
         {
@@ -34,31 +32,32 @@ public class ObjectPooler : MonoBehaviour
                 objectPool.Enqueue(obj);
             }
 
-            poolDictionary.Add(pool.tag, objectPool);
+            poolDictionary.Add(pool.type, objectPool);
         }
     }
     #endregion
 
     public List<Pool> pools;
-    public Dictionary<string, Queue<GameObject>> poolDictionary;
+    public Dictionary<PoolableType, Queue<GameObject>> poolDictionary;
 
-    // Start is no longer needed for initialization
-
-    public GameObject SpawnFromPool(string tag, Vector3 position, Quaternion rotation)
+    public GameObject SpawnFromPool(PoolableType type, Vector3 position, Quaternion rotation)
     {
-        if (!poolDictionary.ContainsKey(tag))
+        if (!poolDictionary.ContainsKey(type))
         {
-            Debug.LogWarning("Pool with tag " + tag + " doesn't exist.");
+            Debug.LogWarning("Pool with type " + type + " doesn't exist.");
             return null;
         }
 
-        if (poolDictionary[tag].Count == 0)
+        if (poolDictionary[type].Count == 0)
         {
-            Debug.LogWarning("Pool with tag " + tag + " is empty. Consider increasing the pool size.");
+            Debug.LogWarning("Pool with type " + type + " is empty. Consider increasing the pool size.");
+            // Optionally, instantiate a new object here if the pool is allowed to grow
+            // Pool newPool = pools.Find(p => p.type == type);
+            // if (newPool != null) return Instantiate(newPool.prefab);
             return null;
         }
 
-        GameObject objectToSpawn = poolDictionary[tag].Dequeue();
+        GameObject objectToSpawn = poolDictionary[type].Dequeue();
 
         objectToSpawn.SetActive(true);
         objectToSpawn.transform.position = position;
@@ -67,18 +66,15 @@ public class ObjectPooler : MonoBehaviour
         return objectToSpawn;
     }
 
-    public void ReturnToPool(string tag, GameObject objectToReturn)
+    public void ReturnToPool(PoolableType type, GameObject objectToReturn)
     {
-        if (!poolDictionary.ContainsKey(tag))
+        if (!poolDictionary.ContainsKey(type))
         {
-            Debug.LogWarning("Pool with tag " + tag + " doesn't exist.");
+            Debug.LogWarning("Pool with type " + type + " doesn't exist.");
             return;
         }
 
         objectToReturn.SetActive(false);
-        objectToReturn.transform.SetParent(null); // Clear parent
-        objectToReturn.transform.localScale = Vector3.one; // Reset scale
-        objectToReturn.transform.localRotation = Quaternion.identity; // Reset rotation
-        poolDictionary[tag].Enqueue(objectToReturn);
+        poolDictionary[type].Enqueue(objectToReturn);
     }
 }

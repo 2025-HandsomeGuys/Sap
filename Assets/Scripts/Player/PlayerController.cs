@@ -2,7 +2,6 @@ using UnityEngine;
 using TMPro;
 using System.Collections.Generic;
 using System.Linq;
-using static Constants;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(Animator))]
@@ -31,7 +30,7 @@ public class PlayerController : MonoBehaviour
     private float verticalInput;
     private float originalGravityScale;
     private bool isInsideWallZone = false; // Check if inside a wall zone
-    private List<GameObject> collectibleGems = new List<GameObject>();
+    private List<GameObject> collectibleMineables = new List<GameObject>(); // Renamed from collectibleGems
     private bool jumpRequested = false;
     private bool isInventoryOpen = false;
 
@@ -114,10 +113,10 @@ public class PlayerController : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.E))
             {
-                CollectClosestGem();
+                CollectClosestMineable(); // Renamed from CollectClosestGem
             }
 
-            FindCollectibleGems();
+            FindCollectibleMineables(); // Renamed from FindCollectibleGems
         }
     }
 
@@ -177,15 +176,16 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void FindCollectibleGems()
+    private void FindCollectibleMineables() // Renamed from FindCollectibleGems
     {
-        collectibleGems.Clear();
+        collectibleMineables.Clear();
         Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, collectionRadius);
         foreach (Collider2D collider in colliders)
         {
-            if (collider.CompareTag(TAG_GEM))
+            // Check for the Mineable component instead of a tag for more robustness
+            if (collider.GetComponent<Mineable>() != null)
             {
-                collectibleGems.Add(collider.gameObject);
+                collectibleMineables.Add(collider.gameObject);
             }
         }
         UpdateUI();
@@ -241,45 +241,46 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void CollectClosestGem()
+    private void CollectClosestMineable() // Renamed from CollectClosestGem
     {
-        if (collectibleGems.Count == 0) return;
+        if (collectibleMineables.Count == 0) return;
 
-        GameObject closestGemObject = collectibleGems.OrderBy(g => Vector2.Distance(this.transform.position, g.transform.position)).FirstOrDefault();
+        GameObject closestMineableObject = collectibleMineables.OrderBy(g => Vector2.Distance(this.transform.position, g.transform.position)).FirstOrDefault();
 
-        if (closestGemObject == null) return;
+        if (closestMineableObject == null) return;
 
-        Gem gemComponent = closestGemObject.GetComponent<Gem>();
-        if (gemComponent == null)
+        Mineable mineableComponent = closestMineableObject.GetComponent<Mineable>();
+        if (mineableComponent == null)
         {
-            Debug.LogError("Gem object is missing Gem script!");
+            Debug.LogError("Mineable object is missing Mineable script!", closestMineableObject);
             return;
         }
 
-        if (gemComponent.itemData == null)
+        if (mineableComponent.itemData == null)
         {
-            Debug.LogError("Gem script is missing ItemData! Assign it in the prefab inspector.");
+            Debug.LogError("Mineable script is missing ItemData! Check the prefab and database.", closestMineableObject);
             return;
         }
 
-        if (playerInventory.AddItem(gemComponent.itemData, 1))
+        if (playerInventory.AddItem(mineableComponent.itemData, 1))
         {
-            SoundManager.Instance.PlaySound("CollectGem"); // Play gem collection sound
+            SoundManager.Instance.PlaySound("CollectGem"); // Consider making this sound generic
 
             // If item acquisition is successful, execute stamina reduction logic
-            if (gemComponent.itemData.staminaReduction > 0)
+            if (mineableComponent.itemData.staminaReduction > 0)
             {
-                playerStats.ReduceMaxStamina(gemComponent.itemData.staminaReduction);
+                playerStats.ReduceMaxStamina(mineableComponent.itemData.staminaReduction);
             }
 
-            collectibleGems.Remove(closestGemObject);
-            ObjectPooler.Instance.ReturnToPool(TAG_GEM, closestGemObject);
+            collectibleMineables.Remove(closestMineableObject);
+            // Return the object to the pool using the poolType defined in its Item data
+            ObjectPooler.Instance.ReturnToPool(mineableComponent.itemData.poolType, closestMineableObject);
             UpdateUI();
             UpdateInventoryDisplay();
         }
         else
         {
-            Debug.Log("Could not add gem to inventory. Overweight or full.");
+            Debug.Log("Could not add item to inventory. Overweight or full.");
         }
     }
 
@@ -287,7 +288,7 @@ public class PlayerController : MonoBehaviour
     {
         if (interactionPromptText != null)
         {
-            interactionPromptText.gameObject.SetActive(collectibleGems.Count > 0);
+            interactionPromptText.gameObject.SetActive(collectibleMineables.Count > 0);
         }
     }
 

@@ -1251,13 +1251,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pools:
-  - tag: dirt
+  - type: 0
     prefab: {fileID: 8832497869943913428, guid: e4fab9eff2b8b044a96df4d5f53ee50c, type: 3}
     size: 0
-  - tag: stone
+  - type: 0
     prefab: {fileID: 9121701038931659755, guid: 45f63dc38ae7d0b409a198d54068dbc2, type: 3}
     size: 0
-  - tag: gem
+  - type: 2
+    prefab: {fileID: 8019674470882275667, guid: e6f2061ee9a59f748ab04277e0eecf28, type: 3}
+    size: 500
+  - type: 2
     prefab: {fileID: 8019674470882275667, guid: e6f2061ee9a59f748ab04277e0eecf28, type: 3}
     size: 500
 --- !u!4 &579115390
@@ -1470,6 +1473,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   staminaRegenDelay: 3
   staminaRegenRate: 10
+--- !u!114 &708001281
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 708001253}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33106bcb5b7eaa84899a3c0af9f0b731, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemDatabase: {fileID: 11400000, guid: 2ff35811d64b0744abc749143f108835, type: 2}
 --- !u!1 &762449301
 GameObject:
   m_ObjectHideFlags: 0
@@ -2297,6 +2313,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6828037258971148651, guid: 5dd4dedb062a8454cb8a1b0f171ab6e0, type: 3}
       insertIndex: -1
       addedObject: {fileID: 708001280}
+    - targetCorrespondingSourceObject: {fileID: 6828037258971148651, guid: 5dd4dedb062a8454cb8a1b0f171ab6e0, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 708001281}
   m_SourcePrefab: {fileID: 100100000, guid: 5dd4dedb062a8454cb8a1b0f171ab6e0, type: 3}
 --- !u!1 &1398840589
 GameObject:
