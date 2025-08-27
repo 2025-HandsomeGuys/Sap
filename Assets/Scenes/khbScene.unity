@@ -1269,9 +1269,6 @@ MonoBehaviour:
   - type: 6
     prefab: {fileID: 8329078198098122442, guid: 2d069dbe4191d8444869ee431fcb3674, type: 3}
     size: 100
-  - type: 7
-    prefab: {fileID: 8019674470882275667, guid: 5c13f6080b0311549b526d357e343c00, type: 3}
-    size: 50
   - type: 8
     prefab: {fileID: 5856741498514625634, guid: 525919d2c0fc0f449a56de6e6eb9d2a3, type: 3}
     size: 100
