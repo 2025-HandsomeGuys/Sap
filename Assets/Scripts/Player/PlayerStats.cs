@@ -34,6 +34,11 @@ public class PlayerStats : MonoBehaviour
     [Header("Gold")]
     public int gold = 0;
 
+    void OnDestroy()
+    {
+        Debug.LogError("PlayerStats component is being destroyed!", this.gameObject);
+    }
+
     void Awake()
     {
         // Stamina

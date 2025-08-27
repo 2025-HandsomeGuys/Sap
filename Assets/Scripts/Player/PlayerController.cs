@@ -58,6 +58,12 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        if (playerStats == null)
+        {
+            Debug.LogError("PlayerStats became NULL during gameplay!");
+            return; // Stop further execution in Update if null
+        }
+
         if (Input.GetKeyDown(KeyCode.I))
         {
             ToggleInventory();
@@ -122,6 +128,10 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (playerStats == null)
+        {
+            return;
+        }
         if (isInventoryOpen)
         {
             rb.linearVelocity = Vector2.zero;
@@ -152,7 +162,7 @@ public class PlayerController : MonoBehaviour
             {
                 rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0f);
                 rb.AddForce(new Vector2(0f, playerStats.jumpForce), ForceMode2D.Impulse);
-                SoundManager.Instance.PlaySound("Jump"); // Play jump sound
+                // SoundManager.Instance.PlaySound("Jump"); // Play jump sound
                 jumpRequested = false;
             }
         }
@@ -264,7 +274,7 @@ public class PlayerController : MonoBehaviour
 
         if (playerInventory.AddItem(mineableComponent.itemData, 1))
         {
-            SoundManager.Instance.PlaySound("CollectGem"); // Consider making this sound generic
+            //SoundManager.Instance.PlaySound("CollectGem"); // Consider making this sound generic
 
             // If item acquisition is successful, execute stamina reduction logic
             if (mineableComponent.itemData.staminaReduction > 0)
