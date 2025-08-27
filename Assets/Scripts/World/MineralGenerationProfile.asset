@@ -117,32 +117,6 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-  - description: Gem
-    minableType: 7
-    spawnChanceByDepth:
-      serializedVersion: 2
-      m_Curve:
-      - serializedVersion: 3
-        time: 0.54599607
-        value: 0.002152972
-        inSlope: 0.004773597
-        outSlope: 0.004773597
-        tangentMode: 34
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0.33333334
-      - serializedVersion: 3
-        time: 1.1953735
-        value: 0.005252838
-        inSlope: 0.004773597
-        outSlope: 0.004773597
-        tangentMode: 34
-        weightedMode: 0
-        inWeight: 0.33333334
-        outWeight: 0
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
   - description: Silver
     minableType: 8
     spawnChanceByDepth:

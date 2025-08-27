@@ -14,6 +14,7 @@ public class WorldGenerator : MonoBehaviour
     public MineralGenerationProfile generationProfile; // 사용할 광물 생성 프로필
     public int surfaceLevel = 80;
     public float cellSize = 0.05f;
+    public float mineralSizeMultiplier = 1.5f;
 
     [Header("Tile Assets")]
     public TileBase dirtTile; // 광물 아래에 깔아줄 기본 땅 타일
@@ -76,7 +77,7 @@ public class WorldGenerator : MonoBehaviour
                                     SpriteRenderer prefabRenderer = mineableComponent.itemData.itemPrefab.GetComponent<SpriteRenderer>();
                                     if (prefabRenderer != null)
                                     {
-                                        float targetSize = cellSize;
+                                        float targetSize = cellSize * mineralSizeMultiplier;
                                         float currentWidth = prefabRenderer.bounds.size.x;
                                         float currentHeight = prefabRenderer.bounds.size.y;
 
