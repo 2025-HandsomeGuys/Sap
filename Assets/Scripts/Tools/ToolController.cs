@@ -1,15 +1,23 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.Rendering;
+using static UnityEngine.GraphicsBuffer;
 
 public class ToolController : MonoBehaviour
 {
     public Vector3 followPos;
     public Vector3 scale;
     public int followDelay;
+    public Animator playerAnimator;
     public Transform parent;
     public Queue<Vector3> parentPos;
     public bool isleft;
     public int toolType = 0;
+
+    private Camera cam;
+
 
     Quaternion toolRot= Quaternion.Euler(0,0,-30);
     Quaternion toolReverseRot = Quaternion.Euler(0, 0, 30);
@@ -19,10 +27,12 @@ public class ToolController : MonoBehaviour
     public Sprite sap;
     public Sprite pickaxe;
 
-
+    
+  
     void Start()
     {
-        
+        cam = Camera.main;
+
     }
     void Awake()
     {
@@ -46,17 +56,27 @@ public class ToolController : MonoBehaviour
     }
     void Follow()
     {
+        Vector2 mousePos = (Vector2)cam.ScreenToWorldPoint(Input.mousePosition);
+        Vector2 dirVec = mousePos - (Vector2)transform.position;
+        
         if (isleft == true)
         {
-            transform.position = new Vector3(followPos.x + 0.1f, followPos.y, followPos.z);
-            transform.rotation = toolRot;
+            transform.position = new Vector3(followPos.x + 0.1f, followPos.y-0.1f, followPos.z);
+
+            if (dirVec.x < 0 && playerAnimator.GetBool("ismoving") == false)
+                transform.right = -(Vector3)dirVec.normalized;
+            else if (playerAnimator.GetBool("ismoving") == true)
+                transform.localRotation = toolRot;
         }
 
 
         else if (isleft == false)
         {
-            transform.position = new Vector3(followPos.x - 0.1f, followPos.y, followPos.z);
-            transform.rotation = toolReverseRot;
+            transform.position = new Vector3(followPos.x - 0.1f, followPos.y-0.1f, followPos.z);
+            if (dirVec.x > 0 && playerAnimator.GetBool("ismoving") == false)
+                transform.right = (Vector3)dirVec.normalized;
+            else if (playerAnimator.GetBool("ismoving") == true)
+                transform.localRotation = toolReverseRot;
         }
     }
     //follow logic
@@ -92,10 +112,9 @@ public class ToolController : MonoBehaviour
             Img_Renderer.sprite = pickaxe;
 
         
+
     }
-
-
-
+    
 
     
     void Update()
@@ -104,5 +123,6 @@ public class ToolController : MonoBehaviour
         Watch();
         Follow();
         Change();
+        
     }
 }

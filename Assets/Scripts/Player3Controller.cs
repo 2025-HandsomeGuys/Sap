@@ -7,9 +7,18 @@ public class Player3Controller : MonoBehaviour
     public float jumpPower = 10f;
     Animator anim;
     public bool ismoving = false;
+    private Camera cam;
 
-    
 
+
+
+
+
+    void Start()
+    {
+        cam = Camera.main;
+
+    }
 
     void Awake()
     {
@@ -57,9 +66,18 @@ public class Player3Controller : MonoBehaviour
         }
         else
         {
+            Vector2 mousePos = (Vector2)cam.ScreenToWorldPoint(Input.mousePosition);
+            Vector2 dirVec = mousePos - (Vector2)transform.position;
             anim.SetBool("ismoving",false);
+            if (dirVec.x > 0)
+            {
+                transform.localScale = new Vector3(-1, 1, 1);
+            }
+            else if(dirVec.x < 0)
+                transform.localScale = new Vector3(1, 1, 1);
         }
        
+
         transform.position += moveVelocity * movePower * Time.deltaTime;
 
 
