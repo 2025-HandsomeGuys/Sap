@@ -4,7 +4,7 @@ using TMPro;
 
 public class StaminaBar : MonoBehaviour
 {
-    public PlayerStats player;
+    public PlayerStatsController player;
 
     [Header("UI References")]
     public RectTransform fill;          // ³ë¶õ»ö
