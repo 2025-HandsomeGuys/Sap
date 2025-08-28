@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83a4c6eacfc8fff44998cb8b5609408a, type: 3}
+  m_Name: PlayerSO
+  m_EditorClassIdentifier: 
+  originalMaxStamina: 500
+  maxStamina: 500
+  currentStamina: 480
+  originalStaminaCostPerSecond: 0
+  staminaCostPerSecond: 0
+  originalMoveSpeed: 10
+  moveSpeed: 0
+  originalJumpForce: 10
+  jumpForce: 0
+  originalWallClimbingSpeed: 10
+  wallClimbingSpeed: 0
+  originalEncumberedSpeedMultiplier: 0.5
+  encumberedSpeedMultiplier: 0
+  originalInventorySize: 20
+  inventorySize: 0
+  originalMiningEfficiency: 1
+  miningEfficiency: 1
+  originalMiningPower: 0
+  miningPower: 0
+  gold: 5000

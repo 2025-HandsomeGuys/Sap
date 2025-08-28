@@ -1,58 +1,120 @@
 using UnityEngine;
 
-public class PlayerStats : MonoBehaviour
+public class PlayerStatsController : MonoBehaviour
 {
     [Header("Stamina")]
-    public float originalMaxStamina = 500f;
+    public float originalMaxStamina;
     public float maxStamina;
     public float currentStamina;
-    public float originalStaminaCostPerSecond = 10f;
+    public float originalStaminaCostPerSecond;
     public float staminaCostPerSecond;
 
     [Header("Movement")]
-    public float originalMoveSpeed = 5f;
+    public float originalMoveSpeed;
     public float moveSpeed;
-    public float originalJumpForce = 7f;
+    public float originalJumpForce;
     public float jumpForce;
-    public float originalWallClimbingSpeed = 3f;
+    public float originalWallClimbingSpeed;
     public float wallClimbingSpeed;
     [Range(0.1f, 1f)]
-    public float originalEncumberedSpeedMultiplier = 0.5f;
+    public float originalEncumberedSpeedMultiplier;
     public float encumberedSpeedMultiplier;
 
     [Header("Inventory")]
-    public int originalInventorySize = 20; // 인벤토리 크기를 위한 최소 크기
+    public int originalInventorySize; // 인벤토리 크기를 위한 최소 크기
     public int inventorySize;
 
     [Header("Mining")]
     public float originalMiningEfficiency = 1f;
     public float miningEfficiency;
 
-    public int originalMiningPower = 0;
+    public int originalMiningPower;
     public int miningPower;
 
     [Header("Gold")]
-    public int gold = 0;
+    public int gold;
 
-    void Awake()
+    //void Awake()
+    //{
+    //    // Stamina
+    //    maxStamina = originalMaxStamina;
+    //    currentStamina = maxStamina;
+    //    staminaCostPerSecond = originalStaminaCostPerSecond;
+
+    //    // Movement
+    //    moveSpeed = originalMoveSpeed;
+    //    jumpForce = originalJumpForce;
+    //    wallClimbingSpeed = originalWallClimbingSpeed;
+    //    encumberedSpeedMultiplier = originalEncumberedSpeedMultiplier;
+
+    //    // Inventory
+    //    inventorySize = Mathf.Max(1, originalInventorySize);
+
+    //    // Mining
+    //    miningEfficiency = Mathf.Max(0.1f, originalMiningEfficiency); // 최소 향상
+    //    miningPower = originalMiningPower;
+    //}
+
+    // ===================================================
+    // 🔹 PlayerData 변환 기능
+    // ===================================================
+    public PlayerData ToData()
     {
-        // Stamina
-        maxStamina = originalMaxStamina;
-        currentStamina = maxStamina;
-        staminaCostPerSecond = originalStaminaCostPerSecond;
+        return new PlayerData()
+        {
+            originalMaxStamina = originalMaxStamina,
+            maxStamina = maxStamina,
+            currentStamina = currentStamina,
+            originalStaminaCostPerSecond = originalStaminaCostPerSecond,
+            staminaCostPerSecond = staminaCostPerSecond,
 
-        // Movement
-        moveSpeed = originalMoveSpeed;
-        jumpForce = originalJumpForce;
-        wallClimbingSpeed = originalWallClimbingSpeed;
-        encumberedSpeedMultiplier = originalEncumberedSpeedMultiplier;
+            originalMoveSpeed = originalMoveSpeed,
+            moveSpeed = moveSpeed,
+            originalJumpForce = originalJumpForce,
+            jumpForce = jumpForce,
+            originalWallClimbingSpeed = originalWallClimbingSpeed,
+            wallClimbingSpeed = wallClimbingSpeed,
+            originalEncumberedSpeedMultiplier = originalEncumberedSpeedMultiplier,
+            encumberedSpeedMultiplier = encumberedSpeedMultiplier,
 
-        // Inventory
-        inventorySize = Mathf.Max(1, originalInventorySize);
+            originalInventorySize = originalInventorySize,
+            inventorySize = inventorySize,
 
-        // Mining
-        miningEfficiency = Mathf.Max(0.1f, originalMiningEfficiency); // 최소 향상
-        miningPower = originalMiningPower;
+            originalMiningEfficiency = originalMiningEfficiency,
+            miningEfficiency = miningEfficiency,
+            originalMiningPower = originalMiningPower,
+            miningPower = miningPower,
+
+            gold = gold
+        };
+    }
+
+    public void FromData(PlayerData data)
+    {
+        originalMaxStamina = data.originalMaxStamina;
+        maxStamina = data.maxStamina;
+        currentStamina = data.currentStamina;
+        originalStaminaCostPerSecond = data.originalStaminaCostPerSecond;
+        staminaCostPerSecond = data.staminaCostPerSecond;
+
+        originalMoveSpeed = data.originalMoveSpeed;
+        moveSpeed = data.moveSpeed;
+        originalJumpForce = data.originalJumpForce;
+        jumpForce = data.jumpForce;
+        originalWallClimbingSpeed = data.originalWallClimbingSpeed;
+        wallClimbingSpeed = data.wallClimbingSpeed;
+        originalEncumberedSpeedMultiplier = data.originalEncumberedSpeedMultiplier;
+        encumberedSpeedMultiplier = data.encumberedSpeedMultiplier;
+
+        originalInventorySize = data.originalInventorySize;
+        inventorySize = data.inventorySize;
+
+        originalMiningEfficiency = data.originalMiningEfficiency;
+        miningEfficiency = data.miningEfficiency;
+        originalMiningPower = data.originalMiningPower;
+        miningPower = data.miningPower;
+
+        gold = data.gold;
     }
 
     // ------------ Gold ------------

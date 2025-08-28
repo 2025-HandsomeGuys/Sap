@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-[RequireComponent(typeof(PlayerStats))]
+[RequireComponent(typeof(PlayerStatsController))]
 public class StaminaManager : MonoBehaviour
 {
     [Header("Stamina Regeneration Settings")]
@@ -11,14 +11,14 @@ public class StaminaManager : MonoBehaviour
     [Tooltip("초당 스태미나 회복량")]
     public float staminaRegenRate = 20f;
 
-    private PlayerStats playerStats;
+    private PlayerStatsController playerStats;
     private PlayerController playerController; // PlayerController 참조 추가
     private Coroutine regenCoroutine;
     private float lastStaminaValue;
 
     void Start()
     {
-        playerStats = GetComponent<PlayerStats>();
+        playerStats = GetComponent<PlayerStatsController>();
         playerController = GetComponent<PlayerController>(); // 컴포넌트 가져오기
         if (playerStats == null)
         {

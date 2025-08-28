@@ -14,7 +14,7 @@ public enum UpgradeType
 public class UpgradeStat : MonoBehaviour
 {
     [Header("References")]
-    public PlayerStats playerStats;   // 플레이어 스탯 참조
+    public PlayerStatsController playerStats;   // 플레이어 스탯 참조
     public Button button;             // UI 버튼
     public TextMeshProUGUI costText;             // 비용 표시 UI
     public TextMeshProUGUI levelText;            // 레벨 표시 UI
