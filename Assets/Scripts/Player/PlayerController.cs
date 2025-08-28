@@ -34,7 +34,7 @@ public class PlayerController : MonoBehaviour
     private bool jumpRequested = false;
     private bool isInventoryOpen = false;
 
-    private PlayerStats playerStats;
+    private PlayerStatsController playerStats;
 
     public Inventory playerInventory;
 
@@ -42,7 +42,7 @@ public class PlayerController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
-        playerStats = GetComponent<PlayerStats>();
+        playerStatsController = GetComponent<PlayerStats>();
         originalGravityScale = rb.gravityScale; // Store the initial gravity scale
 
         if (interactionPromptText != null)
