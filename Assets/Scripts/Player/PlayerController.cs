@@ -30,7 +30,7 @@ public class PlayerController : MonoBehaviour
     private float verticalInput;
     private float originalGravityScale;
     private bool isInsideWallZone = false; // Check if inside a wall zone
-    private List<GameObject> collectibleMineables = new List<GameObject>(); // Renamed from collectibleGems
+    private List<GameObject> collectibleGems = new List<GameObject>(); // Renamed from collectibleGems
     private bool jumpRequested = false;
     private bool isInventoryOpen = false;
 
@@ -184,14 +184,14 @@ public class PlayerController : MonoBehaviour
 
     private void FindCollectibleGems() // Renamed from FindCollectibleGems
     {
-        collectibleMineables.Clear();
+        collectibleGems.Clear();
         Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, collectionRadius);
         foreach (Collider2D collider in colliders)
         {
             // Check for the Mineable component instead of a tag for more robustness
             if (collider.GetComponent<Mineable>() != null)
             {
-                collectibleMineables.Add(collider.gameObject);
+                collectibleGems.Add(collider.gameObject);
             }
         }
         UpdateUI();
@@ -249,9 +249,9 @@ public class PlayerController : MonoBehaviour
 
     private void CollectClosestMineable() // Renamed from CollectClosestGem
     {
-        if (collectibleMineables.Count == 0) return;
+        if (collectibleGems.Count == 0) return;
 
-        GameObject closestMineableObject = collectibleMineables.OrderBy(g => Vector2.Distance(this.transform.position, g.transform.position)).FirstOrDefault();
+        GameObject closestMineableObject = collectibleGems.OrderBy(g => Vector2.Distance(this.transform.position, g.transform.position)).FirstOrDefault();
 
         if (closestMineableObject == null) return;
 
@@ -278,7 +278,7 @@ public class PlayerController : MonoBehaviour
                 playerStats.ReduceMaxStamina(mineableComponent.itemData.staminaReduction);
             }
 
-            collectibleMineables.Remove(closestMineableObject);
+            collectibleGems.Remove(closestMineableObject);
             // Return the object to the pool using the poolType defined in its Item data
             ObjectPooler.Instance.ReturnToPool(mineableComponent.itemData.poolType, closestMineableObject);
             UpdateUI();
@@ -294,7 +294,7 @@ public class PlayerController : MonoBehaviour
     {
         if (interactionPromptText != null)
         {
-            interactionPromptText.gameObject.SetActive(collectibleMineables.Count > 0);
+            interactionPromptText.gameObject.SetActive(collectibleGems.Count > 0);
         }
     }
 
