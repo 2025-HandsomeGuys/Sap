@@ -58,11 +58,7 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        if (playerStats == null)
-        {
-            Debug.LogError("PlayerStats became NULL during gameplay!");
-            return; // Stop further execution in Update if null
-        }
+        
 
         if (Input.GetKeyDown(KeyCode.I))
         {
