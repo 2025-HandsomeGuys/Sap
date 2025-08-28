@@ -42,7 +42,7 @@ public class PlayerController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
-        playerStatsController = GetComponent<PlayerStats>();
+        playerStats = GetComponent<PlayerStatsController>();
         originalGravityScale = rb.gravityScale; // Store the initial gravity scale
 
         if (interactionPromptText != null)
