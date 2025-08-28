@@ -248,7 +248,7 @@ public class PlayerController : MonoBehaviour
 
         if (closestGemObject == null) return;
 
-        Gem gemComponent = closestGemObject.GetComponent<Gem>();
+        Mineable gemComponent = closestGemObject.GetComponent<Mineable>();
         if (gemComponent == null)
         {
             Debug.LogError("Gem object is missing Gem script!");
@@ -270,7 +270,7 @@ public class PlayerController : MonoBehaviour
             }
 
             collectibleGems.Remove(closestGemObject);
-            ObjectPooler.Instance.ReturnToPool(TAG_GEM, closestGemObject);
+            ObjectPooler.Instance.ReturnToPool(PoolableType.Gem, closestGemObject);
             UpdateUI();
             UpdateInventoryDisplay();
         }
