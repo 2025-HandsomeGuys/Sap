@@ -2,6 +2,7 @@ using UnityEngine;
 using TMPro;
 using System.Collections.Generic;
 using System.Linq;
+using static Constants;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(Animator))]
@@ -29,8 +30,8 @@ public class PlayerController : MonoBehaviour
     private float moveInput;
     private float verticalInput;
     private float originalGravityScale;
-    private bool isInsideWallZone = false; // Check if inside a wall zone
-    private List<GameObject> collectibleGems = new List<GameObject>(); // Renamed from collectibleGems
+    private bool isInsideWallZone = false; // 벽 영역 안에 있는지 확인
+    private List<GameObject> collectibleGems = new List<GameObject>();
     private bool jumpRequested = false;
     private bool isInventoryOpen = false;
 
@@ -43,7 +44,7 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         playerStats = GetComponent<PlayerStatsController>();
-        originalGravityScale = rb.gravityScale; // Store the initial gravity scale
+        originalGravityScale = rb.gravityScale; // 초기 중력 값 저장
 
         if (interactionPromptText != null)
         {
@@ -58,8 +59,6 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        
-
         if (Input.GetKeyDown(KeyCode.I))
         {
             ToggleInventory();
@@ -68,7 +67,7 @@ public class PlayerController : MonoBehaviour
         if (!isInventoryOpen)
         {
             moveInput = Input.GetAxis("Horizontal");
-            verticalInput = Input.GetAxis("Vertical"); // Get vertical input
+            verticalInput = Input.GetAxis("Vertical"); // 수직 입력 받기
             anim.SetBool("ismoving", moveInput != 0);
             anim.SetBool("isjumping", !isGrounded);
 
@@ -95,7 +94,7 @@ public class PlayerController : MonoBehaviour
                 return;
             }
 
-            // If stamina is available, inside a wall zone, and LeftShift is pressed, enable wall climbing
+            // 스태미나가 있고, 벽 구역 안에 있고, LeftShift를 누르면 벽 타기 활성화
             if (isInsideWallZone && Input.GetKey(KeyCode.LeftShift) && playerStats.currentStamina > 0)
             {
                 isWallClimbing = true;
@@ -110,24 +109,20 @@ public class PlayerController : MonoBehaviour
                 playerStats.UseStamina(playerStats.staminaCostPerSecond * Time.deltaTime);
             }
 
-            // TODO: Uncomment if you have an "isClimbing" animation parameter
+            // TODO: "isClimbing" 애니메이션 파라미터가 있다면 주석 해제
             // anim.SetBool("isClimbing", isWallClimbing);
 
             if (Input.GetKeyDown(KeyCode.E))
             {
-                CollectClosestGem(); // Renamed from CollectClosestGem
+                CollectClosestGem();
             }
 
-            FindCollectibleGems(); // Renamed from FindCollectibleGems
+            FindCollectibleGems();
         }
     }
 
     void FixedUpdate()
     {
-        if (playerStats == null)
-        {
-            return;
-        }
         if (isInventoryOpen)
         {
             rb.linearVelocity = Vector2.zero;
@@ -136,14 +131,14 @@ public class PlayerController : MonoBehaviour
 
         if (isWallClimbing)
         {
-            // When wall climbing: gravity is 0, handle vertical/horizontal movement
+            // 벽 타기 상태일 때: 중력 0, 수직/수평 이동 처리
             rb.gravityScale = 0f;
             float verticalVelocity = verticalInput * playerStats.wallClimbingSpeed;
             rb.linearVelocity = new Vector2(moveInput * playerStats.moveSpeed, verticalVelocity);
         }
         else
         {
-            // Normal state: apply original gravity, handle normal movement and jump
+            // 평상시 상태일 때: 원래 중력 적용, 일반 이동 및 점프 처리
             rb.gravityScale = originalGravityScale;
 
             float currentMoveSpeed = playerStats.moveSpeed;
@@ -158,7 +153,6 @@ public class PlayerController : MonoBehaviour
             {
                 rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0f);
                 rb.AddForce(new Vector2(0f, playerStats.jumpForce), ForceMode2D.Impulse);
-                // SoundManager.Instance.PlaySound("Jump"); // Play jump sound
                 jumpRequested = false;
             }
         }
@@ -166,7 +160,7 @@ public class PlayerController : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        // Check if the object's tag to be used as a wall is "Wall"
+        // 벽으로 사용할 오브젝트의 Tag가 "Wall"인지 확인
         if (other.CompareTag("Wall"))
         {
             isInsideWallZone = true;
@@ -178,18 +172,17 @@ public class PlayerController : MonoBehaviour
         if (other.CompareTag("Wall"))
         {
             isInsideWallZone = false;
-            isWallClimbing = false; // Immediately disable wall climbing upon exiting the wall zone
+            isWallClimbing = false; // 벽 영역을 나가면 즉시 벽 타기 상태 해제
         }
     }
 
-    private void FindCollectibleGems() // Renamed from FindCollectibleGems
+    private void FindCollectibleGems()
     {
         collectibleGems.Clear();
         Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, collectionRadius);
         foreach (Collider2D collider in colliders)
         {
-            // Check for the Mineable component instead of a tag for more robustness
-            if (collider.GetComponent<Mineable>() != null)
+            if (collider.CompareTag(TAG_GEM))
             {
                 collectibleGems.Add(collider.gameObject);
             }
@@ -247,46 +240,43 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void CollectClosestGem() // Renamed from CollectClosestGem
+    private void CollectClosestGem()
     {
         if (collectibleGems.Count == 0) return;
 
-        GameObject closestMineableObject = collectibleGems.OrderBy(g => Vector2.Distance(this.transform.position, g.transform.position)).FirstOrDefault();
+        GameObject closestGemObject = collectibleGems.OrderBy(g => Vector2.Distance(this.transform.position, g.transform.position)).FirstOrDefault();
 
-        if (closestMineableObject == null) return;
+        if (closestGemObject == null) return;
 
-        Mineable mineableComponent = closestMineableObject.GetComponent<Mineable>();
-        if (mineableComponent == null)
+        Gem gemComponent = closestGemObject.GetComponent<Gem>();
+        if (gemComponent == null)
         {
-            Debug.LogError("Mineable object is missing Mineable script!", closestMineableObject);
+            Debug.LogError("Gem object is missing Gem script!");
             return;
         }
 
-        if (mineableComponent.itemData == null)
+        if (gemComponent.itemData == null)
         {
-            Debug.LogError("Mineable script is missing ItemData! Check the prefab and database.", closestMineableObject);
+            Debug.LogError("Gem script is missing ItemData! Assign it in the prefab inspector.");
             return;
         }
 
-        if (playerInventory.AddItem(mineableComponent.itemData, 1))
+        if (playerInventory.AddItem(gemComponent.itemData, 1))
         {
-            //SoundManager.Instance.PlaySound("CollectGem"); // Consider making this sound generic
-
-            // If item acquisition is successful, execute stamina reduction logic
-            if (mineableComponent.itemData.staminaReduction > 0)
+            // 아이템 획득에 성공하면 스태미나 감소 로직 실행
+            if (gemComponent.itemData.staminaReduction > 0)
             {
-                playerStats.ReduceMaxStamina(mineableComponent.itemData.staminaReduction);
+                playerStats.ReduceMaxStamina(gemComponent.itemData.staminaReduction);
             }
 
-            collectibleGems.Remove(closestMineableObject);
-            // Return the object to the pool using the poolType defined in its Item data
-            ObjectPooler.Instance.ReturnToPool(mineableComponent.itemData.poolType, closestMineableObject);
+            collectibleGems.Remove(closestGemObject);
+            ObjectPooler.Instance.ReturnToPool(TAG_GEM, closestGemObject);
             UpdateUI();
             UpdateInventoryDisplay();
         }
         else
         {
-            Debug.Log("Could not add item to inventory. Overweight or full.");
+            Debug.Log("Could not add gem to inventory. Overweight or full.");
         }
     }
 
