@@ -115,7 +115,7 @@ public class PlayerController : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.E))
             {
-                CollectClosestMineable(); // Renamed from CollectClosestGem
+                CollectClosestGem(); // Renamed from CollectClosestGem
             }
 
             FindCollectibleGems(); // Renamed from FindCollectibleGems
@@ -247,7 +247,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void CollectClosestMineable() // Renamed from CollectClosestGem
+    private void CollectClosestGem() // Renamed from CollectClosestGem
     {
         if (collectibleGems.Count == 0) return;
 
