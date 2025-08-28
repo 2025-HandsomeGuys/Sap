@@ -122,7 +122,7 @@ public class PlayerController : MonoBehaviour
                 CollectClosestMineable(); // Renamed from CollectClosestGem
             }
 
-            FindCollectibleMineables(); // Renamed from FindCollectibleGems
+            FindCollectibleGems(); // Renamed from FindCollectibleGems
         }
     }
 
@@ -186,7 +186,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void FindCollectibleMineables() // Renamed from FindCollectibleGems
+    private void FindCollectibleGems() // Renamed from FindCollectibleGems
     {
         collectibleMineables.Clear();
         Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, collectionRadius);
