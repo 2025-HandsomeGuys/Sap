@@ -1,0 +1,145 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c06f98f62901804e96a6969fc97d00d, type: 3}
+  m_Name: MineralGenerationProfile
+  m_EditorClassIdentifier: 
+  minableSpawnConfigs:
+  - description: garbagebag
+    minableType: 5
+    spawnChanceByDepth:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 3
+        value: 0.000085
+        inSlope: -0.0000020588236
+        outSlope: -0.0000020588236
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 20
+        value: 0.00005
+        inSlope: -0.0000020588236
+        outSlope: -0.0000020588236
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+  - description: Essence Of Lava
+    minableType: 3
+    spawnChanceByDepth:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0.9557056
+        value: 0.0071224067
+        inSlope: 0.018436136
+        outSlope: 0.018436136
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 1.0214844
+        value: 0.0083351135
+        inSlope: 0.018436136
+        outSlope: 0.018436136
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+  - description: Fossil
+    minableType: 4
+    spawnChanceByDepth:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0.90397644
+        value: 0.00090026855
+        inSlope: 0.11421659
+        outSlope: 0.11421659
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.99542236
+        value: 0.01134491
+        inSlope: 0.11421659
+        outSlope: 0.11421659
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+  - description: Gold
+    minableType: 6
+    spawnChanceByDepth:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0.85837173
+        value: 0.010322571
+        inSlope: -0.01683411
+        outSlope: -0.01683411
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 1
+        value: 0.007938385
+        inSlope: -0.01683411
+        outSlope: -0.01683411
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+  - description: Silver
+    minableType: 8
+    spawnChanceByDepth:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 1.2544556
+        value: 0.05178833
+        inSlope: 0.005726337
+        outSlope: 0.005726337
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 4.460485
+        value: 0.070147134
+        inSlope: 0.005726337
+        outSlope: 0.005726337
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4

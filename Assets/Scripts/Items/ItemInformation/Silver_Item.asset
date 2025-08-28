@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c1657dea0a896944b69b7e73c714cf9, type: 3}
+  m_Name: Silver_Item
+  m_EditorClassIdentifier: 
+  itemID: 9
+  itemName: Silver
+  description: second
+  icon: {fileID: 7081527322082503550, guid: 3eb07c5a0b971f7479be46e7cd3ae58f, type: 3}
+  weight: 1
+  staminaReduction: 10
+  stackable: 1
+  maxStackSize: 64
+  poolType: 8
+  itemPrefab: {fileID: 5856741498514625634, guid: 525919d2c0fc0f449a56de6e6eb9d2a3, type: 3}
