@@ -2,10 +2,12 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using TMPro;
+using UnityEngine.InputSystem;
 
 public class InventoryUI : MonoBehaviour
 {
     [Header("UI 연결")]
+    public GameObject inventoryPanel; // The entire inventory panel
     public Inventory inventory;
     public GameObject inventorySlotPrefab;
     public Transform slotContainer;
@@ -13,12 +15,17 @@ public class InventoryUI : MonoBehaviour
     public TextMeshProUGUI weightText;
 
     private List<GameObject> slotObjects = new List<GameObject>();
+    private bool isInventoryOpen = false;
 
     void Start()
     {
+        if (inventoryPanel != null)
+        {
+            inventoryPanel.SetActive(false); // Start with inventory closed
+        }
+
         if (inventory == null) return;
         inventory.OnInventoryChanged += UpdateUI;
-        UpdateUI();
     }
 
     void OnDestroy()
@@ -29,15 +36,46 @@ public class InventoryUI : MonoBehaviour
         }
     }
 
+    public void OnOpenInventory(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            ToggleInventory();
+        }
+    }
+
+    public void ToggleInventory()
+    {
+        if (inventoryPanel == null) return;
+
+        isInventoryOpen = !isInventoryOpen;
+        inventoryPanel.SetActive(isInventoryOpen);
+
+        if (isInventoryOpen)
+        {
+            Time.timeScale = 0f; // Pause the game
+            UpdateUI(); // Update UI only when opening
+        }
+        else
+        {
+            Time.timeScale = 1f; // Resume the game
+        }
+    }
+
+    public bool IsOpen()
+    {
+        return isInventoryOpen;
+    }
+
     public void UpdateUI()
     {
-        // 무게 텍스트 업데이트
+        if (inventory == null) return;
+
         if (weightText != null)
         {
             weightText.text = $"Weight: {inventory.TotalWeight} / {inventory.maxWeightLimit}";
         }
 
-        // 설명 텍스트 업데이트 (첫번째 아이템 기준)
         if (descriptionText != null)
         {
             if (inventory.items.Count > 0 && inventory.items[0].item != null)
@@ -46,16 +84,17 @@ public class InventoryUI : MonoBehaviour
             }
             else
             {
-                descriptionText.text = ""; // 인벤토리가 비었으면 설명도 비움
+                descriptionText.text = "";
             }
         }
 
-        // 슬롯들 다시 그리기
         foreach (GameObject slot in slotObjects)
         {
             Destroy(slot);
         }
         slotObjects.Clear();
+
+        if (slotContainer == null || inventorySlotPrefab == null) return;
 
         foreach (InventorySlot itemSlot in inventory.items)
         {
@@ -80,21 +119,18 @@ public class InventoryUI : MonoBehaviour
                 }
             }
 
-            // 전체 버리기 버튼 설정
             Button dropAllButton = newSlot.transform.Find("DropAllButton")?.GetComponent<Button>();
             if (dropAllButton != null)
             {
                 dropAllButton.onClick.RemoveAllListeners();
                 dropAllButton.onClick.AddListener(() => {
-                    inventory.DropItem(itemSlot); // DropItem은 전체 슬롯을 제거
+                    inventory.DropItem(itemSlot);
                 });
             }
 
-            // 한 개 버리기 버튼 설정
             Button dropSingleButton = newSlot.transform.Find("DropSingleButton")?.GetComponent<Button>();
             if (dropSingleButton != null)
             {
-                // 아이템이 2개 이상일 때만 버튼을 활성화
                 bool shouldBeActive = itemSlot.quantity > 1;
                 dropSingleButton.gameObject.SetActive(shouldBeActive);
 
@@ -102,7 +138,7 @@ public class InventoryUI : MonoBehaviour
                 {
                     dropSingleButton.onClick.RemoveAllListeners();
                     dropSingleButton.onClick.AddListener(() => {
-                        inventory.DropSingleItem(itemSlot); // DropSingleItem은 1개만 제거
+                        inventory.DropSingleItem(itemSlot);
                     });
                 }
             }
