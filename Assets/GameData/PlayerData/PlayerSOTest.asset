@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83a4c6eacfc8fff44998cb8b5609408a, type: 3}
   m_Name: PlayerSOTest
   m_EditorClassIdentifier: 
-  originalMaxStamina: 500
-  maxStamina: 500
-  currentStamina: 480
+  originalMaxStamina: 1000
+  maxStamina: 1000
+  currentStamina: 1000
   originalStaminaCostPerSecond: 0
   staminaCostPerSecond: 0
   originalMoveSpeed: 10

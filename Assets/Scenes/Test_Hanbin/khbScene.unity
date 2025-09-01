@@ -2249,7 +2249,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91b8f27d1f5641e489733c7af1a5f28f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerSO: {fileID: 11400000, guid: 3c5258073b1868c4184804ba7afbe674, type: 2}
+  playerSO: {fileID: 11400000, guid: a2c0246d62a9fb34191750d586d1dfec, type: 2}
 --- !u!114 &1246053722
 MonoBehaviour:
   m_ObjectHideFlags: 0
