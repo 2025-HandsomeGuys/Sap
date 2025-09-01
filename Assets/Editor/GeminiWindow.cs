@@ -137,11 +137,7 @@ public class GeminiWindow : EditorWindow
             request.SetRequestHeader("Content-Type", "application/json");
 
             // 비동기적으로 요청 보내기
-            var operation = request.SendWebRequest();
-            while (!operation.isDone)
-            {
-                await Task.Yield();
-            }
+            await request.SendWebRequest();
 
             // 결과 처리
             if (request.result == UnityWebRequest.Result.Success)
