@@ -36,7 +36,7 @@ public class PlayerInteractor : MonoBehaviour
 
     public void OnInteract(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        if (context.started) // 'performed'에서 'started'로 변경하여 키를 누르는 즉시 반응하도록 수정
         {
             if (inventoryUI != null && inventoryUI.IsOpen())
             {
@@ -86,7 +86,7 @@ public class PlayerInteractor : MonoBehaviour
         Mineable gemComponent = closestGemObject.GetComponent<Mineable>();
         if (gemComponent == null)
         {
-            Debug.LogError("Gem object is missing Gem script!");
+            Debug.LogError("Gem object is missing Mineable script!");
             return;
         }
 
@@ -98,18 +98,28 @@ public class PlayerInteractor : MonoBehaviour
 
         if (playerInventory.AddItem(gemComponent.itemData, 1))
         {
+            Debug.Log("[Collector] AddItem 성공. 획득 처리 시작.");
+
             if (gemComponent.itemData.staminaReduction > 0)
             {
+                Debug.Log("[Collector] 스태미나 감소 시도.");
                 playerStats.ReduceMaxStamina(gemComponent.itemData.staminaReduction);
+                Debug.Log("[Collector] 스태미나 감소 완료.");
             }
 
+            Debug.Log("[Collector] 리스트에서 광물 제거 시도.");
             collectibleGems.Remove(closestGemObject);
+            Debug.Log("[Collector] 리스트에서 광물 제거 완료. 오브젝트 풀 반환 시도.");
+
             ObjectPooler.Instance.ReturnToPool(PoolableType.Gem, closestGemObject);
+            Debug.Log("[Collector] 오브젝트 풀 반환 완료. UI 업데이트 시도.");
+
             UpdateInteractionPrompt();
+            Debug.Log("[Collector] 획득 처리 완전 종료.");
         }
         else
         {
-            Debug.Log("Could not add gem to inventory. Overweight or full.");
+            Debug.LogWarning($"[Collector] AddItem이 false를 반환함: {gemComponent.itemData.itemName}");
         }
     }
 

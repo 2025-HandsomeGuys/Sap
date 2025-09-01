@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8107735510568183411}
   m_Layer: 0
   m_Name: silver_0
-  m_TagString: Untagged
+  m_TagString: gem
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

@@ -50,7 +50,7 @@ public class ObjectPooler : MonoBehaviour
 
         if (poolDictionary[type].Count == 0)
         {
-            Debug.LogWarning("Pool with type " + type + " is empty. Consider increasing the pool size.");
+            // Debug.LogWarning("Pool with type " + type + " is empty. Consider increasing the pool size.");
             // Optionally, instantiate a new object here if the pool is allowed to grow
             // Pool newPool = pools.Find(p => p.type == type);
             // if (newPool != null) return Instantiate(newPool.prefab);
