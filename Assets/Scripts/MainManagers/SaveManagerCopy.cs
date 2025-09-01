@@ -10,7 +10,7 @@ public class SaveManagerCopy : MonoBehaviour
 
     private void Awake()
     {
-        path = Path.Combine(Application.persistentDataPath, "playerData.json");
+        path = Path.Combine(Application.persistentDataPath, "playerData_khb_test.json");
     }
 
     /// <summary>
