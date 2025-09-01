@@ -53,12 +53,25 @@ public class GeminiWindow : EditorWindow
         GetWindow<GeminiWindow>("Gemini");
     }
 
+    private void OnEnable()
+    {
+        // 저장된 API 키가 있으면 불러오기
+        apiKey = EditorPrefs.GetString("GeminiApiKey", "");
+    }
+
     private void OnGUI()
     {
         GUILayout.Label("Gemini API 연동", EditorStyles.boldLabel);
 
-        // API 키 입력 필드 (비밀번호 필드로 표시)
+        // API 키 입력 필드
+        EditorGUI.BeginChangeCheck();
         apiKey = EditorGUILayout.PasswordField("API Key", apiKey);
+        if (EditorGUI.EndChangeCheck())
+        {
+            // API 키가 변경되면 EditorPrefs에 저장
+            EditorPrefs.SetString("GeminiApiKey", apiKey);
+        }
+
         if (string.IsNullOrEmpty(apiKey))
         {
             EditorGUILayout.HelpBox("Google AI Studio에서 발급받은 API 키를 입력하세요.", MessageType.Info);
