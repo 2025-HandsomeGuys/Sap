@@ -15,20 +15,20 @@ MonoBehaviour:
   originalMaxStamina: 500
   maxStamina: 500
   currentStamina: 480
-  originalStaminaCostPerSecond: 0
-  staminaCostPerSecond: 0
+  originalStaminaCostPerSecond: 20
+  staminaCostPerSecond: 20
   originalMoveSpeed: 10
-  moveSpeed: 0
+  moveSpeed: 5
   originalJumpForce: 10
-  jumpForce: 0
+  jumpForce: 5
   originalWallClimbingSpeed: 10
-  wallClimbingSpeed: 0
+  wallClimbingSpeed: 5
   originalEncumberedSpeedMultiplier: 0.5
-  encumberedSpeedMultiplier: 0
+  encumberedSpeedMultiplier: 1
   originalInventorySize: 20
-  inventorySize: 0
+  inventorySize: 20
   originalMiningEfficiency: 1
   miningEfficiency: 1
-  originalMiningPower: 0
-  miningPower: 0
+  originalMiningPower: 1
+  miningPower: 1
   gold: 5000

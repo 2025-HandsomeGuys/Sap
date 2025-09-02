@@ -3,7 +3,6 @@ using TMPro;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine.InputSystem;
-using static Constants;
 
 public class PlayerInteractor : MonoBehaviour
 {
@@ -14,7 +13,7 @@ public class PlayerInteractor : MonoBehaviour
     public float collectionRadius = 1f;
     public TextMeshProUGUI interactionPromptText;
 
-    private List<GameObject> collectibleGems = new List<GameObject>();
+    private List<GameObject> collectibleItems = new List<GameObject>();
     private Inventory playerInventory;
     private PlayerStatsController playerStats;
 
@@ -36,13 +35,13 @@ public class PlayerInteractor : MonoBehaviour
 
     public void OnInteract(InputAction.CallbackContext context)
     {
-        if (context.started) // 'performed'에서 'started'로 변경하여 키를 누르는 즉시 반응하도록 수정
+        if (context.started)
         {
             if (inventoryUI != null && inventoryUI.IsOpen())
             {
                 return;
             }
-            CollectClosestGem();
+            CollectClosestItem();
         }
     }
 
@@ -50,76 +49,67 @@ public class PlayerInteractor : MonoBehaviour
     {
         if (inventoryUI != null && inventoryUI.IsOpen())
         {
-            if (collectibleGems.Count > 0)
+            if (collectibleItems.Count > 0)
             {
-                collectibleGems.Clear();
+                collectibleItems.Clear();
                 UpdateInteractionPrompt();
             }
             return;
         }
 
-        FindCollectibleGems();
+        FindCollectibleItems();
     }
 
-    private void FindCollectibleGems()
+    private void FindCollectibleItems()
     {
-        collectibleGems.Clear();
+        collectibleItems.Clear();
         Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, collectionRadius);
         foreach (Collider2D collider in colliders)
         {
-            if (collider.CompareTag(TAG_GEM))
+            // Check for the Mineable component instead of a specific tag
+            if (collider.GetComponent<Mineable>() != null)
             {
-                collectibleGems.Add(collider.gameObject);
+                collectibleItems.Add(collider.gameObject);
             }
         }
         UpdateInteractionPrompt();
     }
 
-    private void CollectClosestGem()
+    private void CollectClosestItem()
     {
-        if (collectibleGems.Count == 0) return;
+        if (collectibleItems.Count == 0) return;
 
-        GameObject closestGemObject = collectibleGems.OrderBy(g => Vector2.Distance(this.transform.position, g.transform.position)).FirstOrDefault();
+        GameObject closestItemObject = collectibleItems.OrderBy(g => Vector2.Distance(this.transform.position, g.transform.position)).FirstOrDefault();
 
-        if (closestGemObject == null) return;
+        if (closestItemObject == null) return;
 
-        Mineable gemComponent = closestGemObject.GetComponent<Mineable>();
-        if (gemComponent == null)
+        Mineable itemComponent = closestItemObject.GetComponent<Mineable>();
+        if (itemComponent == null)
         {
-            Debug.LogError("Gem object is missing Mineable script!");
+            Debug.LogError("Item object is missing Mineable script!", closestItemObject);
             return;
         }
 
-        if (gemComponent.itemData == null)
+        Item itemData = itemComponent.itemData;
+        if (itemData == null)
         {
-            Debug.LogError("Gem script is missing ItemData! Assign it in the prefab inspector.");
+            Debug.LogError("Mineable script is missing ItemData! Assign it in the prefab inspector.", closestItemObject);
             return;
         }
 
-        if (playerInventory.AddItem(gemComponent.itemData, 1))
+        if (playerInventory.AddItem(itemData, 1))
         {
-            Debug.Log("[Collector] AddItem 성공. 획득 처리 시작.");
-
-            if (gemComponent.itemData.staminaReduction > 0)
+            if (itemData.staminaReduction > 0)
             {
-                Debug.Log("[Collector] 스태미나 감소 시도.");
-                playerStats.ReduceMaxStamina(gemComponent.itemData.staminaReduction);
-                Debug.Log("[Collector] 스태미나 감소 완료.");
+                playerStats.ReduceMaxStamina(itemData.staminaReduction);
             }
 
-            Debug.Log("[Collector] 리스트에서 광물 제거 시도.");
-            collectibleGems.Remove(closestGemObject);
-            Debug.Log("[Collector] 리스트에서 광물 제거 완료. 오브젝트 풀 반환 시도.");
-
-            ObjectPooler.Instance.ReturnToPool(PoolableType.Gem, closestGemObject);
-            Debug.Log("[Collector] 오브젝트 풀 반환 완료. UI 업데이트 시도.");
+            collectibleItems.Remove(closestItemObject);
+            
+            // Use the poolType from the Item data to return the object to the correct pool
+            ObjectPooler.Instance.ReturnToPool(itemData.poolType, closestItemObject);
 
             UpdateInteractionPrompt();
-            Debug.Log("[Collector] 획득 처리 완전 종료.");
-        }
-        else
-        {
-            Debug.LogWarning($"[Collector] AddItem이 false를 반환함: {gemComponent.itemData.itemName}");
         }
     }
 
@@ -127,7 +117,7 @@ public class PlayerInteractor : MonoBehaviour
     {
         if (interactionPromptText != null)
         {
-            interactionPromptText.gameObject.SetActive(collectibleGems.Count > 0);
+            interactionPromptText.gameObject.SetActive(collectibleItems.Count > 0);
         }
     }
 }

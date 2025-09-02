@@ -1,19 +1,25 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
+using TMPro;
+using System.Collections.Generic;
+using System.Linq;
+using static Constants;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(Animator))]
-[RequireComponent(typeof(PlayerStatsController))]
-[RequireComponent(typeof(Inventory))]
 public class PlayerController : MonoBehaviour
 {
-    [Header("Dependencies")]
-    public InventoryUI inventoryUI; // Assign this in the Inspector
-
     [Header("Ground Check Settings")]
     public Transform groundCheck;
     public float groundCheckRadius = 0.2f;
     public LayerMask groundLayer;
+
+    [Header("Interaction Settings")]
+    public float collectionRadius = 1f;
+    public TextMeshProUGUI interactionPromptText;
+
+    [Header("Inventory UI")]
+    public GameObject inventoryPanel;
+    public TextMeshProUGUI inventoryContentText;
 
     [Header("Status (Read-Only)")]
     public bool isGrounded;
@@ -21,77 +27,94 @@ public class PlayerController : MonoBehaviour
 
     private Rigidbody2D rb;
     private Animator anim;
-    private Vector2 moveVector;
+    private float moveInput;
+    private float verticalInput;
     private float originalGravityScale;
-    private bool isInsideWallZone = false;
+    private bool isInsideWallZone = false; // 벽 영역 안에 있는지 확인
     private bool jumpRequested = false;
-    private bool sprintHeld = false;
+    private bool isInventoryOpen = false;
 
     private PlayerStatsController playerStats;
-    private Inventory playerInventory;
+
+    public Inventory playerInventory;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         playerStats = GetComponent<PlayerStatsController>();
-        playerInventory = GetComponent<Inventory>();
-        originalGravityScale = rb.gravityScale;
+        originalGravityScale = rb.gravityScale; // 초기 중력 값 저장
 
-        if (inventoryUI == null)
+        if (interactionPromptText != null)
         {
-            Debug.LogError("InventoryUI is not assigned in the inspector!", this);
+            interactionPromptText.gameObject.SetActive(false);
         }
-    }
-
-    public void OnMove(InputAction.CallbackContext context)
-    {
-        moveVector = context.ReadValue<Vector2>();
-    }
-
-    public void OnJump(InputAction.CallbackContext context)
-    {
-        if (context.performed && isGrounded)
+        if (inventoryPanel != null)
         {
-            if (inventoryUI != null && inventoryUI.IsOpen()) return;
-            jumpRequested = true;
-            anim.SetTrigger("jump");
+            inventoryPanel.SetActive(false);
         }
-    }
-
-    public void OnSprint(InputAction.CallbackContext context)
-    {
-        sprintHeld = context.ReadValueAsButton();
     }
 
     void Update()
     {
-        if (inventoryUI != null && inventoryUI.IsOpen())
+        if (Input.GetKeyDown(KeyCode.I))
         {
-            anim.SetBool("ismoving", false);
-            return;
+            ToggleInventory();
         }
 
-        isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
-        
-        anim.SetBool("ismoving", moveVector.x != 0);
-        anim.SetBool("isjumping", !isGrounded);
-
-        if (moveVector.x > 0)
+        if (!isInventoryOpen)
         {
-            transform.localScale = new Vector3(-1, 1, 1);
-        }
-        else if (moveVector.x < 0)
-        {
-            transform.localScale = new Vector3(1, 1, 1);
-        }
+            moveInput = Input.GetAxis("Horizontal");
+            verticalInput = Input.GetAxis("Vertical"); // 수직 입력 받기
+            anim.SetBool("ismoving", moveInput != 0);
+            anim.SetBool("isjumping", !isGrounded);
 
-        HandleWallClimbing();
+            if (moveInput > 0)
+            {
+                transform.localScale = new Vector3(-1, 1, 1);
+            }
+            else if (moveInput < 0)
+            {
+                transform.localScale = new Vector3(1, 1, 1);
+            }
+
+            isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
+
+            if (isGrounded && Input.GetKeyDown(KeyCode.Space))
+            {
+                jumpRequested = true;
+                anim.SetTrigger("jump");
+            }
+
+            if (playerStats == null)
+            {
+                Debug.LogError("PlayerStats component not found on the player object!");
+                return;
+            }
+
+            // 스태미나가 있고, 벽 구역 안에 있고, LeftShift를 누르면 벽 타기 활성화
+            if (isInsideWallZone && Input.GetKey(KeyCode.LeftShift) && playerStats.currentStamina > 0)
+            {
+                isWallClimbing = true;
+            }
+            else
+            {
+                isWallClimbing = false;
+            }
+
+            if (isWallClimbing && (moveInput != 0 || verticalInput != 0))
+            {
+                playerStats.UseStamina(playerStats.staminaCostPerSecond * Time.deltaTime);
+            }
+
+            // TODO: "isClimbing" 애니메이션 파라미터가 있다면 주석 해제
+            // anim.SetBool("isClimbing", isWallClimbing);
+        }
     }
 
     void FixedUpdate()
     {
-        if (inventoryUI != null && inventoryUI.IsOpen())
+        if (isInventoryOpen)
         {
             rb.linearVelocity = Vector2.zero;
             return;
@@ -99,12 +122,14 @@ public class PlayerController : MonoBehaviour
 
         if (isWallClimbing)
         {
+            // 벽 타기 상태일 때: 중력 0, 수직/수평 이동 처리
             rb.gravityScale = 0f;
-            float verticalVelocity = moveVector.y * playerStats.wallClimbingSpeed;
-            rb.linearVelocity = new Vector2(moveVector.x * playerStats.moveSpeed, verticalVelocity);
+            float verticalVelocity = verticalInput * playerStats.wallClimbingSpeed;
+            rb.linearVelocity = new Vector2(moveInput * playerStats.moveSpeed, verticalVelocity);
         }
         else
         {
+            // 평상시 상태일 때: 원래 중력 적용, 일반 이동 및 점프 처리
             rb.gravityScale = originalGravityScale;
 
             float currentMoveSpeed = playerStats.moveSpeed;
@@ -113,7 +138,7 @@ public class PlayerController : MonoBehaviour
                 currentMoveSpeed *= playerStats.encumberedSpeedMultiplier;
             }
 
-            rb.linearVelocity = new Vector2(moveVector.x * currentMoveSpeed, rb.linearVelocity.y);
+            rb.linearVelocity = new Vector2(moveInput * currentMoveSpeed, rb.linearVelocity.y);
 
             if (jumpRequested)
             {
@@ -124,32 +149,9 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void HandleWallClimbing()
-    {
-        if (playerStats == null)
-        {
-            Debug.LogError("PlayerStats component not found on the player object!");
-            isWallClimbing = false;
-            return;
-        }
-
-        if (isInsideWallZone && sprintHeld && playerStats.currentStamina > 0)
-        {
-            isWallClimbing = true;
-        }
-        else
-        {
-            isWallClimbing = false;
-        }
-
-        if (isWallClimbing && (moveVector.x != 0 || moveVector.y != 0))
-        {
-            playerStats.UseStamina(playerStats.staminaCostPerSecond * Time.deltaTime);
-        }
-    }
-
     void OnTriggerEnter2D(Collider2D other)
     {
+        // 벽으로 사용할 오브젝트의 Tag가 "Wall"인지 확인
         if (other.CompareTag("Wall"))
         {
             isInsideWallZone = true;
@@ -161,7 +163,57 @@ public class PlayerController : MonoBehaviour
         if (other.CompareTag("Wall"))
         {
             isInsideWallZone = false;
-            isWallClimbing = false;
+            isWallClimbing = false; // 벽 영역을 나가면 즉시 벽 타기 상태 해제
+        }
+    }
+
+    private void ToggleInventory()
+    {
+        if (inventoryPanel != null)
+        {
+            isInventoryOpen = !isInventoryOpen;
+            inventoryPanel.SetActive(isInventoryOpen);
+
+            if (isInventoryOpen)
+            {
+                Time.timeScale = 0f;
+                UpdateInventoryDisplay();
+            }
+            else
+            {
+                Time.timeScale = 1f;
+            }
+        }
+    }
+
+    public bool IsInventoryOpen()
+    {
+        return isInventoryOpen;
+    }
+
+    private void UpdateInventoryDisplay()
+    {
+        if (inventoryContentText != null && playerInventory != null)
+        {
+            System.Text.StringBuilder sb = new System.Text.StringBuilder();
+            sb.AppendLine($"Weight: {playerInventory.TotalWeight:F1} / {playerInventory.maxWeightLimit:F1} ");
+            sb.AppendLine("-----------------");
+
+            if (playerInventory.items.Count == 0)
+            {
+                sb.AppendLine("Empty");
+            }
+            else
+            {
+                foreach (InventorySlot slot in playerInventory.items)
+                {
+                    if (slot.item != null)
+                    {
+                        sb.AppendLine($"- {slot.item.itemName} x{slot.quantity} ({(slot.item.weight * slot.quantity):F1} )");
+                    }
+                }
+            }
+            inventoryContentText.text = sb.ToString();
         }
     }
 

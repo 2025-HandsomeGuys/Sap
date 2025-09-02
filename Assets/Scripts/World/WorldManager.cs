@@ -2,8 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using static TileType;
-using static Constants; // Gem 태그 사용을 위해 추가
 
 public class WorldManager : MonoBehaviour
 {
@@ -35,13 +33,13 @@ public class WorldManager : MonoBehaviour
     {
         public TileType[,] tileStates;
         public Vector2Int chunkCoord;
-        public List<GameObject> spawnedGems; // Gem 프리팹을 추적하기 위한 리스트
+        public List<GameObject> spawnedItems; // Changed from spawnedGems
 
         public ChunkData(Vector2Int coord, int chunkSize)
         {
             chunkCoord = coord;
             tileStates = new TileType[chunkSize, chunkSize];
-            spawnedGems = new List<GameObject>(); // 리스트 초기화
+            spawnedItems = new List<GameObject>(); // Changed from spawnedGems
         }
     }
 
@@ -140,17 +138,23 @@ public class WorldManager : MonoBehaviour
     {
         if (generatedChunks.Remove(chunkCoord))
         {
-            // Unload Gem Prefabs from the chunk
             if (chunkDataMap.TryGetValue(chunkCoord, out ChunkData chunkData))
             {
-                foreach (GameObject gem in chunkData.spawnedGems)
+                foreach (GameObject itemObject in chunkData.spawnedItems)
                 {
-                    ObjectPooler.Instance.ReturnToPool(PoolableType.Gem, gem);
+                    Mineable mineable = itemObject.GetComponent<Mineable>();
+                    if (mineable != null && mineable.itemData != null)
+                    {
+                        ObjectPooler.Instance.ReturnToPool(mineable.itemData.poolType, itemObject);
+                    }
+                    else
+                    {
+                        Destroy(itemObject); // Failsafe
+                    }
                 }
-                chunkData.spawnedGems.Clear();
+                chunkData.spawnedItems.Clear();
             }
 
-            // Unload tiles from the tilemap
             int startX = chunkCoord.x * WorldGenerator.chunkSize;
             int startY = chunkCoord.y * WorldGenerator.chunkSize;
 

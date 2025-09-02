@@ -103,7 +103,7 @@ public class WorldGenerator : MonoBehaviour
                             }
 
                             // WorldManager가 추적할 수 있도록 리스트에 추가
-                            chunkData.spawnedGems.Add(spawnedObject); // spawnedGems 리스트는 그대로 사용
+                            chunkData.spawnedItems.Add(spawnedObject);
                         }
                         break; // 광물을 찾아서 생성했으면 설정 루프를 빠져나옴
                     }
