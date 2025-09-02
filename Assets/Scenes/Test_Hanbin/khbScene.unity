@@ -1454,13 +1454,13 @@ MonoBehaviour:
   maxStamina: 0
   currentStamina: 0
   originalStaminaCostPerSecond: 10
-  staminaCostPerSecond: 0
+  staminaCostPerSecond: 10
   originalMoveSpeed: 5
   moveSpeed: 1
   originalJumpForce: 7
   jumpForce: 0
   originalWallClimbingSpeed: 1
-  wallClimbingSpeed: 0
+  wallClimbingSpeed: 1
   originalEncumberedSpeedMultiplier: 0.5
   encumberedSpeedMultiplier: 0
   originalInventorySize: 20

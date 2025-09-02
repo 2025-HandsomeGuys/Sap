@@ -6,6 +6,7 @@ using static Constants;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(Animator))]
+[RequireComponent(typeof(SpriteRenderer))]
 public class PlayerController : MonoBehaviour
 {
     [Header("Ground Check Settings")]
@@ -27,6 +28,7 @@ public class PlayerController : MonoBehaviour
 
     private Rigidbody2D rb;
     private Animator anim;
+    private SpriteRenderer spriteRenderer;
     private float moveInput;
     private float verticalInput;
     private float originalGravityScale;
@@ -42,6 +44,7 @@ public class PlayerController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
         playerStats = GetComponent<PlayerStatsController>();
         originalGravityScale = rb.gravityScale; // 초기 중력 값 저장
 
@@ -69,16 +72,15 @@ public class PlayerController : MonoBehaviour
             anim.SetBool("ismoving", moveInput != 0);
             anim.SetBool("isjumping", !isGrounded);
 
+            // Flip player sprite based on move direction
             if (moveInput > 0)
             {
-                transform.localScale = new Vector3(-1, 1, 1);
+                spriteRenderer.flipX = true;
             }
             else if (moveInput < 0)
             {
-                transform.localScale = new Vector3(1, 1, 1);
+                spriteRenderer.flipX = false;
             }
-
-            isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
 
             if (isGrounded && Input.GetKeyDown(KeyCode.Space))
             {
@@ -114,6 +116,9 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
+        // Physics-related checks should be in FixedUpdate
+        isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
+
         if (isInventoryOpen)
         {
             rb.linearVelocity = Vector2.zero;
