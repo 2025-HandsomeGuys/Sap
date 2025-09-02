@@ -63,7 +63,7 @@ public class StaminaManager : MonoBehaviour
         yield return new WaitForSeconds(staminaRegenDelay);
 
         // 2. 스태미나가 최대치에 도달할 때까지 매 프레임 회복
-        while (playerStats.currentStamina < playerStats.maxStamina && !playerController.isWallClimbing)
+        while (playerStats.currentStamina < playerStats.maxStamina && playerController.currentStateName != "WallClimbingState")
         {
             // PlayerStats에 있는 회복 함수를 호출
             playerStats.RecoverStamina(staminaRegenRate * Time.deltaTime);
