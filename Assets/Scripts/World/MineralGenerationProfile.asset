@@ -41,7 +41,7 @@ MonoBehaviour:
       m_RotationOrder: 4
     veinsPerChunk: {x: 0, y: 5}
     veinLength: {x: 5, y: 10}
-    veinSpacing: 1
+    veinSpacing: 2
   - description: Essence Of Lava
     minableType: 3
     spawnChanceByDepth:
@@ -97,9 +97,9 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    veinsPerChunk: {x: 0, y: 0}
-    veinLength: {x: 0, y: 0}
-    veinSpacing: 1
+    veinsPerChunk: {x: 0, y: 5}
+    veinLength: {x: 3, y: 7}
+    veinSpacing: 2
   - description: Gold
     minableType: 6
     spawnChanceByDepth:

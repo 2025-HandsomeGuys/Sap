@@ -1415,8 +1415,6 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 256
-  inventoryPanel: {fileID: 236109008}
-  inventoryContentText: {fileID: 107468159}
   currentStateName: 
   isGrounded: 0
   isInsideWallZone: 0
@@ -1424,22 +1422,7 @@ MonoBehaviour:
   verticalInput: 0
   originalGravityScale: 0
   playerInventory: {fileID: 441990588}
---- !u!114 &708001268
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 708001253}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3f916aa374fb9be4ca8def790c09de81, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  encumbranceThreshold: 25
-  maxWeightLimit: 32
-  items: []
-  playerTransform: {fileID: 0}
+  inventoryUI: {fileID: 236109012}
 --- !u!114 &708001274
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1694,6 +1677,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inventoryUI: {fileID: 236109012}
+  playerInventory: {fileID: 441990588}
   collectionRadius: 0.5
   interactionPromptText: {fileID: 178688906}
 --- !u!1 &762449301
@@ -2590,9 +2574,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6828037258971148651, guid: 5dd4dedb062a8454cb8a1b0f171ab6e0, type: 3}
       insertIndex: -1
       addedObject: {fileID: 708001262}
-    - targetCorrespondingSourceObject: {fileID: 6828037258971148651, guid: 5dd4dedb062a8454cb8a1b0f171ab6e0, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 708001268}
     - targetCorrespondingSourceObject: {fileID: 6828037258971148651, guid: 5dd4dedb062a8454cb8a1b0f171ab6e0, type: 3}
       insertIndex: -1
       addedObject: {fileID: 708001274}

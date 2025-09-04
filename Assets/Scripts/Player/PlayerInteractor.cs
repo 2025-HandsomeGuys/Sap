@@ -8,18 +8,18 @@ public class PlayerInteractor : MonoBehaviour
 {
     [Header("Dependencies")]
     public InventoryUI inventoryUI; // Assign in inspector
+    public Inventory playerInventory; // Assign in inspector
 
     [Header("Interaction Settings")]
     public float collectionRadius = 1f;
     public TextMeshProUGUI interactionPromptText;
 
     private List<GameObject> collectibleItems = new List<GameObject>();
-    private Inventory playerInventory;
     private PlayerStatsController playerStats;
 
     void Start()
     {
-        playerInventory = GetComponent<Inventory>();
+        
         playerStats = GetComponent<PlayerStatsController>();
 
         if (inventoryUI == null)
