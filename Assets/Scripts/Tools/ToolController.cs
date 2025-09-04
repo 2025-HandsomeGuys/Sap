@@ -18,6 +18,13 @@ public class ToolController : MonoBehaviour
 
     private Camera cam;
 
+    public float animationMove = 0f;
+    public float digRot = 0f;
+    public bool digEnd;    
+    public Vector3 clickVec;
+    public Quaternion clickRot;
+
+    public Animator toolAnim;
 
     Quaternion toolRot= Quaternion.Euler(0,0,-30);
     Quaternion toolReverseRot = Quaternion.Euler(0, 0, 30);
@@ -32,7 +39,7 @@ public class ToolController : MonoBehaviour
     void Start()
     {
         cam = Camera.main;
-
+        
     }
     void Awake()
     {
@@ -58,13 +65,22 @@ public class ToolController : MonoBehaviour
     {
         Vector2 mousePos = (Vector2)cam.ScreenToWorldPoint(Input.mousePosition);
         Vector2 dirVec = mousePos - (Vector2)transform.position;
-        
+        Vector3 animove = clickVec * animationMove;       
         if (isleft == true)
         {
-            transform.position = new Vector3(followPos.x + 0.1f, followPos.y-0.1f, followPos.z);
+            if (toolAnim.GetBool("isdigging") == true)
+            {
+                transform.position = new Vector3(followPos.x + 0.1f, followPos.y - 0.1f, followPos.z) - animove;
+                transform.localRotation = clickRot * Quaternion.Euler(0, 0, digRot);
+            }              
+            if (toolAnim.GetBool("isdigging") == false)
+                transform.position = new Vector3(followPos.x + 0.1f, followPos.y - 0.1f, followPos.z);
 
-            if (dirVec.x < 0 && playerAnimator.GetBool("ismoving") == false)
-                transform.right = -(Vector3)dirVec.normalized;
+            if (dirVec.x < 0 && playerAnimator.GetBool("ismoving") == false&& toolAnim.GetBool("isdigging") == false)
+            {
+                transform.right = -(Vector3)dirVec.normalized;                       
+            }
+                
             else if (playerAnimator.GetBool("ismoving") == true)
                 transform.localRotation = toolRot;
         }
@@ -72,8 +88,15 @@ public class ToolController : MonoBehaviour
 
         else if (isleft == false)
         {
-            transform.position = new Vector3(followPos.x - 0.1f, followPos.y-0.1f, followPos.z);
-            if (dirVec.x > 0 && playerAnimator.GetBool("ismoving") == false)
+            if (toolAnim.GetBool("isdigging") == true)
+            {
+                transform.position = new Vector3(followPos.x - 0.1f, followPos.y - 0.1f, followPos.z) + animove;
+                transform.localRotation = clickRot* Quaternion.Euler(0,0,-digRot);
+            }
+            if (toolAnim.GetBool("isdigging") == false)
+                transform.position = new Vector3(followPos.x - 0.1f, followPos.y - 0.1f, followPos.z);
+            
+            if (dirVec.x > 0 && playerAnimator.GetBool("ismoving") == false && toolAnim.GetBool("isdigging") == false)
                 transform.right = (Vector3)dirVec.normalized;
             else if (playerAnimator.GetBool("ismoving") == true)
                 transform.localRotation = toolReverseRot;
@@ -101,6 +124,7 @@ public class ToolController : MonoBehaviour
                 toolType = 3;
             else
                 toolType -= 1;
+
         }
 
 
@@ -110,12 +134,38 @@ public class ToolController : MonoBehaviour
             Img_Renderer.sprite = pickaxe;
         else
             Img_Renderer.sprite = pickaxe;
-
-        
-
     }
-    
+    void Dig()
+    {
+        Vector2 mousePos = (Vector2)cam.ScreenToWorldPoint(Input.mousePosition);
+        Vector2 dirVec = mousePos - (Vector2)transform.position;
+        if (Input.GetMouseButtonDown(0) == true && !toolAnim.GetBool("isdigging"))
+        {
 
+            clickRot = transform.localRotation;
+
+            if (isleft==true)
+            {
+                clickVec = -dirVec.normalized;            
+            }              
+            else if(isleft==false)
+            {
+                clickVec = dirVec.normalized;
+            }
+                
+
+            toolAnim.SetTrigger("dig");
+            toolAnim.SetBool("isdigging", true);
+             
+        }
+        if (digEnd == true)
+        {           
+            digEnd = false;
+            toolAnim.SetBool("isdigging", false);
+            
+        }
+                      
+    }
     
     void Update()
     {
@@ -123,6 +173,7 @@ public class ToolController : MonoBehaviour
         Watch();
         Follow();
         Change();
+        Dig();
         
     }
 }
