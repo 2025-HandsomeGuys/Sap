@@ -166,7 +166,7 @@ public class WorldManager : MonoBehaviour
                     groundTilemap.SetTile(cellPosition, null);
                 }
             }
-            Debug.Log($"Unloaded Chunk: {chunkCoord}");
+            
         }
     }
 

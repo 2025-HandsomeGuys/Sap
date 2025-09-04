@@ -1415,12 +1415,14 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 256
-  collectionRadius: 1
-  interactionPromptText: {fileID: 178688906}
   inventoryPanel: {fileID: 236109008}
   inventoryContentText: {fileID: 107468159}
+  currentStateName: 
   isGrounded: 0
-  isWallClimbing: 0
+  isInsideWallZone: 0
+  moveInput: 0
+  verticalInput: 0
+  originalGravityScale: 0
   playerInventory: {fileID: 441990588}
 --- !u!114 &708001268
 MonoBehaviour:
@@ -1451,8 +1453,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   originalMaxStamina: 500
-  maxStamina: 0
-  currentStamina: 0
+  maxStamina: 1000
+  currentStamina: 1000
   originalStaminaCostPerSecond: 10
   staminaCostPerSecond: 10
   originalMoveSpeed: 5
@@ -1692,7 +1694,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inventoryUI: {fileID: 236109012}
-  collectionRadius: 3
+  collectionRadius: 0.5
   interactionPromptText: {fileID: 178688906}
 --- !u!1 &762449301
 GameObject:

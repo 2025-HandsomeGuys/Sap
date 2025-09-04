@@ -58,8 +58,8 @@ public class Inventory : MonoBehaviour
     {
         if (itemToAdd == null || quantity <= 0) return false;
 
-        // 최대 한계 무게 확인
-        if (TotalWeight >= maxWeightLimit)
+        // 아이템을 추가했을 때 최대 한계 무게를 초과하는지 확인
+        if (TotalWeight + (itemToAdd.weight * quantity) > maxWeightLimit)
         {
             Debug.Log("가방이 한계에 도달해 더 이상 아이템을 추가할 수 없습니다.");
             return false;
@@ -71,12 +71,18 @@ public class Inventory : MonoBehaviour
             if (existingSlot != null)
             {
                 existingSlot.AddQuantity(quantity);
-                OnInventoryChanged?.Invoke(); // 이벤트 호출
-                return true;
+            }
+            else
+            {
+                items.Add(new InventorySlot(itemToAdd, quantity));
             }
         }
+        else
+        {
+            items.Add(new InventorySlot(itemToAdd, quantity));
+        }
         
-        items.Add(new InventorySlot(itemToAdd, quantity));
+        Debug.Log($"[Inventory] Item Added: {itemToAdd.itemName}, Item Weight: {itemToAdd.weight}, New Total Weight: {TotalWeight}");
         OnInventoryChanged?.Invoke(); // 이벤트 호출
         return true;
     }
