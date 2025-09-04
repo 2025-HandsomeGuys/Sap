@@ -35,12 +35,15 @@ public class PlayerController : MonoBehaviour
     private bool jumpRequested = false;
     private bool isInventoryOpen = false;
 
+    private Camera cam;
+
     private PlayerStatsController playerStats;
 
     public Inventory playerInventory;
 
     void Start()
     {
+        cam = Camera.main;
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         playerStats = GetComponent<PlayerStatsController>();
@@ -79,8 +82,19 @@ public class PlayerController : MonoBehaviour
             {
                 transform.localScale = new Vector3(1, 1, 1);
             }
-
-            isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
+            else
+            {
+                Vector2 mousePos = (Vector2)cam.ScreenToWorldPoint(Input.mousePosition);
+                Vector2 dirVec = mousePos - (Vector2)transform.position;
+                anim.SetBool("ismoving", false);
+                if (dirVec.x > 0)
+                {
+                    transform.localScale = new Vector3(-1, 1, 1);
+                }
+                else if (dirVec.x < 0)
+                    transform.localScale = new Vector3(1, 1, 1);
+            }
+                isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
 
             if (isGrounded && Input.GetKeyDown(KeyCode.Space))
             {

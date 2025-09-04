@@ -302,37 +302,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &735613248
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 735613249}
-  m_Layer: 0
-  m_Name: ToolBone
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &735613249
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 735613248}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.0991666, y: -0.13508056, z: -0.009321382}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &935955821
 GameObject:
   m_ObjectHideFlags: 0
@@ -478,6 +447,7 @@ GameObject:
   - component: {fileID: 1010570354}
   - component: {fileID: 1010570353}
   - component: {fileID: 1010570352}
+  - component: {fileID: 1010570355}
   m_Layer: 0
   m_Name: Tool
   m_TagString: Untagged
@@ -504,6 +474,8 @@ MonoBehaviour:
   parent: {fileID: 1540115265}
   isleft: 0
   toolType: 0
+  animationMove: 0
+  toolAnim: {fileID: 1010570355}
   Img_Renderer: {fileID: 1010570353}
   sap: {fileID: -3766519690804746565, guid: 72b8f10ab3ae7284582816b4690742ba, type: 3}
   pickaxe: {fileID: 8959118705387878318, guid: 1a9351b5e83b14f459d59a5dc0bdba97, type: 3}
@@ -571,12 +543,34 @@ Transform:
   m_GameObject: {fileID: 1010570351}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0.34603292, w: 0.93822235}
-  m_LocalPosition: {x: 0.1691258, y: -0.022075966, z: 0}
+  m_LocalPosition: {x: 0.186, y: 0.001, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -30}
+--- !u!95 &1010570355
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1010570351}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 49e41399be469d14ba2f1d847fc74f35, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1540115260
 GameObject:
   m_ObjectHideFlags: 0
@@ -776,7 +770,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.0329715, y: -0.3792153}
+  m_Offset: {x: -0.0329715, y: -0.3622066}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -786,7 +780,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.5090902, y: 0.033667}
+  m_Size: {x: 0.5090902, y: 0.13288432}
   m_EdgeRadius: 0
 --- !u!114 &1540115268
 MonoBehaviour:
@@ -803,7 +797,6 @@ MonoBehaviour:
   playerRigidbody: {fileID: 1540115263}
   movePower: 2
   jumpPower: 10
-  ismoving: 0
 --- !u!95 &1540115269
 Animator:
   serializedVersion: 7
@@ -921,5 +914,4 @@ SceneRoots:
   - {fileID: 1540115265}
   - {fileID: 935955824}
   - {fileID: 1010570354}
-  - {fileID: 735613249}
   - {fileID: 52954342}

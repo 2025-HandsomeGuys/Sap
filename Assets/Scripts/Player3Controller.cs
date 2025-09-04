@@ -5,8 +5,9 @@ public class Player3Controller : MonoBehaviour
     public Rigidbody2D playerRigidbody;
     public float movePower = 4f;
     public float jumpPower = 10f;
+
     Animator anim;
-    public bool ismoving = false;
+
     private Camera cam;
 
 
@@ -16,6 +17,7 @@ public class Player3Controller : MonoBehaviour
 
     void Start()
     {
+
         cam = Camera.main;
 
     }
@@ -24,7 +26,7 @@ public class Player3Controller : MonoBehaviour
     {
         anim = GetComponent<Animator>();
     }
-    void OnTriggerEnter2D(Collider2D other)
+    void OnTriggerStay2D(Collider2D other)
     {
         Debug.Log("a");
         anim.SetBool("isjumping", false);
@@ -64,7 +66,7 @@ public class Player3Controller : MonoBehaviour
             anim.SetBool("ismoving", true);
             
         }
-        else
+        else//stop
         {
             Vector2 mousePos = (Vector2)cam.ScreenToWorldPoint(Input.mousePosition);
             Vector2 dirVec = mousePos - (Vector2)transform.position;
