@@ -10,25 +10,25 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 83a4c6eacfc8fff44998cb8b5609408a, type: 3}
-  m_Name: PlayerSO
+  m_Name: PlayerSOTest
   m_EditorClassIdentifier: 
-  originalMaxStamina: 500
-  maxStamina: 500
-  currentStamina: 480
-  originalStaminaCostPerSecond: 20
-  staminaCostPerSecond: 20
+  originalMaxStamina: 1000
+  maxStamina: 1000
+  currentStamina: 1000
+  originalStaminaCostPerSecond: 0
+  staminaCostPerSecond: 0
   originalMoveSpeed: 10
-  moveSpeed: 5
+  moveSpeed: 0
   originalJumpForce: 10
-  jumpForce: 5
+  jumpForce: 0
   originalWallClimbingSpeed: 10
-  wallClimbingSpeed: 5
+  wallClimbingSpeed: 0
   originalEncumberedSpeedMultiplier: 0.5
-  encumberedSpeedMultiplier: 1
+  encumberedSpeedMultiplier: 0
   originalInventorySize: 20
-  inventorySize: 20
+  inventorySize: 0
   originalMiningEfficiency: 1
   miningEfficiency: 1
-  originalMiningPower: 1
-  miningPower: 1
+  originalMiningPower: 0
+  miningPower: 0
   gold: 5000

@@ -1,0 +1,50 @@
+# ==================================================
+# Project: Sap_test (땅 파는 유니티 게임)
+# ==================================================
+# 이 문서는 프로젝트의 핵심 정보를 요약하여 빠른 이해를 돕기 위해 작성되었습니다.
+# Gemini에 의해 2025-09-02에 업데이트되었습니다.
+
+PROJECT_NAME:: Sap_test
+GAME_GENRE:: 2D, 어드벤처, 샌드박스
+CORE_CONCEPT:: 땅을 파서 광물을 캐고, 장비를 업그레이드하며 지하를 탐험하는 게임.
+ENGINE:: Unity
+
+# --- Scenes & Entry Point ---
+# 게임의 주요 씬과 그 역할에 대한 설명입니다.
+MAIN_DEV_SCENE:: Assets/Scenes/khbScene.unity (플레이어 행동, 월드 생성, UI 등 핵심 기능 대부분을 테스트하는 메인 개발 씬)
+START_SCENE:: [시작 씬 지정 필요, 예: MainMenuScene]
+MAIN_GAME_SCENE:: Assets/Scenes/MainGameScene/ (역할: [설명 추가 필요])
+SUB_SCENES:: Assets/Scenes/UnderGround.unity, Assets/Scenes/House.unity (역할: [설명 추가 필요])
+
+# --- Core Systems & Key Scripts ---
+# 게임의 핵심 시스템과 이를 담당하는 주요 스크립트입니다.
+PLAYER_CONTROLLER:: Assets/Scripts/Player/PlayerController.cs, Assets/Scripts/Player3Controller.cs
+WORLD_GENERATION:: Assets/Scripts/World/WorldGenerator.cs, Assets/Scripts/World/WorldManager.cs
+GAME_MANAGER:: Assets/Scripts/MainManagers/GameManager.cs
+INVENTORY:: Assets/Scripts/Inventory/Inventory.cs, Assets/Scripts/Inventory/InventoryUI.cs
+INPUT_SYSTEM:: Assets/InputSystem_Actions.inputactions
+
+# --- Data Management (ScriptableObjects) ---
+# 게임 데이터를 정의하고 관리하는 스크립트와 경로입니다.
+PLAYER_DATA:: Path: Assets/GameData/PlayerData/, Definition: Assets/Scripts/Player/PlayerSO.cs
+ITEM_DATA:: Path: Assets/GameData/ItemData/, Definition: Assets/Scripts/Items/Item.cs
+MINERAL_DATA:: Path: Assets/GameData/MineralData/, Definition: Assets/Scripts/Minerals/MineralsSO.cs
+TOOL_DATA:: Path: Assets/GameData/ToolData/, Definition: Assets/Scripts/Tools/ToolSO.cs
+
+# --- Asset Locations ---
+# 주요 에셋의 위치입니다.
+PLAYER_PREFAB_PATH:: Assets/Prefabs/Player/
+ITEM_PREFABS_PATH:: Assets/Prefabs/Items/
+PLAYER_SPRITES_PATH:: Assets/Sprites/Player/
+TILE_PALETTES:: Assets/Sprites/Rectangular Palette.prefab
+CELL_SIZE:: 0.05
+
+# --- Current Development Goal ---
+# 현재 집중하고 있는 개발 목표입니다.
+- [In Progress] khbScene의 광물 생성 로직을 청크 단위 확률로 변경
+- 타일맵으로 이루어진 흙의 테두리에 명암 추가
+- PlayerController 스크립트 리팩토링 (상태 패턴 등)
+
+# --- Notes ---
+# 파일 구조 전체 목록은 이 문서에서 제거되었습니다.
+# 최신 파일 구조는 Gemini의 `list_directory` 또는 `glob` 명령어를 통해 직접 확인하는 것이 더 정확합니다.

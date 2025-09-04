@@ -8,8 +8,7 @@ public enum TileType
     Fossil = 5,
     GarbageBag = 6,
     Gold = 7,
-    Gem = 8,
-    Silver = 9
+    Silver = 8
 }
 
 public enum PoolableType
@@ -21,7 +20,6 @@ public enum PoolableType
     Fossil,
     GarbageBag,
     Gold,
-    Gem,
     Silver
 }
 
@@ -35,6 +33,5 @@ public enum ItemID
     Fossil,
     GarbageBag,
     Gold,
-    Gem,
     Silver
 }

@@ -34,26 +34,26 @@ public class PlayerStatsController : MonoBehaviour
     [Header("Gold")]
     public int gold;
 
-    //void Awake()
-    //{
-    //    // Stamina
-    //    maxStamina = originalMaxStamina;
-    //    currentStamina = maxStamina;
-    //    staminaCostPerSecond = originalStaminaCostPerSecond;
+    // void Awake()
+    // {
+    //     // Stamina
+    //     maxStamina = originalMaxStamina;
+    //     currentStamina = maxStamina;
+    //     staminaCostPerSecond = originalStaminaCostPerSecond;
 
-    //    // Movement
-    //    moveSpeed = originalMoveSpeed;
-    //    jumpForce = originalJumpForce;
-    //    wallClimbingSpeed = originalWallClimbingSpeed;
-    //    encumberedSpeedMultiplier = originalEncumberedSpeedMultiplier;
+    //     // Movement
+    //     moveSpeed = originalMoveSpeed;
+    //     jumpForce = originalJumpForce;
+    //     wallClimbingSpeed = originalWallClimbingSpeed;
+    //     encumberedSpeedMultiplier = originalEncumberedSpeedMultiplier;
 
-    //    // Inventory
-    //    inventorySize = Mathf.Max(1, originalInventorySize);
+    //     // Inventory
+    //     inventorySize = Mathf.Max(1, originalInventorySize);
 
-    //    // Mining
-    //    miningEfficiency = Mathf.Max(0.1f, originalMiningEfficiency); // 최소 향상
-    //    miningPower = originalMiningPower;
-    //}
+    //     // Mining
+    //     miningEfficiency = Mathf.Max(0.1f, originalMiningEfficiency); // 최소 향상
+    //     miningPower = originalMiningPower;
+    // }
 
     // ===================================================
     // 🔹 PlayerData 변환 기능

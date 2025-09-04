@@ -1,9 +1,13 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using static Constants;
 
 public class DiggingController : MonoBehaviour
 {
+    [Header("Dependencies")]
+    public InventoryUI inventoryUI; // Assign in inspector
+
     [Header("Digging Settings")]
     public float digRadius = 1.0f;
     public float digOffset = 0.5f;
@@ -11,18 +15,24 @@ public class DiggingController : MonoBehaviour
 
     private Vector2 currentDigDirection = Vector2.right;
     private float nextDigTime = 0f;
-    private PlayerController playerController; // PlayerController 참조 변수 추가
+    private bool isDigging = false;
 
     void Start()
     {
-        // 같은 게임 오브젝트에 있는 PlayerController 컴포넌트를 자동으로 찾아옴
-        playerController = GetComponent<PlayerController>();
+        if (inventoryUI == null)
+        {
+            Debug.LogError("InventoryUI is not assigned in the DiggingController inspector!", this);
+        }
+    }
+
+    public void OnAttack(InputAction.CallbackContext context)
+    {
+        isDigging = context.ReadValueAsButton();
     }
 
     void Update()
     {
-        // 인벤토리가 열려있으면 아무것도 하지 않음
-        if (playerController != null && playerController.IsInventoryOpen())
+        if (inventoryUI != null && inventoryUI.IsOpen())
         {
             return;
         }
@@ -34,7 +44,7 @@ public class DiggingController : MonoBehaviour
             currentDigDirection = (mousePosition - (Vector2)transform.position).normalized;
         }
 
-        if (Input.GetMouseButton(0) && Time.time >= nextDigTime)
+        if (isDigging && Time.time >= nextDigTime)
         {
             nextDigTime = Time.time + digCooldown;
             Dig();

@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8468965360185838012}
   m_Layer: 0
   m_Name: coal_0
-  m_TagString: Untagged
+  m_TagString: gem
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -137,4 +137,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc113346ce4e20248baf9bac18947431, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemID: 3
+  itemData: {fileID: 11400000, guid: 7db1af8edaf3c6347a7d592e3da5625e, type: 2}
