@@ -17,7 +17,7 @@ public class WorldGenerator : MonoBehaviour
     public float mineralSizeMultiplier = 1.5f;
 
     [Header("Tile Assets")]
-    public TileBase dirtTile; // 광물 아래에 깔아줄 기본 땅 타일
+    public RuleTile groundRuleTile; // Rule Tile for ground generation
 
     [Header("Performance Settings")]
     public int tilesPerFrame = 200; // How many tiles/gems to spawn per frame during incremental loading
@@ -53,7 +53,7 @@ public class WorldGenerator : MonoBehaviour
                 GameObject spawnedObject = null; // 생성된 광물 오브젝트를 담을 변수
 
                 // 기본적으로 흙 타일을 깔아줌
-                tileToSet = dirtTile;
+                tileToSet = groundRuleTile;
 
                 // tileState가 광물 아이템에 해당하는지 확인
                 // 프로필의 설정을 순회하며 TileType과 일치하는지 찾음
