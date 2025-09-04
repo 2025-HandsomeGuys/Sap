@@ -180,7 +180,7 @@ public class WorldGenerator : MonoBehaviour
                         int randomX = random.Next(0, chunkSize);
                         int randomY = random.Next(0, chunkSize);
 
-                        // 해당 위치가 흙 타일인지 확인
+                        //해당 위치가 흙 타일인지 확인
                         if (chunkData.tileStates[randomX, randomY] == TileType.Dirt)
                         {
                             // 해당 깊이에서 광물이 생성될 수 있는지 추가 확인
