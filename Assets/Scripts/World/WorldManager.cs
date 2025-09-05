@@ -33,13 +33,13 @@ public class WorldManager : MonoBehaviour
     {
         public TileType[,] tileStates;
         public Vector2Int chunkCoord;
-        public List<GameObject> spawnedItems; // Changed from spawnedGems
+        public List<GameObject> spawnedItems;
 
         public ChunkData(Vector2Int coord, int chunkSize)
         {
             chunkCoord = coord;
             tileStates = new TileType[chunkSize, chunkSize];
-            spawnedItems = new List<GameObject>(); // Changed from spawnedGems
+            spawnedItems = new List<GameObject>();
         }
     }
 
@@ -87,17 +87,18 @@ public class WorldManager : MonoBehaviour
     {
         currentPlayerChunkCoord = GetChunkCoordFromPosition(playerTransform.position);
 
+        // 새 청크 로드
         for (int xOffset = -viewDistanceInChunks; xOffset <= viewDistanceInChunks; xOffset++)
         {
             for (int yOffset = -viewDistanceInChunks; yOffset <= viewDistanceInChunks; yOffset++)
             {
                 Vector2Int chunkToGenerate = new Vector2Int(currentPlayerChunkCoord.x + xOffset, currentPlayerChunkCoord.y + yOffset);
+
                 if (!generatedChunks.Contains(chunkToGenerate) && !loadingChunks.Contains(chunkToGenerate))
                 {
                     loadingChunks.Add(chunkToGenerate);
-                    
-                    ChunkData chunkData;
-                    if (!chunkDataMap.TryGetValue(chunkToGenerate, out chunkData))
+
+                    if (!chunkDataMap.TryGetValue(chunkToGenerate, out ChunkData chunkData))
                     {
                         chunkData = new ChunkData(chunkToGenerate, WorldGenerator.chunkSize);
                         worldGenerator.InitializeChunkData(chunkData);
@@ -109,6 +110,7 @@ public class WorldManager : MonoBehaviour
             }
         }
 
+        // 범위 밖 청크 언로드
         List<Vector2Int> chunksToUnload = new List<Vector2Int>();
         foreach (Vector2Int chunkCoord in generatedChunks)
         {
@@ -129,7 +131,10 @@ public class WorldManager : MonoBehaviour
 
     IEnumerator GenerateChunkCoroutineWrapper(Vector2Int chunkCoord, ChunkData chunkData)
     {
+        // 청크 생성 분산 → 한 프레임에 몰리지 않음
         yield return StartCoroutine(worldGenerator.GenerateChunk(chunkCoord, chunkData, groundTilemap));
+        yield return null;
+
         loadingChunks.Remove(chunkCoord);
         generatedChunks.Add(chunkCoord);
     }
@@ -140,6 +145,7 @@ public class WorldManager : MonoBehaviour
         {
             if (chunkDataMap.TryGetValue(chunkCoord, out ChunkData chunkData))
             {
+                // 오브젝트 반환
                 foreach (GameObject itemObject in chunkData.spawnedItems)
                 {
                     Mineable mineable = itemObject.GetComponent<Mineable>();
@@ -149,24 +155,24 @@ public class WorldManager : MonoBehaviour
                     }
                     else
                     {
-                        Destroy(itemObject); // Failsafe
+                        Destroy(itemObject);
                     }
                 }
                 chunkData.spawnedItems.Clear();
+
+                // 타일 제거 최적화
+                int startX = chunkCoord.x * WorldGenerator.chunkSize;
+                int startY = chunkCoord.y * WorldGenerator.chunkSize;
+
+                BoundsInt bounds = new BoundsInt(
+                    startX, startY, 0,
+                    WorldGenerator.chunkSize, WorldGenerator.chunkSize, 1
+                );
+                groundTilemap.SetTilesBlock(bounds, new TileBase[WorldGenerator.chunkSize * WorldGenerator.chunkSize]);
             }
 
-            int startX = chunkCoord.x * WorldGenerator.chunkSize;
-            int startY = chunkCoord.y * WorldGenerator.chunkSize;
-
-            for (int x = 0; x < WorldGenerator.chunkSize; x++)
-            {
-                for (int y = 0; y < WorldGenerator.chunkSize; y++)
-                {
-                    Vector3Int cellPosition = new Vector3Int(startX + x, startY + y, 0);
-                    groundTilemap.SetTile(cellPosition, null);
-                }
-            }
-            
+            // 메모리 절약: 멀리 벗어난 청크 데이터 제거
+            chunkDataMap.Remove(chunkCoord);
         }
     }
 
@@ -182,7 +188,7 @@ public class WorldManager : MonoBehaviour
 
             if (localX >= 0 && localX < WorldGenerator.chunkSize && localY >= 0 && localY < WorldGenerator.chunkSize)
             {
-                if(chunkData.tileStates[localX, localY] != TileType.Empty)
+                if (chunkData.tileStates[localX, localY] != TileType.Empty)
                 {
                     chunkData.tileStates[localX, localY] = TileType.Empty;
                     groundTilemap.SetTile(cellPosition, null);
