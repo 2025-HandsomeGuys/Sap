@@ -12,65 +12,62 @@ public class StaminaManager : MonoBehaviour
     public float staminaRegenRate = 20f;
 
     private PlayerStatsController playerStats;
-    private PlayerController playerController; // PlayerController 참조 추가
+    private IPlayerController playerController; // IPlayerController 인터페이스 사용
     private Coroutine regenCoroutine;
     private float lastStaminaValue;
 
     void Start()
     {
         playerStats = GetComponent<PlayerStatsController>();
-        playerController = GetComponent<PlayerController>(); // 컴포넌트 가져오기
-        if (playerStats == null)
+        // IPlayerController "자격증"을 가진 컴포넌트를 찾음 (Player3Controller든 뭐든 상관 없음)
+        playerController = GetComponent<IPlayerController>(); 
+        
+        if (playerStats == null || playerController == null)
         {
-            Debug.LogError("PlayerStats 컴포넌트를 찾을 수 없습니다!");
+            Debug.LogError("PlayerStats 또는 IPlayerController를 구현한 컴포넌트를 찾을 수 없습니다!");
             this.enabled = false; // 컴포넌트 비활성화
             return;
         }
 
         lastStaminaValue = playerStats.currentStamina;
 
-        // 게임 시작 시 스태미나가 가득 차 있지 않을 경우를 대비해 바로 회복 코루틴 시작
         TryStartRegeneration();
     }
 
     void Update()
     {
-        // 스태미나가 사용되었는지 감지 (현재 스태미나가 이전 프레임보다 낮아졌을 때)
         if (playerStats.currentStamina < lastStaminaValue)
         {
             TryStartRegeneration();
         }
 
-        // 현재 스태미나 값을 다음 프레임을 위해 저장
         lastStaminaValue = playerStats.currentStamina;
     }
 
     private void TryStartRegeneration()
     {
-        // 이미 실행 중인 회복 코루틴이 있다면 중지
         if (regenCoroutine != null)
         {
             StopCoroutine(regenCoroutine);
         }
 
-        // 새로운 회복 코루틴 시작
         regenCoroutine = StartCoroutine(RegenerateStamina());
     }
 
     private IEnumerator RegenerateStamina()
     {
-        // 1. 설정된 시간만큼 대기
         yield return new WaitForSeconds(staminaRegenDelay);
 
-        // 2. 스태미나가 최대치에 도달할 때까지 매 프레임 회복
-        while (playerStats.currentStamina < playerStats.maxStamina && playerController.currentStateName != "WallClimbingState")
+        while (playerStats.currentStamina < playerStats.maxStamina)
         {
-            // PlayerStats에 있는 회복 함수를 호출
-            playerStats.RecoverStamina(staminaRegenRate * Time.deltaTime);
+            // 인터페이스의 IsWallClimbing 속성을 사용하여 벽 타기 상태 확인
+            if (!playerController.IsWallClimbing)
+            {
+                playerStats.RecoverStamina(staminaRegenRate * Time.deltaTime);
+            }
             yield return null; // 다음 프레임까지 대기
         }
 
-        // 코루틴 완료 후 null로 초기화
         regenCoroutine = null;
     }
 }

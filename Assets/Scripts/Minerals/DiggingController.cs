@@ -15,36 +15,32 @@ public class DiggingController : MonoBehaviour
 
     private Vector2 currentDigDirection = Vector2.right;
     private float nextDigTime = 0f;
-    private bool isDigging = false;
 
     void Start()
     {
         if (inventoryUI == null)
         {
-            Debug.LogError("InventoryUI is not assigned in the DiggingController inspector!", this);
+            Debug.LogWarning("InventoryUI is not assigned in the DiggingController inspector. Digging while inventory is open won't be prevented.");
         }
-    }
-
-    public void OnAttack(InputAction.CallbackContext context)
-    {
-        isDigging = context.ReadValueAsButton();
     }
 
     void Update()
     {
+        // If inventory is open, stop all digging logic.
         if (inventoryUI != null && inventoryUI.IsOpen())
         {
             return;
         }
 
+        // 1. Determine dig direction from mouse position
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
         if ((mousePosition - (Vector2)transform.position).sqrMagnitude > 0.01f)
         {
             currentDigDirection = (mousePosition - (Vector2)transform.position).normalized;
         }
 
-        if (isDigging && Time.time >= nextDigTime)
+        // 2. Check for Left Mouse Button press (0) and cooldown
+        if (Input.GetMouseButton(0) && Time.time >= nextDigTime)
         {
             nextDigTime = Time.time + digCooldown;
             Dig();

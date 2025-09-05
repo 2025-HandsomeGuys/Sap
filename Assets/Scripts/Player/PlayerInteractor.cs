@@ -2,7 +2,6 @@ using UnityEngine;
 using TMPro;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine.InputSystem;
 
 public class PlayerInteractor : MonoBehaviour
 {
@@ -19,12 +18,16 @@ public class PlayerInteractor : MonoBehaviour
 
     void Start()
     {
-        
         playerStats = GetComponent<PlayerStatsController>();
 
         if (inventoryUI == null)
         {
-            Debug.LogError("InventoryUI is not assigned in the PlayerInteractor inspector!", this);
+            Debug.LogWarning("InventoryUI is not assigned in the PlayerInteractor inspector!");
+        }
+
+        if (playerInventory == null)
+        {
+            Debug.LogError("PlayerInventory is not assigned in the PlayerInteractor inspector! Interactions will fail.", this);
         }
 
         if (interactionPromptText != null)
@@ -33,22 +36,12 @@ public class PlayerInteractor : MonoBehaviour
         }
     }
 
-    public void OnInteract(InputAction.CallbackContext context)
-    {
-        if (context.started)
-        {
-            if (inventoryUI != null && inventoryUI.IsOpen())
-            {
-                return;
-            }
-            CollectClosestItem();
-        }
-    }
-
     void Update()
     {
+        // If inventory is open, don't allow interaction
         if (inventoryUI != null && inventoryUI.IsOpen())
         {
+            // Hide prompt if inventory is opened
             if (collectibleItems.Count > 0)
             {
                 collectibleItems.Clear();
@@ -58,6 +51,12 @@ public class PlayerInteractor : MonoBehaviour
         }
 
         FindCollectibleItems();
+
+        // Check for 'E' key press to collect items
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            CollectClosestItem();
+        }
     }
 
     private void FindCollectibleItems()
@@ -77,6 +76,7 @@ public class PlayerInteractor : MonoBehaviour
 
     private void CollectClosestItem()
     {
+        if (playerInventory == null) return;
         if (collectibleItems.Count == 0) return;
 
         GameObject closestItemObject = collectibleItems.OrderBy(g => Vector2.Distance(this.transform.position, g.transform.position)).FirstOrDefault();
@@ -99,14 +99,13 @@ public class PlayerInteractor : MonoBehaviour
 
         if (playerInventory.AddItem(itemData, 1))
         {
-            if (itemData.staminaReduction > 0)
+            if (itemData.staminaReduction > 0 && playerStats != null)
             {
                 playerStats.ReduceMaxStamina(itemData.staminaReduction);
             }
 
             collectibleItems.Remove(closestItemObject);
             
-            // Use the poolType from the Item data to return the object to the correct pool
             ObjectPooler.Instance.ReturnToPool(itemData.poolType, closestItemObject);
 
             UpdateInteractionPrompt();
