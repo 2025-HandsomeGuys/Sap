@@ -22,6 +22,9 @@ public class WorldGenerator : MonoBehaviour
     [Header("Performance Settings")]
     public int tilesPerFrame = 200; // How many tiles/gems to spawn per frame during incremental loading
 
+    /// <summary>
+    /// 실제 타일맵에 타일과 광물 오브젝트를 생성
+    /// </summary>
     public IEnumerator GenerateChunk(Vector2Int chunkCoord, WorldManager.ChunkData chunkData, Tilemap tilemap)
     {
         if (generationProfile == null)
@@ -32,7 +35,6 @@ public class WorldGenerator : MonoBehaviour
 
         int startX = chunkCoord.x * chunkSize;
         int startY = chunkCoord.y * chunkSize;
-
         int currentTilesSpawnedInFrame = 0;
 
         for (int x = 0; x < chunkSize; x++)
@@ -40,7 +42,6 @@ public class WorldGenerator : MonoBehaviour
             for (int y = 0; y < chunkSize; y++)
             {
                 TileType tileState = chunkData.tileStates[x, y];
-
                 if (tileState == TileType.Empty)
                 {
                     continue;
@@ -49,17 +50,12 @@ public class WorldGenerator : MonoBehaviour
                 int worldGridX = startX + x;
                 int worldGridY = startY + y;
 
-                TileBase tileToSet = null;
-                GameObject spawnedObject = null; // 생성된 광물 오브젝트를 담을 변수
+                TileBase tileToSet = groundRuleTile; // 기본적으로 흙 타일
+                GameObject spawnedObject = null;
 
-                // 기본적으로 흙 타일을 깔아줌
-                tileToSet = groundRuleTile;
-
-                // tileState가 광물 아이템에 해당하는지 확인
-                // 프로필의 설정을 순회하며 TileType과 일치하는지 찾음
+                // tileState가 광물인지 확인 → 프로필 순회
                 foreach (var config in generationProfile.minableSpawnConfigs)
                 {
-                    // PoolableType Enum 값과 TileType Enum 값이 일치한다고 가정
                     if ((TileType)config.minableType == tileState)
                     {
                         Vector3 spawnPosition = new Vector3(worldGridX * cellSize, worldGridY * cellSize, 0);
@@ -67,11 +63,10 @@ public class WorldGenerator : MonoBehaviour
 
                         if (spawnedObject != null)
                         {
-                            // Mineable 컴포넌트를 가져와 itemData에 접근
+                            // 스케일 조정
                             Mineable mineableComponent = spawnedObject.GetComponent<Mineable>();
                             if (mineableComponent != null && mineableComponent.itemData != null)
                             {
-                                // Item 데이터의 itemPrefab을 사용하여 스케일 조정
                                 if (mineableComponent.itemData.itemPrefab != null)
                                 {
                                     SpriteRenderer prefabRenderer = mineableComponent.itemData.itemPrefab.GetComponent<SpriteRenderer>();
@@ -80,41 +75,41 @@ public class WorldGenerator : MonoBehaviour
                                         float targetSize = cellSize * mineralSizeMultiplier;
                                         float currentWidth = prefabRenderer.bounds.size.x;
                                         float currentHeight = prefabRenderer.bounds.size.y;
-
                                         float scaleFactor = targetSize / Mathf.Max(currentWidth, currentHeight);
                                         spawnedObject.transform.localScale = Vector3.one * scaleFactor;
                                     }
                                     else
                                     {
-                                        // 프리팹에 SpriteRenderer가 없으면 기본 스케일 적용
                                         spawnedObject.transform.localScale = Vector3.one * cellSize;
                                     }
                                 }
                                 else
                                 {
-                                    // itemPrefab이 null이면 기본 스케일 적용
                                     spawnedObject.transform.localScale = Vector3.one * cellSize;
                                 }
                             }
                             else
                             {
                                 Debug.LogWarning($"생성된 오브젝트 {spawnedObject.name}에 Mineable 스크립트 또는 ItemData가 없습니다!", spawnedObject);
-                                spawnedObject.transform.localScale = Vector3.one * cellSize; // 기본 스케일
+                                spawnedObject.transform.localScale = Vector3.one * cellSize;
                             }
 
                             // WorldManager가 추적할 수 있도록 리스트에 추가
                             chunkData.spawnedItems.Add(spawnedObject);
                         }
-                        break; // 광물을 찾아서 생성했으면 설정 루프를 빠져나옴
+
+                        break; // 광물을 생성했으면 루프 종료
                     }
                 }
 
+                // 타일맵에 적용
                 if (tileToSet != null)
                 {
                     Vector3Int cellPosition = new Vector3Int(worldGridX, worldGridY, 0);
                     tilemap.SetTile(cellPosition, tileToSet);
                 }
 
+                // 프레임 분산 처리
                 currentTilesSpawnedInFrame++;
                 if (currentTilesSpawnedInFrame >= tilesPerFrame)
                 {
@@ -125,15 +120,18 @@ public class WorldGenerator : MonoBehaviour
         }
     }
 
-    public void InitializeChunkData(WorldManager.ChunkData chunkData)
+    /// <summary>
+    /// 청크 데이터 초기화 (기본 Dirt + 광맥 배치) - 비동기 버전
+    /// </summary>
+    public IEnumerator InitializeChunkDataCoroutine(WorldManager.ChunkData chunkData)
     {
         if (generationProfile == null)
         {
             Debug.LogError("WorldGenerator: MineralGenerationProfile이 할당되지 않았습니다!", this);
-            return;
+            yield break;
         }
 
-        // 1. 기본 지형(흙) 및 빈 공간 초기화
+        // 1. 기본 지형 초기화 (surfaceLevel 위는 Empty, 아래는 Dirt)
         int startY = chunkData.chunkCoord.y * chunkSize;
         for (int x = 0; x < chunkSize; x++)
         {
@@ -151,51 +149,46 @@ public class WorldGenerator : MonoBehaviour
             }
         }
 
-        // 2. 청크 기반 광맥 생성
+        // 2. 광맥 생성
         System.Random random = new System.Random(chunkData.chunkCoord.x * 10000 + chunkData.chunkCoord.y);
         int representativeDepth = startY + (chunkSize / 2);
 
         foreach (var config in generationProfile.minableSpawnConfigs)
         {
-            // 청크의 대표 깊이를 기준으로 이 광물이 스폰될지 결정
             float spawnChance = config.spawnChanceByDepth.Evaluate(representativeDepth);
             if (random.NextDouble() < spawnChance)
             {
-                // 스폰될 광맥의 수 결정
                 int veinCount = random.Next(config.veinsPerChunk.x, config.veinsPerChunk.y + 1);
 
                 for (int i = 0; i < veinCount; i++)
                 {
-                    // 광맥의 길이 결정
                     int length = random.Next(config.veinLength.x, config.veinLength.y + 1);
 
-                    // 청크 내에서 광맥 시작점 찾기 (땅 속에서만 시작하도록)
+                    // 유효한 시작점 찾기
                     int startVeinX = -1;
                     int startVeinY = -1;
                     int attempts = 0;
-                    const int maxAttempts = 100; // 무한 루프 방지
+                    const int maxAttempts = 100;
 
                     while (attempts < maxAttempts)
                     {
                         int randomX = random.Next(0, chunkSize);
                         int randomY = random.Next(0, chunkSize);
 
-                        //해당 위치가 흙 타일인지 확인
                         if (chunkData.tileStates[randomX, randomY] == TileType.Dirt)
                         {
-                            // 해당 깊이에서 광물이 생성될 수 있는지 추가 확인
                             float tileDepth = startY + randomY;
                             if (config.spawnChanceByDepth.Evaluate(tileDepth) > 0)
                             {
                                 startVeinX = randomX;
                                 startVeinY = randomY;
-                                break; // 유효한 위치를 찾았으므로 루프 종료
+                                break;
                             }
                         }
                         attempts++;
                     }
 
-                    // 유효한 시작점을 찾은 경우에만 광맥 생성 진행
+                    // 광맥 생성
                     if (startVeinX != -1)
                     {
                         int currentX = startVeinX;
@@ -203,19 +196,17 @@ public class WorldGenerator : MonoBehaviour
 
                         for (int j = 0; j < length; j++)
                         {
-                            // 현재 위치가 청크 범위 내에 있는지 확인
                             if (currentX >= 0 && currentX < chunkSize && currentY >= 0 && currentY < chunkSize)
                             {
-                                // 깊이 조건을 한 번 더 확인하여 월드 경계 근처에 이상한 광물이 생기는 것을 방지
                                 float tileDepth = startY + currentY;
-                                if (config.spawnChanceByDepth.Evaluate(tileDepth) > 0) // 해당 깊이에서 생성 확률이 0보다 클 때만
+                                if (config.spawnChanceByDepth.Evaluate(tileDepth) > 0)
                                 {
-                                     chunkData.tileStates[currentX, currentY] = (TileType)config.minableType;
+                                    chunkData.tileStates[currentX, currentY] = (TileType)config.minableType;
                                 }
                             }
 
-                            // 다음 위치로 이동 (4방향 무작위, 간격 적용)
-                            int spacing = Mathf.Max(1, config.veinSpacing); // spacing이 0이하가 되는 것을 방지
+                            // 무작위 방향 이동
+                            int spacing = Mathf.Max(1, config.veinSpacing);
                             int direction = random.Next(0, 4); // 0:Up, 1:Down, 2:Left, 3:Right
                             if (direction == 0) currentY += spacing;
                             else if (direction == 1) currentY -= spacing;
@@ -225,6 +216,8 @@ public class WorldGenerator : MonoBehaviour
                     }
                 }
             }
+            // 한 종류의 광물 생성이 끝날 때마다 프레임을 넘겨 부하 분산
+            yield return null;
         }
     }
 }

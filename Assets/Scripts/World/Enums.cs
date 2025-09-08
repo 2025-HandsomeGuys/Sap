@@ -35,3 +35,9 @@ public enum ItemID
     Gold,
     Silver
 }
+
+public enum ChunkStatus
+{
+    Loading,
+    Ready
+}
