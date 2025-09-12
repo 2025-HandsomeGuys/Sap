@@ -105,7 +105,7 @@ public enum PoolableType
     LightCoin
 }
 
-public enum ItemID
+public enum MineralID
 {
     None = 0,
 

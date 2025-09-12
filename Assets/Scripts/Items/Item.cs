@@ -5,7 +5,7 @@ using UnityEngine;
 public class Item : ScriptableObject
 {
     [Header("기본 정보")]
-    public ItemID itemID; // 아이템을 식별하기 위한 고유 ID
+    public MineralID MineralID; // 아이템을 식별하기 위한 고유 ID
     public string itemName = "새 아이템";
     [TextArea(3, 10)] // 인스펙터에서 여러 줄로 편집할 수 있도록 설정
     public string description = "아이템 설명";
