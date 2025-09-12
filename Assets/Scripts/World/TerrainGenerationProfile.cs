@@ -26,4 +26,7 @@ public class TerrainLayer
 
     [Tooltip("A list of all minerals/resources that can spawn in this layer and their generation rules.")]
     public List<MinableSpawnConfig> mineralConfigs;
+
+    [Tooltip("How much max stamina is drained per second while the player is in this layer.")]
+    public float periodicMaxStaminaDamage;
 }
