@@ -24,6 +24,7 @@ public class PlayerData
     [Header("Inventory")]
     public int originalInventorySize;
     public int inventorySize;
+    public InventoryData inventory = new InventoryData();
 
     [Header("Mining")]
     public float originalMiningEfficiency;
@@ -59,6 +60,7 @@ public class PlayerData
         // Inventory
         originalInventorySize = playerSO.originalInventorySize;
         inventorySize = playerSO.inventorySize;
+        inventory = new InventoryData();
 
         // Mining
         originalMiningEfficiency = playerSO.originalMiningEfficiency;

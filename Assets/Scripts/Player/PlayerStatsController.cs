@@ -23,6 +23,7 @@ public class PlayerStatsController : MonoBehaviour
     [Header("Inventory")]
     public int originalInventorySize; // 인벤토리 크기를 위한 최소 크기
     public int inventorySize;
+    public InventoryData inventory = new InventoryData();
 
     [Header("Mining")]
     public float originalMiningEfficiency = 1f;

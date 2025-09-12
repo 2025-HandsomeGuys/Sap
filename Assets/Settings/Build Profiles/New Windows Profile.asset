@@ -21,11 +21,13 @@ MonoBehaviour:
   m_OverrideGlobalSceneList: 1
   m_Scenes:
   - m_enabled: 1
-    m_path: Assets/Scenes/MainMenuScene.unity
+    m_path: Assets/Scenes/Test_DongJin/MainMenuScene.unity
   - m_enabled: 1
-    m_path: Assets/Scenes/GameScene.unity
+    m_path: Assets/Scenes/Test_Hanbin/khbScene.unity
   - m_enabled: 1
-    m_path: Assets/Scenes/SettingsScene.unity
+    m_path: Assets/Scenes/Test_DongJin/SettingsScene.unity
+  - m_enabled: 1
+    m_path: Assets/Scenes/Test_DongJin/GameScene.unity
   m_ScriptingDefines: []
   m_PlayerSettingsYaml:
     m_Settings: []

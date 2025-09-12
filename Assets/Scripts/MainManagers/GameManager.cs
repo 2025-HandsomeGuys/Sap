@@ -1,27 +1,66 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    public PlayerStatsController playerStats;
+    public static GameManager Instance; // 싱글톤
+
     public SaveManager saveManager;
 
-    void Start()
+    private void Awake()
     {
-        // 게임 시작 시 불러오기 (이어하기 또는 새 게임)
-        saveManager.Load(playerStats);
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject); // 중복 방지
+        }
     }
 
-    void OnApplicationQuit()
+    private void Start()
     {
-        // 앱 종료 시 저장
-        saveManager.Save(playerStats);
+        // 게임 시작 시 자동으로 로드
+        saveManager.Load();
     }
 
-    /// <summary>
-    /// 버튼이나 UI에서 '처음부터 시작'을 눌렀을 때 호출
-    /// </summary>
-    public void OnNewGameButton()
+    private void OnApplicationQuit()
     {
-        saveManager.NewGame(playerStats);
+        // 종료 시 자동 저장
+        saveManager.Save();
+    }
+
+    // 버튼에서 호출 Start Button
+    public void NewGame()
+    {
+        saveManager.NewGame();
+        SceneManager.LoadScene("GameScene");
+    }
+
+    // 버튼에서 호출 Continue Button
+    public void ContinueGame()
+    {
+        if (saveManager.HasSaveData())
+        {
+            saveManager.Load();
+            SceneManager.LoadScene("khbScene");
+        }
+        else
+        {
+            Debug.Log("저장 데이터 없음 → 새 게임 시작");
+            NewGame();
+        }
+    }
+
+    public void OpenSettings()
+    {
+        SceneManager.LoadScene("SettingsScene");
+    }
+
+    public void OpenMainMenu()
+    {
+        SceneManager.LoadScene("MainMenuScene");
     }
 }
