@@ -8,15 +8,22 @@ public class SaveManager : MonoBehaviour
     [Header("기본값 설정용 SO")]
     public PlayerSO playerSO;
 
+    private PlayerStatsController stats; // 내부에서 관리
+    private InventoryController inventory;
+
     private void Awake()
     {
         path = Path.Combine(Application.persistentDataPath, "playerData.json");
+        stats = FindObjectOfType<PlayerStatsController>(); // 씬에서 자동 찾기
+        inventory = FindObjectOfType<InventoryController>();
     }
 
-    /// <summary>
-    /// 처음부터 시작: SO의 기본값으로 PlayerStatsController 초기화
-    /// </summary>
-    public void NewGame(PlayerStatsController stats)
+    public bool HasSaveData()
+    {
+        return File.Exists(path);
+    }
+
+    public void NewGame()
     {
         if (playerSO == null)
         {
@@ -24,41 +31,60 @@ public class SaveManager : MonoBehaviour
             return;
         }
 
-        // SO 기반으로 PlayerData 생성
         PlayerData data = new PlayerData(playerSO);
-        stats.FromData(data); // PlayerStatsController 초기화
-        Save(stats); // 초기값 저장
+        stats.FromData(data);
+        Save();
         Debug.Log("새 게임 시작");
     }
 
-    /// <summary>
-    /// 저장
-    /// </summary>
-    public void Save(PlayerStatsController stats)
+    public void Save()
     {
+        if (stats == null)
+        {
+            Debug.LogError("PlayerStatsController를 찾을 수 없습니다!");
+            return;
+        }
+
         PlayerData data = stats.ToData();
+        data.inventory = inventory.ToData();
         string json = JsonUtility.ToJson(data, true);
         File.WriteAllText(path, json);
         Debug.Log("저장 완료: " + path);
     }
 
-    /// <summary>
-    /// 불러오기 (이어하기)
-    /// </summary>
-    public void Load(PlayerStatsController stats)
+    public void Load()
     {
+        if (stats == null)
+        {
+            stats = FindObjectOfType<PlayerStatsController>();
+            if (stats == null)
+            {
+                Debug.LogError("PlayerStatsController를 찾을 수 없습니다!");
+                return;
+            }
+        }
+
         if (File.Exists(path))
         {
             string json = File.ReadAllText(path);
             PlayerData data = JsonUtility.FromJson<PlayerData>(json);
-            Debug.Log(Application.persistentDataPath);
             stats.FromData(data);
+            if (data.inventory != null && data.inventory.slots != null && data.inventory.slots.Count > 0)
+            {
+                inventory.FromData(data.inventory);
+                Debug.Log($"인벤토리 불러오기 완료 (슬롯 개수: {data.inventory.slots.Count})");
+            }
+            else
+            {
+                inventory.FromData(new InventoryData()); // 빈 인벤토리로 초기화
+                Debug.Log("저장된 인벤토리가 없어 빈 인벤토리로 초기화됨");
+            }
             Debug.Log("불러오기 완료");
         }
         else
         {
             Debug.LogWarning("저장 파일 없음, SO 기본값으로 초기화");
-            NewGame(stats); // 파일 없으면 새 게임 시작
+            NewGame();
         }
     }
 }
