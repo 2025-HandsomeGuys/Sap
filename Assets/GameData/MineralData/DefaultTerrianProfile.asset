@@ -17,31 +17,39 @@ MonoBehaviour:
     startDepth: 0
     baseTileType: 10
     mineralConfigs: []
+    periodicMaxStaminaDamage: 0
   - description: 
     startDepth: -200
     baseTileType: 11
     mineralConfigs: []
+    periodicMaxStaminaDamage: 0
   - description: 
     startDepth: -400
     baseTileType: 12
     mineralConfigs: []
+    periodicMaxStaminaDamage: 1
   - description: 
     startDepth: -600
     baseTileType: 13
     mineralConfigs: []
+    periodicMaxStaminaDamage: 2
   - description: 
     startDepth: -800
     baseTileType: 14
     mineralConfigs: []
+    periodicMaxStaminaDamage: 3
   - description: 
     startDepth: -1000
     baseTileType: 15
     mineralConfigs: []
+    periodicMaxStaminaDamage: 4
   - description: 
     startDepth: -1200
     baseTileType: 16
     mineralConfigs: []
+    periodicMaxStaminaDamage: 5
   - description: 
     startDepth: -1400
     baseTileType: 1
     mineralConfigs: []
+    periodicMaxStaminaDamage: 6

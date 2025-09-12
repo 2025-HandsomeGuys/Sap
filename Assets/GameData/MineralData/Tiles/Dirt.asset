@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 226a478eda9e72044834b1ae1312943a, type: 3}
   m_Name: Dirt
   m_EditorClassIdentifier: 
-  tileType: 0
-  maxStaminaReduction: 0
+  tileType: 10
+  maxStaminaReduction: 1
