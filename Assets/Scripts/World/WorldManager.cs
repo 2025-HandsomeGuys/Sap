@@ -20,7 +20,6 @@ public class WorldManager : MonoBehaviour
             Instance = this;
         }
 
-        // Initialize the reusable empty tile array to prevent GC allocations
         if (emptyTileArray == null)
         {
             emptyTileArray = new TileBase[WorldGenerator.chunkSize * WorldGenerator.chunkSize];
@@ -36,10 +35,7 @@ public class WorldManager : MonoBehaviour
     [Header("Settings")]
     public int viewDistanceInChunks = 1;
 
-    // GC Optimization: A reusable array for clearing tiles to avoid frequent allocations.
     private static TileBase[] emptyTileArray;
-
-    // GC Optimization: A reusable list for unloading chunks to avoid frequent allocations.
     private readonly List<Vector2Int> _chunksToUnloadCache = new List<Vector2Int>();
 
     public class ChunkData
@@ -48,20 +44,20 @@ public class WorldManager : MonoBehaviour
         public Vector2Int chunkCoord;
         public List<GameObject> spawnedItems;
         public ChunkStatus status;
-        public Coroutine generationCoroutine; // To track the generation coroutine
+        public Coroutine generationCoroutine;
 
         public ChunkData(Vector2Int coord, int chunkSize)
         {
             chunkCoord = coord;
             tileStates = new TileType[chunkSize, chunkSize];
             spawnedItems = new List<GameObject>();
-            status = ChunkStatus.Loading; // Default status
+            status = ChunkStatus.Loading;
             generationCoroutine = null;
         }
     }
 
     private Vector2Int currentPlayerChunkCoord;
-    private Dictionary<Vector2Int, ChunkData> chunkDataMap = new Dictionary<Vector2Int, ChunkData>();
+    private readonly Dictionary<Vector2Int, ChunkData> chunkDataMap = new Dictionary<Vector2Int, ChunkData>();
 
     void Start()
     {
@@ -102,35 +98,42 @@ public class WorldManager : MonoBehaviour
     {
         currentPlayerChunkCoord = GetChunkCoordFromPosition(playerTransform.position);
 
-        // Load new chunks
         for (int xOffset = -viewDistanceInChunks; xOffset <= viewDistanceInChunks; xOffset++)
         {
             for (int yOffset = -viewDistanceInChunks; yOffset <= viewDistanceInChunks; yOffset++)
             {
-                Vector2Int chunkToGenerate = new Vector2Int(currentPlayerChunkCoord.x + xOffset, currentPlayerChunkCoord.y + yOffset);
+                Vector2Int chunkCoord = new Vector2Int(currentPlayerChunkCoord.x + xOffset, currentPlayerChunkCoord.y + yOffset);
 
-                if (!chunkDataMap.ContainsKey(chunkToGenerate))
+                if (chunkDataMap.TryGetValue(chunkCoord, out ChunkData chunkData))
                 {
-                    var newChunkData = new ChunkData(chunkToGenerate, WorldGenerator.chunkSize);
-                    chunkDataMap.Add(chunkToGenerate, newChunkData);
-                    
-                    // Start the full generation sequence and track it
+                    // If chunk data exists but is unloaded, reload it
+                    if (chunkData.status == ChunkStatus.Unloaded)
+                    {
+                        chunkData.generationCoroutine = StartCoroutine(RenderChunkCoroutine(chunkData));
+                    }
+                }
+                else
+                {
+                    // If chunk data doesn't exist, create it for the first time
+                    var newChunkData = new ChunkData(chunkCoord, WorldGenerator.chunkSize);
+                    chunkDataMap.Add(chunkCoord, newChunkData);
                     newChunkData.generationCoroutine = StartCoroutine(FullChunkGenerationSequence(newChunkData));
                 }
             }
         }
 
-        // Unload chunks that are out of range
         _chunksToUnloadCache.Clear();
-        // Iterate over a copy of the values to allow modification during loop
-        foreach (var chunkData in chunkDataMap.Values.ToList())
+        foreach (var chunkData in chunkDataMap.Values)
         {
-            int xDiff = Mathf.Abs(chunkData.chunkCoord.x - currentPlayerChunkCoord.x);
-            int yDiff = Mathf.Abs(chunkData.chunkCoord.y - currentPlayerChunkCoord.y);
-
-            if (xDiff > viewDistanceInChunks + 1 || yDiff > viewDistanceInChunks + 1)
+            if (chunkData.status == ChunkStatus.Ready)
             {
-                _chunksToUnloadCache.Add(chunkData.chunkCoord);
+                int xDiff = Mathf.Abs(chunkData.chunkCoord.x - currentPlayerChunkCoord.x);
+                int yDiff = Mathf.Abs(chunkData.chunkCoord.y - currentPlayerChunkCoord.y);
+
+                if (xDiff > viewDistanceInChunks + 1 || yDiff > viewDistanceInChunks + 1)
+                {
+                    _chunksToUnloadCache.Add(chunkData.chunkCoord);
+                }
             }
         }
 
@@ -142,28 +145,30 @@ public class WorldManager : MonoBehaviour
 
     IEnumerator FullChunkGenerationSequence(ChunkData chunkData)
     {
-        // Step 1: Asynchronously initialize the chunk data (heavy calculations)
+        chunkData.status = ChunkStatus.Loading;
         yield return StartCoroutine(worldGenerator.InitializeChunkDataCoroutine(chunkData));
-
-        // Step 2: Asynchronously generate the visual chunk (setting tiles and spawning objects)
         yield return StartCoroutine(worldGenerator.GenerateChunk(chunkData.chunkCoord, chunkData, groundTilemap));
-        
-        // Step 3: Mark chunk as ready
         chunkData.status = ChunkStatus.Ready;
-        chunkData.generationCoroutine = null; // Coroutine is finished
+        chunkData.generationCoroutine = null;
+    }
+
+    IEnumerator RenderChunkCoroutine(ChunkData chunkData)
+    {
+        chunkData.status = ChunkStatus.Loading; // Mark as loading while we render
+        yield return StartCoroutine(worldGenerator.GenerateChunk(chunkData.chunkCoord, chunkData, groundTilemap));
+        chunkData.status = ChunkStatus.Ready;
+        chunkData.generationCoroutine = null;
     }
 
     void UnloadChunk(Vector2Int chunkCoord)
     {
         if (chunkDataMap.TryGetValue(chunkCoord, out ChunkData chunkData))
         {
-            // If chunk is still being generated, stop the coroutine
             if (chunkData.status == ChunkStatus.Loading && chunkData.generationCoroutine != null)
             {
                 StopCoroutine(chunkData.generationCoroutine);
             }
 
-            // Return objects to the pool
             foreach (GameObject itemObject in chunkData.spawnedItems)
             {
                 Mineable mineable = itemObject.GetComponent<Mineable>();
@@ -178,19 +183,13 @@ public class WorldManager : MonoBehaviour
             }
             chunkData.spawnedItems.Clear();
 
-            // Clear tiles efficiently
             int startX = chunkCoord.x * WorldGenerator.chunkSize;
             int startY = chunkCoord.y * WorldGenerator.chunkSize;
-
-            BoundsInt bounds = new BoundsInt(
-                startX, startY, 0,
-                WorldGenerator.chunkSize, WorldGenerator.chunkSize, 1
-            );
-            // Use the cached static array to avoid GC allocation
+            BoundsInt bounds = new BoundsInt(startX, startY, 0, WorldGenerator.chunkSize, WorldGenerator.chunkSize, 1);
             groundTilemap.SetTilesBlock(bounds, emptyTileArray);
 
-            // Remove chunk data from the map
-            chunkDataMap.Remove(chunkCoord);
+            // Instead of removing the data, just mark it as unloaded
+            chunkData.status = ChunkStatus.Unloaded;
         }
     }
 
@@ -201,7 +200,6 @@ public class WorldManager : MonoBehaviour
 
         if (chunkDataMap.TryGetValue(chunkCoord, out ChunkData chunkData))
         {
-            // Prevent interaction with chunks that are not ready
             if (chunkData.status != ChunkStatus.Ready)
             {
                 return;
@@ -219,5 +217,30 @@ public class WorldManager : MonoBehaviour
                 }
             }
         }
+    }
+
+    public TileType GetTileTypeAt(Vector3 worldPosition)
+    {
+        Vector2Int chunkCoord = GetChunkCoordFromPosition(worldPosition);
+
+        if (chunkDataMap.TryGetValue(chunkCoord, out ChunkData chunkData))
+        {
+            // We can read tile data even from unloaded chunks
+            if (chunkData.status == ChunkStatus.Loading)
+            {
+                return TileType.Empty; // Can't get data while it's being generated
+            }
+
+            Vector3Int cellPosition = groundTilemap.WorldToCell(worldPosition);
+            int localX = cellPosition.x - (chunkCoord.x * WorldGenerator.chunkSize);
+            int localY = cellPosition.y - (chunkCoord.y * WorldGenerator.chunkSize);
+
+            if (localX >= 0 && localX < WorldGenerator.chunkSize && localY >= 0 && localY < WorldGenerator.chunkSize)
+            {
+                return chunkData.tileStates[localX, localY];
+            }
+        }
+
+        return TileType.Empty; // Default if chunk or tile is not found
     }
 }

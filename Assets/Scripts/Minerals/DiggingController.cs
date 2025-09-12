@@ -8,6 +8,8 @@ public class DiggingController : MonoBehaviour
     [Header("Dependencies")]
     public InventoryUI inventoryUI; // Assign in inspector
 
+    private PlayerStatsController _playerStats;
+
     [Header("Digging Settings")]
     public float digRadius = 1.0f;
     public float digOffset = 0.5f;
@@ -18,9 +20,15 @@ public class DiggingController : MonoBehaviour
 
     void Start()
     {
+        _playerStats = GetComponent<PlayerStatsController>();
+
         if (inventoryUI == null)
         {
             Debug.LogWarning("InventoryUI is not assigned in the DiggingController inspector. Digging while inventory is open won't be prevented.");
+        }
+        if (_playerStats == null)
+        {
+            Debug.LogError("PlayerStatsController component not found on player! Stamina reduction will not work.");
         }
     }
 
@@ -73,6 +81,22 @@ public class DiggingController : MonoBehaviour
         foreach (Vector3Int cellPos in cellsToDig)
         {
             Vector3 cellWorldCenter = WorldManager.Instance.groundTilemap.GetCellCenterWorld(cellPos);
+            
+            // --- New Stamina Logic (JSON) ---
+            if (_playerStats != null)
+            {
+                TileType type = WorldManager.Instance.GetTileTypeAt(cellWorldCenter);
+                if (type != TileType.Empty)
+                {
+                    TileDataJson data = TileDataManager.Instance.GetData(type);
+                    if (data != null && data.maxStaminaReduction > 0)
+                    {
+                        _playerStats.ReduceMaxStamina(data.maxStaminaReduction);
+                    }
+                }
+            }
+            // --- End New Stamina Logic ---
+
             WorldManager.Instance.TileDug(cellWorldCenter);
         }
     }

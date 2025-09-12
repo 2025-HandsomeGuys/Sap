@@ -1,7 +1,5 @@
 using UnityEngine;
 using TMPro;
-using System.Collections.Generic;
-using System.Linq;
 
 public class PlayerInteractor : MonoBehaviour
 {
@@ -13,7 +11,13 @@ public class PlayerInteractor : MonoBehaviour
     public float collectionRadius = 1f;
     public TextMeshProUGUI interactionPromptText;
 
-    private List<GameObject> collectibleItems = new List<GameObject>();
+    // Optimization: Timer to limit how often we check for items.
+    private float _checkTimer;
+    private const float CHECK_INTERVAL = 0.2f; // Check 5 times per second
+
+    // Optimization: Cache for NonAlloc physics calls to prevent GC allocation.
+    private readonly Collider2D[] _colliderCache = new Collider2D[16]; // Max 16 items detected at once
+    private Mineable _closestItem; // Cache the component directly
     private PlayerStatsController playerStats;
 
     void Start()
@@ -38,76 +42,94 @@ public class PlayerInteractor : MonoBehaviour
 
     void Update()
     {
-        // If inventory is open, don't allow interaction
+        // If inventory is open, hide prompt and don't allow interaction
         if (inventoryUI != null && inventoryUI.IsOpen())
         {
-            // Hide prompt if inventory is opened
-            if (collectibleItems.Count > 0)
+            if (_closestItem != null)
             {
-                collectibleItems.Clear();
+                _closestItem = null;
                 UpdateInteractionPrompt();
             }
             return;
         }
 
-        FindCollectibleItems();
-
-        // Check for 'E' key press to collect items
-        if (Input.GetKeyDown(KeyCode.E))
+        // Timer-based check for performance
+        _checkTimer += Time.deltaTime;
+        if (_checkTimer >= CHECK_INTERVAL)
         {
-            CollectClosestItem();
-        }
-    }
+            _checkTimer = 0f;
 
-    private void FindCollectibleItems()
-    {
-        collectibleItems.Clear();
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, collectionRadius);
-        foreach (Collider2D collider in colliders)
-        {
-            // Check for the Mineable component instead of a specific tag
-            if (collider.GetComponent<Mineable>() != null)
+            Mineable previousClosestItem = _closestItem;
+            FindClosestCollectibleItem();
+
+            if (previousClosestItem != _closestItem) // Only update UI if the state changes
             {
-                collectibleItems.Add(collider.gameObject);
+                UpdateInteractionPrompt();
             }
         }
-        UpdateInteractionPrompt();
+
+        // Check for 'E' key press to collect the closest item found
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            if (_closestItem != null)
+            {
+                CollectItem(_closestItem);
+            }
+        }
     }
 
-    private void CollectClosestItem()
+    private void FindClosestCollectibleItem()
     {
-        if (playerInventory == null) return;
-        if (collectibleItems.Count == 0) return;
+        _closestItem = null;
+        float closestDistSqr = float.MaxValue;
 
-        GameObject closestItemObject = collectibleItems.OrderBy(g => Vector2.Distance(this.transform.position, g.transform.position)).FirstOrDefault();
+        int hitCount = Physics2D.OverlapCircleNonAlloc(transform.position, collectionRadius, _colliderCache);
 
-        if (closestItemObject == null) return;
-
-        Mineable itemComponent = closestItemObject.GetComponent<Mineable>();
-        if (itemComponent == null)
+        for (int i = 0; i < hitCount; i++)
         {
-            Debug.LogError("Item object is missing Mineable script!", closestItemObject);
-            return;
+            // Use TryGetComponent to avoid double lookups
+            if (_colliderCache[i].TryGetComponent(out Mineable mineable))
+            {
+                float distSqr = (transform.position - mineable.transform.position).sqrMagnitude;
+                if (distSqr < closestDistSqr)
+                {
+                    closestDistSqr = distSqr;
+                    _closestItem = mineable;
+                }
+            }
         }
+    }
+
+    private void CollectItem(Mineable itemComponent)
+    {
+        if (playerInventory == null || itemComponent == null) return;
 
         Item itemData = itemComponent.itemData;
         if (itemData == null)
         {
-            Debug.LogError("Mineable script is missing ItemData! Assign it in the prefab inspector.", closestItemObject);
+            Debug.LogError("Mineable script is missing ItemData! Assign it in the prefab inspector.", itemComponent.gameObject);
             return;
         }
 
         if (playerInventory.AddItem(itemData, 1))
         {
-            if (itemData.staminaReduction > 0 && playerStats != null)
+            // if (itemData.staminaReduction > 0 && playerStats != null)
+            // {
+            //     playerStats.ReduceMaxStamina(itemData.staminaReduction);
+            // }
+
+            GameObject itemObject = itemComponent.gameObject;
+
+            // The collected item is no longer the closest one
+            if(itemComponent == _closestItem) 
             {
-                playerStats.ReduceMaxStamina(itemData.staminaReduction);
+                _closestItem = null;
             }
-
-            collectibleItems.Remove(closestItemObject);
             
-            ObjectPooler.Instance.ReturnToPool(itemData.poolType, closestItemObject);
+            ObjectPooler.Instance.ReturnToPool(itemData.poolType, itemObject);
 
+            // We collected an item, so let's immediately re-check for the next closest one
+            FindClosestCollectibleItem();
             UpdateInteractionPrompt();
         }
     }
@@ -116,7 +138,7 @@ public class PlayerInteractor : MonoBehaviour
     {
         if (interactionPromptText != null)
         {
-            interactionPromptText.gameObject.SetActive(collectibleItems.Count > 0);
+            interactionPromptText.gameObject.SetActive(_closestItem != null);
         }
     }
 }

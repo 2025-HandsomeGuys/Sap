@@ -1670,11 +1670,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c8f14a7ea8b62d4d8a4864b7b69655a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  generationProfile: {fileID: 11400000, guid: 49474183ad0e9a24693e872cc027339f, type: 2}
-  surfaceLevel: 10
+  terrainProfile: {fileID: 11400000, guid: a2961093cc153744e83c3cd6db388eed, type: 2}
   cellSize: 0.05
   mineralSizeMultiplier: 5
-  groundRuleTile: {fileID: 11400000, guid: 68db1cceb02713846a0f5927d0d45e50, type: 2}
+  dirtTile: {fileID: 11400000, guid: 68db1cceb02713846a0f5927d0d45e50, type: 2}
+  hardStoneTile: {fileID: 11400000, guid: 0b76df8051062a941b729ef1a61bea26, type: 2}
+  coolStoneTile: {fileID: 11400000, guid: ac7b02d062c68984da44f38c4872c86a, type: 2}
+  iceTile: {fileID: 11400000, guid: 434506b4407c6404da080576689ec40c, type: 2}
+  hotStoneTile: {fileID: 11400000, guid: 4bec8f631d7487048abc783a11dd49cf, type: 2}
+  magmaRockTile: {fileID: 11400000, guid: 6f816894efd79584da5adbb0aab10994, type: 2}
+  meteoriteRockTile: {fileID: 11400000, guid: 27ec4e7215d8d254c952dbfca398ede5, type: 2}
+  bedrockTile: {fileID: 11400000, guid: 620274fe00c1feb4c91421e45c333da2, type: 2}
   tilesPerFrame: 50
 --- !u!4 &1223317398
 Transform:

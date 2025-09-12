@@ -1,0 +1,47 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 556ecc9c1a3292946b27b8e18cc03422, type: 3}
+  m_Name: DefaultTerrianProfile
+  m_EditorClassIdentifier: 
+  layers:
+  - description: 
+    startDepth: 0
+    baseTileType: 10
+    mineralConfigs: []
+  - description: 
+    startDepth: -200
+    baseTileType: 11
+    mineralConfigs: []
+  - description: 
+    startDepth: -400
+    baseTileType: 12
+    mineralConfigs: []
+  - description: 
+    startDepth: -600
+    baseTileType: 13
+    mineralConfigs: []
+  - description: 
+    startDepth: -800
+    baseTileType: 14
+    mineralConfigs: []
+  - description: 
+    startDepth: -1000
+    baseTileType: 15
+    mineralConfigs: []
+  - description: 
+    startDepth: -1200
+    baseTileType: 16
+    mineralConfigs: []
+  - description: 
+    startDepth: -1400
+    baseTileType: 1
+    mineralConfigs: []
