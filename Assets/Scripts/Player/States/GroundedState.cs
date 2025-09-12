@@ -11,7 +11,12 @@ public class GroundedState : PlayerBaseState
     public override void UpdateState(PlayerController player)
     {
         // Handle animations and flipping
+        // This one line handles BOTH moving and standing still.
+        // If moveInput is not 0, isMoving becomes true.
+        // If moveInput is 0, isMoving becomes false.
         player.Anim.SetBool("ismoving", player.moveInput != 0);
+
+        // This part just handles which way the character is facing.
         if (player.moveInput > 0)
         {
             player.SpriteRenderer.flipX = true;

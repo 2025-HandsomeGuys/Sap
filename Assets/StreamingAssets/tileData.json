@@ -1,0 +1,16 @@
+{
+  "tiles": [
+    {
+      "tileType": "Dirt",
+      "maxStaminaReduction": 0.1
+    },
+    {
+      "tileType": "HardStone",
+      "maxStaminaReduction": 0.5
+    },
+    {
+      "tileType": "CoolStone",
+      "maxStaminaReduction": 0.8
+    }
+  ]
+}

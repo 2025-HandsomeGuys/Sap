@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: dfddabf144925be45a7114e1ecd856cb
+guid: 23d39f332c25b3a45bd836166ead2678
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 8222743105709384457
-    second: Dirt_Darker_Sprite_0
+      213: -1375128330109496422
+    second: CoolStone_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Dirt_Darker_Sprite_0
+      name: CoolStone_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 26
-        height: 26
+        x: 116
+        y: 112
+        width: 792
+        height: 798
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 903a917e94d0d1270800000000000000
-      internalID: 8222743105709384457
+      spriteID: a935f3bc1109aece0800000000000000
+      internalID: -1375128330109496422
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Dirt_Darker_Sprite_0: 8222743105709384457
+      CoolStone_0: -1375128330109496422
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: dfddabf144925be45a7114e1ecd856cb
+guid: 4327f27b6f3f774489f77412c31337bd
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 8222743105709384457
-    second: Dirt_Darker_Sprite_0
+      213: -2230326978415637320
+    second: Bedrock_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Dirt_Darker_Sprite_0
+      name: Bedrock_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 26
-        height: 26
+        width: 60
+        height: 60
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 903a917e94d0d1270800000000000000
-      internalID: 8222743105709384457
+      spriteID: 8bcc09e0e694c01e0800000000000000
+      internalID: -2230326978415637320
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Dirt_Darker_Sprite_0: 8222743105709384457
+      Bedrock_0: -2230326978415637320
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

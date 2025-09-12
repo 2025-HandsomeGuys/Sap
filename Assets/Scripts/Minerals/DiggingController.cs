@@ -8,6 +8,8 @@ public class DiggingController : MonoBehaviour
     [Header("Dependencies")]
     public InventoryUI inventoryUI; // Assign in inspector
 
+    private PlayerStatsController _playerStats;
+
     [Header("Digging Settings")]
     public float digRadius = 1.0f;
     public float digOffset = 0.5f;
@@ -15,36 +17,38 @@ public class DiggingController : MonoBehaviour
 
     private Vector2 currentDigDirection = Vector2.right;
     private float nextDigTime = 0f;
-    private bool isDigging = false;
 
     void Start()
     {
+        _playerStats = GetComponent<PlayerStatsController>();
+
         if (inventoryUI == null)
         {
-            Debug.LogError("InventoryUI is not assigned in the DiggingController inspector!", this);
+            Debug.LogWarning("InventoryUI is not assigned in the DiggingController inspector. Digging while inventory is open won't be prevented.");
         }
-    }
-
-    public void OnAttack(InputAction.CallbackContext context)
-    {
-        isDigging = context.ReadValueAsButton();
+        if (_playerStats == null)
+        {
+            Debug.LogError("PlayerStatsController component not found on player! Stamina reduction will not work.");
+        }
     }
 
     void Update()
     {
+        // If inventory is open, stop all digging logic.
         if (inventoryUI != null && inventoryUI.IsOpen())
         {
             return;
         }
 
+        // 1. Determine dig direction from mouse position
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
         if ((mousePosition - (Vector2)transform.position).sqrMagnitude > 0.01f)
         {
             currentDigDirection = (mousePosition - (Vector2)transform.position).normalized;
         }
 
-        if (isDigging && Time.time >= nextDigTime)
+        // 2. Check for Left Mouse Button press (0) and cooldown
+        if (Input.GetMouseButton(0) && Time.time >= nextDigTime)
         {
             nextDigTime = Time.time + digCooldown;
             Dig();
@@ -77,6 +81,22 @@ public class DiggingController : MonoBehaviour
         foreach (Vector3Int cellPos in cellsToDig)
         {
             Vector3 cellWorldCenter = WorldManager.Instance.groundTilemap.GetCellCenterWorld(cellPos);
+            
+            // --- New Stamina Logic (JSON) ---
+            if (_playerStats != null)
+            {
+                TileType type = WorldManager.Instance.GetTileTypeAt(cellWorldCenter);
+                if (type != TileType.Empty)
+                {
+                    TileDataJson data = TileDataManager.Instance.GetData(type);
+                    if (data != null && data.maxStaminaReduction > 0)
+                    {
+                        _playerStats.ReduceMaxStamina(data.maxStaminaReduction);
+                    }
+                }
+            }
+            // --- End New Stamina Logic ---
+
             WorldManager.Instance.TileDug(cellWorldCenter);
         }
     }
