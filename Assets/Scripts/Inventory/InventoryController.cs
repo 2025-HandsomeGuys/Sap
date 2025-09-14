@@ -10,7 +10,7 @@ public class InventoryController : MonoBehaviour
     {
         if (item == null || quantity <= 0) return;
 
-        // ½ºÅÃ °¡´É ¾ÆÀÌÅÛÀÌ¸é ±âÁ¸ ½½·Ô Ã£±â
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì¸ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Ã£ï¿½ï¿½
         var existing = items.Find(slot => slot.item == item);
         if (existing != null && item.stackable)
         {
@@ -21,7 +21,7 @@ public class InventoryController : MonoBehaviour
             items.Add(new InventorySlot(item, quantity));
         }
 
-        Debug.Log($"¾ÆÀÌÅÛ Ãß°¡µÊ: {item.itemName} x{quantity}");
+        Debug.Log($"ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ß°ï¿½ï¿½ï¿½: {item.itemName} x{quantity}");
     }
 
     public void RemoveItem(Item item, int quantity = 1)
@@ -35,7 +35,7 @@ public class InventoryController : MonoBehaviour
             if (slot.quantity <= 0)
                 items.Remove(slot);
 
-            Debug.Log($"¾ÆÀÌÅÛ Á¦°ÅµÊ: {item.itemName} x{quantity}");
+            Debug.Log($"ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Åµï¿½: {item.itemName} x{quantity}");
         }
     }
 
@@ -47,7 +47,7 @@ public class InventoryController : MonoBehaviour
         {
             data.slots.Add(new InventorySlotData
             {
-                itemId = slot.item.itemID.ToString(),
+                itemId = slot.item.MineralID.ToString(),
                 quantity = slot.quantity
             });
         }
@@ -61,14 +61,14 @@ public class InventoryController : MonoBehaviour
 
         if (loadedData == null || loadedData.slots == null || loadedData.slots.Count == 0)
         {
-            Debug.Log("ºÒ·¯¿Ã ÀÎº¥Åä¸®°¡ ¾øÀ½ ¡æ ºó ÀÎº¥Åä¸® À¯Áö");
+            Debug.Log("ï¿½Ò·ï¿½ï¿½ï¿½ ï¿½Îºï¿½ï¿½ä¸®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ ï¿½Îºï¿½ï¿½ä¸® ï¿½ï¿½ï¿½ï¿½");
             return;
         }
 
         foreach (var slotData in loadedData.slots)
         {
             Item item = ItemDatabase.Instance.GetItemByID(
-                (ItemID)System.Enum.Parse(typeof(ItemID), slotData.itemId)
+                (MineralID)System.Enum.Parse(typeof(MineralID), slotData.itemId)
             );
 
             if (item != null)
@@ -77,36 +77,36 @@ public class InventoryController : MonoBehaviour
             }
             else
             {
-                Debug.LogWarning($"ID {slotData.itemId} ¿¡ ÇØ´çÇÏ´Â ¾ÆÀÌÅÛÀ» Ã£À» ¼ö ¾øÀ½");
+                Debug.LogWarning($"ID {slotData.itemId} ï¿½ï¿½ ï¿½Ø´ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ã£ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½");
             }
         }
     }
 
-    [ContextMenu("Å×½ºÆ® ¾ÆÀÌÅÛ Ãß°¡")]
+    [ContextMenu("ï¿½×½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ß°ï¿½")]
     public void AddTestItem()
     {
         if (ItemDatabase.Instance != null && ItemDatabase.Instance.allItems.Count > 0)
         {
-            // DBÀÇ Ã¹ ¹øÂ° ¾ÆÀÌÅÛÀ» Å×½ºÆ®·Î Ãß°¡
+            // DBï¿½ï¿½ Ã¹ ï¿½ï¿½Â° ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½×½ï¿½Æ®ï¿½ï¿½ ï¿½ß°ï¿½
             AddItem(ItemDatabase.Instance.allItems[0], 1);
         }
         else
         {
-            Debug.LogWarning("ItemDatabase¿¡ ¾ÆÀÌÅÛÀÌ ¾øÀ½");
+            Debug.LogWarning("ItemDatabaseï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½");
         }
     }
 
-    [ContextMenu("Å×½ºÆ® ¾ÆÀÌÅÛ Á¦°Å")]
+    [ContextMenu("ï¿½×½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½")]
     public void RemoveTestItem()
     {
         if (ItemDatabase.Instance != null && ItemDatabase.Instance.allItems.Count > 0)
         {
-            // DBÀÇ Ã¹ ¹øÂ° ¾ÆÀÌÅÛÀ» Å×½ºÆ®·Î Á¦°Å
+            // DBï¿½ï¿½ Ã¹ ï¿½ï¿½Â° ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½×½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             RemoveItem(ItemDatabase.Instance.allItems[0], 1);
         }
         else
         {
-            Debug.LogWarning("ItemDatabase¿¡ ¾ÆÀÌÅÛÀÌ ¾øÀ½");
+            Debug.LogWarning("ItemDatabaseï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½");
         }
     }
 }
