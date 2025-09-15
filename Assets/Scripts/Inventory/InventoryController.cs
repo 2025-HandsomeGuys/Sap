@@ -6,7 +6,7 @@ public class InventoryController : MonoBehaviour
     public InventoryData data = new InventoryData();
     public List<InventorySlot> items = new List<InventorySlot>();
 
-    public void AddItem(Item item, int quantity = 1)
+    public void AddItem(ItemSO item, int quantity = 1)
     {
         if (item == null || quantity <= 0) return;
 
@@ -24,7 +24,7 @@ public class InventoryController : MonoBehaviour
         Debug.Log($"������ �߰���: {item.itemName} x{quantity}");
     }
 
-    public void RemoveItem(Item item, int quantity = 1)
+    public void RemoveItem(ItemSO item, int quantity = 1)
     {
         if (item == null || quantity <= 0) return;
 
@@ -67,7 +67,7 @@ public class InventoryController : MonoBehaviour
 
         foreach (var slotData in loadedData.slots)
         {
-            Item item = ItemDatabase.Instance.GetItemByID(
+            ItemSO item = ItemDatabase.Instance.GetItemByID(
                 (MineralID)System.Enum.Parse(typeof(MineralID), slotData.itemId)
             );
 

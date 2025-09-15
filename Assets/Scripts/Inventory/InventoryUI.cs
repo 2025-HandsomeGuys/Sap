@@ -96,7 +96,7 @@ public class InventoryUI : MonoBehaviour
     }
 
         // (가벼운 작업) 설명 텍스트만 업데이트. 슬롯 클릭 시 호출됨.
-    public void UpdateDescription(Item item)
+    public void UpdateDescription(ItemSO item)
     {
         string itemName = (item != null) ? item.itemName : "NULL";
         Debug.Log($"[InventoryUI] UpdateDescription called for item: {itemName}");

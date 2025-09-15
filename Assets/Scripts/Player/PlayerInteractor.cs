@@ -104,7 +104,7 @@ public class PlayerInteractor : MonoBehaviour
     {
         if (playerInventory == null || itemComponent == null) return;
 
-        Item itemData = itemComponent.itemData;
+        ItemSO itemData = itemComponent.itemData;
         if (itemData == null)
         {
             Debug.LogError("Mineable script is missing ItemData! Assign it in the prefab inspector.", itemComponent.gameObject);

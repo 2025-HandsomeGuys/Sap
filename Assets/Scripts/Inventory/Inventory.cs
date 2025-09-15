@@ -6,10 +6,10 @@ using System; // Action을 사용하기 위해 추가
 [System.Serializable]
 public class InventorySlot
 {
-    public Item item;
+    public ItemSO item;
     public int quantity;
 
-    public InventorySlot(Item item, int quantity)
+    public InventorySlot(ItemSO item, int quantity)
     {
         this.item = item;
         this.quantity = quantity;
@@ -54,7 +54,7 @@ public class Inventory : MonoBehaviour
     public bool IsEncumbered => TotalWeight > encumbranceThreshold;
 
     // 아이템 추가 시도
-    public bool AddItem(Item itemToAdd, int quantity = 1)
+    public bool AddItem(ItemSO itemToAdd, int quantity = 1)
     {
         if (itemToAdd == null || quantity <= 0) return false;
 
@@ -87,7 +87,7 @@ public class Inventory : MonoBehaviour
         return true;
     }
 
-    public void RemoveItem(Item itemToRemove, int quantity = 1)
+    public void RemoveItem(ItemSO itemToRemove, int quantity = 1)
     {
         if (itemToRemove == null || quantity <= 0) return;
 
