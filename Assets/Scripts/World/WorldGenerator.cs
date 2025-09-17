@@ -112,7 +112,41 @@ public class WorldGenerator : MonoBehaviour
         }
         yield return null; // Yield after base terrain pass
 
-        // PASS 2: Generate Mineral Veins
+        // PASS 2: Generate Diagonal Stone Veins
+        for (int x = 0; x < chunkSize; x++)
+        {
+            for (int y = 0; y < chunkSize; y++)
+            {
+                int worldY = chunkStartY + y;
+                TerrainLayer layer = GetLayerForDepth(worldY);
+
+                if (layer != null && layer.hasDiagonalVeins)
+                {
+                    // Only replace the base tile of the current layer, not other newly placed veins
+                    if (chunkData.tileStates[x, y] == layer.baseTileType)
+                    {
+                        float worldX = chunkData.chunkCoord.x * chunkSize + x;
+
+                        // Noise A: The main diagonal stripes
+                        float diagonalNoise = Mathf.PerlinNoise((worldX + worldY) * layer.veinNoiseScale, 0);
+
+                        // Noise B: A second noise field to create thickness variations and breaks
+                        float thicknessNoise = Mathf.PerlinNoise(worldX * layer.veinThicknessNoiseScale, worldY * layer.veinThicknessNoiseScale);
+
+                        // Combine the two noises. Subtracting the thickness noise from the main stripes.
+                        float combinedNoise = diagonalNoise - thicknessNoise;
+
+                        if (combinedNoise > layer.veinThreshold)
+                        {
+                            chunkData.tileStates[x, y] = layer.diagonalVeinTile;
+                        }
+                    }
+                }
+            }
+        }
+        yield return null; // Yield after diagonal vein pass
+
+        // PASS 3: Generate Mineral Veins
         System.Random random = new System.Random(chunkData.chunkCoord.x * 10000 + chunkData.chunkCoord.y);
         foreach (var layer in terrainProfile.layers)
         {
@@ -122,8 +156,10 @@ public class WorldGenerator : MonoBehaviour
 
             foreach (var mineralConfig in layer.mineralConfigs)
             {
-                // Simplified spawn logic for now, can be expanded
-                if (random.NextDouble() < 0.1f) // Example: 10% chance to spawn a vein type
+                // Use the AnimationCurve to determine spawn chance at this depth.
+                float spawnChance = mineralConfig.spawnChanceByDepth.Evaluate(Mathf.Abs(chunkStartY)); // Use absolute depth
+
+                if (random.NextDouble() < spawnChance)
                 {
                     int veinCount = random.Next(mineralConfig.veinsPerChunk.x, mineralConfig.veinsPerChunk.y + 1);
                     for (int i = 0; i < veinCount; i++)
@@ -133,6 +169,7 @@ public class WorldGenerator : MonoBehaviour
                         int startY = random.Next(0, chunkSize);
                         int worldY = chunkStartY + startY;
 
+                        // Ensure the vein starts within the correct layer depth
                         if (worldY <= layer.startDepth && worldY > GetNextLayerDepth(layer))
                         {
                             GenerateVein(chunkData, random, mineralConfig, startX, startY);
@@ -161,11 +198,21 @@ public class WorldGenerator : MonoBehaviour
                 }
             }
 
-            int direction = random.Next(0, 4);
+            // Move to the next position based on a random walk
+            int direction = random.Next(0, 4); // 0: Up, 1: Down, 2: Left, 3: Right
             if (direction == 0) currentY++;
             else if (direction == 1) currentY--;
             else if (direction == 2) currentX--;
             else if (direction == 3) currentX++;
+
+            // Add spacing
+            for (int s = 0; s < config.veinSpacing - 1; s++)
+            {
+                if (direction == 0) currentY++;
+                else if (direction == 1) currentY--;
+                else if (direction == 2) currentX--;
+                else if (direction == 3) currentX++;
+            }
         }
     }
 

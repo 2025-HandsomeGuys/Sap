@@ -17,39 +17,79 @@ MonoBehaviour:
     startDepth: 0
     baseTileType: 10
     mineralConfigs: []
+    hasDiagonalVeins: 1
+    diagonalVeinTile: 0
+    veinNoiseScale: 0.1
+    veinThreshold: 0.3
+    veinThicknessNoiseScale: 0.01
     periodicMaxStaminaDamage: 0
   - description: 
     startDepth: -200
     baseTileType: 11
     mineralConfigs: []
+    hasDiagonalVeins: 0
+    diagonalVeinTile: 0
+    veinNoiseScale: 0.1
+    veinThreshold: 0.7
+    veinThicknessNoiseScale: 0.05
     periodicMaxStaminaDamage: 0
   - description: 
     startDepth: -400
     baseTileType: 12
     mineralConfigs: []
+    hasDiagonalVeins: 0
+    diagonalVeinTile: 0
+    veinNoiseScale: 0.1
+    veinThreshold: 0.7
+    veinThicknessNoiseScale: 0.05
     periodicMaxStaminaDamage: 1
   - description: 
     startDepth: -600
     baseTileType: 13
     mineralConfigs: []
+    hasDiagonalVeins: 0
+    diagonalVeinTile: 0
+    veinNoiseScale: 0.1
+    veinThreshold: 0.7
+    veinThicknessNoiseScale: 0.05
     periodicMaxStaminaDamage: 2
   - description: 
     startDepth: -800
     baseTileType: 14
     mineralConfigs: []
+    hasDiagonalVeins: 0
+    diagonalVeinTile: 0
+    veinNoiseScale: 0.1
+    veinThreshold: 0.7
+    veinThicknessNoiseScale: 0.05
     periodicMaxStaminaDamage: 3
   - description: 
     startDepth: -1000
     baseTileType: 15
     mineralConfigs: []
+    hasDiagonalVeins: 0
+    diagonalVeinTile: 0
+    veinNoiseScale: 0.1
+    veinThreshold: 0.7
+    veinThicknessNoiseScale: 0.05
     periodicMaxStaminaDamage: 4
   - description: 
     startDepth: -1200
     baseTileType: 16
     mineralConfigs: []
+    hasDiagonalVeins: 0
+    diagonalVeinTile: 0
+    veinNoiseScale: 0.1
+    veinThreshold: 0.7
+    veinThicknessNoiseScale: 0.05
     periodicMaxStaminaDamage: 5
   - description: 
     startDepth: -1400
     baseTileType: 1
     mineralConfigs: []
+    hasDiagonalVeins: 0
+    diagonalVeinTile: 0
+    veinNoiseScale: 0.1
+    veinThreshold: 0.7
+    veinThicknessNoiseScale: 0.05
     periodicMaxStaminaDamage: 6
