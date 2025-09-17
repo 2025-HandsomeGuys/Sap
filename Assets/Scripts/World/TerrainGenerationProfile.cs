@@ -34,6 +34,13 @@ public class TerrainLayer
     public TileType diagonalVeinTile;
     [Tooltip("Controls the thickness and frequency of the veins. Smaller values = thicker, larger veins.")]
     public float veinNoiseScale = 0.1f;
+
+    [Header("Vein Angle Settings")]
+    [Tooltip("The min/max angle of the veins in degrees. The angle will vary between these values.")]
+    public Vector2 veinAngleRange = new Vector2(30, 60);
+    [Tooltip("Controls how quickly the vein angle changes. Smaller values = larger, smoother waves.")]
+    public float veinAngleNoiseScale = 0.02f;
+
     [Tooltip("The cutoff for vein generation. Higher values = less frequent veins.")]
     public float veinThreshold = 0.7f;
 

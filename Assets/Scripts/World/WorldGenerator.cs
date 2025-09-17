@@ -126,14 +126,28 @@ public class WorldGenerator : MonoBehaviour
                     if (chunkData.tileStates[x, y] == layer.baseTileType)
                     {
                         float worldX = chunkData.chunkCoord.x * chunkSize + x;
+                        float worldY_float = chunkData.chunkCoord.y * chunkSize + y;
 
-                        // Noise A: The main diagonal stripes
-                        float diagonalNoise = Mathf.PerlinNoise((worldX + worldY) * layer.veinNoiseScale, 0);
+                        // --- Angle Variation Noise ---
+                        // Use a different noise seed/offset for angle noise to decouple it from other noises
+                        float angleNoise = Mathf.PerlinNoise((worldX + 1000) * layer.veinAngleNoiseScale, (worldY_float + 1000) * layer.veinAngleNoiseScale);
+                        float currentAngle = Mathf.Lerp(layer.veinAngleRange.x, layer.veinAngleRange.y, angleNoise);
+
+                        // --- Coordinate Rotation ---
+                        float angleRad = currentAngle * Mathf.Deg2Rad;
+                        float cosAngle = Mathf.Cos(angleRad);
+                        float sinAngle = Mathf.Sin(angleRad);
+                        float rotatedX = worldX * cosAngle - worldY_float * sinAngle;
+                        float rotatedY = worldX * sinAngle + worldY_float * cosAngle;
+
+                        // --- Vein Generation Noise ---
+                        // Noise A: The main stripes, now rotated and stretched
+                        float diagonalNoise = Mathf.PerlinNoise(rotatedX * layer.veinNoiseScale, rotatedY * layer.veinNoiseScale * 0.1f);
 
                         // Noise B: A second noise field to create thickness variations and breaks
-                        float thicknessNoise = Mathf.PerlinNoise(worldX * layer.veinThicknessNoiseScale, worldY * layer.veinThicknessNoiseScale);
+                        float thicknessNoise = Mathf.PerlinNoise(worldX * layer.veinThicknessNoiseScale, worldY_float * layer.veinThicknessNoiseScale);
 
-                        // Combine the two noises. Subtracting the thickness noise from the main stripes.
+                        // Combine the two noises.
                         float combinedNoise = diagonalNoise - thicknessNoise;
 
                         if (combinedNoise > layer.veinThreshold)

@@ -20,17 +20,21 @@ MonoBehaviour:
     hasDiagonalVeins: 1
     diagonalVeinTile: 0
     veinNoiseScale: 0.1
-    veinThreshold: 0.3
-    veinThicknessNoiseScale: 0.01
+    veinAngleRange: {x: 30, y: 60}
+    veinAngleNoiseScale: 0.02
+    veinThreshold: 0.4
+    veinThicknessNoiseScale: 0.02
     periodicMaxStaminaDamage: 0
   - description: 
     startDepth: -200
     baseTileType: 11
     mineralConfigs: []
-    hasDiagonalVeins: 0
+    hasDiagonalVeins: 1
     diagonalVeinTile: 0
     veinNoiseScale: 0.1
-    veinThreshold: 0.7
+    veinAngleRange: {x: 30, y: 60}
+    veinAngleNoiseScale: 0.02
+    veinThreshold: 0.5
     veinThicknessNoiseScale: 0.05
     periodicMaxStaminaDamage: 0
   - description: 
@@ -40,6 +44,8 @@ MonoBehaviour:
     hasDiagonalVeins: 0
     diagonalVeinTile: 0
     veinNoiseScale: 0.1
+    veinAngleRange: {x: 30, y: 60}
+    veinAngleNoiseScale: 0.02
     veinThreshold: 0.7
     veinThicknessNoiseScale: 0.05
     periodicMaxStaminaDamage: 1
@@ -50,6 +56,8 @@ MonoBehaviour:
     hasDiagonalVeins: 0
     diagonalVeinTile: 0
     veinNoiseScale: 0.1
+    veinAngleRange: {x: 30, y: 60}
+    veinAngleNoiseScale: 0.02
     veinThreshold: 0.7
     veinThicknessNoiseScale: 0.05
     periodicMaxStaminaDamage: 2
@@ -60,6 +68,8 @@ MonoBehaviour:
     hasDiagonalVeins: 0
     diagonalVeinTile: 0
     veinNoiseScale: 0.1
+    veinAngleRange: {x: 30, y: 60}
+    veinAngleNoiseScale: 0.02
     veinThreshold: 0.7
     veinThicknessNoiseScale: 0.05
     periodicMaxStaminaDamage: 3
@@ -70,6 +80,8 @@ MonoBehaviour:
     hasDiagonalVeins: 0
     diagonalVeinTile: 0
     veinNoiseScale: 0.1
+    veinAngleRange: {x: 30, y: 60}
+    veinAngleNoiseScale: 0.02
     veinThreshold: 0.7
     veinThicknessNoiseScale: 0.05
     periodicMaxStaminaDamage: 4
@@ -80,6 +92,8 @@ MonoBehaviour:
     hasDiagonalVeins: 0
     diagonalVeinTile: 0
     veinNoiseScale: 0.1
+    veinAngleRange: {x: 30, y: 60}
+    veinAngleNoiseScale: 0.02
     veinThreshold: 0.7
     veinThicknessNoiseScale: 0.05
     periodicMaxStaminaDamage: 5
@@ -90,6 +104,8 @@ MonoBehaviour:
     hasDiagonalVeins: 0
     diagonalVeinTile: 0
     veinNoiseScale: 0.1
+    veinAngleRange: {x: 30, y: 60}
+    veinAngleNoiseScale: 0.02
     veinThreshold: 0.7
     veinThicknessNoiseScale: 0.05
     periodicMaxStaminaDamage: 6
