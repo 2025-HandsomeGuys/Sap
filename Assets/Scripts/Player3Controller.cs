@@ -20,6 +20,7 @@ public class Player3Controller : MonoBehaviour, IPlayerController
     // Interface property implementation
     public bool IsWallClimbing => isWallClimbing;
 
+    public string CurrentMod = "walking";
 
     void Awake()
     {
@@ -70,112 +71,81 @@ public class Player3Controller : MonoBehaviour, IPlayerController
 
     void Update()
     {
+        MovementModCheck();
+
         // Read inputs every frame
         horizontalInput = Input.GetAxisRaw("Horizontal");
         verticalInput = Input.GetAxisRaw("Vertical");
-
-        HandleSpriteFlippingAndAnimation();
-        HandleWallClimbingState();
-
-        if (!isWallClimbing)
-        {
-            HandleJumping();
-        }
+        ModWalking();
+        ModClimbing();
     }
 
-    private void HandleSpriteFlippingAndAnimation()
+    private void MovementModCheck()
     {
-        // --- Sprite Flipping (runs in all states) ---
-        if (horizontalInput < 0)
+        if (Input.GetKeyDown(KeyCode.LeftShift))
         {
-            transform.localScale = new Vector3(1, 1, 1);
-        }
-        else if (horizontalInput > 0)
-        {
-            transform.localScale = new Vector3(-1, 1, 1);
-        }
-        else // When horizontal input is zero
-        {
-            // If not on a wall, face the mouse
-            if (!isWallClimbing && cam != null)
+            anim.SetBool("isclimbing", !anim.GetBool("isclimbing"));
+            if (anim.GetBool("isclimbing") == true)
             {
+                anim.SetTrigger("climb");
+                CurrentMod = "climbing";
+            }             
+            else
+                CurrentMod = "walking";
+        }
+    }
+ 
+    private void ModWalking()
+    {
+        if(CurrentMod == "walking")
+        {
+
+            //dirctioncheck
+            if (horizontalInput < 0)           
+                transform.localScale = new Vector3(1, 1, 1);   
+            else if (horizontalInput > 0)            
+                transform.localScale = new Vector3(-1, 1, 1);
+            else // <<When horizontal input is zero, face the mouse>>
+            {
+
                 Vector2 mousePos = (Vector2)cam.ScreenToWorldPoint(Input.mousePosition);
                 if (mousePos.x > transform.position.x)
+
                     transform.localScale = new Vector3(-1, 1, 1);
+
                 else
-                    transform.localScale = new Vector3(1, 1, 1);
+
+                    transform.localScale = new Vector3(1, 1, 1);                      
+            }           
+            //walk movement         
+            playerRigidbody.linearVelocity = new Vector2(horizontalInput * playerStats.moveSpeed, playerRigidbody.linearVelocity.y);
+            playerRigidbody.gravityScale = originalGravityScale;
+            anim.SetBool("ismoving", horizontalInput != 0);
+
+            //jump movement
+            if (Input.GetKeyDown(KeyCode.Space) && !anim.GetBool("isjumping"))
+            {
+                playerRigidbody.AddForce(Vector3.up * playerStats.jumpForce, ForceMode2D.Impulse);
+                anim.SetTrigger("jump");
+                anim.SetBool("isjumping", true);
+            }           
+
+        }
+    }
+
+    private void ModClimbing()
+    {
+        if (CurrentMod == "climbing")
+        {
+            //climb movement
+            playerRigidbody.linearVelocity = new Vector2(horizontalInput * playerStats.wallClimbingSpeed, verticalInput * playerStats.wallClimbingSpeed);
+            playerRigidbody.gravityScale = 0f;
+            anim.SetBool("isclbmoving", horizontalInput != 0 || verticalInput!=0);
+            //use stamina
+            if (verticalInput != 0 || horizontalInput != 0)
+            {
+                playerStats.UseStamina(playerStats.staminaCostPerSecond * Time.fixedDeltaTime);
             }
         }
-
-        // --- Animation ---
-        if (isWallClimbing)
-        {
-            // On a wall, moving is based on any input
-            anim.SetBool("ismoving", horizontalInput != 0 || verticalInput != 0);
-        }
-        else
-        {
-            // On the ground, moving is based on horizontal input only
-            anim.SetBool("ismoving", horizontalInput != 0);
-        }
-    }
-
-    private void HandleWallClimbingState()
-    {
-        if (playerStats == null) return;
-
-        if (isWallClimbing && (!Input.GetKey(KeyCode.LeftShift) || playerStats.currentStamina <= 0))
-        {
-            isWallClimbing = false;
-        }
-        else if (!isWallClimbing && isInsideWallZone && Input.GetKey(KeyCode.LeftShift) && playerStats.currentStamina > 0)
-        {
-            isWallClimbing = true;
-        }
-    }
-
-    private void HandleJumping()
-    {
-        if (playerStats == null) return;
-
-        if (Input.GetKeyDown(KeyCode.Space) && !anim.GetBool("isjumping"))
-        {
-            playerRigidbody.AddForce(Vector3.up * playerStats.jumpForce, ForceMode2D.Impulse);
-            anim.SetTrigger("jump");
-            anim.SetBool("isjumping", true);
-        }
-    }
-
-    void FixedUpdate()
-    {
-        if (isWallClimbing)
-        {
-            HandleWallClimbingMovement();
-        }
-        else
-        {
-            HandleNormalMovementPhysics();
-        }
-    }
-
-    private void HandleWallClimbingMovement()
-    {
-        if (playerStats == null) return;
-
-        playerRigidbody.linearVelocity = new Vector2(horizontalInput * playerStats.moveSpeed, verticalInput * playerStats.wallClimbingSpeed);
-        playerRigidbody.gravityScale = 0f;
-
-        if (verticalInput != 0 || horizontalInput != 0)
-        {
-            playerStats.UseStamina(playerStats.staminaCostPerSecond * Time.fixedDeltaTime);
-        }
-    }
-
-    private void HandleNormalMovementPhysics()
-    {
-        if (playerStats == null) return;
-
-        playerRigidbody.linearVelocity = new Vector2(horizontalInput * playerStats.moveSpeed, playerRigidbody.linearVelocity.y);
-        playerRigidbody.gravityScale = originalGravityScale;
     }
 }

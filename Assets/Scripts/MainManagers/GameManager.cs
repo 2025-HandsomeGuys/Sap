@@ -23,7 +23,7 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         string currentScene = SceneManager.GetActiveScene().name;
-        if (currentScene == "GameScene" || currentScene == "khbScene")
+        if (currentScene == "GameScene" || currentScene == "khbScene" || currentScene == "Intro")
         {
             saveManager.Load();
         }
@@ -54,7 +54,7 @@ public class GameManager : MonoBehaviour
         if (saveManager.HasSaveData())
         {
             SceneManager.sceneLoaded += OnSceneLoadedForLoad;
-            SceneManager.LoadScene("khbScene");
+            SceneManager.LoadScene("Intro");
         }
         else
         {
