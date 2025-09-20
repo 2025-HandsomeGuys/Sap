@@ -160,6 +160,7 @@ public class Player3Controller : MonoBehaviour, IPlayerController
 
     private void HandleWallClimbingMovement()
     {
+        
         if (playerStats == null) return;
 
         playerRigidbody.linearVelocity = new Vector2(horizontalInput * playerStats.moveSpeed, verticalInput * playerStats.wallClimbingSpeed);

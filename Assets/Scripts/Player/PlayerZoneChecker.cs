@@ -60,7 +60,6 @@ public class PlayerZoneChecker : MonoBehaviour
             }
             else
             {
-                Debug.Log("[PlayerZoneChecker] Player is in an unknown layer (currentLayer is null).");
             }
         }
     }
