@@ -45,17 +45,32 @@ public class DiggingController : MonoBehaviour
         Vector2 digCenter = (Vector2)transform.position + (currentDigDirection * digOffset);
         HashSet<Vector3Int> cellsToDig = GetCellsInDigRadius(digCenter);
 
+        if (cellsToDig.Count == 0)
+        {
+            return;
+        }
+
+        var worldPositionsToDig = new List<Vector3>();
         int dugTileCount = 0;
+
+        // First, determine which tiles will be dug and process their effects (e.g., stamina)
         foreach (Vector3Int cellPos in cellsToDig)
         {
-            if (DigCell(cellPos))
+            Vector3 cellWorldCenter = WorldManager.Instance.GetCellCenterWorld(cellPos);
+            TileType type = WorldManager.Instance.GetTileTypeAt(cellWorldCenter);
+
+            if (type != TileType.Empty)
             {
+                ReducePlayerStaminaForTile(type);
+                worldPositionsToDig.Add(cellWorldCenter);
                 dugTileCount++;
             }
         }
 
-        if (dugTileCount > 0)
+        // Now, send the entire batch of tiles to the WorldManager to be processed efficiently
+        if (worldPositionsToDig.Count > 0)
         {
+            WorldManager.Instance.DigTiles(worldPositionsToDig);
             Debug.Log($"{dugTileCount} tile(s) were dug.");
         }
     }
@@ -105,28 +120,6 @@ public class DiggingController : MonoBehaviour
             }
         }
         return cells;
-    }
-
-    /// <summary>
-    /// Processes the digging of a single cell. Returns true if a tile was successfully dug.
-    /// </summary>
-    private bool DigCell(Vector3Int cellPos)
-    {
-        Vector3 cellWorldCenter = WorldManager.Instance.GetCellCenterWorld(cellPos);
-        TileType type = WorldManager.Instance.GetTileTypeAt(cellWorldCenter);
-
-        if (type == TileType.Empty)
-        {
-            return false;
-        }
-
-        // Reduce player's max stamina based on the tile's data
-        ReducePlayerStaminaForTile(type);
-
-        // Tell the WorldManager to remove the tile
-        WorldManager.Instance.TileDug(cellWorldCenter);
-
-        return true;
     }
 
     /// <summary>
