@@ -22,8 +22,11 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        // 게임 시작 시 자동으로 로드
-        saveManager.Load();
+        string currentScene = SceneManager.GetActiveScene().name;
+        if (currentScene == "GameScene" || currentScene == "khbScene")
+        {
+            saveManager.Load();
+        }
     }
 
     private void OnApplicationQuit()
@@ -35,16 +38,22 @@ public class GameManager : MonoBehaviour
     // 버튼에서 호출 Start Button
     public void NewGame()
     {
-        saveManager.NewGame();
+        SceneManager.sceneLoaded += OnSceneLoadedForNewGame;
         SceneManager.LoadScene("GameScene");
     }
 
-    // 버튼에서 호출 Continue Button
+    private void OnSceneLoadedForNewGame(Scene scene, LoadSceneMode mode)
+    {
+        SceneManager.sceneLoaded -= OnSceneLoadedForNewGame;
+        saveManager.NewGame(); // 씬 로드 후 안전하게 NewGame 실행
+    }
+
+    // 이어하기 버튼
     public void ContinueGame()
     {
         if (saveManager.HasSaveData())
         {
-            saveManager.Load();
+            SceneManager.sceneLoaded += OnSceneLoadedForLoad;
             SceneManager.LoadScene("khbScene");
         }
         else
@@ -54,13 +63,22 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void OnSceneLoadedForLoad(Scene scene, LoadSceneMode mode)
+    {
+        SceneManager.sceneLoaded -= OnSceneLoadedForLoad;
+        saveManager.Load(); // 씬 로드 후 안전하게 Load 실행
+    }
+
     public void OpenSettings()
     {
+        saveManager.Save();
         SceneManager.LoadScene("SettingsScene");
     }
 
     public void OpenMainMenu()
     {
+        saveManager.Save();
         SceneManager.LoadScene("MainMenuScene");
     }
+
 }
