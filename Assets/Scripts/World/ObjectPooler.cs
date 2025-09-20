@@ -1,3 +1,4 @@
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,11 +18,8 @@ public class ObjectPooler : MonoBehaviour
 
     private void Awake()
     {
-        Debug.Log("ObjectPooler Awake 실행됨: " + gameObject.name);
-
         if (Instance != null && Instance != this)
         {
-            Debug.LogWarning("Duplicate ObjectPooler found. Destroying this one: " + gameObject.name);
             Destroy(gameObject);
             return;
         }
@@ -40,7 +38,6 @@ public class ObjectPooler : MonoBehaviour
             }
 
             poolDictionary.Add(pool.type, objectPool);
-            Debug.Log("Pool 등록됨: " + pool.type);
         }
     }
     #endregion
@@ -52,16 +49,11 @@ public class ObjectPooler : MonoBehaviour
     {
         if (!poolDictionary.ContainsKey(type))
         {
-            Debug.LogWarning("Pool with type " + type + " doesn't exist.");
             return null;
         }
 
         if (poolDictionary[type].Count == 0)
         {
-            // Debug.LogWarning("Pool with type " + type + " is empty. Consider increasing the pool size.");
-            // Optionally, instantiate a new object here if the pool is allowed to grow
-            // Pool newPool = pools.Find(p => p.type == type);
-            // if (newPool != null) return Instantiate(newPool.prefab);
             return null;
         }
 
@@ -78,10 +70,8 @@ public class ObjectPooler : MonoBehaviour
     {
         if (!poolDictionary.ContainsKey(type))
         {
-            Debug.LogError("Pool with type " + type + " doesn't exist.");
             return;
         }
-        Debug.Log("!!! SCRIPT IS UPDATED !!! Returning object to pool: " + type);
         objectToReturn.SetActive(false);
         poolDictionary[type].Enqueue(objectToReturn);
     }
