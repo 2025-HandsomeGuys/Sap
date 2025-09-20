@@ -4,7 +4,8 @@ using System.Collections.Generic;
 [System.Serializable]
 public class InventorySlotData
 {
-    public string itemId; // ¾ÆÀÌÅÛ ID (Á÷Á¢ ScriptableObject ÀúÀå ºÒ°¡)
+    public string kind;
+    public string itemId; // ì•„ì´í…œ ID (ì§ì ‘ ScriptableObject ì €ì¥ ë¶ˆê°€)
     public int quantity;
 }
 
