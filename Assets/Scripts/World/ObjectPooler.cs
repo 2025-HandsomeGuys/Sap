@@ -28,11 +28,17 @@ public class ObjectPooler : MonoBehaviour
 
         foreach (Pool pool in pools)
         {
+            // Create a parent object for each pool type
+            GameObject poolParent = new GameObject(pool.type.ToString() + " Pool");
+            poolParent.transform.SetParent(transform); // Set the ObjectPooler as the parent of the pool parent
+
             Queue<GameObject> objectPool = new Queue<GameObject>();
 
             for (int i = 0; i < pool.size; i++)
             {
                 GameObject obj = Instantiate(pool.prefab);
+                obj.name = pool.type.ToString() + "_" + i;
+                obj.transform.SetParent(poolParent.transform); // Set the parent of the pooled object
                 obj.SetActive(false);
                 objectPool.Enqueue(obj);
             }

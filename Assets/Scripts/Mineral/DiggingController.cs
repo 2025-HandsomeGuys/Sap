@@ -105,17 +105,24 @@ public class DiggingController : MonoBehaviour
     private HashSet<Vector3Int> GetCellsInDigRadius(Vector2 digCenter)
     {
         var cells = new HashSet<Vector3Int>();
-        float scanStep = WorldManager.Instance.CellSize / 2f;
-        if (scanStep <= 0) scanStep = 0.1f; // Fallback to prevent infinite loops
+        float cellSize = WorldManager.Instance.CellSize;
+        if (cellSize <= 0) return cells; // Prevent division by zero
 
-        for (float x = -digRadius; x <= digRadius; x += scanStep)
+        // Determine the bounding box of the circle in cell coordinates
+        Vector3Int minCell = WorldManager.Instance.WorldToCell(digCenter - new Vector2(digRadius, digRadius));
+        Vector3Int maxCell = WorldManager.Instance.WorldToCell(digCenter + new Vector2(digRadius, digRadius));
+
+        for (int x = minCell.x; x <= maxCell.x; x++)
         {
-            for (float y = -digRadius; y <= digRadius; y += scanStep)
+            for (int y = minCell.y; y <= maxCell.y; y++)
             {
-                if (x * x + y * y <= digRadius * digRadius)
+                var cellPos = new Vector3Int(x, y, 0);
+                Vector3 cellCenter = WorldManager.Instance.GetCellCenterWorld(cellPos);
+
+                // Check if the center of the cell is within the circle's radius
+                if (Vector2.Distance(digCenter, cellCenter) <= digRadius)
                 {
-                    Vector2 checkPos = digCenter + new Vector2(x, y);
-                    cells.Add(WorldManager.Instance.WorldToCell(checkPos));
+                    cells.Add(cellPos);
                 }
             }
         }

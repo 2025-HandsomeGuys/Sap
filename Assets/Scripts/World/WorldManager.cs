@@ -47,7 +47,7 @@ public class WorldManager : MonoBehaviour
     private readonly Dictionary<Vector2Int, Tilemap> _activeRegionTilemaps = new Dictionary<Vector2Int, Tilemap>();
     private readonly Dictionary<Vector2Int, int> _activeChunksPerRegion = new Dictionary<Vector2Int, int>();
     private readonly Queue<GameObject> _regionPool = new Queue<GameObject>();
-    private const int REGION_SIZE = 6; // Each region is 6x6 chunks
+    private const int REGION_SIZE = 1; // Each region is 1x1 chunks
     private const int MAX_REGION_POOL_SIZE = 30;
 
     // --- Deferred Collider Generation ---
@@ -126,11 +126,43 @@ public class WorldManager : MonoBehaviour
     /// </summary>
     public void DigTiles(IEnumerable<Vector3> worldPositions)
     {
+        var positionsToClear = new List<Vector3Int>();
+        var dirtyRegions = new HashSet<Vector2Int>();
+
         foreach (var worldPos in worldPositions)
         {
-            Vector2Int regionCoord = DigSingleTile(worldPos);
-            if (regionCoord.x != int.MinValue)
+            Vector2Int chunkCoord = GetChunkCoordFromPosition(worldPos);
+            if (_chunkDataMap.TryGetValue(chunkCoord, out ChunkData chunkData) && chunkData.status == ChunkStatus.Ready)
             {
+                Vector3Int cellPosition = WorldToCell(worldPos);
+                int localX = cellPosition.x - (chunkCoord.x * WorldGenerator.chunkSize);
+                int localY = cellPosition.y - (chunkCoord.y * WorldGenerator.chunkSize);
+
+                if (localX >= 0 && localX < WorldGenerator.chunkSize && localY >= 0 && localY < WorldGenerator.chunkSize)
+                {
+                    if (chunkData.tileStates[localX, localY] != TileType.Empty)
+                    {
+                        chunkData.tileStates[localX, localY] = TileType.Empty;
+                        positionsToClear.Add(cellPosition);
+                        dirtyRegions.Add(GetRegionCoord(chunkCoord));
+                    }
+                }
+            }
+        }
+
+        if (positionsToClear.Count > 0)
+        {
+            // Batch clear the main tilemap
+            var tilesToSet = new TileBase[positionsToClear.Count]; // Array of nulls
+            groundTilemap.SetTiles(positionsToClear.ToArray(), tilesToSet);
+
+            // Batch clear the region tilemaps
+            foreach (var regionCoord in dirtyRegions)
+            {
+                if (_activeRegionTilemaps.TryGetValue(regionCoord, out Tilemap regionTilemap))
+                {
+                    regionTilemap.SetTiles(positionsToClear.ToArray(), tilesToSet);
+                }
                 _dirtyRegionColliders.Add(regionCoord);
             }
         }
@@ -187,41 +219,6 @@ public class WorldManager : MonoBehaviour
     public Vector3 GetCellCenterWorld(Vector3Int cellPos) => groundTilemap.GetCellCenterWorld(cellPos);
     #endregion
     
-    #region Internal Digging Logic
-    /// <summary>
-    /// Handles the logic for digging a single tile. Does NOT regenerate the collider.
-    /// </summary>
-    /// <returns>The coordinate of the modified region, or a min value vector if no change was made.</returns>
-    private Vector2Int DigSingleTile(Vector3 worldPosition)
-    {
-        Vector2Int chunkCoord = GetChunkCoordFromPosition(worldPosition);
-
-        if (_chunkDataMap.TryGetValue(chunkCoord, out ChunkData chunkData) && chunkData.status == ChunkStatus.Ready)
-        {
-            Vector3Int cellPosition = WorldToCell(worldPosition);
-            int localX = cellPosition.x - (chunkCoord.x * WorldGenerator.chunkSize);
-            int localY = cellPosition.y - (chunkCoord.y * WorldGenerator.chunkSize);
-
-            if (localX >= 0 && localX < WorldGenerator.chunkSize && localY >= 0 && localY < WorldGenerator.chunkSize)
-            {
-                if (chunkData.tileStates[localX, localY] != TileType.Empty)
-                {
-                    chunkData.tileStates[localX, localY] = TileType.Empty;
-                    groundTilemap.SetTile(cellPosition, null);
-
-                    Vector2Int regionCoord = GetRegionCoord(chunkCoord);
-                    if (_activeRegionTilemaps.TryGetValue(regionCoord, out Tilemap regionTilemap))
-                    {
-                        regionTilemap.SetTile(cellPosition, null);
-                    }
-                    return regionCoord;
-                }
-            }
-        }
-        return new Vector2Int(int.MinValue, int.MinValue);
-    }
-    #endregion
-
     #region Chunk Update Orchestration
     private void RequestChunkUpdate()
     {
@@ -354,7 +351,6 @@ public class WorldManager : MonoBehaviour
         int startY = chunkData.chunkCoord.y * WorldGenerator.chunkSize;
         var bounds = new BoundsInt(startX, startY, 0, WorldGenerator.chunkSize, WorldGenerator.chunkSize, 1);
 
-        groundTilemap.SetTilesBlock(bounds, chunkData.tiles);
         regionTilemap.SetTilesBlock(bounds, chunkData.tiles);
     }
 
@@ -365,12 +361,9 @@ public class WorldManager : MonoBehaviour
             int startX = chunkCoord.x * WorldGenerator.chunkSize;
             int startY = chunkData.chunkCoord.y * WorldGenerator.chunkSize;
             var bounds = new BoundsInt(startX, startY, 0, WorldGenerator.chunkSize, WorldGenerator.chunkSize, 1);
-            groundTilemap.SetTilesBlock(bounds, emptyTileArray);
-
-            DecrementRegionChunkCount(chunkCoord);
-
-            chunkData.status = ChunkStatus.Unloaded;
-        }
+                    DecrementRegionChunkCount(chunkCoord);
+            
+                    chunkData.status = ChunkStatus.Unloaded;        }
     }
     #endregion
 

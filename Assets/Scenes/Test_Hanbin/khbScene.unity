@@ -657,12 +657,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99edf13b038a2914aaa84d368d6029dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inventoryPanel: {fileID: 236109008}
-  inventory: {fileID: 441990588}
-  inventorySlotPrefab: {fileID: 6548634789942747828, guid: db597e7bbff654941b25a1f23815a53c, type: 3}
-  slotContainer: {fileID: 1398840590}
-  descriptionText: {fileID: 107468159}
-  weightText: {fileID: 484266570}
 --- !u!1 &286428617
 GameObject:
   m_ObjectHideFlags: 0
@@ -1958,7 +1952,6 @@ MonoBehaviour:
   terrainProfile: {fileID: 11400000, guid: a2961093cc153744e83c3cd6db388eed, type: 2}
   cellSize: 0.05
   mineralSizeMultiplier: 5
-  bedrockStartY: -1000
   dirtTile: {fileID: 11400000, guid: 68db1cceb02713846a0f5927d0d45e50, type: 2}
   hardStoneTile: {fileID: 11400000, guid: 0b76df8051062a941b729ef1a61bea26, type: 2}
   coolStoneTile: {fileID: 11400000, guid: ac7b02d062c68984da44f38c4872c86a, type: 2}
@@ -2533,6 +2526,18 @@ PrefabInstance:
     - target: {fileID: 2867610953787235893, guid: 67d5b019d3accde4faee8d1e2beeffc7, type: 3}
       propertyPath: m_Name
       value: 2SuyunhooPlayer
+      objectReference: {fileID: 0}
+    - target: {fileID: 4424358768847624063, guid: 67d5b019d3accde4faee8d1e2beeffc7, type: 3}
+      propertyPath: m_Size.x
+      value: 0.53936815
+      objectReference: {fileID: 0}
+    - target: {fileID: 4424358768847624063, guid: 67d5b019d3accde4faee8d1e2beeffc7, type: 3}
+      propertyPath: m_Offset.x
+      value: -0.011957869
+      objectReference: {fileID: 0}
+    - target: {fileID: 4424358768847624063, guid: 67d5b019d3accde4faee8d1e2beeffc7, type: 3}
+      propertyPath: m_Offset.y
+      value: 0.04295838
       objectReference: {fileID: 0}
     - target: {fileID: 4865177857992557286, guid: 67d5b019d3accde4faee8d1e2beeffc7, type: 3}
       propertyPath: digRadius
