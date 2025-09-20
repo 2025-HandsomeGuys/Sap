@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using System.IO; // Added for file operations
 
 public class WorldManager : MonoBehaviour
 {
     #region Singleton
-    public static WorldManager Instance;
+    public static WorldManager Instance { get; private set; }
 
     private void Awake()
     {
@@ -28,15 +29,33 @@ public class WorldManager : MonoBehaviour
     #endregion
 
     [Header("References")]
-    public Transform playerTransform;
-    public WorldGenerator worldGenerator;
-    public Tilemap groundTilemap;
+    [SerializeField] private Transform playerTransform;
+    [SerializeField] private WorldGenerator worldGenerator;
+    [SerializeField] private Tilemap groundTilemap; // The 'master' tilemap for visuals
+    [SerializeField] private GameObject regionPrefab;
 
-    [Header("Settings")]
-    public int viewDistanceInChunks = 1;
+    [Header("World Settings")]
+    [Tooltip("The view distance in chunks around the player.")]
+    [SerializeField] private int viewDistanceInChunks = 1;
+
+    // --- Chunk Management ---
+    private Vector2Int _currentPlayerChunkCoord;
+    private readonly Dictionary<Vector2Int, ChunkData> _chunkDataMap = new Dictionary<Vector2Int, ChunkData>();
+    private Coroutine _chunkUpdateCoroutine;
+
+    // --- Region Pool Management ---
+    private readonly Dictionary<Vector2Int, Tilemap> _activeRegionTilemaps = new Dictionary<Vector2Int, Tilemap>();
+    private readonly Dictionary<Vector2Int, int> _activeChunksPerRegion = new Dictionary<Vector2Int, int>();
+    private readonly Queue<GameObject> _regionPool = new Queue<GameObject>();
+    private const int REGION_SIZE = 6; // Each region is 6x6 chunks
+    private const int MAX_REGION_POOL_SIZE = 30;
+
+    // --- Deferred Collider Generation ---
+    private readonly HashSet<Vector2Int> _dirtyRegionColliders = new HashSet<Vector2Int>();
 
     private static TileBase[] emptyTileArray;
-    private readonly List<Vector2Int> _chunksToUnloadCache = new List<Vector2Int>();
+
+    public enum ChunkStatus { Loading, Generated, Ready, Unloaded }
 
     public class ChunkData
     {
@@ -45,6 +64,7 @@ public class WorldManager : MonoBehaviour
         public List<GameObject> spawnedItems;
         public ChunkStatus status;
         public Coroutine generationCoroutine;
+        public TileBase[] tiles;
 
         public ChunkData(Vector2Int coord, int chunkSize)
         {
@@ -53,184 +73,77 @@ public class WorldManager : MonoBehaviour
             spawnedItems = new List<GameObject>();
             status = ChunkStatus.Loading;
             generationCoroutine = null;
+            tiles = new TileBase[chunkSize * chunkSize];
         }
     }
 
-    private Vector2Int currentPlayerChunkCoord;
-    private readonly Dictionary<Vector2Int, ChunkData> chunkDataMap = new Dictionary<Vector2Int, ChunkData>();
-
-    void Start()
+    #region Unity Lifecycle
+    private void Start()
     {
-        if (playerTransform == null || worldGenerator == null || groundTilemap == null)
+        if (playerTransform == null || worldGenerator == null || groundTilemap == null || regionPrefab == null)
         {
-            Debug.LogError("Player Transform, World Generator, or Ground Tilemap not assigned in WorldManager!");
+            Debug.LogError("A required reference (Player, WorldGenerator, Tilemap, or RegionPrefab) is not assigned in WorldManager!");
             this.enabled = false;
             return;
         }
 
-        UpdateChunks();
+        _currentPlayerChunkCoord = GetChunkCoordFromPosition(playerTransform.position);
+        RequestChunkUpdate();
     }
 
-    void Update()
+    private void Update()
     {
         Vector2Int playerChunk = GetChunkCoordFromPosition(playerTransform.position);
-        if (playerChunk != currentPlayerChunkCoord)
+        if (playerChunk != _currentPlayerChunkCoord)
         {
-            currentPlayerChunkCoord = playerChunk;
-            UpdateChunks();
+            _currentPlayerChunkCoord = playerChunk;
+            RequestChunkUpdate();
         }
     }
 
-    public Vector3Int WorldToCell(Vector3 worldPos)
+    private void LateUpdate()
     {
-        return groundTilemap.WorldToCell(worldPos);
-    }
-
-    Vector2Int GetChunkCoordFromPosition(Vector3 position)
-    {
-        Vector3Int cellPos = groundTilemap.WorldToCell(position);
-        int x = Mathf.FloorToInt((float)cellPos.x / WorldGenerator.chunkSize);
-        int y = Mathf.FloorToInt((float)cellPos.y / WorldGenerator.chunkSize);
-        return new Vector2Int(x, y);
-    }
-
-    void UpdateChunks()
-    {
-        currentPlayerChunkCoord = GetChunkCoordFromPosition(playerTransform.position);
-
-        for (int xOffset = -viewDistanceInChunks; xOffset <= viewDistanceInChunks; xOffset++)
+        // Regenerate all dirty colliders at the end of the frame
+        if (_dirtyRegionColliders.Count > 0)
         {
-            for (int yOffset = -viewDistanceInChunks; yOffset <= viewDistanceInChunks; yOffset++)
+            foreach (var regionCoord in _dirtyRegionColliders)
             {
-                Vector2Int chunkCoord = new Vector2Int(currentPlayerChunkCoord.x + xOffset, currentPlayerChunkCoord.y + yOffset);
-
-                if (chunkDataMap.TryGetValue(chunkCoord, out ChunkData chunkData))
+                if (_activeRegionTilemaps.TryGetValue(regionCoord, out var tilemap))
                 {
-                    // If chunk data exists but is unloaded, reload it
-                    if (chunkData.status == ChunkStatus.Unloaded)
-                    {
-                        chunkData.generationCoroutine = StartCoroutine(RenderChunkCoroutine(chunkData));
-                    }
-                }
-                else
-                {
-                    // If chunk data doesn't exist, create it for the first time
-                    var newChunkData = new ChunkData(chunkCoord, WorldGenerator.chunkSize);
-                    chunkDataMap.Add(chunkCoord, newChunkData);
-                    newChunkData.generationCoroutine = StartCoroutine(FullChunkGenerationSequence(newChunkData));
+                    RegenerateRegionCollider(tilemap);
                 }
             }
-        }
-
-        _chunksToUnloadCache.Clear();
-        foreach (var chunkData in chunkDataMap.Values)
-        {
-            if (chunkData.status == ChunkStatus.Ready)
-            {
-                int xDiff = Mathf.Abs(chunkData.chunkCoord.x - currentPlayerChunkCoord.x);
-                int yDiff = Mathf.Abs(chunkData.chunkCoord.y - currentPlayerChunkCoord.y);
-
-                if (xDiff > viewDistanceInChunks + 1 || yDiff > viewDistanceInChunks + 1)
-                {
-                    _chunksToUnloadCache.Add(chunkData.chunkCoord);
-                }
-            }
-        }
-
-        foreach (Vector2Int chunkCoord in _chunksToUnloadCache)
-        {
-            UnloadChunk(chunkCoord);
+            _dirtyRegionColliders.Clear();
         }
     }
+    #endregion
 
-    IEnumerator FullChunkGenerationSequence(ChunkData chunkData)
-    {
-        chunkData.status = ChunkStatus.Loading;
-        yield return StartCoroutine(worldGenerator.InitializeChunkDataCoroutine(chunkData));
-        yield return StartCoroutine(worldGenerator.GenerateChunk(chunkData.chunkCoord, chunkData, groundTilemap));
-        chunkData.status = ChunkStatus.Ready;
-        chunkData.generationCoroutine = null;
-    }
+    #region Public API
+    public float CellSize => groundTilemap.cellSize.x;
 
-    IEnumerator RenderChunkCoroutine(ChunkData chunkData)
+    /// <summary>
+    /// Digs a collection of tiles, deferring collider regeneration to LateUpdate.
+    /// </summary>
+    public void DigTiles(IEnumerable<Vector3> worldPositions)
     {
-        chunkData.status = ChunkStatus.Loading; // Mark as loading while we render
-        yield return StartCoroutine(worldGenerator.GenerateChunk(chunkData.chunkCoord, chunkData, groundTilemap));
-        chunkData.status = ChunkStatus.Ready;
-        chunkData.generationCoroutine = null;
-    }
-
-    void UnloadChunk(Vector2Int chunkCoord)
-    {
-        if (chunkDataMap.TryGetValue(chunkCoord, out ChunkData chunkData))
+        foreach (var worldPos in worldPositions)
         {
-            if (chunkData.status == ChunkStatus.Loading && chunkData.generationCoroutine != null)
+            Vector2Int regionCoord = DigSingleTile(worldPos);
+            if (regionCoord.x != int.MinValue)
             {
-                StopCoroutine(chunkData.generationCoroutine);
-            }
-
-            foreach (GameObject itemObject in chunkData.spawnedItems)
-            {
-                Mineable mineable = itemObject.GetComponent<Mineable>();
-                if (mineable != null && mineable.itemData != null)
-                {
-                    ObjectPooler.Instance.ReturnToPool(mineable.itemData.poolType, itemObject);
-                }
-                else
-                {
-                    Destroy(itemObject);
-                }
-            }
-            chunkData.spawnedItems.Clear();
-
-            int startX = chunkCoord.x * WorldGenerator.chunkSize;
-            int startY = chunkCoord.y * WorldGenerator.chunkSize;
-            BoundsInt bounds = new BoundsInt(startX, startY, 0, WorldGenerator.chunkSize, WorldGenerator.chunkSize, 1);
-            groundTilemap.SetTilesBlock(bounds, emptyTileArray);
-
-            // Instead of removing the data, just mark it as unloaded
-            chunkData.status = ChunkStatus.Unloaded;
-        }
-    }
-
-    public void TileDug(Vector3 worldPosition)
-    {
-        Vector3Int cellPosition = groundTilemap.WorldToCell(worldPosition);
-        Vector2Int chunkCoord = GetChunkCoordFromPosition(worldPosition);
-
-        if (chunkDataMap.TryGetValue(chunkCoord, out ChunkData chunkData))
-        {
-            if (chunkData.status != ChunkStatus.Ready)
-            {
-                return;
-            }
-
-            int localX = cellPosition.x - (chunkCoord.x * WorldGenerator.chunkSize);
-            int localY = cellPosition.y - (chunkCoord.y * WorldGenerator.chunkSize);
-
-            if (localX >= 0 && localX < WorldGenerator.chunkSize && localY >= 0 && localY < WorldGenerator.chunkSize)
-            {
-                if (chunkData.tileStates[localX, localY] != TileType.Empty)
-                {
-                    chunkData.tileStates[localX, localY] = TileType.Empty;
-                    groundTilemap.SetTile(cellPosition, null);
-                }
+                _dirtyRegionColliders.Add(regionCoord);
             }
         }
     }
 
+    /// <summary>
+    /// Gets the type of tile at a specific world position.
+    /// </summary>
     public TileType GetTileTypeAt(Vector3 worldPosition)
     {
         Vector2Int chunkCoord = GetChunkCoordFromPosition(worldPosition);
-
-        if (chunkDataMap.TryGetValue(chunkCoord, out ChunkData chunkData))
+        if (_chunkDataMap.TryGetValue(chunkCoord, out ChunkData chunkData) && chunkData.status == ChunkStatus.Ready)
         {
-            // We can read tile data even from unloaded chunks
-            if (chunkData.status == ChunkStatus.Loading)
-            {
-                return TileType.Empty; // Can't get data while it's being generated
-            }
-
             Vector3Int cellPosition = groundTilemap.WorldToCell(worldPosition);
             int localX = cellPosition.x - (chunkCoord.x * WorldGenerator.chunkSize);
             int localY = cellPosition.y - (chunkCoord.y * WorldGenerator.chunkSize);
@@ -240,7 +153,295 @@ public class WorldManager : MonoBehaviour
                 return chunkData.tileStates[localX, localY];
             }
         }
-
-        return TileType.Empty; // Default if chunk or tile is not found
+        return TileType.Empty;
     }
+    
+    /// <summary>
+    /// Gathers all loaded chunk data and saves it to a file at the specified path.
+    /// </summary>
+    public void SaveWorld(string filePath)
+    {
+        SerializableWorldData worldData = new SerializableWorldData();
+        foreach (var chunkData in _chunkDataMap.Values)
+        {
+            if (chunkData.status == ChunkStatus.Ready || chunkData.status == ChunkStatus.Generated)
+            {
+                var serializableChunk = new SerializableChunkData(chunkData.chunkCoord.x, chunkData.chunkCoord.y, WorldGenerator.chunkSize);
+                
+                for (int x = 0; x < WorldGenerator.chunkSize; x++)
+                {
+                    for (int y = 0; y < WorldGenerator.chunkSize; y++)
+                    {
+                        serializableChunk.tileStates[y * WorldGenerator.chunkSize + x] = (int)chunkData.tileStates[x, y];
+                    }
+                }
+                worldData.allChunkData.Add(serializableChunk);
+            }
+        }
+
+        string json = JsonUtility.ToJson(worldData, true);
+        File.WriteAllText(filePath, json);
+    }
+
+    public Vector3Int WorldToCell(Vector3 worldPos) => groundTilemap.WorldToCell(worldPos);
+    public Vector3 GetCellCenterWorld(Vector3Int cellPos) => groundTilemap.GetCellCenterWorld(cellPos);
+    #endregion
+    
+    #region Internal Digging Logic
+    /// <summary>
+    /// Handles the logic for digging a single tile. Does NOT regenerate the collider.
+    /// </summary>
+    /// <returns>The coordinate of the modified region, or a min value vector if no change was made.</returns>
+    private Vector2Int DigSingleTile(Vector3 worldPosition)
+    {
+        Vector2Int chunkCoord = GetChunkCoordFromPosition(worldPosition);
+
+        if (_chunkDataMap.TryGetValue(chunkCoord, out ChunkData chunkData) && chunkData.status == ChunkStatus.Ready)
+        {
+            Vector3Int cellPosition = WorldToCell(worldPosition);
+            int localX = cellPosition.x - (chunkCoord.x * WorldGenerator.chunkSize);
+            int localY = cellPosition.y - (chunkCoord.y * WorldGenerator.chunkSize);
+
+            if (localX >= 0 && localX < WorldGenerator.chunkSize && localY >= 0 && localY < WorldGenerator.chunkSize)
+            {
+                if (chunkData.tileStates[localX, localY] != TileType.Empty)
+                {
+                    chunkData.tileStates[localX, localY] = TileType.Empty;
+                    groundTilemap.SetTile(cellPosition, null);
+
+                    Vector2Int regionCoord = GetRegionCoord(chunkCoord);
+                    if (_activeRegionTilemaps.TryGetValue(regionCoord, out Tilemap regionTilemap))
+                    {
+                        regionTilemap.SetTile(cellPosition, null);
+                    }
+                    return regionCoord;
+                }
+            }
+        }
+        return new Vector2Int(int.MinValue, int.MinValue);
+    }
+    #endregion
+
+    #region Chunk Update Orchestration
+    private void RequestChunkUpdate()
+    {
+        if (_chunkUpdateCoroutine != null) return;
+        _chunkUpdateCoroutine = StartCoroutine(UpdateChunksCoroutine());
+    }
+
+    private IEnumerator UpdateChunksCoroutine()
+    {
+        var dirtyRegionCoords = new HashSet<Vector2Int>();
+        var chunksToUnload = new List<Vector2Int>();
+
+        List<Coroutine> generationCoroutines = LoadAndGenerateChunksInRange();
+        foreach (var coroutine in generationCoroutines)
+        {
+            yield return coroutine;
+        }
+
+        PlaceTilesAndIdentifyChunksToUnload(dirtyRegionCoords, chunksToUnload);
+        UnloadChunks(chunksToUnload, dirtyRegionCoords);
+
+        // Add all regions modified during this update to the global dirty set
+        foreach (var regionCoord in dirtyRegionCoords)
+        {
+            _dirtyRegionColliders.Add(regionCoord);
+        }
+
+        _chunkUpdateCoroutine = null;
+    }
+    #endregion
+
+    #region Chunk Update Sub-tasks
+    private List<Coroutine> LoadAndGenerateChunksInRange()
+    {
+        var generationCoroutines = new List<Coroutine>();
+        for (int xOffset = -viewDistanceInChunks; xOffset <= viewDistanceInChunks; xOffset++)
+        {
+            for (int yOffset = -viewDistanceInChunks; yOffset <= viewDistanceInChunks; yOffset++)
+            {
+                Vector2Int chunkCoord = new Vector2Int(_currentPlayerChunkCoord.x + xOffset, _currentPlayerChunkCoord.y + yOffset);
+
+                if (_chunkDataMap.TryGetValue(chunkCoord, out ChunkData chunkData))
+                {
+                    if (chunkData.status == ChunkStatus.Unloaded)
+                    {
+                        chunkData.status = ChunkStatus.Loading;
+                        chunkData.generationCoroutine = StartCoroutine(RenderChunkCoroutine(chunkData));
+                        generationCoroutines.Add(chunkData.generationCoroutine);
+                    }
+                }
+                else
+                {
+                    ChunkData newChunkData = new ChunkData(chunkCoord, WorldGenerator.chunkSize);
+                    _chunkDataMap.Add(chunkCoord, newChunkData);
+                    newChunkData.generationCoroutine = StartCoroutine(FullChunkGenerationSequence(newChunkData));
+                    generationCoroutines.Add(newChunkData.generationCoroutine);
+                }
+            }
+        }
+        return generationCoroutines;
+    }
+
+    private void PlaceTilesAndIdentifyChunksToUnload(HashSet<Vector2Int> dirtyRegionCoords, List<Vector2Int> chunksToUnload)
+    {
+        foreach (var chunkData in _chunkDataMap.Values)
+        {
+            if (chunkData.status == ChunkStatus.Generated)
+            {
+                PlaceTilesForChunk(chunkData);
+                dirtyRegionCoords.Add(GetRegionCoord(chunkData.chunkCoord));
+                chunkData.status = ChunkStatus.Ready;
+            }
+
+            if (chunkData.status == ChunkStatus.Ready)
+            {
+                if (Mathf.Abs(chunkData.chunkCoord.x - _currentPlayerChunkCoord.x) > viewDistanceInChunks + 1 ||
+                    Mathf.Abs(chunkData.chunkCoord.y - _currentPlayerChunkCoord.y) > viewDistanceInChunks + 1)
+                {
+                    chunksToUnload.Add(chunkData.chunkCoord);
+                }
+            }
+        }
+    }
+
+    private void UnloadChunks(List<Vector2Int> chunksToUnload, HashSet<Vector2Int> dirtyRegionCoords)
+    {
+        foreach (Vector2Int chunkCoord in chunksToUnload)
+        {
+            UnloadChunk(chunkCoord);
+            dirtyRegionCoords.Add(GetRegionCoord(chunkCoord));
+        }
+    }
+
+    private void RegenerateRegionCollider(Tilemap regionTilemap)
+    {
+        var composite = regionTilemap.GetComponentInParent<CompositeCollider2D>();
+        if (composite != null)
+        {
+            composite.GenerateGeometry();
+        }
+    }
+    #endregion
+
+    #region Chunk Data and Tile Placement
+    private IEnumerator FullChunkGenerationSequence(ChunkData chunkData)
+    {
+        yield return StartCoroutine(worldGenerator.InitializeChunkDataCoroutine(chunkData));
+        chunkData.tiles = worldGenerator.CreateTilebaseArray(chunkData.chunkCoord, chunkData);
+        worldGenerator.SpawnResourceObjectsForChunk(chunkData.chunkCoord, chunkData);
+        chunkData.status = ChunkStatus.Generated;
+        chunkData.generationCoroutine = null;
+    }
+
+    private IEnumerator RenderChunkCoroutine(ChunkData chunkData)
+    {
+        chunkData.status = ChunkStatus.Generated;
+        yield return null;
+        chunkData.generationCoroutine = null;
+    }
+
+    private void PlaceTilesForChunk(ChunkData chunkData)
+    {
+        Vector2Int regionCoord = GetRegionCoord(chunkData.chunkCoord);
+        if (!_activeChunksPerRegion.ContainsKey(regionCoord)) _activeChunksPerRegion[regionCoord] = 0;
+        _activeChunksPerRegion[regionCoord]++;
+
+        Tilemap regionTilemap = GetOrCreateRegionTilemap(regionCoord);
+
+        int startX = chunkData.chunkCoord.x * WorldGenerator.chunkSize;
+        int startY = chunkData.chunkCoord.y * WorldGenerator.chunkSize;
+        var bounds = new BoundsInt(startX, startY, 0, WorldGenerator.chunkSize, WorldGenerator.chunkSize, 1);
+
+        groundTilemap.SetTilesBlock(bounds, chunkData.tiles);
+        regionTilemap.SetTilesBlock(bounds, chunkData.tiles);
+    }
+
+    private void UnloadChunk(Vector2Int chunkCoord)
+    {
+        if (_chunkDataMap.TryGetValue(chunkCoord, out ChunkData chunkData) && chunkData.status == ChunkStatus.Ready)
+        {
+            int startX = chunkCoord.x * WorldGenerator.chunkSize;
+            int startY = chunkData.chunkCoord.y * WorldGenerator.chunkSize;
+            var bounds = new BoundsInt(startX, startY, 0, WorldGenerator.chunkSize, WorldGenerator.chunkSize, 1);
+            groundTilemap.SetTilesBlock(bounds, emptyTileArray);
+
+            DecrementRegionChunkCount(chunkCoord);
+
+            chunkData.status = ChunkStatus.Unloaded;
+        }
+    }
+    #endregion
+
+    #region Region and Coordinate Utilities
+    private Vector2Int GetChunkCoordFromPosition(Vector3 position)
+    {
+        Vector3Int cellPos = groundTilemap.WorldToCell(position);
+        int x = Mathf.FloorToInt((float)cellPos.x / WorldGenerator.chunkSize);
+        int y = Mathf.FloorToInt((float)cellPos.y / WorldGenerator.chunkSize);
+        return new Vector2Int(x, y);
+    }
+
+    private Vector2Int GetRegionCoord(Vector2Int chunkCoord)
+    {
+        return new Vector2Int(
+            Mathf.FloorToInt((float)chunkCoord.x / REGION_SIZE),
+            Mathf.FloorToInt((float)chunkCoord.y / REGION_SIZE)
+        );
+    }
+    #endregion
+
+    #region Region Pooling
+    private Tilemap GetOrCreateRegionTilemap(Vector2Int regionCoord)
+    {
+        if (_activeRegionTilemaps.TryGetValue(regionCoord, out Tilemap regionTilemap))
+        {
+            return regionTilemap;
+        }
+
+        GameObject regionObject = (_regionPool.Count > 0) ? _regionPool.Dequeue() : Instantiate(regionPrefab, transform);
+        regionObject.name = $"Region_{regionCoord.x}_{regionCoord.y}";
+        regionObject.SetActive(true);
+
+        Tilemap newTilemap = regionObject.GetComponentInChildren<Tilemap>();
+        _activeRegionTilemaps.Add(regionCoord, newTilemap);
+        return newTilemap;
+    }
+
+    private void DecrementRegionChunkCount(Vector2Int chunkCoord)
+    {
+        Vector2Int regionCoord = GetRegionCoord(chunkCoord);
+        if (_activeChunksPerRegion.ContainsKey(regionCoord))
+        {
+            _activeChunksPerRegion[regionCoord]--;
+            if (_activeChunksPerRegion[regionCoord] <= 0)
+            {
+                _activeChunksPerRegion.Remove(regionCoord);
+                ReturnRegionToPool(regionCoord);
+            }
+        }
+    }
+
+    private void ReturnRegionToPool(Vector2Int regionCoord)
+    {
+        if (_activeRegionTilemaps.TryGetValue(regionCoord, out Tilemap tilemapToDeactivate))
+        {
+            GameObject objectToDeactivate = tilemapToDeactivate.transform.parent.gameObject;
+            tilemapToDeactivate.ClearAllTiles();
+
+            if (_regionPool.Count < MAX_REGION_POOL_SIZE)
+            {
+                objectToDeactivate.SetActive(false);
+                _regionPool.Enqueue(objectToDeactivate);
+            }
+            else
+            {
+                Destroy(objectToDeactivate);
+            }
+
+            _activeRegionTilemaps.Remove(regionCoord);
+        }
+    }
+    #endregion
 }

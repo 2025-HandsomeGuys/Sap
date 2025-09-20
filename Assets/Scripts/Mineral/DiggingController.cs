@@ -1,70 +1,112 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using static Constants;
 
 public class DiggingController : MonoBehaviour
 {
     [Header("Dependencies")]
-    public InventoryUI inventoryUI; // Assign in inspector
+    [SerializeField] private InventoryUI inventoryUI;
 
     private PlayerStatsController _playerStats;
 
     [Header("Digging Settings")]
-    public float digRadius = 1.0f;
-    public float digOffset = 0.5f;
-    public float digCooldown = 0.2f;
+    [SerializeField] private float digRadius = 1.0f;
+    [SerializeField] private float digOffset = 0.5f;
+    [SerializeField] private float digCooldown = 0.2f;
 
-    private Vector2 currentDigDirection = Vector2.right;
-    private float nextDigTime = 0f;
+    private float _nextDigTime = 0f;
 
-    void Start()
+    private void Start()
     {
         _playerStats = GetComponent<PlayerStatsController>();
 
         if (inventoryUI == null)
         {
-            Debug.LogWarning("InventoryUI is not assigned in the DiggingController inspector. Digging while inventory is open won't be prevented.");
+            Debug.LogWarning($"InventoryUI is not assigned in the {nameof(DiggingController)} inspector.");
         }
         if (_playerStats == null)
         {
-            Debug.LogError("PlayerStatsController component not found on player! Stamina reduction will not work.");
+            Debug.LogError($"{nameof(PlayerStatsController)} component not found on player! Stamina reduction will not work.");
         }
     }
 
-    void Update()
+    /// <summary>
+    /// Called by ToolController to initiate a dig action.
+    /// </summary>
+    public void ExecuteDig(Vector2 currentDigDirection)
     {
-        // If inventory is open, stop all digging logic.
-        if (inventoryUI != null && inventoryUI.IsOpen())
+        if (!CanDig())
         {
             return;
         }
 
-        // 1. Determine dig direction from mouse position
-        Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        if ((mousePosition - (Vector2)transform.position).sqrMagnitude > 0.01f)
+        _nextDigTime = Time.time + digCooldown;
+
+        Vector2 digCenter = (Vector2)transform.position + (currentDigDirection * digOffset);
+        HashSet<Vector3Int> cellsToDig = GetCellsInDigRadius(digCenter);
+
+        if (cellsToDig.Count == 0)
         {
-            currentDigDirection = (mousePosition - (Vector2)transform.position).normalized;
+            return;
         }
 
-        // 2. Check for Left Mouse Button press (0) and cooldown
-        if (Input.GetMouseButton(0) && Time.time >= nextDigTime)
+        var worldPositionsToDig = new List<Vector3>();
+        int dugTileCount = 0;
+
+        // First, determine which tiles will be dug and process their effects (e.g., stamina)
+        foreach (Vector3Int cellPos in cellsToDig)
         {
-            nextDigTime = Time.time + digCooldown;
-            Dig();
+            Vector3 cellWorldCenter = WorldManager.Instance.GetCellCenterWorld(cellPos);
+            TileType type = WorldManager.Instance.GetTileTypeAt(cellWorldCenter);
+
+            if (type != TileType.Empty)
+            {
+                ReducePlayerStaminaForTile(type);
+                worldPositionsToDig.Add(cellWorldCenter);
+                dugTileCount++;
+            }
+        }
+
+        // Now, send the entire batch of tiles to the WorldManager to be processed efficiently
+        if (worldPositionsToDig.Count > 0)
+        {
+            WorldManager.Instance.DigTiles(worldPositionsToDig);
+            Debug.Log($"{dugTileCount} tile(s) were dug.");
         }
     }
 
-    void Dig()
+    /// <summary>
+    /// Checks if the player is currently able to dig.
+    /// </summary>
+    private bool CanDig()
     {
-        //SoundManager.Instance.PlaySound("Dig"); // Play digging sound
+        if (inventoryUI != null && inventoryUI.IsOpen())
+        {
+            return false;
+        }
 
-        Vector2 digCenter = (Vector2)transform.position + (currentDigDirection * digOffset);
+        if (Time.time < _nextDigTime)
+        {
+            return false;
+        }
 
-        HashSet<Vector3Int> cellsToDig = new HashSet<Vector3Int>();
+        if (WorldManager.Instance == null)
+        {
+            Debug.LogError($"{nameof(WorldManager)}.Instance is null. Cannot dig.");
+            return false;
+        }
 
-        float scanStep = WorldManager.Instance.groundTilemap.cellSize.x / 2f;
-        if (scanStep <= 0) scanStep = 0.1f;
+        return true;
+    }
+
+    /// <summary>
+    /// Calculates the set of all tilemap cells within a circular radius.
+    /// </summary>
+    private HashSet<Vector3Int> GetCellsInDigRadius(Vector2 digCenter)
+    {
+        var cells = new HashSet<Vector3Int>();
+        float scanStep = WorldManager.Instance.CellSize / 2f;
+        if (scanStep <= 0) scanStep = 0.1f; // Fallback to prevent infinite loops
 
         for (float x = -digRadius; x <= digRadius; x += scanStep)
         {
@@ -73,37 +115,32 @@ public class DiggingController : MonoBehaviour
                 if (x * x + y * y <= digRadius * digRadius)
                 {
                     Vector2 checkPos = digCenter + new Vector2(x, y);
-                    cellsToDig.Add(WorldManager.Instance.WorldToCell(checkPos));
+                    cells.Add(WorldManager.Instance.WorldToCell(checkPos));
                 }
             }
         }
+        return cells;
+    }
 
-        foreach (Vector3Int cellPos in cellsToDig)
+    /// <summary>
+    /// Reduces player's max stamina based on the properties of the dug tile.
+    /// </summary>
+    private void ReducePlayerStaminaForTile(TileType tileType)
+    {
+        if (_playerStats == null) return;
+
+        TileDataJson data = TileDataManager.Instance.GetData(tileType);
+        if (data != null && data.maxStaminaReduction > 0)
         {
-            Vector3 cellWorldCenter = WorldManager.Instance.groundTilemap.GetCellCenterWorld(cellPos);
-            
-            // --- New Stamina Logic (JSON) ---
-            if (_playerStats != null)
-            {
-                TileType type = WorldManager.Instance.GetTileTypeAt(cellWorldCenter);
-                if (type != TileType.Empty)
-                {
-                    TileDataJson data = TileDataManager.Instance.GetData(type);
-                    if (data != null && data.maxStaminaReduction > 0)
-                    {
-                        _playerStats.ReduceMaxStamina(data.maxStaminaReduction);
-                    }
-                }
-            }
-            // --- End New Stamina Logic ---
-
-            WorldManager.Instance.TileDug(cellWorldCenter);
+            _playerStats.ReduceMaxStamina(data.maxStaminaReduction);
         }
     }
 
-    void OnDrawGizmosSelected()
+    private void OnDrawGizmosSelected()
     {
-        Vector2 digCenter = (Vector2)transform.position + (currentDigDirection * digOffset);
+        // Note: This gizmo will now only show a default direction when not in play mode,
+        // as currentDigDirection is no longer updated in this script.
+        Vector2 digCenter = (Vector2)transform.position + (Vector2.right * digOffset);
         
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(digCenter, digRadius);

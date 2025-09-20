@@ -5,17 +5,17 @@ public class SaveManager : MonoBehaviour
 {
     private string path;
 
-    [Header("±âº»°ª ¼³Á¤¿ë SO")]
+    [Header("ê¸°ë³¸ê°’ ì„¤ì •ìš© SO")]
     public PlayerSO playerSO;
 
-    private PlayerStatsController stats; // ³»ºÎ¿¡¼­ °ü¸®
-    private InventoryController inventory;
+    private PlayerStatsController stats; // ë‚´ë¶€ì—ì„œ ê´€ë¦¬
+    private Inventory inventory;
 
     private void Awake()
     {
         path = Path.Combine(Application.persistentDataPath, "playerData.json");
-        stats = FindObjectOfType<PlayerStatsController>(); // ¾À¿¡¼­ ÀÚµ¿ Ã£±â
-        inventory = FindObjectOfType<InventoryController>();
+        stats = FindFirstObjectByType<PlayerStatsController>(); // ì”¬ì—ì„œ ìë™ ì°¾ê¸°
+        inventory = FindFirstObjectByType<Inventory>();
     }
 
     public bool HasSaveData()
@@ -27,39 +27,62 @@ public class SaveManager : MonoBehaviour
     {
         if (playerSO == null)
         {
-            Debug.LogError("PlayerSO°¡ ¿¬°áµÇÁö ¾Ê¾Ò½À´Ï´Ù!");
+            Debug.LogError("PlayerSOê°€ ì—°ê²°ë˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤!");
             return;
         }
 
         PlayerData data = new PlayerData(playerSO);
         stats.FromData(data);
+
+        if (inventory != null)
+        {
+            inventory.FromData(new InventoryData(), ItemDatabase.Instance, MineralDatabase.Instance);
+        }
         Save();
-        Debug.Log("»õ °ÔÀÓ ½ÃÀÛ");
+        Debug.Log("ìƒˆ ê²Œì„ ì‹œì‘");
     }
 
     public void Save()
     {
         if (stats == null)
         {
-            Debug.LogError("PlayerStatsController¸¦ Ã£À» ¼ö ¾ø½À´Ï´Ù!");
+            Debug.LogError("PlayerStatsControllerë¥¼ ì°¾ì„ ìˆ˜ ì—†ìŠµë‹ˆë‹¤!");
             return;
+        }
+        if (inventory == null)
+        {
+            inventory = FindFirstObjectByType<Inventory>();
+            if (inventory == null)
+            {
+                Debug.LogError("Inventoryë¥¼ ì°¾ì„ ìˆ˜ ì—†ìŠµë‹ˆë‹¤!");
+                return;
+            }
         }
 
         PlayerData data = stats.ToData();
         data.inventory = inventory.ToData();
         string json = JsonUtility.ToJson(data, true);
         File.WriteAllText(path, json);
-        Debug.Log("ÀúÀå ¿Ï·á: " + path);
+        Debug.Log("ì €ì¥ ì™„ë£Œ: " + path);
     }
 
     public void Load()
     {
         if (stats == null)
         {
-            stats = FindObjectOfType<PlayerStatsController>();
+            stats = FindFirstObjectByType<PlayerStatsController>();
             if (stats == null)
             {
-                Debug.LogError("PlayerStatsController¸¦ Ã£À» ¼ö ¾ø½À´Ï´Ù!");
+                Debug.LogError("PlayerStatsControllerë¥¼ ì°¾ì„ ìˆ˜ ì—†ìŠµë‹ˆë‹¤!");
+                return;
+            }
+        }
+        if (inventory == null)
+        {
+            inventory = FindFirstObjectByType<Inventory>();
+            if (inventory == null)
+            {
+                Debug.LogError("Inventoryë¥¼ ì°¾ì„ ìˆ˜ ì—†ìŠµë‹ˆë‹¤!");
                 return;
             }
         }
@@ -68,22 +91,26 @@ public class SaveManager : MonoBehaviour
         {
             string json = File.ReadAllText(path);
             PlayerData data = JsonUtility.FromJson<PlayerData>(json);
+
+            // í”Œë ˆì´ì–´ ìŠ¤íƒ¯ ë³µì›
             stats.FromData(data);
+
+            // ì¸ë²¤í† ë¦¬ ë³µì›
             if (data.inventory != null && data.inventory.slots != null && data.inventory.slots.Count > 0)
             {
-                inventory.FromData(data.inventory);
-                Debug.Log($"ÀÎº¥Åä¸® ºÒ·¯¿À±â ¿Ï·á (½½·Ô °³¼ö: {data.inventory.slots.Count})");
+                inventory.FromData(data.inventory, ItemDatabase.Instance, MineralDatabase.Instance);
+                Debug.Log($"ì¸ë²¤í† ë¦¬ ë¶ˆëŸ¬ì˜¤ê¸° ì™„ë£Œ (ìŠ¬ë¡¯ ê°œìˆ˜: {data.inventory.slots.Count})");
             }
             else
             {
-                inventory.FromData(new InventoryData()); // ºó ÀÎº¥Åä¸®·Î ÃÊ±âÈ­
-                Debug.Log("ÀúÀåµÈ ÀÎº¥Åä¸®°¡ ¾ø¾î ºó ÀÎº¥Åä¸®·Î ÃÊ±âÈ­µÊ");
+                inventory.FromData(new InventoryData(), ItemDatabase.Instance, MineralDatabase.Instance); // ë¹ˆ ì¸ë²¤í† ë¦¬ë¡œ ì´ˆê¸°í™”
+                Debug.Log("ì €ì¥ëœ ì¸ë²¤í† ë¦¬ê°€ ì—†ì–´ ë¹ˆ ì¸ë²¤í† ë¦¬ë¡œ ì´ˆê¸°í™”ë¨");
             }
-            Debug.Log("ºÒ·¯¿À±â ¿Ï·á");
+            Debug.Log("ë¶ˆëŸ¬ì˜¤ê¸° ì™„ë£Œ");
         }
         else
         {
-            Debug.LogWarning("ÀúÀå ÆÄÀÏ ¾øÀ½, SO ±âº»°ªÀ¸·Î ÃÊ±âÈ­");
+            Debug.LogWarning("ì €ì¥ íŒŒì¼ ì—†ìŒ, SO ê¸°ë³¸ê°’ìœ¼ë¡œ ì´ˆê¸°í™”");
             NewGame();
         }
     }

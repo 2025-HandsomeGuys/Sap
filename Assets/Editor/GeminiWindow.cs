@@ -38,6 +38,7 @@ public class Candidate
 }
 
 
+[System.Serializable]
 public class GeminiWindow : EditorWindow
 {
     private string apiKey = "";
@@ -61,52 +62,59 @@ public class GeminiWindow : EditorWindow
 
     private void OnGUI()
     {
-        GUILayout.Label("Gemini API 연동", EditorStyles.boldLabel);
-
-        // API 키 입력 필드
-        EditorGUI.BeginChangeCheck();
-        apiKey = EditorGUILayout.PasswordField("API Key", apiKey);
-        if (EditorGUI.EndChangeCheck())
+        try
         {
-            // API 키가 변경되면 EditorPrefs에 저장
-            EditorPrefs.SetString("GeminiApiKey", apiKey);
-        }
+            GUILayout.Label("Gemini API 연동", EditorStyles.boldLabel);
 
-        if (string.IsNullOrEmpty(apiKey))
-        {
-            EditorGUILayout.HelpBox("Google AI Studio에서 발급받은 API 키를 입력하세요.", MessageType.Info);
-        }
+            // API 키 입력 필드
+            EditorGUI.BeginChangeCheck();
+            apiKey = EditorGUILayout.PasswordField("API Key", apiKey);
+            if (EditorGUI.EndChangeCheck())
+            {
+                // API 키가 변경되면 EditorPrefs에 저장
+                EditorPrefs.SetString("GeminiApiKey", apiKey);
+            }
 
-        EditorGUILayout.Space();
-
-        // 사용자 질문 입력 필드
-        GUILayout.Label("질문 입력", EditorStyles.label);
-        userPrompt = EditorGUILayout.TextArea(userPrompt, GUILayout.Height(100));
-
-        // API 호출 버튼
-        if (GUILayout.Button("Send") && !isWaitingForResponse)
-        {
             if (string.IsNullOrEmpty(apiKey))
             {
-                EditorUtility.DisplayDialog("API 키 필요", "Gemini API 키를 먼저 입력해주세요.", "확인");
-                return;
+                EditorGUILayout.HelpBox("Google AI Studio에서 발급받은 API 키를 입력하세요.", MessageType.Info);
             }
-            CallGeminiAPI();
-        }
 
-        // 응답 대기 중 표시
-        if (isWaitingForResponse)
+            EditorGUILayout.Space();
+
+            // 사용자 질문 입력 필드
+            GUILayout.Label("질문 입력", EditorStyles.label);
+            userPrompt = EditorGUILayout.TextArea(userPrompt, GUILayout.Height(100));
+
+            // API 호출 버튼
+            // if (GUILayout.Button("Send") && !isWaitingForResponse)
+            // {
+            //     if (string.IsNullOrEmpty(apiKey))
+            //     {
+            //         EditorUtility.DisplayDialog("API 키 필요", "Gemini API 키를 먼저 입력해주세요.", "확인");
+            //         return;
+            //     }
+            //     CallGeminiAPI();
+            // }
+
+            // 응답 대기 중 표시
+            if (isWaitingForResponse)
+            {
+                EditorGUILayout.HelpBox("Gemini의 답변을 기다리는 중입니다...", MessageType.Info);
+            }
+
+            EditorGUILayout.Space();
+
+            // Gemini 응답 표시 영역
+            GUILayout.Label("Gemini 응답", EditorStyles.label);
+            scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition, EditorStyles.helpBox, GUILayout.ExpandHeight(true));
+            EditorGUILayout.SelectableLabel(geminiResponse, GUILayout.ExpandHeight(true));
+            EditorGUILayout.EndScrollView();
+        }
+        catch (System.Exception e)
         {
-            EditorGUILayout.HelpBox("Gemini의 답변을 기다리는 중입니다...", MessageType.Info);
+            Debug.LogError("Error in GeminiWindow: " + e.ToString());
         }
-
-        EditorGUILayout.Space();
-
-        // Gemini 응답 표시 영역
-        GUILayout.Label("Gemini 응답", EditorStyles.label);
-        scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition, EditorStyles.helpBox, GUILayout.ExpandHeight(true));
-        EditorGUILayout.SelectableLabel(geminiResponse, GUILayout.ExpandHeight(true));
-        EditorGUILayout.EndScrollView();
     }
 
     private async void CallGeminiAPI()

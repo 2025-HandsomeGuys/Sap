@@ -135,6 +135,7 @@ public class Player3Controller : MonoBehaviour, IPlayerController
 
     private void ModClimbing()
     {
+
         if (CurrentMod == "climbing")
         {
             //climb movement
@@ -146,6 +147,9 @@ public class Player3Controller : MonoBehaviour, IPlayerController
             {
                 playerStats.UseStamina(playerStats.staminaCostPerSecond * Time.fixedDeltaTime);
             }
+
+        
+      
         }
     }
 }
