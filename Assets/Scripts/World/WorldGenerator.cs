@@ -10,18 +10,14 @@ public class WorldGenerator : MonoBehaviour
     public const int chunkSize = 32;
 
     [Header("World Generation Profile")]
-    [Tooltip("The profile that defines the 7 layers of the world.")]
     public TerrainGenerationProfile terrainProfile;
 
     [Header("World Settings")]
     public float cellSize = 0.05f;
     public float mineralSizeMultiplier = 1.5f;
-    [Tooltip("The world Y coordinate where bedrock begins.")]
-    public int bedrockStartY = -1000;
 
     [Header("Base Tile Assets")]
-    [Tooltip("Assign the RuleTile for each base layer type here. This could be replaced with a ScriptableObject mapping in the future.")]
-    public RuleTile dirtTile; 
+    public RuleTile dirtTile;
     public RuleTile hardStoneTile;
     public RuleTile coolStoneTile;
     public RuleTile iceTile;
@@ -33,16 +29,15 @@ public class WorldGenerator : MonoBehaviour
     [Header("Performance Settings")]
     public int tilesPerFrame = 100;
 
+    // ------------------ CHUNK TILE GENERATION ------------------
+
     /// <summary>
-    /// Generates the TileBase array for a chunk based on its pre-calculated data.
-    /// This method does not place tiles, it only returns the data for them.
-    /// It also spawns necessary resource objects.
+    /// Creates a 1D TileBase array for a chunk's tilemap representation.
+    /// For resource tiles, it places the layer's base tile.
     /// </summary>
-    public TileBase[] GenerateChunkTiles(Vector2Int chunkCoord, WorldManager.ChunkData chunkData)
+    public TileBase[] CreateTilebaseArray(Vector2Int chunkCoord, WorldManager.ChunkData chunkData)
     {
-        int chunkWorldStartX = chunkCoord.x * chunkSize;
-        int chunkWorldStartY = chunkCoord.y * chunkSize;
-        
+        int startY = chunkCoord.y * chunkSize;
         TileBase[] tiles = new TileBase[chunkSize * chunkSize];
 
         for (int x = 0; x < chunkSize; x++)
@@ -50,37 +45,26 @@ public class WorldGenerator : MonoBehaviour
             for (int y = 0; y < chunkSize; y++)
             {
                 TileType tileState = chunkData.tileStates[x, y];
-                int index = y * chunkSize + x; // Calculate index for 1D array
+                int index = y * chunkSize + x;
 
-                if (tileState == TileType.Empty) 
+                if (tileState == TileType.Empty)
                 {
                     tiles[index] = null;
                     continue;
                 }
 
-                int worldGridX = chunkWorldStartX + x;
-                int worldGridY = chunkWorldStartY + y;
-
                 if (IsBaseTile(tileState))
                 {
                     tiles[index] = GetBaseTileAsset(tileState);
                 }
-                else // It's a resource/mineral
+                else
                 {
-                    // Find which layer this position belongs to, to get the correct base tile
-                    TerrainLayer currentLayer = GetLayerForDepth(worldGridY);
-                    if(currentLayer != null) {
-                         tiles[index] = GetBaseTileAsset(currentLayer.baseTileType);
-                    }
-                    else
+                    int worldY = startY + y;
+                    TerrainLayer layer = GetLayerForDepth(worldY);
+                    if (layer != null)
                     {
-                        // Fallback if a mineral spawns in an undefined layer (e.g. air or bedrock zone)
-                        // We'll just use dirt as the background.
-                        tiles[index] = dirtTile;
+                        tiles[index] = GetBaseTileAsset(layer.baseTileType);
                     }
-
-                    // Spawn the resource object on top
-                    SpawnResourceObject(tileState, new Vector3(worldGridX * cellSize, worldGridY * cellSize, 0), chunkData);
                 }
             }
         }
@@ -88,267 +72,220 @@ public class WorldGenerator : MonoBehaviour
     }
 
     /// <summary>
-    /// Fills the chunkData.tileStates array with base terrain and mineral data in sequential passes.
+    /// Iterates through chunk data and spawns GameObjects for any non-base resource tiles.
+    /// </summary>
+    public void SpawnResourceObjectsForChunk(Vector2Int chunkCoord, WorldManager.ChunkData chunkData)
+    {
+        int startX = chunkCoord.x * chunkSize;
+        int startY = chunkCoord.y * chunkSize;
+
+        for (int x = 0; x < chunkSize; x++)
+        {
+            for (int y = 0; y < chunkSize; y++)
+            {
+                TileType tileState = chunkData.tileStates[x, y];
+
+                // If it's not a base tile, it's a resource that needs a GameObject.
+                if (!IsBaseTile(tileState) && tileState != TileType.Empty)
+                {
+                    int worldX = startX + x;
+                    int worldY = startY + y;
+                    SpawnResourceObject(tileState,
+                        new Vector3(worldX * cellSize, worldY * cellSize, 0),
+                        chunkData);
+                }
+            }
+        }
+    }
+
+    // ------------------ CHUNK DATA INITIALIZATION ------------------
+
+    /// <summary>
+    /// Fills chunkData with terrain + veins + minerals according to the profile.
     /// </summary>
     public IEnumerator InitializeChunkDataCoroutine(WorldManager.ChunkData chunkData)
     {
         if (terrainProfile == null)
         {
-            Debug.LogError("Terrain Generation Profile is not assigned in the WorldGenerator!");
+            Debug.LogError("Terrain Generation Profile is not assigned!");
             yield break;
         }
 
-        // PASS 1: Set Base Terrain, Air, and Bedrock
-        GenerateBaseTerrain(chunkData);
-        yield return null;
+        int chunkWorldStartY = chunkData.chunkCoord.y * chunkSize;
 
-        // PASS 2: Generate Diagonal Stone Veins
-        GenerateDiagonalVeins(chunkData);
-        yield return null;
-
-        // PASS 3: Generate Mineral Veins
-        GenerateMineralVeins(chunkData);
-        yield return null;
+        yield return FillBaseTerrain(chunkData, chunkWorldStartY);
+        yield return GenerateDiagonalVeins(chunkData, chunkWorldStartY);
+        yield return GenerateMineralVeins(chunkData, chunkWorldStartY);
     }
 
-    /// <summary>
-    /// PASS 1: Fills the chunk with Air, layered base tiles, and Bedrock.
-    /// </summary>
-    private void GenerateBaseTerrain(WorldManager.ChunkData chunkData)
+    private IEnumerator FillBaseTerrain(WorldManager.ChunkData chunkData, int worldStartY)
     {
-        int chunkWorldStartY = chunkData.chunkCoord.y * chunkSize;
-        int worldTopY = (terrainProfile.layers != null && terrainProfile.layers.Count > 0) ? terrainProfile.layers[0].startDepth : 0;
-
         for (int x = 0; x < chunkSize; x++)
         {
             for (int y = 0; y < chunkSize; y++)
             {
-                int worldY = chunkWorldStartY + y;
-
-                if (worldY > worldTopY)
-                {
-                    // Condition for Air
-                    chunkData.tileStates[x, y] = TileType.Empty;
-                }
-                else if (worldY <= bedrockStartY)
-                {
-                    // Condition for Bedrock
-                    chunkData.tileStates[x, y] = TileType.Bedrock;
-                }
-                else
-                {
-                    // Condition for layered terrain
-                    TerrainLayer layer = GetLayerForDepth(worldY);
-                    if (layer != null)
-                    {
-                        chunkData.tileStates[x, y] = layer.baseTileType;
-                    }
-                    else
-                    {
-                        // Fallback for any space between the top layer and bedrock that isn't defined
-                        // This case shouldn't be hit with correct configuration.
-                        chunkData.tileStates[x, y] = TileType.Empty;
-                    }
-                }
+                int worldY = worldStartY + y;
+                TerrainLayer layer = GetLayerForDepth(worldY);
+                chunkData.tileStates[x, y] =
+                    layer != null ? layer.baseTileType : TileType.Bedrock;
             }
         }
+        yield return null;
     }
 
-    /// <summary>
-    /// PASS 2: Overlays diagonal veins of a secondary tile type (e.g., hard stone) using rotated Perlin noise.
-    /// </summary>
-    private void GenerateDiagonalVeins(WorldManager.ChunkData chunkData)
+    private IEnumerator GenerateDiagonalVeins(WorldManager.ChunkData chunkData, int worldStartY)
     {
-        int chunkWorldStartY = chunkData.chunkCoord.y * chunkSize;
         for (int x = 0; x < chunkSize; x++)
         {
             for (int y = 0; y < chunkSize; y++)
             {
-                int worldY = chunkWorldStartY + y;
+                int worldY = worldStartY + y;
                 TerrainLayer layer = GetLayerForDepth(worldY);
 
-                if (layer != null && layer.hasDiagonalVeins)
-                {
-                    // Only replace the base tile of the current layer, not other newly placed veins
-                    if (chunkData.tileStates[x, y] == layer.baseTileType)
-                    {
-                        float worldX = chunkData.chunkCoord.x * chunkSize + x;
-                        
-                        // --- Angle Variation Noise ---
-                        // Use a different noise seed/offset for angle noise to decouple it from other noises
-                        float angleNoise = Mathf.PerlinNoise((worldX + 1000) * layer.veinAngleNoiseScale, (worldY + 1000) * layer.veinAngleNoiseScale);
-                        float currentAngle = Mathf.Lerp(layer.veinAngleRange.x, layer.veinAngleRange.y, angleNoise);
+                if (layer == null || !layer.hasDiagonalVeins) continue;
+                if (chunkData.tileStates[x, y] != layer.baseTileType) continue;
 
-                        // --- Coordinate Rotation ---
-                        float angleRad = currentAngle * Mathf.Deg2Rad;
-                        float cosAngle = Mathf.Cos(angleRad);
-                        float sinAngle = Mathf.Sin(angleRad);
-                        float rotatedX = worldX * cosAngle - worldY * sinAngle;
-                        float rotatedY = worldX * sinAngle + worldY * cosAngle;
-
-                        // --- Vein Generation Noise ---
-                        // Noise A: The main stripes, now rotated and stretched
-                        float diagonalNoise = Mathf.PerlinNoise(rotatedX * layer.veinNoiseScale, rotatedY * layer.veinNoiseScale * 0.1f);
-
-                        // Noise B: A second noise field to create thickness variations and breaks
-                        float thicknessNoise = Mathf.PerlinNoise(worldX * layer.veinThicknessNoiseScale, worldY * layer.veinThicknessNoiseScale);
-
-                        // Combine the two noises.
-                        float combinedNoise = diagonalNoise - thicknessNoise;
-
-                        if (combinedNoise > layer.veinThreshold)
-                        {
-                            chunkData.tileStates[x, y] = layer.diagonalVeinTile;
-                        }
-                    }
-                }
+                if (CheckDiagonalNoise(chunkData.chunkCoord, x, y, layer))
+                    chunkData.tileStates[x, y] = layer.diagonalVeinTile;
             }
         }
+        yield return null;
     }
 
-    /// <summary>
-    /// PASS 3: Spawns clusters of minerals based on layer-specific configurations.
-    /// </summary>
-    private void GenerateMineralVeins(WorldManager.ChunkData chunkData)
+    private bool CheckDiagonalNoise(Vector2Int chunkCoord, int x, int y, TerrainLayer layer)
     {
-        System.Random random = new System.Random(chunkData.chunkCoord.x * 10000 + chunkData.chunkCoord.y);
-        int chunkWorldStartY = chunkData.chunkCoord.y * chunkSize;
+        float worldX = chunkCoord.x * chunkSize + x;
+        float worldY = chunkCoord.y * chunkSize + y;
+
+        // Angle variation
+        float angleNoise = Mathf.PerlinNoise(
+            (worldX + 1000) * layer.veinAngleNoiseScale,
+            (worldY + 1000) * layer.veinAngleNoiseScale);
+        float angle = Mathf.Lerp(layer.veinAngleRange.x, layer.veinAngleRange.y, angleNoise);
+
+        float rad = angle * Mathf.Deg2Rad;
+        float rotatedX = worldX * Mathf.Cos(rad) - worldY * Mathf.Sin(rad);
+        float rotatedY = worldX * Mathf.Sin(rad) + worldY * Mathf.Cos(rad);
+
+        float mainNoise = Mathf.PerlinNoise(rotatedX * layer.veinNoiseScale,
+                                            rotatedY * layer.veinNoiseScale * 0.1f);
+        float thicknessNoise = Mathf.PerlinNoise(worldX * layer.veinThicknessNoiseScale,
+                                                 worldY * layer.veinThicknessNoiseScale);
+
+        return mainNoise - thicknessNoise > layer.veinThreshold;
+    }
+
+    private IEnumerator GenerateMineralVeins(WorldManager.ChunkData chunkData, int worldStartY)
+    {
+        System.Random rng = new System.Random(chunkData.chunkCoord.x * 10000 + chunkData.chunkCoord.y);
 
         foreach (var layer in terrainProfile.layers)
         {
-            // Check if this layer is relevant to the current chunk's vertical space
-            int chunkWorldEndY = chunkWorldStartY + chunkSize;
-            if (layer.startDepth < chunkWorldStartY && (GetNextLayerDepth(layer) > chunkWorldEndY)) continue;
+            int chunkEndY = worldStartY + chunkSize;
+            if (!LayerIntersectsChunk(layer, worldStartY, chunkEndY)) continue;
 
-            foreach (var mineralConfig in layer.mineralConfigs)
+            foreach (var mineral in layer.mineralConfigs)
             {
-                // Use the AnimationCurve to determine spawn chance at this depth.
-                float spawnChance = mineralConfig.spawnChanceByDepth.Evaluate(Mathf.Abs(chunkWorldStartY)); // Use absolute depth
+                float spawnChance = mineral.spawnChanceByDepth.Evaluate(Mathf.Abs(worldStartY));
+                if (rng.NextDouble() >= spawnChance) continue;
 
-                if (random.NextDouble() < spawnChance)
+                int veinCount = rng.Next(mineral.veinsPerChunk.x, mineral.veinsPerChunk.y + 1);
+                for (int i = 0; i < veinCount; i++)
                 {
-                    int veinCount = random.Next(mineralConfig.veinsPerChunk.x, mineralConfig.veinsPerChunk.y + 1);
-                    for (int i = 0; i < veinCount; i++)
-                    {
-                        // Find a valid starting point within the chunk and this layer's depth
-                        int startX = random.Next(0, chunkSize);
-                        int startY = random.Next(0, chunkSize);
-                        int worldY = chunkWorldStartY + startY;
+                    int startX = rng.Next(0, chunkSize);
+                    int startY = rng.Next(0, chunkSize);
+                    int worldY = worldStartY + startY;
 
-                        // Ensure the vein starts within the correct layer depth
-                        if (worldY <= layer.startDepth && worldY > GetNextLayerDepth(layer))
-                        {
-                            GenerateSingleVein(chunkData, random, mineralConfig, startX, startY);
-                        }
-                    }
+                    if (worldY <= layer.startDepth && worldY > GetNextLayerDepth(layer))
+                        GenerateVein(chunkData, rng, mineral, startX, startY);
                 }
             }
+            yield return null;
         }
     }
 
-    /// <summary>
-    /// Generates a single mineral vein using a random walk algorithm.
-    /// </summary>
-    private void GenerateSingleVein(WorldManager.ChunkData chunkData, System.Random random, MinableSpawnConfig config, int startX, int startY)
+    private bool LayerIntersectsChunk(TerrainLayer layer, int chunkStart, int chunkEnd)
     {
-        int length = random.Next(config.veinLength.x, config.veinLength.y + 1);
-        int currentX = startX;
-        int currentY = startY;
+        return !(layer.startDepth < chunkStart && GetNextLayerDepth(layer) > chunkEnd);
+    }
 
-        for (int j = 0; j < length; j++)
+    private void GenerateVein(WorldManager.ChunkData chunkData, System.Random rng,
+                              MinableSpawnConfig config, int startX, int startY)
+    {
+        int length = rng.Next(config.veinLength.x, config.veinLength.y + 1);
+        int x = startX, y = startY;
+
+        for (int i = 0; i < length; i++)
         {
-            if (currentX >= 0 && currentX < chunkSize && currentY >= 0 && currentY < chunkSize)
-            {
-                // Place mineral only if the tile is a base tile (don't overwrite other minerals)
-                if (IsBaseTile(chunkData.tileStates[currentX, currentY]))
-                {
-                    chunkData.tileStates[currentX, currentY] = (TileType)config.minableType;
-                }
-            }
+            if (IsInsideChunk(x, y) && IsBaseTile(chunkData.tileStates[x, y]))
+                chunkData.tileStates[x, y] = (TileType)config.minableType;
 
-            // Move to the next position based on a random walk
-            int direction = random.Next(0, 4); // 0: Up, 1: Down, 2: Left, 3: Right
-            if (direction == 0) currentY++;
-            else if (direction == 1) currentY--;
-            else if (direction == 2) currentX--;
-            else if (direction == 3) currentX++;
-
-            // Add spacing
-            for (int s = 0; s < config.veinSpacing - 1; s++)
-            {
-                if (direction == 0) currentY++;
-                else if (direction == 1) currentY--;
-                else if (direction == 2) currentX--;
-                else if (direction == 3) currentX++;
-            }
+            (x, y) = RandomStep(x, y, rng, config.veinSpacing);
         }
     }
+
+    private bool IsInsideChunk(int x, int y) =>
+        x >= 0 && x < chunkSize && y >= 0 && y < chunkSize;
+
+    private (int, int) RandomStep(int x, int y, System.Random rng, int spacing)
+    {
+        int dir = rng.Next(0, 4);
+        for (int s = 0; s < spacing; s++)
+        {
+            if (dir == 0) y++;
+            else if (dir == 1) y--;
+            else if (dir == 2) x--;
+            else x++;
+        }
+        return (x, y);
+    }
+
+    // ------------------ UTILITIES ------------------
 
     private TerrainLayer GetLayerForDepth(int depth)
     {
-        // Assumes layers are sorted top-to-bottom in the profile (e.g., 0, -100, -200)
-        TerrainLayer currentLayer = null;
+        TerrainLayer current = null;
         foreach (var layer in terrainProfile.layers)
         {
-            if (depth <= layer.startDepth)
-            {
-                currentLayer = layer;
-            }
-            else
-            {
-                // We've gone past the layer that contains this depth
-                return currentLayer;
-            }
+            if (depth <= layer.startDepth) current = layer;
+            else return current;
         }
-        return currentLayer;
+        return current;
     }
 
     private int GetNextLayerDepth(TerrainLayer currentLayer)
     {
-        int currentIndex = terrainProfile.layers.IndexOf(currentLayer);
-        if (currentIndex >= 0 && currentIndex < terrainProfile.layers.Count - 1)
+        int index = terrainProfile.layers.IndexOf(currentLayer);
+        return (index >= 0 && index < terrainProfile.layers.Count - 1)
+            ? terrainProfile.layers[index + 1].startDepth
+            : int.MinValue;
+    }
+
+    private bool IsBaseTile(TileType type) =>
+        type >= TileType.Dirt && type <= TileType.MeteoriteRock;
+
+    private TileBase GetBaseTileAsset(TileType type)
+    {
+        return type switch
         {
-            return terrainProfile.layers[currentIndex + 1].startDepth;
-        }
-        return int.MinValue; // This is the last layer
+            TileType.Dirt => dirtTile,
+            TileType.HardStone => hardStoneTile,
+            TileType.CoolStone => coolStoneTile,
+            TileType.Ice => iceTile,
+            TileType.HotStone => hotStoneTile,
+            TileType.MagmaRock => magmaRockTile,
+            TileType.MeteoriteRock => meteoriteRockTile,
+            TileType.Bedrock => bedrockTile,
+            _ => null
+        };
     }
 
-    private bool IsBaseTile(TileType tileType)
+    private void SpawnResourceObject(TileType resourceType, Vector3 pos, WorldManager.ChunkData chunkData)
     {
-        return tileType >= TileType.Dirt && tileType <= TileType.Bedrock;
-    }
-
-    /// <summary>
-    /// Returns the RuleTile asset corresponding to a given base TileType.
-    /// Note: This could be refactored to use a ScriptableObject or Dictionary for a more scalable mapping.
-    /// </summary>
-    private TileBase GetBaseTileAsset(TileType tileType)
-    {
-        switch (tileType)
-        {
-            case TileType.Dirt: return dirtTile;
-            case TileType.HardStone: return hardStoneTile;
-            case TileType.CoolStone: return coolStoneTile;
-            case TileType.Ice: return iceTile;
-            case TileType.HotStone: return hotStoneTile;
-            case TileType.MagmaRock: return magmaRockTile;
-            case TileType.MeteoriteRock: return meteoriteRockTile;
-            case TileType.Bedrock: return bedrockTile;
-            default: return null;
-        }
-    }
-
-    private void SpawnResourceObject(TileType resourceType, Vector3 position, WorldManager.ChunkData chunkData)
-    {
-        // The PoolableType enum must match the resource part of the TileType enum
         if (System.Enum.TryParse(resourceType.ToString(), out PoolableType poolType))
         {
-            GameObject spawnedObject = ObjectPooler.Instance.SpawnFromPool(poolType, position, Quaternion.identity);
-            if (spawnedObject != null)
-            {
-                // Optional: Adjust scale or other properties
-                chunkData.spawnedItems.Add(spawnedObject);
-            }
+            GameObject obj = ObjectPooler.Instance.SpawnFromPool(poolType, pos, Quaternion.identity);
+            if (obj != null) chunkData.spawnedItems.Add(obj);
         }
     }
 }
