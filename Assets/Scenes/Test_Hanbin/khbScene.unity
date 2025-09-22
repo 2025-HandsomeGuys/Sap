@@ -585,7 +585,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &236109009
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2274,6 +2274,8 @@ MonoBehaviour:
   groundTilemap: {fileID: 1104405495}
   regionPrefab: {fileID: 639094508852373295, guid: af90c1c7a0accc945a067b6eaf41c511, type: 3}
   viewDistanceInChunks: 6
+  regionSize: 1
+  maxRegionPoolSize: 30
 --- !u!4 &1350637118
 Transform:
   m_ObjectHideFlags: 0
@@ -2547,6 +2549,10 @@ PrefabInstance:
       propertyPath: inventoryUI
       value: 
       objectReference: {fileID: 236109012}
+    - target: {fileID: 6069593060920306883, guid: 67d5b019d3accde4faee8d1e2beeffc7, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 9070556607531506533, guid: 67d5b019d3accde4faee8d1e2beeffc7, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.5776201

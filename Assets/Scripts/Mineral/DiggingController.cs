@@ -50,8 +50,7 @@ public class DiggingController : MonoBehaviour
             return;
         }
 
-        var worldPositionsToDig = new List<Vector3>();
-        int dugTileCount = 0;
+        var cellPositionsToDig = new List<Vector3Int>();
 
         // First, determine which tiles will be dug and process their effects (e.g., stamina)
         foreach (Vector3Int cellPos in cellsToDig)
@@ -62,16 +61,15 @@ public class DiggingController : MonoBehaviour
             if (type != TileType.Empty)
             {
                 ReducePlayerStaminaForTile(type);
-                worldPositionsToDig.Add(cellWorldCenter);
-                dugTileCount++;
+                cellPositionsToDig.Add(cellPos);
             }
         }
 
         // Now, send the entire batch of tiles to the WorldManager to be processed efficiently
-        if (worldPositionsToDig.Count > 0)
+        if (cellPositionsToDig.Count > 0)
         {
-            WorldManager.Instance.DigTiles(worldPositionsToDig);
-            Debug.Log($"{dugTileCount} tile(s) were dug.");
+            WorldManager.Instance.DigTiles(cellPositionsToDig);
+            Debug.Log($"{cellPositionsToDig.Count} tile(s) were dug.");
         }
     }
 
