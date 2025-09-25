@@ -693,22 +693,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e0380271c3be1941918bcaecd333295, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  followPos: {x: 0, y: 0, z: 0}
-  scale: {x: 0, y: 0, z: 0}
   playerAnimator: {fileID: 1540115269}
-  parent: {fileID: 1540115265}
-  isleft: 0
-  toolType: 0
-  animationMove: 0
-  digRot: 0
-  digEnd: 0
-  clickVec: {x: 0, y: 0, z: 0}
-  clickRot: {x: 0, y: 0, z: 0, w: 0}
+  player: {fileID: 1540115265}
   toolAnim: {fileID: 1010570355}
+  playerAnim: {fileID: 1540115269}
   Img_Renderer: {fileID: 1010570353}
   sap: {fileID: -3766519690804746565, guid: 72b8f10ab3ae7284582816b4690742ba, type: 3}
   pickaxe: {fileID: 8959118705387878318, guid: 1a9351b5e83b14f459d59a5dc0bdba97, type: 3}
   followSpeed: 10
+  diggingController: {fileID: 0}
+  animationMove: 0
+  digRot: 0
+  digEnd: 0
 --- !u!212 &1010570353
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1027,6 +1023,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerRigidbody: {fileID: 1540115263}
   isWallClimbing: 0
+  climbStop: 0
   CurrentMod: walking
 --- !u!95 &1540115269
 Animator:
@@ -1072,7 +1069,7 @@ MonoBehaviour:
   originalJumpForce: 0
   jumpForce: 10
   originalWallClimbingSpeed: 0
-  wallClimbingSpeed: 2
+  wallClimbingSpeed: 0.5
   originalEncumberedSpeedMultiplier: 0.1
   encumberedSpeedMultiplier: 0
   originalInventorySize: 0
