@@ -16,10 +16,11 @@ public class Player3Controller : MonoBehaviour, IPlayerController
     private float originalGravityScale;
     private bool isInsideWallZone = false;
     public bool isWallClimbing = false;
-
+    public bool climbStop;
     // Interface property implementation
     public bool IsWallClimbing => isWallClimbing;
 
+    public string CurrentMod = "walking";
 
     void Awake()
     {
@@ -52,7 +53,7 @@ public class Player3Controller : MonoBehaviour, IPlayerController
 
     void OnTriggerStay2D(Collider2D other)
     {
-        if (!other.CompareTag("Wall"))
+        if (!other.CompareTag("Wall")&&CurrentMod=="walking")
         {
             anim.SetBool("isjumping", false);
         }
@@ -70,113 +71,95 @@ public class Player3Controller : MonoBehaviour, IPlayerController
 
     void Update()
     {
+        MovementModCheck();
+
         // Read inputs every frame
         horizontalInput = Input.GetAxisRaw("Horizontal");
         verticalInput = Input.GetAxisRaw("Vertical");
-
-        HandleSpriteFlippingAndAnimation();
-        HandleWallClimbingState();
-
-        if (!isWallClimbing)
-        {
-            HandleJumping();
-        }
+        ModWalking();
+        ModClimbing();
     }
 
-    private void HandleSpriteFlippingAndAnimation()
+    private void MovementModCheck()
     {
-        // --- Sprite Flipping (runs in all states) ---
-        if (horizontalInput < 0)
+        if (Input.GetKeyDown(KeyCode.LeftShift))
         {
-            transform.localScale = new Vector3(1, 1, 1);
-        }
-        else if (horizontalInput > 0)
-        {
-            transform.localScale = new Vector3(-1, 1, 1);
-        }
-        else // When horizontal input is zero
-        {
-            // If not on a wall, face the mouse
-            if (!isWallClimbing && cam != null)
+            anim.SetBool("isclimbing", !anim.GetBool("isclimbing"));
+            if (anim.GetBool("isclimbing") == true)
             {
-                Vector2 mousePos = (Vector2)cam.ScreenToWorldPoint(Input.mousePosition);
-                if (mousePos.x > transform.position.x)
-                    transform.localScale = new Vector3(-1, 1, 1);
-                else
-                    transform.localScale = new Vector3(1, 1, 1);
+                anim.SetTrigger("climb");
+                anim.SetBool("isjumping", true);
+                CurrentMod = "climbing";
+            }             
+            else
+            {
+                anim.SetTrigger("jump");
+                CurrentMod = "walking";
             }
         }
+    }
+ 
+    private void ModWalking()
+    {
+        if(CurrentMod == "walking")
+        {
 
-        // --- Animation ---
-        if (isWallClimbing)
-        {
-            // On a wall, moving is based on any input
-            anim.SetBool("ismoving", horizontalInput != 0 || verticalInput != 0);
-        }
-        else
-        {
-            // On the ground, moving is based on horizontal input only
+            //dirctioncheck
+            if (horizontalInput < 0)           
+                transform.localScale = new Vector3(1, 1, 1);   
+            else if (horizontalInput > 0)            
+                transform.localScale = new Vector3(-1, 1, 1);
+            else // <<When horizontal input is zero, face the mouse>>
+            {
+
+                Vector2 mousePos = (Vector2)cam.ScreenToWorldPoint(Input.mousePosition);
+                if (mousePos.x > transform.position.x)
+
+                    transform.localScale = new Vector3(-1, 1, 1);
+
+                else
+
+                    transform.localScale = new Vector3(1, 1, 1);                      
+            }           
+
+            //walk movement         
+            playerRigidbody.linearVelocity = new Vector2(horizontalInput * playerStats.moveSpeed, playerRigidbody.linearVelocity.y);
+            playerRigidbody.gravityScale = originalGravityScale;
             anim.SetBool("ismoving", horizontalInput != 0);
+
+            //jump movement
+            if (Input.GetKeyDown(KeyCode.Space) && !anim.GetBool("isjumping"))
+            {
+                playerRigidbody.AddForce(Vector3.up * playerStats.jumpForce, ForceMode2D.Impulse);
+                anim.SetTrigger("jump");
+                anim.SetBool("isjumping", true);
+            }           
+
         }
     }
 
-    private void HandleWallClimbingState()
+    private void ModClimbing()
     {
-        if (playerStats == null) return;
 
-        if (isWallClimbing && (!Input.GetKey(KeyCode.LeftShift) || playerStats.currentStamina <= 0))
+        if (CurrentMod == "climbing")
         {
-            isWallClimbing = false;
-        }
-        else if (!isWallClimbing && isInsideWallZone && Input.GetKey(KeyCode.LeftShift) && playerStats.currentStamina > 0)
-        {
-            isWallClimbing = true;
-        }
-    }
+            //climb movement           
+            playerRigidbody.gravityScale = 0f;
+            playerRigidbody.linearVelocity = new Vector2(horizontalInput * playerStats.wallClimbingSpeed, verticalInput * playerStats.wallClimbingSpeed);
+            if (climbStop == true)
+                playerStats.wallClimbingSpeed = 0;
+            else if (climbStop == false)
+                playerStats.wallClimbingSpeed = 0.5f;
+            anim.SetBool("isclbmoving", horizontalInput != 0 || verticalInput > 0);
+            anim.SetBool("isclbdown", horizontalInput != 0 || verticalInput < 0);
+            //use stamina
+            if (verticalInput != 0 || horizontalInput != 0)
+            {
+                playerStats.UseStamina(playerStats.staminaCostPerSecond * Time.fixedDeltaTime);
+            }
 
-    private void HandleJumping()
-    {
-        if (playerStats == null) return;
-
-        if (Input.GetKeyDown(KeyCode.Space) && !anim.GetBool("isjumping"))
-        {
-            playerRigidbody.AddForce(Vector3.up * playerStats.jumpForce, ForceMode2D.Impulse);
-            anim.SetTrigger("jump");
-            anim.SetBool("isjumping", true);
-        }
-    }
-
-    void FixedUpdate()
-    {
-        if (isWallClimbing)
-        {
-            HandleWallClimbingMovement();
-        }
-        else
-        {
-            HandleNormalMovementPhysics();
-        }
-    }
-
-    private void HandleWallClimbingMovement()
-    {
         
-        if (playerStats == null) return;
-
-        playerRigidbody.linearVelocity = new Vector2(horizontalInput * playerStats.moveSpeed, verticalInput * playerStats.wallClimbingSpeed);
-        playerRigidbody.gravityScale = 0f;
-
-        if (verticalInput != 0 || horizontalInput != 0)
-        {
-            playerStats.UseStamina(playerStats.staminaCostPerSecond * Time.fixedDeltaTime);
+      
         }
-    }
-
-    private void HandleNormalMovementPhysics()
-    {
-        if (playerStats == null) return;
-
-        playerRigidbody.linearVelocity = new Vector2(horizontalInput * playerStats.moveSpeed, playerRigidbody.linearVelocity.y);
-        playerRigidbody.gravityScale = originalGravityScale;
     }
 }
