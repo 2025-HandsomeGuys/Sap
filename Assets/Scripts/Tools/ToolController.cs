@@ -5,8 +5,9 @@ public class ToolController : MonoBehaviour
 {
     [Header("Visuals & Animation")]
     public Animator playerAnimator;
-    public Transform parent;
+    public Transform player;
     public Animator toolAnim;
+    public Animator playerAnim;
     public SpriteRenderer Img_Renderer;
     public Sprite sap;
     public Sprite pickaxe;
@@ -35,9 +36,9 @@ public class ToolController : MonoBehaviour
     void Start()
     {
         cam = Camera.main;
-        if (parent != null) 
+        if (player != null) 
         {
-            followPos = parent.position;
+            followPos = player.position;
         }
 
         // Check if the DiggingController has been assigned in the inspector.
@@ -61,8 +62,8 @@ public class ToolController : MonoBehaviour
 
     void CheckVisualState()
     {
-        if (parent == null) return;
-        scale = parent.localScale;
+        if (player == null) return;
+        scale = player.localScale;
         isleft = scale.x > 0;
     }
 
@@ -96,8 +97,11 @@ public class ToolController : MonoBehaviour
         {
             clickRot = transform.localRotation;
             clickVec = isleft ? -currentDigDirection : currentDigDirection;
-            toolAnim.SetTrigger("dig");
-            toolAnim.SetBool("isdigging", true);
+            if (!playerAnim.GetBool("ismoving"))
+            {
+                toolAnim.SetTrigger("dig");
+                toolAnim.SetBool("isdigging", true);
+            }          
         }
 
         // 3. Command DiggingController while mouse is held down
@@ -119,9 +123,9 @@ public class ToolController : MonoBehaviour
 
     void FollowParent()
     {
-        if (parent == null) return;
+        if (player == null) return;
 
-        followPos = Vector3.Lerp(followPos, parent.position, Time.deltaTime * followSpeed);
+        followPos = Vector3.Lerp(followPos,player.position, Time.deltaTime * followSpeed);
         Vector2 mousePos = (Vector2)cam.ScreenToWorldPoint(Input.mousePosition);
         Vector2 dirVec = mousePos - (Vector2)transform.position;
         Vector3 animove = clickVec * animationMove;

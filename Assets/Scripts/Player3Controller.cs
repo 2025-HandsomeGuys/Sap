@@ -16,7 +16,7 @@ public class Player3Controller : MonoBehaviour, IPlayerController
     private float originalGravityScale;
     private bool isInsideWallZone = false;
     public bool isWallClimbing = false;
-
+    public bool climbStop;
     // Interface property implementation
     public bool IsWallClimbing => isWallClimbing;
 
@@ -53,7 +53,7 @@ public class Player3Controller : MonoBehaviour, IPlayerController
 
     void OnTriggerStay2D(Collider2D other)
     {
-        if (!other.CompareTag("Wall"))
+        if (!other.CompareTag("Wall")&&CurrentMod=="walking")
         {
             anim.SetBool("isjumping", false);
         }
@@ -88,10 +88,14 @@ public class Player3Controller : MonoBehaviour, IPlayerController
             if (anim.GetBool("isclimbing") == true)
             {
                 anim.SetTrigger("climb");
+                anim.SetBool("isjumping", true);
                 CurrentMod = "climbing";
             }             
             else
+            {
+                anim.SetTrigger("jump");
                 CurrentMod = "walking";
+            }
         }
     }
  
@@ -117,6 +121,7 @@ public class Player3Controller : MonoBehaviour, IPlayerController
 
                     transform.localScale = new Vector3(1, 1, 1);                      
             }           
+
             //walk movement         
             playerRigidbody.linearVelocity = new Vector2(horizontalInput * playerStats.moveSpeed, playerRigidbody.linearVelocity.y);
             playerRigidbody.gravityScale = originalGravityScale;
@@ -138,10 +143,15 @@ public class Player3Controller : MonoBehaviour, IPlayerController
 
         if (CurrentMod == "climbing")
         {
-            //climb movement
-            playerRigidbody.linearVelocity = new Vector2(horizontalInput * playerStats.wallClimbingSpeed, verticalInput * playerStats.wallClimbingSpeed);
+            //climb movement           
             playerRigidbody.gravityScale = 0f;
-            anim.SetBool("isclbmoving", horizontalInput != 0 || verticalInput!=0);
+            playerRigidbody.linearVelocity = new Vector2(horizontalInput * playerStats.wallClimbingSpeed, verticalInput * playerStats.wallClimbingSpeed);
+            if (climbStop == true)
+                playerStats.wallClimbingSpeed = 0;
+            else if (climbStop == false)
+                playerStats.wallClimbingSpeed = 0.5f;
+            anim.SetBool("isclbmoving", horizontalInput != 0 || verticalInput > 0);
+            anim.SetBool("isclbdown", horizontalInput != 0 || verticalInput < 0);
             //use stamina
             if (verticalInput != 0 || horizontalInput != 0)
             {
