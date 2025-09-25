@@ -103,6 +103,7 @@ public class ToolController : MonoBehaviour
         // 3. Command DiggingController while mouse is held down
         if (Input.GetMouseButton(0))
         {
+            Debug.Log($"[ToolController] Digging direction: {currentDigDirection}");
             if (diggingController != null)
             {
                 diggingController.ExecuteDig(currentDigDirection);

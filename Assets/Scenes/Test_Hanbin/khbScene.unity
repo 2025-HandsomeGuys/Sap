@@ -2542,20 +2542,32 @@ PrefabInstance:
       value: 0.04295838
       objectReference: {fileID: 0}
     - target: {fileID: 4865177857992557286, guid: 67d5b019d3accde4faee8d1e2beeffc7, type: 3}
+      propertyPath: digOffset
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4865177857992557286, guid: 67d5b019d3accde4faee8d1e2beeffc7, type: 3}
       propertyPath: digRadius
-      value: 0.5
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 4865177857992557286, guid: 67d5b019d3accde4faee8d1e2beeffc7, type: 3}
       propertyPath: inventoryUI
       value: 
       objectReference: {fileID: 236109012}
+    - target: {fileID: 4865177857992557286, guid: 67d5b019d3accde4faee8d1e2beeffc7, type: 3}
+      propertyPath: actionRadius
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4865177857992557286, guid: 67d5b019d3accde4faee8d1e2beeffc7, type: 3}
+      propertyPath: verticalPivotOffset
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 6069593060920306883, guid: 67d5b019d3accde4faee8d1e2beeffc7, type: 3}
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9070556607531506533, guid: 67d5b019d3accde4faee8d1e2beeffc7, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.5776201
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9070556607531506533, guid: 67d5b019d3accde4faee8d1e2beeffc7, type: 3}
       propertyPath: m_LocalPosition.y

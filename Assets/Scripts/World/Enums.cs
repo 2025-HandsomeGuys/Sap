@@ -61,25 +61,34 @@ public enum TileType
 public enum PoolableType
 {
     // Layer 1: 무른땅 - 약한 갈색
-    GarbageBag,        // 쓰레기 - 봉투
+    Garbage,           // 쓰레기 - 봉투
     PETBottle,         // 쓰레기 - 페트
     ScrapMetal,        // 고철 - 폐자건거, 폐가전제품
+    Iron,              // TileType.Iron (Layer 1)과 일치하도록 추가
     Magnet,  // 자석 - 탐지기 해금용
 
     // Layer 2: 단단한땅 - 조금 진한 갈색
     Copper,             // 구리
     Coal,               // 석탄
-    EquipmentRecipePieces,      // 장비레시피 조각 - 드릴 해금용
+    Limestone,         // TileType.Limestone과 일치하도록 추가
+
+    GearFragment,      // 장비레시피 조각 - 드릴 해금용
+    Tin,                // TileType.Tin과 일치하도록 추가
+    Quartz,             // TileType.Quartz와 일치하도록 추가
+    Obsidian,           // 흑요석
 
     // Layer 3: 서늘한땅 - 푸른회색
     IronOre,            // 철광석
     Silver,             // 은
-    CashCoin,               // 엽전 (동전 아님)
+    BitCoding,          // TileType.BitCoding과 일치하도록 추가
+    Jade,               // TileType.Jade와 일치하도록 추가
+    BlueCrystal,        // TileType.BlueCrystal과 일치하도록 추가
 
     // Layer 4: 빙하기땅 - 얼음, 동굴, 고드름
-    AncientFish,   // 얼음 속 고대 물고기
-    Cryptomorning,       // 크립토모닝
-    Doly,              // 돌리
+    AncientFishInIce,   // 얼음 속 고대 물고기
+    Cryptomoning,       // 크립토모닝
+    Dooly,              // 돌리
+    MoonlightCrystal,   // TileType.MoonlightCrystal과 일치하도록 추가
 
     // Layer 5: 더운땅 - 붉은 흙, 암석
     GoldOre,            // 금광석
@@ -88,7 +97,6 @@ public enum PoolableType
 
     // Layer 6: 마그마땅 - 용암 배경
     EssenceOfLava,      // 마그마의 정수
-    Obsidian,           // 흑요석
     Basalt,             // 돌하르방 닮은 현무암
 
     // Layer 7: 최종땅 - 하얀색
@@ -96,7 +104,7 @@ public enum PoolableType
     Ruby,               // 루비
     Vibranium,          // 비브라늄
     MeteoriteFragment,  // 운석 파편 (별가루)
-    BikCoin          // 빛코인
+    LightCoin           // 빛코인
 }
 
 public enum MineralID

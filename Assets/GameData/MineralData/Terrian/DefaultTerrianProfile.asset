@@ -16,7 +16,94 @@ MonoBehaviour:
   - description: 
     startDepth: 0
     baseTileType: 10
-    mineralConfigs: []
+    mineralConfigs:
+    - description: 
+      minableType: 0
+      spawnChanceByDepth:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 0.5
+          inSlope: -0.3
+          outSlope: -0.3
+          tangentMode: 34
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0.33333334
+        - serializedVersion: 3
+          time: 1
+          value: 0.2
+          inSlope: -0.3
+          outSlope: -0.3
+          tangentMode: 34
+          weightedMode: 0
+          inWeight: 0.33333334
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      veinsPerChunk: {x: 1, y: 1}
+      veinLength: {x: 1, y: 1}
+      veinSpacing: 5
+    - description: 
+      minableType: 1
+      spawnChanceByDepth:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 0.1
+          inSlope: 0.1
+          outSlope: 0.1
+          tangentMode: 34
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0.33333334
+        - serializedVersion: 3
+          time: 1
+          value: 0.2
+          inSlope: 0.1
+          outSlope: 0.1
+          tangentMode: 34
+          weightedMode: 0
+          inWeight: 0.33333334
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      veinsPerChunk: {x: 2, y: 2}
+      veinLength: {x: 2, y: 2}
+      veinSpacing: 2
+    - description: 
+      minableType: 2
+      spawnChanceByDepth:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 0.1
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 34
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0.33333334
+        - serializedVersion: 3
+          time: 1
+          value: 0.1
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 34
+          weightedMode: 0
+          inWeight: 0.33333334
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      veinsPerChunk: {x: 3, y: 3}
+      veinLength: {x: 3, y: 3}
+      veinSpacing: 3
     hasDiagonalVeins: 1
     diagonalVeinTile: 0
     veinNoiseScale: 0.1
