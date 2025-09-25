@@ -86,7 +86,7 @@ public class WorldGenerator : MonoBehaviour
                 TileType tileState = chunkData.tileStates[x, y];
 
                 // If it's not a base tile, it's a resource that needs a GameObject.
-                if (!IsBaseTile(tileState) && tileState != TileType.Empty)
+                if (!IsBaseTile(tileState) && tileState != TileType.Empty && tileState != TileType.Bedrock)
                 {
                     int worldX = startX + x;
                     int worldY = startY + y;
@@ -177,19 +177,49 @@ public class WorldGenerator : MonoBehaviour
 
     private IEnumerator GenerateMineralVeins(WorldManager.ChunkData chunkData, int worldStartY)
     {
+        Debug.Log($"[WorldGenerator] Starting GenerateMineralVeins for chunk {chunkData.chunkCoord}");
         System.Random rng = new System.Random(chunkData.chunkCoord.x * 10000 + chunkData.chunkCoord.y);
+
+        if (terrainProfile == null || terrainProfile.layers == null || terrainProfile.layers.Count == 0)
+        {
+            Debug.LogWarning($"[WorldGenerator] terrainProfile or its layers are not configured for chunk {chunkData.chunkCoord}");
+            yield break;
+        }
 
         foreach (var layer in terrainProfile.layers)
         {
+            Debug.Log($"[WorldGenerator] Processing layer (startDepth: {layer.startDepth})");
             int chunkEndY = worldStartY + chunkSize;
-            if (!LayerIntersectsChunk(layer, worldStartY, chunkEndY)) continue;
+            if (!LayerIntersectsChunk(layer, worldStartY, chunkEndY))
+            {
+                Debug.Log($"[WorldGenerator] Layer (startDepth: {layer.startDepth}) does not intersect chunk {chunkData.chunkCoord}. Skipping.");
+                continue;
+            }
+
+            if (layer.mineralConfigs == null || layer.mineralConfigs.Count == 0)
+            {
+                Debug.Log($"[WorldGenerator] Layer (startDepth: {layer.startDepth}) has no mineralConfigs. Skipping.");
+                continue;
+            }
 
             foreach (var mineral in layer.mineralConfigs)
             {
                 float spawnChance = mineral.spawnChanceByDepth.Evaluate(Mathf.Abs(worldStartY));
-                if (rng.NextDouble() >= spawnChance) continue;
+                Debug.Log($"[WorldGenerator] Mineral {mineral.minableType} in layer (startDepth: {layer.startDepth}). SpawnChance: {spawnChance} (worldStartY: {worldStartY})");
+                if (rng.NextDouble() >= spawnChance)
+                {
+                    Debug.Log($"[WorldGenerator] Mineral {mineral.minableType} failed spawnChance check.");
+                    continue;
+                }
 
                 int veinCount = rng.Next(mineral.veinsPerChunk.x, mineral.veinsPerChunk.y + 1);
+                Debug.Log($"[WorldGenerator] Mineral {mineral.minableType} passed spawnChance. VeinCount: {veinCount}");
+                if (veinCount <= 0)
+                {
+                    Debug.Log($"[WorldGenerator] Mineral {mineral.minableType} has veinCount <= 0. Skipping.");
+                    continue;
+                }
+
                 for (int i = 0; i < veinCount; i++)
                 {
                     int startX = rng.Next(0, chunkSize);
@@ -197,7 +227,14 @@ public class WorldGenerator : MonoBehaviour
                     int worldY = worldStartY + startY;
 
                     if (worldY <= layer.startDepth && worldY > GetNextLayerDepth(layer))
+                    {
+                        Debug.Log($"[WorldGenerator] Calling GenerateVein for {mineral.minableType} at worldY {worldY} (layer.startDepth: {layer.startDepth}, nextLayerDepth: {GetNextLayerDepth(layer)}).");
                         GenerateVein(chunkData, rng, mineral, startX, startY);
+                    }
+                    else
+                    {
+                        Debug.Log($"[WorldGenerator] Skipping GenerateVein for {mineral.minableType} due to depth condition (worldY: {worldY}, layer.startDepth: {layer.startDepth}, nextLayerDepth: {GetNextLayerDepth(layer)}).");
+                    }
                 }
             }
             yield return null;
@@ -218,7 +255,10 @@ public class WorldGenerator : MonoBehaviour
         for (int i = 0; i < length; i++)
         {
             if (IsInsideChunk(x, y) && IsBaseTile(chunkData.tileStates[x, y]))
+            {
                 chunkData.tileStates[x, y] = (TileType)config.minableType;
+                Debug.Log($"[WorldGenerator] Placed mineral {config.minableType} at local ({x}, {y}) in chunk {chunkData.chunkCoord}"); // ADD THIS LOG
+            }
 
             (x, y) = RandomStep(x, y, rng, config.veinSpacing);
         }
@@ -282,10 +322,24 @@ public class WorldGenerator : MonoBehaviour
 
     private void SpawnResourceObject(TileType resourceType, Vector3 pos, WorldManager.ChunkData chunkData)
     {
+        Debug.Log($"[WorldGenerator] Attempting to spawn resource: {resourceType} at {pos}");
         if (System.Enum.TryParse(resourceType.ToString(), out PoolableType poolType))
         {
+            Debug.Log($"[WorldGenerator] Successfully parsed TileType {resourceType} to PoolableType {poolType}. Requesting from ObjectPooler.");
             GameObject obj = ObjectPooler.Instance.SpawnFromPool(poolType, pos, Quaternion.identity);
-            if (obj != null) chunkData.spawnedItems.Add(obj);
+            if (obj != null)
+            {
+                chunkData.spawnedItems.Add(obj);
+                Debug.Log($"[WorldGenerator] Successfully spawned {obj.name} from pool for {poolType}.");
+            }
+            else
+            {
+                Debug.LogWarning($"[WorldGenerator] Failed to spawn {poolType} from ObjectPooler. Pool might be empty or type not found.");
+            }
+        }
+        else
+        {
+            Debug.LogWarning($"[WorldGenerator] Failed to parse TileType {resourceType} to PoolableType. Check enum names.");
         }
     }
 }

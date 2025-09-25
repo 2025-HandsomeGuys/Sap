@@ -20,6 +20,7 @@ public class TileBorderHighlighter : MonoBehaviour
     // 땅을 파거나 설치한 후에 이 함수를 호출하여 명암을 실시간으로 업데이트합니다.
     public void UpdateAllBorders()
     {
+        /*
         if (targetTilemap == null) return;
 
         // 1. 타일맵의 모든 타일 위치를 가져옵니다.
@@ -93,6 +94,7 @@ public class TileBorderHighlighter : MonoBehaviour
         }
 
         // Debug.Log("그라데이션 테두리 업데이트 완료."); // 너무 자주 호출되므로 주석 처리
+        */
     }
 }
 

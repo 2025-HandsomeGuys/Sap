@@ -585,7 +585,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &236109009
 RectTransform:
   m_ObjectHideFlags: 0
@@ -657,12 +657,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99edf13b038a2914aaa84d368d6029dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inventoryPanel: {fileID: 236109008}
-  inventory: {fileID: 441990588}
-  inventorySlotPrefab: {fileID: 6548634789942747828, guid: db597e7bbff654941b25a1f23815a53c, type: 3}
-  slotContainer: {fileID: 1398840590}
-  descriptionText: {fileID: 107468159}
-  weightText: {fileID: 484266570}
 --- !u!1 &286428617
 GameObject:
   m_ObjectHideFlags: 0
@@ -1958,7 +1952,6 @@ MonoBehaviour:
   terrainProfile: {fileID: 11400000, guid: a2961093cc153744e83c3cd6db388eed, type: 2}
   cellSize: 0.05
   mineralSizeMultiplier: 5
-  bedrockStartY: -1000
   dirtTile: {fileID: 11400000, guid: 68db1cceb02713846a0f5927d0d45e50, type: 2}
   hardStoneTile: {fileID: 11400000, guid: 0b76df8051062a941b729ef1a61bea26, type: 2}
   coolStoneTile: {fileID: 11400000, guid: ac7b02d062c68984da44f38c4872c86a, type: 2}
@@ -2281,6 +2274,8 @@ MonoBehaviour:
   groundTilemap: {fileID: 1104405495}
   regionPrefab: {fileID: 639094508852373295, guid: af90c1c7a0accc945a067b6eaf41c511, type: 3}
   viewDistanceInChunks: 6
+  regionSize: 1
+  maxRegionPoolSize: 30
 --- !u!4 &1350637118
 Transform:
   m_ObjectHideFlags: 0
@@ -2534,17 +2529,45 @@ PrefabInstance:
       propertyPath: m_Name
       value: 2SuyunhooPlayer
       objectReference: {fileID: 0}
+    - target: {fileID: 4424358768847624063, guid: 67d5b019d3accde4faee8d1e2beeffc7, type: 3}
+      propertyPath: m_Size.x
+      value: 0.53936815
+      objectReference: {fileID: 0}
+    - target: {fileID: 4424358768847624063, guid: 67d5b019d3accde4faee8d1e2beeffc7, type: 3}
+      propertyPath: m_Offset.x
+      value: -0.011957869
+      objectReference: {fileID: 0}
+    - target: {fileID: 4424358768847624063, guid: 67d5b019d3accde4faee8d1e2beeffc7, type: 3}
+      propertyPath: m_Offset.y
+      value: 0.04295838
+      objectReference: {fileID: 0}
+    - target: {fileID: 4865177857992557286, guid: 67d5b019d3accde4faee8d1e2beeffc7, type: 3}
+      propertyPath: digOffset
+      value: 0.3
+      objectReference: {fileID: 0}
     - target: {fileID: 4865177857992557286, guid: 67d5b019d3accde4faee8d1e2beeffc7, type: 3}
       propertyPath: digRadius
-      value: 0.5
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 4865177857992557286, guid: 67d5b019d3accde4faee8d1e2beeffc7, type: 3}
       propertyPath: inventoryUI
       value: 
       objectReference: {fileID: 236109012}
+    - target: {fileID: 4865177857992557286, guid: 67d5b019d3accde4faee8d1e2beeffc7, type: 3}
+      propertyPath: actionRadius
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4865177857992557286, guid: 67d5b019d3accde4faee8d1e2beeffc7, type: 3}
+      propertyPath: verticalPivotOffset
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6069593060920306883, guid: 67d5b019d3accde4faee8d1e2beeffc7, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 9070556607531506533, guid: 67d5b019d3accde4faee8d1e2beeffc7, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.5776201
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9070556607531506533, guid: 67d5b019d3accde4faee8d1e2beeffc7, type: 3}
       propertyPath: m_LocalPosition.y
