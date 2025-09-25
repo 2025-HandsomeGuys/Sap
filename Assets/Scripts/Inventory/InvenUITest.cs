@@ -134,7 +134,7 @@ public class InventoryUI : MonoBehaviour
     //}
 
     // [추가] 슬롯 기반 설명 갱신(일관성)
-    private void UpdateDescription(InventorySlot slot)
+    public void UpdateDescription(InventorySlot slot)
     {
         selectedSlot = slot; // 변경점: 현재 선택 저장
 

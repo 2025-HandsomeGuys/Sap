@@ -1,0 +1,46 @@
+{
+    "version": 1,
+    "name": "GameInput",
+    "maps": [
+        {
+            "name": "UI",
+            "id": "83562aed-4a53-4553-8f2b-8aae1ef5a67d",
+            "actions": [
+                {
+                    "name": "InventoryToggle",
+                    "type": "Button",
+                    "id": "cf6bd717-e29e-422a-9a11-e7cb00c042ad",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "Press",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "18fb2196-c2a3-4551-b9b8-49a6e2e34b0f",
+                    "path": "<Keyboard>/i",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "InventoryToggle",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0350a045-088f-4271-9a8d-99188ef8207b",
+                    "path": "<Keyboard>/tab",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "InventoryToggle",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
