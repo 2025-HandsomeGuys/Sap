@@ -1102,28 +1102,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc640ac1719b5c946998c7302423b56d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pools:
-  - type: 2
-    prefab: {fileID: 8938240606074066591, guid: 474578fb7d1311246997eec173c9514b, type: 3}
-    size: 500
-  - type: 0
-    prefab: {fileID: 9121701038931659755, guid: 45f63dc38ae7d0b409a198d54068dbc2, type: 3}
-    size: 0
-  - type: 3
-    prefab: {fileID: 6763117563879433081, guid: 798df6828bfd4ae4d8dceac66993c3c9, type: 3}
-    size: 10
-  - type: 4
-    prefab: {fileID: 2179218083167017138, guid: 1336089250338bf4280c61800cdc25a9, type: 3}
-    size: 100
-  - type: 5
-    prefab: {fileID: 7651248375382586064, guid: d97a1221e6098a44fa724bbc603b195c, type: 3}
-    size: 500
-  - type: 6
-    prefab: {fileID: 8329078198098122442, guid: 2d069dbe4191d8444869ee431fcb3674, type: 3}
-    size: 100
-  - type: 8
-    prefab: {fileID: 5856741498514625634, guid: 525919d2c0fc0f449a56de6e6eb9d2a3, type: 3}
-    size: 100
+  stratumPools:
+  - layerType: 0
+    pools:
+    - type: 0
+      prefab: {fileID: 7651248375382586064, guid: d97a1221e6098a44fa724bbc603b195c, type: 3}
+      size: 100
+    - type: 4
+      prefab: {fileID: 3414892728039577629, guid: b1dcf55dde5e5ba49938b2095023f337, type: 3}
+      size: 100
+    - type: 2
+      prefab: {fileID: 8687718726486887013, guid: e1b5824a9fdf8d1419bce14bd2fe1f05, type: 3}
+      size: 100
+    - type: 1
+      prefab: {fileID: 5956459886157147869, guid: 4ea611376b7cf474b8ced38ccef61be7, type: 3}
+      size: 100
 --- !u!4 &579115390
 Transform:
   m_ObjectHideFlags: 0
@@ -2409,6 +2402,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 638682850}
     - target: {fileID: 6457317637260942134, guid: 63a8b096799245f4e826e83a6c735d21, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 638682850}
+    - target: {fileID: 6457317637260942134, guid: 63a8b096799245f4e826e83a6c735d21, type: 3}
+      propertyPath: playerAnim
+      value: 
+      objectReference: {fileID: 638682851}
+    - target: {fileID: 6457317637260942134, guid: 63a8b096799245f4e826e83a6c735d21, type: 3}
       propertyPath: followDelay
       value: 10
       objectReference: {fileID: 0}
@@ -2547,7 +2548,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4865177857992557286, guid: 67d5b019d3accde4faee8d1e2beeffc7, type: 3}
       propertyPath: digRadius
-      value: 0.3
+      value: 0.4
       objectReference: {fileID: 0}
     - target: {fileID: 4865177857992557286, guid: 67d5b019d3accde4faee8d1e2beeffc7, type: 3}
       propertyPath: inventoryUI
@@ -2555,11 +2556,11 @@ PrefabInstance:
       objectReference: {fileID: 236109012}
     - target: {fileID: 4865177857992557286, guid: 67d5b019d3accde4faee8d1e2beeffc7, type: 3}
       propertyPath: actionRadius
-      value: 0.4
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 4865177857992557286, guid: 67d5b019d3accde4faee8d1e2beeffc7, type: 3}
       propertyPath: verticalPivotOffset
-      value: 0.5
+      value: 0.7
       objectReference: {fileID: 0}
     - target: {fileID: 6069593060920306883, guid: 67d5b019d3accde4faee8d1e2beeffc7, type: 3}
       propertyPath: m_Enabled

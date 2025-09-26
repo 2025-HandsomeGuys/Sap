@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   layers:
   - description: 
+    layerType: 0
     startDepth: 0
     baseTileType: 10
     mineralConfigs:
@@ -113,6 +114,7 @@ MonoBehaviour:
     veinThicknessNoiseScale: 0.02
     periodicMaxStaminaDamage: 0
   - description: 
+    layerType: 0
     startDepth: -200
     baseTileType: 11
     mineralConfigs: []
@@ -125,6 +127,7 @@ MonoBehaviour:
     veinThicknessNoiseScale: 0.05
     periodicMaxStaminaDamage: 0
   - description: 
+    layerType: 1
     startDepth: -400
     baseTileType: 12
     mineralConfigs: []
@@ -137,6 +140,7 @@ MonoBehaviour:
     veinThicknessNoiseScale: 0.05
     periodicMaxStaminaDamage: 1
   - description: 
+    layerType: 2
     startDepth: -600
     baseTileType: 13
     mineralConfigs: []
@@ -149,6 +153,7 @@ MonoBehaviour:
     veinThicknessNoiseScale: 0.05
     periodicMaxStaminaDamage: 2
   - description: 
+    layerType: 3
     startDepth: -800
     baseTileType: 14
     mineralConfigs: []
@@ -161,6 +166,7 @@ MonoBehaviour:
     veinThicknessNoiseScale: 0.05
     periodicMaxStaminaDamage: 3
   - description: 
+    layerType: 4
     startDepth: -1000
     baseTileType: 15
     mineralConfigs: []
@@ -173,6 +179,7 @@ MonoBehaviour:
     veinThicknessNoiseScale: 0.05
     periodicMaxStaminaDamage: 4
   - description: 
+    layerType: 5
     startDepth: -1200
     baseTileType: 16
     mineralConfigs: []
@@ -185,6 +192,7 @@ MonoBehaviour:
     veinThicknessNoiseScale: 0.05
     periodicMaxStaminaDamage: 5
   - description: 
+    layerType: 6
     startDepth: -1400
     baseTileType: 1
     mineralConfigs: []

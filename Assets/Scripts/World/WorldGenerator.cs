@@ -92,6 +92,7 @@ public class WorldGenerator : MonoBehaviour
                     int worldY = startY + y;
                     SpawnResourceObject(tileState,
                         new Vector3(worldX * cellSize, worldY * cellSize, 0),
+                        worldY,
                         chunkData);
                 }
             }
@@ -320,21 +321,29 @@ public class WorldGenerator : MonoBehaviour
         };
     }
 
-    private void SpawnResourceObject(TileType resourceType, Vector3 pos, WorldManager.ChunkData chunkData)
+    private void SpawnResourceObject(TileType resourceType, Vector3 pos, int worldY, WorldManager.ChunkData chunkData)
     {
         Debug.Log($"[WorldGenerator] Attempting to spawn resource: {resourceType} at {pos}");
+
+        TerrainLayer layer = GetLayerForDepth(worldY);
+        if (layer == null)
+        {
+            Debug.LogWarning($"[WorldGenerator] Could not find a terrain layer for depth {worldY}. Cannot spawn resource.");
+            return;
+        }
+
         if (System.Enum.TryParse(resourceType.ToString(), out PoolableType poolType))
         {
-            Debug.Log($"[WorldGenerator] Successfully parsed TileType {resourceType} to PoolableType {poolType}. Requesting from ObjectPooler.");
-            GameObject obj = ObjectPooler.Instance.SpawnFromPool(poolType, pos, Quaternion.identity);
+            Debug.Log($"[WorldGenerator] Successfully parsed TileType {resourceType} to PoolableType {poolType}. Requesting from ObjectPooler for layer {layer.layerType}.");
+            GameObject obj = ObjectPooler.Instance.SpawnFromPool(layer.layerType, poolType, pos, Quaternion.identity);
             if (obj != null)
             {
                 chunkData.spawnedItems.Add(obj);
-                Debug.Log($"[WorldGenerator] Successfully spawned {obj.name} from pool for {poolType}.");
+                Debug.Log($"[WorldGenerator] Successfully spawned {obj.name} from pool for {poolType} in layer {layer.layerType}.");
             }
             else
             {
-                Debug.LogWarning($"[WorldGenerator] Failed to spawn {poolType} from ObjectPooler. Pool might be empty or type not found.");
+                Debug.LogWarning($"[WorldGenerator] Failed to spawn {poolType} from ObjectPooler for layer {layer.layerType}. Pool might be empty or type not found.");
             }
         }
         else

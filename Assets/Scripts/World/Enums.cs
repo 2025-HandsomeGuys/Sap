@@ -169,3 +169,14 @@ public enum ChunkStatus
     Ready,
     Unloaded
 }
+
+public enum LayerType
+{
+    SoftGround,      // 1. 무른땅
+    HardGround,      // 2. 단단한땅
+    CoolGround,      // 3. 서늘한땅
+    IceAgeGround,    // 4. 빙하기땅
+    HotGround,       // 5. 더운땅
+    MagmaGround,     // 6. 마그마땅
+    FinalGround      // 7. 최종땅
+}

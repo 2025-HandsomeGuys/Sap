@@ -102,17 +102,19 @@ public class PlayerInteractor : MonoBehaviour
 
     private void CollectItem(Mineable itemComponent)
     {
-        if (playerInventory == null || itemComponent == null) return;
+        if (itemComponent == null) return;
 
-        ItemSO itemData = itemComponent.itemData;
-        if (itemData == null)
-        {
-            Debug.LogError("Mineable script is missing ItemData! Assign it in the prefab inspector.", itemComponent.gameObject);
-            return;
-        }
+        // if (playerInventory == null) return;
 
-        if (playerInventory.AddItem(itemData, 1))
-        {
+        // ItemSO itemData = itemComponent.itemData;
+        // if (itemData == null)
+        // {
+        //     Debug.LogError("Mineable script is missing ItemData! Assign it in the prefab inspector.", itemComponent.gameObject);
+        //     return;
+        // }
+
+        // if (playerInventory.AddItem(itemData, 1))
+        // {
             // if (itemData.staminaReduction > 0 && playerStats != null)
             // {
             //     playerStats.ReduceMaxStamina(itemData.staminaReduction);
@@ -126,12 +128,12 @@ public class PlayerInteractor : MonoBehaviour
                 _closestItem = null;
             }
             
-            ObjectPooler.Instance.ReturnToPool(itemData.poolType, itemObject);
+            ObjectPooler.Instance.ReturnToPool(itemObject);
 
             // We collected an item, so let's immediately re-check for the next closest one
             FindClosestCollectibleItem();
             UpdateInteractionPrompt();
-        }
+        // }
     }
 
     private void UpdateInteractionPrompt()

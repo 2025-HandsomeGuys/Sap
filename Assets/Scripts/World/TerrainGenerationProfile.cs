@@ -18,6 +18,9 @@ public class TerrainLayer
     [Tooltip("Just for organization in the inspector.")]
     public string description;
 
+    [Tooltip("The specific type of this layer, used for linking with other systems like Object Pooling.")]
+    public LayerType layerType;
+
     [Tooltip("The Y coordinate where this layer starts. Can be negative.")]
     public int startDepth;
 
