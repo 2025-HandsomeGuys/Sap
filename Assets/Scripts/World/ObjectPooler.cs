@@ -7,7 +7,7 @@ public class ObjectPooler : MonoBehaviour
     [System.Serializable]
     public class Pool
     {
-        public PoolableType type;
+        public MineralID type;
         public GameObject prefab;
         public int size;
     }
@@ -24,7 +24,7 @@ public class ObjectPooler : MonoBehaviour
     #endregion
 
     public List<StratumPool> stratumPools;
-    public Dictionary<LayerType, Dictionary<PoolableType, Queue<GameObject>>> poolDictionary;
+    public Dictionary<LayerType, Dictionary<MineralID, Queue<GameObject>>> poolDictionary;
 
     private void Awake()
     {
@@ -35,12 +35,12 @@ public class ObjectPooler : MonoBehaviour
         }
         Instance = this;
 
-        poolDictionary = new Dictionary<LayerType, Dictionary<PoolableType, Queue<GameObject>>>();
+        poolDictionary = new Dictionary<LayerType, Dictionary<MineralID, Queue<GameObject>>>();
 
         foreach (StratumPool stratumPool in stratumPools)
         {
             var layerType = stratumPool.layerType;
-            poolDictionary[layerType] = new Dictionary<PoolableType, Queue<GameObject>>();
+            poolDictionary[layerType] = new Dictionary<MineralID, Queue<GameObject>>();
 
             GameObject stratumParent = new GameObject(layerType.ToString() + " Pool");
             stratumParent.transform.SetParent(transform);
@@ -64,7 +64,7 @@ public class ObjectPooler : MonoBehaviour
         }
     }
 
-    public GameObject SpawnFromPool(LayerType layerType, PoolableType type, Vector3 position, Quaternion rotation)
+    public GameObject SpawnFromPool(LayerType layerType, MineralID type, Vector3 position, Quaternion rotation)
     {
         if (!poolDictionary.ContainsKey(layerType) || !poolDictionary[layerType].ContainsKey(type))
         {
@@ -108,7 +108,7 @@ public class ObjectPooler : MonoBehaviour
         }
 
         LayerType layerType = mineable.spawnedFromLayer;
-        PoolableType poolType = mineable.itemData.poolType;
+        MineralID poolType = mineable.itemData.poolType;
 
         if (!poolDictionary.ContainsKey(layerType) || !poolDictionary[layerType].ContainsKey(poolType))
         {

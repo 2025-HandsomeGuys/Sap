@@ -25,7 +25,7 @@ MonoBehaviour:
         m_Curve:
         - serializedVersion: 3
           time: 0
-          value: 0.5
+          value: 0.8
           inSlope: -0.3
           outSlope: -0.3
           tangentMode: 34
@@ -34,7 +34,7 @@ MonoBehaviour:
           outWeight: 0.33333334
         - serializedVersion: 3
           time: 1
-          value: 0.2
+          value: 0.5
           inSlope: -0.3
           outSlope: -0.3
           tangentMode: 34
@@ -43,10 +43,10 @@ MonoBehaviour:
           outWeight: 0
         m_PreInfinity: 2
         m_PostInfinity: 2
-        m_RotationOrder: 4
-      veinsPerChunk: {x: 1, y: 1}
-      veinLength: {x: 1, y: 1}
-      veinSpacing: 5
+        m_RotationOrder: 0
+      veinsPerChunk: {x: 5, y: 5}
+      veinLength: {x: 5, y: 5}
+      veinSpacing: 3
     - description: 
       minableType: 1
       spawnChanceByDepth:
@@ -54,28 +54,28 @@ MonoBehaviour:
         m_Curve:
         - serializedVersion: 3
           time: 0
-          value: 0.1
-          inSlope: 0.1
-          outSlope: 0.1
+          value: 0.3
+          inSlope: 0.099999994
+          outSlope: 0.099999994
           tangentMode: 34
           weightedMode: 0
           inWeight: 0
           outWeight: 0.33333334
         - serializedVersion: 3
           time: 1
-          value: 0.2
-          inSlope: 0.1
-          outSlope: 0.1
+          value: 0.4
+          inSlope: 0.099999994
+          outSlope: 0.099999994
           tangentMode: 34
           weightedMode: 0
           inWeight: 0.33333334
           outWeight: 0
         m_PreInfinity: 2
         m_PostInfinity: 2
-        m_RotationOrder: 4
-      veinsPerChunk: {x: 2, y: 2}
-      veinLength: {x: 2, y: 2}
-      veinSpacing: 2
+        m_RotationOrder: 0
+      veinsPerChunk: {x: 3, y: 3}
+      veinLength: {x: 3, y: 3}
+      veinSpacing: 3
     - description: 
       minableType: 2
       spawnChanceByDepth:
@@ -83,28 +83,57 @@ MonoBehaviour:
         m_Curve:
         - serializedVersion: 3
           time: 0
-          value: 0.1
-          inSlope: 0
-          outSlope: 0
+          value: 0.6
+          inSlope: 0.099999964
+          outSlope: 0.099999964
           tangentMode: 34
           weightedMode: 0
           inWeight: 0
           outWeight: 0.33333334
         - serializedVersion: 3
           time: 1
-          value: 0.1
-          inSlope: 0
-          outSlope: 0
+          value: 0.7
+          inSlope: 0.099999964
+          outSlope: 0.099999964
           tangentMode: 34
           weightedMode: 0
           inWeight: 0.33333334
           outWeight: 0
         m_PreInfinity: 2
         m_PostInfinity: 2
-        m_RotationOrder: 4
-      veinsPerChunk: {x: 3, y: 3}
-      veinLength: {x: 3, y: 3}
-      veinSpacing: 3
+        m_RotationOrder: 0
+      veinsPerChunk: {x: 4, y: 4}
+      veinLength: {x: 4, y: 4}
+      veinSpacing: 4
+    - description: 
+      minableType: 4
+      spawnChanceByDepth:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 0.1
+          inSlope: 0.20000002
+          outSlope: 0.20000002
+          tangentMode: 34
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0.33333334
+        - serializedVersion: 3
+          time: 1
+          value: 0.3
+          inSlope: 0.20000002
+          outSlope: 0.20000002
+          tangentMode: 34
+          weightedMode: 0
+          inWeight: 0.33333334
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 0
+      veinsPerChunk: {x: 5, y: 5}
+      veinLength: {x: 5, y: 5}
+      veinSpacing: 5
     hasDiagonalVeins: 1
     diagonalVeinTile: 0
     veinNoiseScale: 0.1
@@ -115,7 +144,7 @@ MonoBehaviour:
     periodicMaxStaminaDamage: 0
   - description: 
     layerType: 0
-    startDepth: -200
+    startDepth: -400
     baseTileType: 11
     mineralConfigs: []
     hasDiagonalVeins: 1
@@ -128,7 +157,7 @@ MonoBehaviour:
     periodicMaxStaminaDamage: 0
   - description: 
     layerType: 1
-    startDepth: -400
+    startDepth: -800
     baseTileType: 12
     mineralConfigs: []
     hasDiagonalVeins: 0
@@ -141,7 +170,7 @@ MonoBehaviour:
     periodicMaxStaminaDamage: 1
   - description: 
     layerType: 2
-    startDepth: -600
+    startDepth: -1200
     baseTileType: 13
     mineralConfigs: []
     hasDiagonalVeins: 0
@@ -154,7 +183,7 @@ MonoBehaviour:
     periodicMaxStaminaDamage: 2
   - description: 
     layerType: 3
-    startDepth: -800
+    startDepth: -1600
     baseTileType: 14
     mineralConfigs: []
     hasDiagonalVeins: 0
@@ -167,7 +196,7 @@ MonoBehaviour:
     periodicMaxStaminaDamage: 3
   - description: 
     layerType: 4
-    startDepth: -1000
+    startDepth: -2000
     baseTileType: 15
     mineralConfigs: []
     hasDiagonalVeins: 0
@@ -180,7 +209,7 @@ MonoBehaviour:
     periodicMaxStaminaDamage: 4
   - description: 
     layerType: 5
-    startDepth: -1200
+    startDepth: -2400
     baseTileType: 16
     mineralConfigs: []
     hasDiagonalVeins: 0
@@ -193,7 +222,7 @@ MonoBehaviour:
     periodicMaxStaminaDamage: 5
   - description: 
     layerType: 6
-    startDepth: -1400
+    startDepth: -2800
     baseTileType: 1
     mineralConfigs: []
     hasDiagonalVeins: 0

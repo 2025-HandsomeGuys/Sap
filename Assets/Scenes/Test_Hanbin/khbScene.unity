@@ -1105,6 +1105,20 @@ MonoBehaviour:
   stratumPools:
   - layerType: 0
     pools:
+    - type: 4
+      prefab: {fileID: 3414892728039577629, guid: b1dcf55dde5e5ba49938b2095023f337, type: 3}
+      size: 100
+    - type: 2
+      prefab: {fileID: 8687718726486887013, guid: e1b5824a9fdf8d1419bce14bd2fe1f05, type: 3}
+      size: 100
+    - type: 0
+      prefab: {fileID: 7651248375382586064, guid: d97a1221e6098a44fa724bbc603b195c, type: 3}
+      size: 100
+    - type: 1
+      prefab: {fileID: 5956459886157147869, guid: 4ea611376b7cf474b8ced38ccef61be7, type: 3}
+      size: 100
+  - layerType: 1
+    pools:
     - type: 0
       prefab: {fileID: 7651248375382586064, guid: d97a1221e6098a44fa724bbc603b195c, type: 3}
       size: 100
@@ -2523,6 +2537,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 441990588}
     - target: {fileID: 1670862527007612905, guid: 67d5b019d3accde4faee8d1e2beeffc7, type: 3}
+      propertyPath: collectionRadius
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1670862527007612905, guid: 67d5b019d3accde4faee8d1e2beeffc7, type: 3}
       propertyPath: interactionPromptText
       value: 
       objectReference: {fileID: 178688906}
@@ -2548,7 +2566,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4865177857992557286, guid: 67d5b019d3accde4faee8d1e2beeffc7, type: 3}
       propertyPath: digRadius
-      value: 0.4
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4865177857992557286, guid: 67d5b019d3accde4faee8d1e2beeffc7, type: 3}
       propertyPath: inventoryUI

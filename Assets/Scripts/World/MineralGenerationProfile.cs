@@ -10,7 +10,7 @@ public class MineralGenerationProfile : ScriptableObject
     {
         [Tooltip("인스펙터에서 알아보기 쉽도록 설명을 적어두세요.")]
         public string description;
-        public PoolableType minableType;
+        public MineralID minableType;
         
         [Tooltip("가로축(X): 깊이(양수), 세로축(Y): 이 깊이의 청크에 광맥이 나타날 확률(0-1)")]
         public AnimationCurve spawnChanceByDepth;

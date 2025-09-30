@@ -271,7 +271,7 @@ public class Inventory : MonoBehaviour
                     // s.itemId가 enum 이름 문자열이라면 Enum.Parse 필요
                     if (itemDb != null)
                     {
-                        var itemId = (ItemID)Enum.Parse(typeof(ItemID), s.itemId);
+                        var itemId = (MineralID)Enum.Parse(typeof(MineralID), s.itemId);
                         var so = itemDb.GetItemByID(itemId);
                         resolved = so as InterfaceInventoryItem;
                     }
