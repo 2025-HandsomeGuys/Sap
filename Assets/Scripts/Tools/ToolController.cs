@@ -78,10 +78,15 @@ public class ToolController : MonoBehaviour
             if (toolType == 0) toolType = 3;
             else toolType -= 1;
         }
-
-        if (toolType == 0) Img_Renderer.sprite = sap;
-        else if (toolType == 1) Img_Renderer.sprite = pickaxe;
-        else Img_Renderer.sprite = pickaxe; // Placeholder for other tools
+        if (playerAnim.GetBool("isclimbing")==false){
+            if (toolType == 0) Img_Renderer.sprite = sap;
+            else if (toolType == 1) Img_Renderer.sprite = pickaxe;
+            else Img_Renderer.sprite = pickaxe; // Placeholder for other tools
+        }
+        else if (playerAnim.GetBool("isclimbing") == true)
+        {
+            Img_Renderer.sprite = null;
+        }
     }
 
     void HandleDigging()
