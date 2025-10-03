@@ -3,7 +3,7 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager Instance; // ½Ì±ÛÅæ
+    public static GameManager Instance; // ì‹±ê¸€í†¤
 
     public SaveManager saveManager;
 
@@ -12,18 +12,19 @@ public class GameManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
+            transform.SetParent(null, true);
             DontDestroyOnLoad(gameObject);
         }
         else
         {
-            Destroy(gameObject); // Áßº¹ ¹æÁö
+            Destroy(gameObject); // ì¤‘ë³µ ë°©ì§€
         }
     }
 
     private void Start()
     {
         string currentScene = SceneManager.GetActiveScene().name;
-        if (currentScene == "GameScene" || currentScene == "khbScene" || currentScene == "Intro")
+        if (currentScene == "GameScene" || currentScene == "khbScene" || currentScene == "Intro" || currentScene == "InvenScene")
         {
             saveManager.Load();
         }
@@ -31,11 +32,11 @@ public class GameManager : MonoBehaviour
 
     private void OnApplicationQuit()
     {
-        // Á¾·á ½Ã ÀÚµ¿ ÀúÀå
+        // ì¢…ë£Œ ì‹œ ìë™ ì €ì¥
         saveManager.Save();
     }
 
-    // ¹öÆ°¿¡¼­ È£Ãâ Start Button
+    // ë²„íŠ¼ì—ì„œ í˜¸ì¶œ Start Button
     public void NewGame()
     {
         SceneManager.sceneLoaded += OnSceneLoadedForNewGame;
@@ -45,10 +46,10 @@ public class GameManager : MonoBehaviour
     private void OnSceneLoadedForNewGame(Scene scene, LoadSceneMode mode)
     {
         SceneManager.sceneLoaded -= OnSceneLoadedForNewGame;
-        saveManager.NewGame(); // ¾À ·Îµå ÈÄ ¾ÈÀüÇÏ°Ô NewGame ½ÇÇà
+        saveManager.NewGame(); // ì”¬ ë¡œë“œ í›„ ì•ˆì „í•˜ê²Œ NewGame ì‹¤í–‰
     }
 
-    // ÀÌ¾îÇÏ±â ¹öÆ°
+    // ì´ì–´í•˜ê¸° ë²„íŠ¼
     public void ContinueGame()
     {
         if (saveManager.HasSaveData())
@@ -58,7 +59,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("ÀúÀå µ¥ÀÌÅÍ ¾øÀ½ ¡æ »õ °ÔÀÓ ½ÃÀÛ");
+            Debug.Log("ì €ì¥ ë°ì´í„° ì—†ìŒ â†’ ìƒˆ ê²Œì„ ì‹œì‘");
             NewGame();
         }
     }
@@ -66,7 +67,7 @@ public class GameManager : MonoBehaviour
     private void OnSceneLoadedForLoad(Scene scene, LoadSceneMode mode)
     {
         SceneManager.sceneLoaded -= OnSceneLoadedForLoad;
-        saveManager.Load(); // ¾À ·Îµå ÈÄ ¾ÈÀüÇÏ°Ô Load ½ÇÇà
+        saveManager.Load(); // ì”¬ ë¡œë“œ í›„ ì•ˆì „í•˜ê²Œ Load ì‹¤í–‰
     }
 
     public void OpenSettings()
