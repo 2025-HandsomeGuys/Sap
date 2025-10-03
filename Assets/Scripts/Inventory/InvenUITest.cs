@@ -13,6 +13,7 @@ public class InventoryUI : MonoBehaviour
     public Transform slotContainer;
     public TextMeshProUGUI descriptionText;
     public TextMeshProUGUI weightText;
+    public QuantityPrompt quantityPrompt;
 
     private List<GameObject> slotObjects = new List<GameObject>();
     private bool isInventoryOpen = false;
@@ -253,6 +254,56 @@ public class InventoryUI : MonoBehaviour
                     });
                 }
             }
+
+            Button dropAmountButton = newSlot.transform.Find("DropAmountButton")?.GetComponent<Button>();
+            if (dropAmountButton != null)
+            {
+                int totalCount = inventory.CountOf(itemSlot.item);
+                bool shouldBeActive = totalCount > 0;
+                dropAmountButton.gameObject.SetActive(shouldBeActive);
+
+                if (shouldBeActive)
+                {
+                    dropAmountButton.onClick.RemoveAllListeners();
+                    dropAmountButton.onClick.AddListener(() =>
+                    {
+                        int total = inventory.CountOf(itemSlot.item);
+                        if (total <= 0) return;
+
+                        string title = $"{itemSlot.item.DisplayName} 버리기";
+                        string info = $"현재 보유: {total}개\n버릴 개수를 입력하세요.";
+
+                        if (quantityPrompt != null)
+                        {
+                            quantityPrompt.Show(
+                                title,
+                                1, total,
+                                (value) =>
+                                {
+                                    bool ok = inventory.RemoveItem(itemSlot.item, value);
+                                    if (ok)
+                                    {
+                                        UpdateSlots();
+                                        // 선택 설명 갱신 로직이 있다면 필요 시:
+                                        // UpdateDescription(null);
+                                    }
+                                    else
+                                    {
+                                        Debug.LogWarning("요청 수량만큼 제거하지 못했습니다.");
+                                    }
+                                },
+                                info
+                            );
+                        }
+                        else
+                        {
+                            Debug.LogWarning("QuantityPrompt 참조가 없습니다. 인스펙터에 연결해 주세요.");
+                        }
+                    });
+                }
+            }
+
+
         }
 
         if (list.Count > 0)
