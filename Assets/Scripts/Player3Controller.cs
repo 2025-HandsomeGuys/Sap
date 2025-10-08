@@ -149,7 +149,7 @@ public class Player3Controller : MonoBehaviour, IPlayerController
             if (climbStop == true)
                 playerStats.wallClimbingSpeed = 0;
             else if (climbStop == false)
-                playerStats.wallClimbingSpeed = 0.5f;
+                playerStats.wallClimbingSpeed = playerStats.originalWallClimbingSpeed;
             anim.SetBool("isclbmoving", horizontalInput != 0 || verticalInput > 0);
             anim.SetBool("isclbdown", horizontalInput != 0 || verticalInput < 0);
             //use stamina

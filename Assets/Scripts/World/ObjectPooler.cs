@@ -89,6 +89,17 @@ public class ObjectPooler : MonoBehaviour
         if (objectToSpawn.TryGetComponent<Mineable>(out var mineable))
         {
             mineable.spawnedFromLayer = layerType;
+
+            // Find the corresponding ItemSO and assign it to itemData
+            ItemSO itemData = ItemDatabase.Instance.GetItemByID(type);
+            if (itemData != null)
+            {
+                mineable.itemData = itemData;
+            }
+            else
+            {
+                Debug.LogError($"Could not find ItemSO for MineralID: {type}. ItemData will be null.", objectToSpawn);
+            }
         }
         else
         {

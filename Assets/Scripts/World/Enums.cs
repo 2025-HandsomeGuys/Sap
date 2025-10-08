@@ -17,7 +17,6 @@ public enum TileType
 public enum MineralID
 {
     None = 0,
-
     // Layer 1: 무른땅
     Garbage = 100,
     ScrapMetal = 101,

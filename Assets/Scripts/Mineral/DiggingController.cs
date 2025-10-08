@@ -161,15 +161,20 @@ public class DiggingController : MonoBehaviour
         if (_playerStats == null) return;
 
         TileDataJson data = TileDataManager.Instance.GetData(tileType);
-        if (data != null && data.maxStaminaReduction > 0)
-        {
-            _playerStats.ReduceMaxStamina(data.maxStaminaReduction);
-        }
-    }
-
-    private void OnDrawGizmosSelected()
-    {
-        // Visualize the pivot, action radius, and dig radius
+                if (data != null && data.maxStaminaReduction > 0)
+                {
+                    _playerStats.ReduceMaxStamina(data.maxStaminaReduction);
+                }
+            }
+        
+            public void IncreaseDigRadius(float amount)
+            {
+                digRadius += amount;
+                Debug.Log($"Dig radius increased to {digRadius}");
+            }
+        
+            private void OnDrawGizmosSelected()
+            {        // Visualize the pivot, action radius, and dig radius
         Vector2 pivot = (Vector2)transform.position + (Vector2.up * verticalPivotOffset);
         
         // Draw the action radius circle

@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using System;
 
 public class PlayerInteractor : MonoBehaviour
 {
@@ -129,9 +130,10 @@ public class PlayerInteractor : MonoBehaviour
             }
             
             ObjectPooler.Instance.ReturnToPool(itemObject);
-
+            playerInventory.AddItem(itemComponent.itemData, 1);
+            Debug.Log($"Collected 1 {itemComponent.itemData.itemName}.");
             // We collected an item, so let's immediately re-check for the next closest one
-            FindClosestCollectibleItem();
+        FindClosestCollectibleItem();
             UpdateInteractionPrompt();
         // }
     }
