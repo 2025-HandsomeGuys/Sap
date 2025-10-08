@@ -2679,6 +2679,7 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 3922778845057689342, guid: 3d23c7a36010450438c0a99d846b929a, type: 3}
   m_PrefabInstance: {fileID: 1287262962}
   m_PrefabAsset: {fileID: 0}
+
 --- !u!1 &1497176527
 GameObject:
   m_ObjectHideFlags: 0
@@ -2766,6 +2767,8 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+
+
 --- !u!1001 &1616319322
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2821,11 +2824,13 @@ PrefabInstance:
     - target: {fileID: 6457317637260942134, guid: 63a8b096799245f4e826e83a6c735d21, type: 3}
       propertyPath: player
       value: 
+
       objectReference: {fileID: 638682850}
     - target: {fileID: 6457317637260942134, guid: 63a8b096799245f4e826e83a6c735d21, type: 3}
       propertyPath: playerAnim
       value: 
       objectReference: {fileID: 638682851}
+
     - target: {fileID: 6457317637260942134, guid: 63a8b096799245f4e826e83a6c735d21, type: 3}
       propertyPath: followDelay
       value: 10

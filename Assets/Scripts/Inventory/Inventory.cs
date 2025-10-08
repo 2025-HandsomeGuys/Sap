@@ -72,6 +72,21 @@ public class Inventory : MonoBehaviour
     // 과적 상태 (속도 감소) 여부 확인
     public bool IsEncumbered => TotalWeight > encumbranceThreshold;
 
+    public int CountOf(InterfaceInventoryItem target) 
+    { 
+        if (target == null) 
+            return 0; 
+        int sum = 0; 
+        foreach (var s in items) 
+        { 
+            if (s.item == null) 
+                continue; 
+            if (s.item.Id != target.Id) 
+                continue; sum += s.item.Stackable ? s.quantity : 1; 
+        } 
+        return sum; 
+    }
+
     // 아이템 추가 시도
     public bool AddItem(InterfaceInventoryItem itemToAdd, int quantity = 1)
     {
@@ -158,7 +173,8 @@ public class Inventory : MonoBehaviour
             var slot = items.FirstOrDefault(s => s.item != null && s.item.Id == itemToRemove.Id);
             if (slot == null) return false;
 
-            slot.quantity -= quantity;
+            int take = Mathf.Min(slot.quantity, quantity);
+            slot.quantity -= take;
             if (slot.quantity <= 0)
             {
                 items.Remove(slot);
