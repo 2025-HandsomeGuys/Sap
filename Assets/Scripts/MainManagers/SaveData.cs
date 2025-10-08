@@ -21,13 +21,14 @@ public class SerializableChunkData
 {
     public int chunkX;
     public int chunkY;
-    // Using a 1D array for tile states because Unity's JsonUtility doesn't handle 2D arrays.
-    public int[] tileStates;
+    public int[] terrainLayer; // Changed from tileStates
+    public int[] mineralLayer; // Added
 
     public SerializableChunkData(int x, int y, int chunkSize)
     {
         chunkX = x;
         chunkY = y;
-        tileStates = new int[chunkSize * chunkSize];
+        terrainLayer = new int[chunkSize * chunkSize]; // Changed
+        mineralLayer = new int[chunkSize * chunkSize]; // Added
     }
 }

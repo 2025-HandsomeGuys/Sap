@@ -1,4 +1,3 @@
-
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,13 +7,24 @@ public class ObjectPooler : MonoBehaviour
     [System.Serializable]
     public class Pool
     {
-        public PoolableType type; // Changed from string tag
+        public MineralID type;
         public GameObject prefab;
         public int size;
     }
 
+    [System.Serializable]
+    public class StratumPool
+    {
+        public LayerType layerType;
+        public List<Pool> pools;
+    }
+
     #region Singleton
     public static ObjectPooler Instance;
+    #endregion
+
+    public List<StratumPool> stratumPools;
+    public Dictionary<LayerType, Dictionary<MineralID, Queue<GameObject>>> poolDictionary;
 
     private void Awake()
     {
@@ -24,61 +34,101 @@ public class ObjectPooler : MonoBehaviour
             return;
         }
         Instance = this;
-        poolDictionary = new Dictionary<PoolableType, Queue<GameObject>>();
 
-        foreach (Pool pool in pools)
+        poolDictionary = new Dictionary<LayerType, Dictionary<MineralID, Queue<GameObject>>>();
+
+        foreach (StratumPool stratumPool in stratumPools)
         {
-            // Create a parent object for each pool type
-            GameObject poolParent = new GameObject(pool.type.ToString() + " Pool");
-            poolParent.transform.SetParent(transform); // Set the ObjectPooler as the parent of the pool parent
+            var layerType = stratumPool.layerType;
+            poolDictionary[layerType] = new Dictionary<MineralID, Queue<GameObject>>();
 
-            Queue<GameObject> objectPool = new Queue<GameObject>();
+            GameObject stratumParent = new GameObject(layerType.ToString() + " Pool");
+            stratumParent.transform.SetParent(transform);
 
-            for (int i = 0; i < pool.size; i++)
+            foreach (Pool pool in stratumPool.pools)
             {
-                GameObject obj = Instantiate(pool.prefab);
-                obj.name = pool.type.ToString() + "_" + i;
-                obj.transform.SetParent(poolParent.transform); // Set the parent of the pooled object
-                obj.SetActive(false);
-                objectPool.Enqueue(obj);
-            }
+                Queue<GameObject> objectPool = new Queue<GameObject>();
+                GameObject poolParent = new GameObject(pool.type.ToString() + " Pool");
+                poolParent.transform.SetParent(stratumParent.transform);
 
-            poolDictionary.Add(pool.type, objectPool);
+                for (int i = 0; i < pool.size; i++)
+                {
+                    GameObject obj = Instantiate(pool.prefab);
+                    obj.name = $"{layerType}_{pool.type}_{i}";
+                    obj.transform.SetParent(poolParent.transform);
+                    obj.SetActive(false);
+                    objectPool.Enqueue(obj);
+                }
+                poolDictionary[layerType].Add(pool.type, objectPool);
+            }
         }
     }
-    #endregion
 
-    public List<Pool> pools;
-    public Dictionary<PoolableType, Queue<GameObject>> poolDictionary;
-
-    public GameObject SpawnFromPool(PoolableType type, Vector3 position, Quaternion rotation)
+    public GameObject SpawnFromPool(LayerType layerType, MineralID type, Vector3 position, Quaternion rotation)
     {
-        if (!poolDictionary.ContainsKey(type))
+        if (!poolDictionary.ContainsKey(layerType) || !poolDictionary[layerType].ContainsKey(type))
         {
+            Debug.LogWarning($"Pool with layer {layerType} and type {type} doesn't exist.");
             return null;
         }
 
-        if (poolDictionary[type].Count == 0)
+        if (poolDictionary[layerType][type].Count == 0)
         {
+            // Optionally, you could instantiate a new object here if the pool is empty
+            Debug.LogWarning($"Pool for {type} in layer {layerType} is empty.");
             return null;
         }
 
-        GameObject objectToSpawn = poolDictionary[type].Dequeue();
+        GameObject objectToSpawn = poolDictionary[layerType][type].Dequeue();
 
         objectToSpawn.SetActive(true);
         objectToSpawn.transform.position = position;
         objectToSpawn.transform.rotation = rotation;
 
+        // Set the spawn context on the Mineable component
+        if (objectToSpawn.TryGetComponent<Mineable>(out var mineable))
+        {
+            mineable.spawnedFromLayer = layerType;
+
+            // Find the corresponding ItemSO and assign it to itemData
+            ItemSO itemData = ItemDatabase.Instance.GetItemByID(type);
+            if (itemData != null)
+            {
+                mineable.itemData = itemData;
+            }
+            else
+            {
+                Debug.LogError($"Could not find ItemSO for MineralID: {type}. ItemData will be null.", objectToSpawn);
+            }
+        }
+        else
+        {
+            Debug.LogWarning($"Spawned object {objectToSpawn.name} is missing a Mineable component.", objectToSpawn);
+        }
+
         return objectToSpawn;
     }
 
-    public void ReturnToPool(PoolableType type, GameObject objectToReturn)
+    public void ReturnToPool(GameObject objectToReturn)
     {
-        if (!poolDictionary.ContainsKey(type))
+        if (!objectToReturn.TryGetComponent<Mineable>(out var mineable) || mineable.itemData == null)
         {
+            Debug.LogWarning("Returned object is not a valid mineable or has no item data. Destroying it.", objectToReturn);
+            Destroy(objectToReturn);
             return;
         }
+
+        LayerType layerType = mineable.spawnedFromLayer;
+        MineralID poolType = mineable.itemData.poolType;
+
+        if (!poolDictionary.ContainsKey(layerType) || !poolDictionary[layerType].ContainsKey(poolType))
+        {
+            Debug.LogWarning($"Pool with layer {layerType} and type {poolType} doesn't exist. Destroying object.", objectToReturn);
+            Destroy(objectToReturn);
+            return;
+        }
+        
         objectToReturn.SetActive(false);
-        poolDictionary[type].Enqueue(objectToReturn);
+        poolDictionary[layerType][poolType].Enqueue(objectToReturn);
     }
 }

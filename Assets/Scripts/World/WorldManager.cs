@@ -61,7 +61,9 @@ public class WorldManager : MonoBehaviour
 
     public class ChunkData
     {
-        public TileType[,] tileStates;
+        public TileType[,] terrainLayer; // Changed from tileStates
+        public MineralID[,] mineralLayer; // Added
+        public Dictionary<Vector2Int, GameObject> hiddenMinerals; // Added to store pre-spawned minerals
         public Vector2Int chunkCoord;
         public List<GameObject> spawnedItems;
         public ChunkStatus status;
@@ -71,7 +73,9 @@ public class WorldManager : MonoBehaviour
         public ChunkData(Vector2Int coord, int chunkSize)
         {
             chunkCoord = coord;
-            tileStates = new TileType[chunkSize, chunkSize];
+            terrainLayer = new TileType[chunkSize, chunkSize]; // Changed
+            mineralLayer = new MineralID[chunkSize, chunkSize]; // Added
+            hiddenMinerals = new Dictionary<Vector2Int, GameObject>(); // Added
             spawnedItems = new List<GameObject>();
             status = ChunkStatus.Loading;
             generationCoroutine = null;
@@ -141,9 +145,9 @@ public class WorldManager : MonoBehaviour
 
                 if (localX >= 0 && localX < WorldGenerator.chunkSize && localY >= 0 && localY < WorldGenerator.chunkSize)
                 {
-                    if (chunkData.tileStates[localX, localY] != TileType.Empty)
+                    if (chunkData.terrainLayer[localX, localY] != TileType.Empty)
                     {
-                        chunkData.tileStates[localX, localY] = TileType.Empty;
+                        chunkData.terrainLayer[localX, localY] = TileType.Empty;
                         positionsToClear.Add(cellPosition);
                         dirtyRegions.Add(GetRegionCoord(chunkCoord));
                     }
@@ -183,7 +187,7 @@ public class WorldManager : MonoBehaviour
 
             if (localX >= 0 && localX < WorldGenerator.chunkSize && localY >= 0 && localY < WorldGenerator.chunkSize)
             {
-                return chunkData.tileStates[localX, localY];
+                return chunkData.terrainLayer[localX, localY];
             }
         }
         return TileType.Empty;
@@ -205,7 +209,9 @@ public class WorldManager : MonoBehaviour
                 {
                     for (int y = 0; y < WorldGenerator.chunkSize; y++)
                     {
-                        serializableChunk.tileStates[y * WorldGenerator.chunkSize + x] = (int)chunkData.tileStates[x, y];
+                        int index = y * WorldGenerator.chunkSize + x;
+                        serializableChunk.terrainLayer[index] = (int)chunkData.terrainLayer[x, y];
+                        serializableChunk.mineralLayer[index] = (int)chunkData.mineralLayer[x, y];
                     }
                 }
                 worldData.allChunkData.Add(serializableChunk);
@@ -218,6 +224,81 @@ public class WorldManager : MonoBehaviour
 
     public Vector3Int WorldToCell(Vector3 worldPos) => groundTilemap.WorldToCell(worldPos);
     public Vector3 GetCellCenterWorld(Vector3Int cellPos) => groundTilemap.GetCellCenterWorld(cellPos);
+
+    public TerrainLayer GetLayerForDepth(int depth)
+    {
+        TerrainLayer current = null;
+        foreach (var layer in worldGenerator.terrainProfile.layers)
+        {
+            if (depth <= layer.startDepth) current = layer;
+            else return current;
+        }
+        return current;
+    }
+
+    public int GetNextLayerDepth(TerrainLayer currentLayer)
+    {
+        int index = worldGenerator.terrainProfile.layers.IndexOf(currentLayer);
+        return (index >= 0 && index < worldGenerator.terrainProfile.layers.Count - 1)
+            ? worldGenerator.terrainProfile.layers[index + 1].startDepth
+            : int.MinValue;
+    }
+    /// <summary>
+    /// Gets the type of mineral at a specific world position.
+    /// </summary>
+    public MineralID GetMineralIDAt(Vector3 worldPosition)
+    {
+        Vector2Int chunkCoord = GetChunkCoordFromPosition(worldPosition);
+        if (_chunkDataMap.TryGetValue(chunkCoord, out ChunkData chunkData) && chunkData.status == ChunkStatus.Ready)
+        {
+            Vector3Int cellPosition = groundTilemap.WorldToCell(worldPosition);
+            int localX = cellPosition.x - (chunkCoord.x * WorldGenerator.chunkSize);
+            int localY = cellPosition.y - (chunkCoord.y * WorldGenerator.chunkSize);
+
+            if (localX >= 0 && localX < WorldGenerator.chunkSize && localY >= 0 && localY < WorldGenerator.chunkSize)
+            {
+                return chunkData.mineralLayer[localX, localY];
+            }
+        }
+        return MineralID.None;
+    }
+
+    /// <summary>
+    /// Clears the mineral at a specific world position (sets it to None).
+    /// </summary>
+    public void ClearMineralAt(Vector3 worldPosition)
+    {
+        Vector2Int chunkCoord = GetChunkCoordFromPosition(worldPosition);
+        if (_chunkDataMap.TryGetValue(chunkCoord, out ChunkData chunkData) && chunkData.status == ChunkStatus.Ready)
+        {
+            Vector3Int cellPosition = groundTilemap.WorldToCell(worldPosition);
+            int localX = cellPosition.x - (chunkCoord.x * WorldGenerator.chunkSize);
+            int localY = cellPosition.y - (chunkCoord.y * WorldGenerator.chunkSize);
+
+            if (localX >= 0 && localX < WorldGenerator.chunkSize && localY >= 0 && localY < WorldGenerator.chunkSize)
+            {
+                chunkData.mineralLayer[localX, localY] = MineralID.None;
+            }
+        }
+    }
+
+    public GameObject GetHiddenMineralAt(Vector3 worldPosition)
+    {
+        Vector2Int chunkCoord = GetChunkCoordFromPosition(worldPosition);
+        if (_chunkDataMap.TryGetValue(chunkCoord, out ChunkData chunkData))
+        {
+            Vector3Int cellPosition = groundTilemap.WorldToCell(worldPosition);
+            int localX = cellPosition.x - (chunkCoord.x * WorldGenerator.chunkSize);
+            int localY = cellPosition.y - (chunkCoord.y * WorldGenerator.chunkSize);
+            var localCoord = new Vector2Int(localX, localY);
+
+            if (chunkData.hiddenMinerals.TryGetValue(localCoord, out GameObject mineralObj))
+            {
+                return mineralObj;
+            }
+        }
+        return null;
+    }
     #endregion
     
     #region Chunk Update Orchestration
@@ -327,8 +408,8 @@ public class WorldManager : MonoBehaviour
     private IEnumerator FullChunkGenerationSequence(ChunkData chunkData)
     {
         yield return StartCoroutine(worldGenerator.InitializeChunkDataCoroutine(chunkData));
+        worldGenerator.PreSpawnMineralsForChunk(chunkData); // Pre-spawn mineral objects
         chunkData.tiles = worldGenerator.CreateTilebaseArray(chunkData.chunkCoord, chunkData);
-        worldGenerator.SpawnResourceObjectsForChunk(chunkData.chunkCoord, chunkData);
         chunkData.status = ChunkStatus.Generated;
         chunkData.generationCoroutine = null;
     }

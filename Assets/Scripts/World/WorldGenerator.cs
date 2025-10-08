@@ -16,6 +16,25 @@ public class WorldGenerator : MonoBehaviour
     public float cellSize = 0.05f;
     public float mineralSizeMultiplier = 1.5f;
 
+    private int bedrockStartDepth; // Added for dynamic bedrock depth
+
+    private void Start()
+    {
+        if (terrainProfile == null)
+        {
+            Debug.LogError("Terrain Generation Profile is not assigned in WorldGenerator!");
+            return;
+        }
+
+        if (terrainProfile.layers.Count < 7)
+        {
+            Debug.LogError("Terrain Generation Profile does not have enough layers to determine bedrockStartDepth (requires at least 7 layers).");
+            return;
+        }
+
+        bedrockStartDepth = terrainProfile.layers[6].startDepth;
+    }
+
     [Header("Base Tile Assets")]
     public RuleTile dirtTile;
     public RuleTile hardStoneTile;
@@ -37,62 +56,47 @@ public class WorldGenerator : MonoBehaviour
     /// </summary>
     public TileBase[] CreateTilebaseArray(Vector2Int chunkCoord, WorldManager.ChunkData chunkData)
     {
-        int startY = chunkCoord.y * chunkSize;
         TileBase[] tiles = new TileBase[chunkSize * chunkSize];
 
         for (int x = 0; x < chunkSize; x++)
         {
             for (int y = 0; y < chunkSize; y++)
             {
-                TileType tileState = chunkData.tileStates[x, y];
+                TileType tileState = chunkData.terrainLayer[x, y];
                 int index = y * chunkSize + x;
 
-                if (tileState == TileType.Empty)
-                {
-                    tiles[index] = null;
-                    continue;
-                }
-
-                if (IsBaseTile(tileState))
-                {
-                    tiles[index] = GetBaseTileAsset(tileState);
-                }
-                else
-                {
-                    int worldY = startY + y;
-                    TerrainLayer layer = GetLayerForDepth(worldY);
-                    if (layer != null)
-                    {
-                        tiles[index] = GetBaseTileAsset(layer.baseTileType);
-                    }
-                }
+                // The logic is now simpler: just get the asset for the terrain tile.
+                // The mineral layer is purely data and not visualized directly.
+                tiles[index] = GetBaseTileAsset(tileState);
             }
         }
         return tiles;
     }
 
-    /// <summary>
-    /// Iterates through chunk data and spawns GameObjects for any non-base resource tiles.
-    /// </summary>
-    public void SpawnResourceObjectsForChunk(Vector2Int chunkCoord, WorldManager.ChunkData chunkData)
+    public void PreSpawnMineralsForChunk(WorldManager.ChunkData chunkData)
     {
-        int startX = chunkCoord.x * chunkSize;
-        int startY = chunkCoord.y * chunkSize;
+        int startX = chunkData.chunkCoord.x * chunkSize;
+        int startY = chunkData.chunkCoord.y * chunkSize;
 
         for (int x = 0; x < chunkSize; x++)
         {
             for (int y = 0; y < chunkSize; y++)
             {
-                TileType tileState = chunkData.tileStates[x, y];
-
-                // If it's not a base tile, it's a resource that needs a GameObject.
-                if (!IsBaseTile(tileState) && tileState != TileType.Empty && tileState != TileType.Bedrock)
+                MineralID mineral = chunkData.mineralLayer[x, y];
+                if (mineral != MineralID.None)
                 {
-                    int worldX = startX + x;
                     int worldY = startY + y;
-                    SpawnResourceObject(tileState,
-                        new Vector3(worldX * cellSize, worldY * cellSize, 0),
-                        chunkData);
+                    Vector3 position = new Vector3((startX + x) * cellSize, worldY * cellSize, 0);
+
+                    TerrainLayer layer = WorldManager.Instance.GetLayerForDepth(worldY);
+                    if (layer != null)
+                    {
+                        GameObject mineralObj = ObjectPooler.Instance.SpawnFromPool(layer.layerType, mineral, position, Quaternion.identity);
+                        if (mineralObj != null)
+                        {
+                            mineralObj.SetActive(true); // Make it immediately visible
+                        }
+                    }
                 }
             }
         }
@@ -125,9 +129,27 @@ public class WorldGenerator : MonoBehaviour
             for (int y = 0; y < chunkSize; y++)
             {
                 int worldY = worldStartY + y;
-                TerrainLayer layer = GetLayerForDepth(worldY);
-                chunkData.tileStates[x, y] =
-                    layer != null ? layer.baseTileType : TileType.Bedrock;
+                TerrainLayer layer = WorldManager.Instance.GetLayerForDepth(worldY);
+
+                TileType assignedTileType;
+
+                if (layer != null)
+                {
+                    assignedTileType = layer.baseTileType;
+                }
+                else
+                {
+                    assignedTileType = TileType.Empty; // Assign empty for sky areas
+                }
+
+                // Override with Bedrock if below the bedrock start depth
+                if (worldY <= bedrockStartDepth)
+                {
+                    assignedTileType = TileType.Bedrock;
+                }
+
+                chunkData.terrainLayer[x, y] = assignedTileType;
+                chunkData.mineralLayer[x, y] = MineralID.None; // Initialize mineral layer
             }
         }
         yield return null;
@@ -140,13 +162,13 @@ public class WorldGenerator : MonoBehaviour
             for (int y = 0; y < chunkSize; y++)
             {
                 int worldY = worldStartY + y;
-                TerrainLayer layer = GetLayerForDepth(worldY);
+                TerrainLayer layer = WorldManager.Instance.GetLayerForDepth(worldY);
 
                 if (layer == null || !layer.hasDiagonalVeins) continue;
-                if (chunkData.tileStates[x, y] != layer.baseTileType) continue;
+                if (chunkData.terrainLayer[x, y] != layer.baseTileType) continue;
 
                 if (CheckDiagonalNoise(chunkData.chunkCoord, x, y, layer))
-                    chunkData.tileStates[x, y] = layer.diagonalVeinTile;
+                    chunkData.terrainLayer[x, y] = layer.diagonalVeinTile;
             }
         }
         yield return null;
@@ -177,48 +199,44 @@ public class WorldGenerator : MonoBehaviour
 
     private IEnumerator GenerateMineralVeins(WorldManager.ChunkData chunkData, int worldStartY)
     {
-        Debug.Log($"[WorldGenerator] Starting GenerateMineralVeins for chunk {chunkData.chunkCoord}");
         System.Random rng = new System.Random(chunkData.chunkCoord.x * 10000 + chunkData.chunkCoord.y);
 
-        if (terrainProfile == null || terrainProfile.layers == null || terrainProfile.layers.Count == 0)
+        if (terrainProfile == null || terrainProfile.layers == null)
         {
-            Debug.LogWarning($"[WorldGenerator] terrainProfile or its layers are not configured for chunk {chunkData.chunkCoord}");
             yield break;
         }
 
         foreach (var layer in terrainProfile.layers)
         {
-            Debug.Log($"[WorldGenerator] Processing layer (startDepth: {layer.startDepth})");
             int chunkEndY = worldStartY + chunkSize;
-            if (!LayerIntersectsChunk(layer, worldStartY, chunkEndY))
-            {
-                Debug.Log($"[WorldGenerator] Layer (startDepth: {layer.startDepth}) does not intersect chunk {chunkData.chunkCoord}. Skipping.");
-                continue;
-            }
+            if (!LayerIntersectsChunk(layer, worldStartY, chunkEndY)) continue;
 
-            if (layer.mineralConfigs == null || layer.mineralConfigs.Count == 0)
-            {
-                Debug.Log($"[WorldGenerator] Layer (startDepth: {layer.startDepth}) has no mineralConfigs. Skipping.");
-                continue;
-            }
+            if (layer.mineralConfigs == null) continue;
 
             foreach (var mineral in layer.mineralConfigs)
             {
-                float spawnChance = mineral.spawnChanceByDepth.Evaluate(Mathf.Abs(worldStartY));
-                Debug.Log($"[WorldGenerator] Mineral {mineral.minableType} in layer (startDepth: {layer.startDepth}). SpawnChance: {spawnChance} (worldStartY: {worldStartY})");
-                if (rng.NextDouble() >= spawnChance)
+                int nextLayerDepth = WorldManager.Instance.GetNextLayerDepth(layer);
+                float spawnChance;
+
+                if (nextLayerDepth != int.MinValue)
                 {
-                    Debug.Log($"[WorldGenerator] Mineral {mineral.minableType} failed spawnChance check.");
-                    continue;
+                    float layerThickness = Mathf.Abs(layer.startDepth - nextLayerDepth);
+                    if (layerThickness == 0) layerThickness = 1;
+                    int relativeDepthInPixels = worldStartY - layer.startDepth;
+                    float normalizedDepth = Mathf.Abs(relativeDepthInPixels) / layerThickness;
+                    normalizedDepth = Mathf.Clamp01(normalizedDepth);
+                    spawnChance = mineral.spawnChanceByDepth.Evaluate(normalizedDepth);
+                }
+                else
+                {
+                    int relativeDepth = worldStartY - layer.startDepth;
+                    spawnChance = mineral.spawnChanceByDepth.Evaluate(Mathf.Abs(relativeDepth));
                 }
 
+                if (rng.NextDouble() >= spawnChance) continue;
+
                 int veinCount = rng.Next(mineral.veinsPerChunk.x, mineral.veinsPerChunk.y + 1);
-                Debug.Log($"[WorldGenerator] Mineral {mineral.minableType} passed spawnChance. VeinCount: {veinCount}");
-                if (veinCount <= 0)
-                {
-                    Debug.Log($"[WorldGenerator] Mineral {mineral.minableType} has veinCount <= 0. Skipping.");
-                    continue;
-                }
+                if (veinCount <= 0) continue;
 
                 for (int i = 0; i < veinCount; i++)
                 {
@@ -226,14 +244,9 @@ public class WorldGenerator : MonoBehaviour
                     int startY = rng.Next(0, chunkSize);
                     int worldY = worldStartY + startY;
 
-                    if (worldY <= layer.startDepth && worldY > GetNextLayerDepth(layer))
+                    if (worldY <= layer.startDepth && worldY > WorldManager.Instance.GetNextLayerDepth(layer))
                     {
-                        Debug.Log($"[WorldGenerator] Calling GenerateVein for {mineral.minableType} at worldY {worldY} (layer.startDepth: {layer.startDepth}, nextLayerDepth: {GetNextLayerDepth(layer)}).");
                         GenerateVein(chunkData, rng, mineral, startX, startY);
-                    }
-                    else
-                    {
-                        Debug.Log($"[WorldGenerator] Skipping GenerateVein for {mineral.minableType} due to depth condition (worldY: {worldY}, layer.startDepth: {layer.startDepth}, nextLayerDepth: {GetNextLayerDepth(layer)}).");
                     }
                 }
             }
@@ -243,7 +256,7 @@ public class WorldGenerator : MonoBehaviour
 
     private bool LayerIntersectsChunk(TerrainLayer layer, int chunkStart, int chunkEnd)
     {
-        return !(layer.startDepth < chunkStart && GetNextLayerDepth(layer) > chunkEnd);
+        return !(layer.startDepth < chunkStart && WorldManager.Instance.GetNextLayerDepth(layer) > chunkEnd);
     }
 
     private void GenerateVein(WorldManager.ChunkData chunkData, System.Random rng,
@@ -254,10 +267,9 @@ public class WorldGenerator : MonoBehaviour
 
         for (int i = 0; i < length; i++)
         {
-            if (IsInsideChunk(x, y) && IsBaseTile(chunkData.tileStates[x, y]))
+            if (IsInsideChunk(x, y) && IsBaseTile(chunkData.terrainLayer[x, y]) && chunkData.mineralLayer[x, y] == MineralID.None)
             {
-                chunkData.tileStates[x, y] = (TileType)config.minableType;
-                Debug.Log($"[WorldGenerator] Placed mineral {config.minableType} at local ({x}, {y}) in chunk {chunkData.chunkCoord}"); // ADD THIS LOG
+                chunkData.mineralLayer[x, y] = config.minableType;
             }
 
             (x, y) = RandomStep(x, y, rng, config.veinSpacing);
@@ -282,25 +294,6 @@ public class WorldGenerator : MonoBehaviour
 
     // ------------------ UTILITIES ------------------
 
-    private TerrainLayer GetLayerForDepth(int depth)
-    {
-        TerrainLayer current = null;
-        foreach (var layer in terrainProfile.layers)
-        {
-            if (depth <= layer.startDepth) current = layer;
-            else return current;
-        }
-        return current;
-    }
-
-    private int GetNextLayerDepth(TerrainLayer currentLayer)
-    {
-        int index = terrainProfile.layers.IndexOf(currentLayer);
-        return (index >= 0 && index < terrainProfile.layers.Count - 1)
-            ? terrainProfile.layers[index + 1].startDepth
-            : int.MinValue;
-    }
-
     private bool IsBaseTile(TileType type) =>
         type >= TileType.Dirt && type <= TileType.MeteoriteRock;
 
@@ -318,28 +311,5 @@ public class WorldGenerator : MonoBehaviour
             TileType.Bedrock => bedrockTile,
             _ => null
         };
-    }
-
-    private void SpawnResourceObject(TileType resourceType, Vector3 pos, WorldManager.ChunkData chunkData)
-    {
-        Debug.Log($"[WorldGenerator] Attempting to spawn resource: {resourceType} at {pos}");
-        if (System.Enum.TryParse(resourceType.ToString(), out PoolableType poolType))
-        {
-            Debug.Log($"[WorldGenerator] Successfully parsed TileType {resourceType} to PoolableType {poolType}. Requesting from ObjectPooler.");
-            GameObject obj = ObjectPooler.Instance.SpawnFromPool(poolType, pos, Quaternion.identity);
-            if (obj != null)
-            {
-                chunkData.spawnedItems.Add(obj);
-                Debug.Log($"[WorldGenerator] Successfully spawned {obj.name} from pool for {poolType}.");
-            }
-            else
-            {
-                Debug.LogWarning($"[WorldGenerator] Failed to spawn {poolType} from ObjectPooler. Pool might be empty or type not found.");
-            }
-        }
-        else
-        {
-            Debug.LogWarning($"[WorldGenerator] Failed to parse TileType {resourceType} to PoolableType. Check enum names.");
-        }
     }
 }

@@ -60,21 +60,31 @@ public class DiggingController : MonoBehaviour
         // 3. Set the dig location on the circumference of the actionRadius.
         Vector2 digCenter = pivot + (currentDigDirection * actionRadius);
 
-        HashSet<Vector3Int> cellsToDig = GetCellsInDigRadius(digCenter);
+        HashSet<Vector3Int> cellsToProcess = GetCellsInDigRadius(digCenter);
 
-        if (cellsToDig.Count == 0)
+        if (cellsToProcess.Count == 0)
         {
             return;
         }
 
         var cellPositionsToDig = new List<Vector3Int>();
 
-        // First, determine which tiles will be dug and process their effects (e.g., stamina)
-        foreach (Vector3Int cellPos in cellsToDig)
+        // First, process effects for all cells (minerals and terrain)
+        foreach (Vector3Int cellPos in cellsToProcess)
         {
             Vector3 cellWorldCenter = WorldManager.Instance.GetCellCenterWorld(cellPos);
-            TileType type = WorldManager.Instance.GetTileTypeAt(cellWorldCenter);
 
+            // Reveal hidden minerals
+            GameObject hiddenMineral = WorldManager.Instance.GetHiddenMineralAt(cellWorldCenter);
+            if (hiddenMineral != null)
+            {
+                hiddenMineral.SetActive(true);
+                // After activating, clear the data to prevent re-activation
+                WorldManager.Instance.ClearMineralAt(cellWorldCenter);
+            }
+
+            // Then, check for terrain to dig
+            TileType type = WorldManager.Instance.GetTileTypeAt(cellWorldCenter);
             if (type != TileType.Empty)
             {
                 ReducePlayerStaminaForTile(type);
@@ -82,11 +92,10 @@ public class DiggingController : MonoBehaviour
             }
         }
 
-        // Now, send the entire batch of tiles to the WorldManager to be processed efficiently
+        // Now, send the entire batch of terrain tiles to the WorldManager to be processed efficiently
         if (cellPositionsToDig.Count > 0)
         {
             WorldManager.Instance.DigTiles(cellPositionsToDig);
-            Debug.Log($"{cellPositionsToDig.Count} tile(s) were dug.");
         }
     }
 
@@ -152,15 +161,20 @@ public class DiggingController : MonoBehaviour
         if (_playerStats == null) return;
 
         TileDataJson data = TileDataManager.Instance.GetData(tileType);
-        if (data != null && data.maxStaminaReduction > 0)
-        {
-            _playerStats.ReduceMaxStamina(data.maxStaminaReduction);
-        }
-    }
-
-    private void OnDrawGizmosSelected()
-    {
-        // Visualize the pivot, action radius, and dig radius
+                if (data != null && data.maxStaminaReduction > 0)
+                {
+                    _playerStats.ReduceMaxStamina(data.maxStaminaReduction);
+                }
+            }
+        
+            public void IncreaseDigRadius(float amount)
+            {
+                digRadius += amount;
+                Debug.Log($"Dig radius increased to {digRadius}");
+            }
+        
+            private void OnDrawGizmosSelected()
+            {        // Visualize the pivot, action radius, and dig radius
         Vector2 pivot = (Vector2)transform.position + (Vector2.up * verticalPivotOffset);
         
         // Draw the action radius circle
