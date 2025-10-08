@@ -19,7 +19,7 @@ MonoBehaviour:
     baseTileType: 10
     mineralConfigs:
     - description: 
-      minableType: 0
+      minableType: 106
       spawnChanceByDepth:
         serializedVersion: 2
         m_Curve:
@@ -48,7 +48,7 @@ MonoBehaviour:
       veinLength: {x: 5, y: 5}
       veinSpacing: 3
     - description: 
-      minableType: 1
+      minableType: 101
       spawnChanceByDepth:
         serializedVersion: 2
         m_Curve:
@@ -77,7 +77,7 @@ MonoBehaviour:
       veinLength: {x: 3, y: 3}
       veinSpacing: 3
     - description: 
-      minableType: 2
+      minableType: 100
       spawnChanceByDepth:
         serializedVersion: 2
         m_Curve:
@@ -106,7 +106,7 @@ MonoBehaviour:
       veinLength: {x: 4, y: 4}
       veinSpacing: 4
     - description: 
-      minableType: 4
+      minableType: 103
       spawnChanceByDepth:
         serializedVersion: 2
         m_Curve:
@@ -135,7 +135,7 @@ MonoBehaviour:
       veinLength: {x: 5, y: 5}
       veinSpacing: 5
     hasDiagonalVeins: 1
-    diagonalVeinTile: 0
+    diagonalVeinTile: 13
     veinNoiseScale: 0.1
     veinAngleRange: {x: 30, y: 60}
     veinAngleNoiseScale: 0.02

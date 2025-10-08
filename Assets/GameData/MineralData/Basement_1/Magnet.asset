@@ -12,10 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0d528b2d5e4abd4ea20c99a65b89b33, type: 3}
   m_Name: Magnet
   m_EditorClassIdentifier: 
-  mineralID: 0
-  mineralName: 
-  description: 
+  mineralID: 106
+  mineralName: "\uC790\uC11D"
+  description: "\uC790\u3153\uC11D\uC774\uB2E4"
   spawnRate: 0
-  basementLevel: 0
-  icon: {fileID: 0}
+  basementLevel: 1
+  weight: 1
+  stackable: 1
+  maxStackSize: 999
+  icon: {fileID: 1535325516486818496, guid: 010cc55e7e3cc2a4699d79e6a61e8f36, type: 3}
   mineralPrefab: {fileID: 0}

@@ -17,5 +17,8 @@ MonoBehaviour:
   description: "\uACE0\uCCA0"
   spawnRate: 0
   basementLevel: 1
-  icon: {fileID: 0}
+  weight: 1
+  stackable: 1
+  maxStackSize: 999
+  icon: {fileID: 5321414404548654904, guid: 18d586c2f28bfe3459a30a4c9f8a89ee, type: 3}
   mineralPrefab: {fileID: 0}

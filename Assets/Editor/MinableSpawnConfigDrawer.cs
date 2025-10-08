@@ -38,12 +38,15 @@ public class MinableSpawnConfigDrawer : PropertyDrawer
         {
             EditorGUI.indentLevel++;
             
-            var currentRect = new Rect(position.x, position.y + EditorGUIUtility.singleLineHeight + 2, position.width, EditorGUIUtility.singleLineHeight);
+            var spacing = 5f; // 늘어난 간격
+            // 시작 Rect를 Foldout 바로 아래로 설정합니다. 높이는 각 필드에 맞게 동적으로 설정될 것입니다.
+            var currentRect = new Rect(position.x, position.y + EditorGUIUtility.singleLineHeight + spacing, position.width, 0);
 
             // 1. 'description' 필드
             var descriptionProp = property.FindPropertyRelative("description");
+            currentRect.height = EditorGUI.GetPropertyHeight(descriptionProp);
             EditorGUI.PropertyField(currentRect, descriptionProp);
-            currentRect.y += EditorGUI.GetPropertyHeight(descriptionProp) + 2;
+            currentRect.y += currentRect.height + spacing;
 
             // 2. 'minableType' 필드를 필터링된 드롭다운으로 그립니다.
             LayerType parentLayerType = GetParentLayerType(property);
@@ -51,35 +54,42 @@ public class MinableSpawnConfigDrawer : PropertyDrawer
             if (filteredMinerals == null) filteredMinerals = new MineralID[0];
 
             var minableTypeProp = property.FindPropertyRelative("minableType");
-            var currentMineralID = (MineralID)minableTypeProp.enumValueIndex;
+            // BUG FIX: Use intValue instead of enumValueIndex for enums with explicit values.
+            var currentMineralID = (MineralID)minableTypeProp.intValue;
 
             int selectedIndex = System.Array.IndexOf(filteredMinerals, currentMineralID);
             if (selectedIndex < 0) selectedIndex = 0;
 
             string[] filteredMineralNames = filteredMinerals.Select(m => m.ToString()).ToArray();
             
+            currentRect.height = EditorGUIUtility.singleLineHeight; // Popup은 한 줄 높이입니다.
             int newSelectedIndex = EditorGUI.Popup(currentRect, "Minable Type", selectedIndex, filteredMineralNames);
 
             if (newSelectedIndex >= 0 && newSelectedIndex < filteredMinerals.Length)
             {
-                minableTypeProp.enumValueIndex = (int)(object)filteredMinerals[newSelectedIndex];
+                // BUG FIX: Assign the actual integer value of the enum, not its index.
+                minableTypeProp.intValue = (int)filteredMinerals[newSelectedIndex];
             }
-            currentRect.y += EditorGUIUtility.singleLineHeight + 2;
+            currentRect.y += currentRect.height + spacing;
 
             // 3. 나머지 필드들을 순서대로 그립니다.
             var spawnChanceProp = property.FindPropertyRelative("spawnChanceByDepth");
+            currentRect.height = EditorGUI.GetPropertyHeight(spawnChanceProp);
             EditorGUI.PropertyField(currentRect, spawnChanceProp, true);
-            currentRect.y += EditorGUI.GetPropertyHeight(spawnChanceProp) + 2;
+            currentRect.y += currentRect.height + spacing;
 
             var veinsPerChunkProp = property.FindPropertyRelative("veinsPerChunk");
+            currentRect.height = EditorGUI.GetPropertyHeight(veinsPerChunkProp);
             EditorGUI.PropertyField(currentRect, veinsPerChunkProp, true);
-            currentRect.y += EditorGUI.GetPropertyHeight(veinsPerChunkProp) + 2;
+            currentRect.y += currentRect.height + spacing;
             
             var veinLengthProp = property.FindPropertyRelative("veinLength");
+            currentRect.height = EditorGUI.GetPropertyHeight(veinLengthProp);
             EditorGUI.PropertyField(currentRect, veinLengthProp, true);
-            currentRect.y += EditorGUI.GetPropertyHeight(veinLengthProp) + 2;
+            currentRect.y += currentRect.height + spacing;
 
             var veinSpacingProp = property.FindPropertyRelative("veinSpacing");
+            currentRect.height = EditorGUI.GetPropertyHeight(veinSpacingProp);
             EditorGUI.PropertyField(currentRect, veinSpacingProp, true);
 
             EditorGUI.indentLevel--;
@@ -95,13 +105,14 @@ public class MinableSpawnConfigDrawer : PropertyDrawer
 
         if (property.isExpanded)
         {
+            var spacing = 5f; // 늘어난 간격
             // 펼쳐졌을 때, 모든 자식 필드들의 높이를 더해줍니다.
-            totalHeight += EditorGUI.GetPropertyHeight(property.FindPropertyRelative("description")) + 2;
-            totalHeight += EditorGUIUtility.singleLineHeight + 2; // minableType Popup 높이
-            totalHeight += EditorGUI.GetPropertyHeight(property.FindPropertyRelative("spawnChanceByDepth")) + 2;
-            totalHeight += EditorGUI.GetPropertyHeight(property.FindPropertyRelative("veinsPerChunk")) + 2;
-            totalHeight += EditorGUI.GetPropertyHeight(property.FindPropertyRelative("veinLength")) + 2;
-            totalHeight += EditorGUI.GetPropertyHeight(property.FindPropertyRelative("veinSpacing")) + 2;
+            totalHeight += EditorGUI.GetPropertyHeight(property.FindPropertyRelative("description")) + spacing;
+            totalHeight += EditorGUIUtility.singleLineHeight + spacing; // minableType Popup 높이
+            totalHeight += EditorGUI.GetPropertyHeight(property.FindPropertyRelative("spawnChanceByDepth")) + spacing;
+            totalHeight += EditorGUI.GetPropertyHeight(property.FindPropertyRelative("veinsPerChunk")) + spacing;
+            totalHeight += EditorGUI.GetPropertyHeight(property.FindPropertyRelative("veinLength")) + spacing;
+            totalHeight += EditorGUI.GetPropertyHeight(property.FindPropertyRelative("veinSpacing")) + spacing;
         }
 
         return totalHeight;

@@ -89,6 +89,7 @@ public class ObjectPooler : MonoBehaviour
         if (objectToSpawn.TryGetComponent<Mineable>(out var mineable))
         {
             mineable.spawnedFromLayer = layerType;
+            mineable.mineralID = type; // Set the mineralID
 
             // Find the corresponding ItemSO and assign it to itemData
             ItemSO itemData = ItemDatabase.Instance.GetItemByID(type);
@@ -98,7 +99,8 @@ public class ObjectPooler : MonoBehaviour
             }
             else
             {
-                Debug.LogError($"Could not find ItemSO for MineralID: {type}. ItemData will be null.", objectToSpawn);
+                // This is not a critical error, some minerals might not have items.
+                Debug.Log($"No ItemSO found for MineralID: {type}. This may be intentional.", objectToSpawn);
             }
         }
         else
@@ -111,15 +113,15 @@ public class ObjectPooler : MonoBehaviour
 
     public void ReturnToPool(GameObject objectToReturn)
     {
-        if (!objectToReturn.TryGetComponent<Mineable>(out var mineable) || mineable.itemData == null)
+        if (!objectToReturn.TryGetComponent<Mineable>(out var mineable))
         {
-            Debug.LogWarning("Returned object is not a valid mineable or has no item data. Destroying it.", objectToReturn);
+            Debug.LogWarning("Returned object is not a valid mineable. Destroying it.", objectToReturn);
             Destroy(objectToReturn);
             return;
         }
 
         LayerType layerType = mineable.spawnedFromLayer;
-        MineralID poolType = mineable.itemData.poolType;
+        MineralID poolType = mineable.mineralID; // Use the stored mineralID
 
         if (!poolDictionary.ContainsKey(layerType) || !poolDictionary[layerType].ContainsKey(poolType))
         {
