@@ -1273,32 +1273,20 @@ MonoBehaviour:
   stratumPools:
   - layerType: 0
     pools:
-    - type: 4
+    - type: 106
       prefab: {fileID: 3414892728039577629, guid: b1dcf55dde5e5ba49938b2095023f337, type: 3}
       size: 100
-    - type: 2
+    - type: 101
       prefab: {fileID: 8687718726486887013, guid: e1b5824a9fdf8d1419bce14bd2fe1f05, type: 3}
       size: 100
-    - type: 0
+    - type: 100
       prefab: {fileID: 7651248375382586064, guid: d97a1221e6098a44fa724bbc603b195c, type: 3}
       size: 100
-    - type: 1
+    - type: 103
       prefab: {fileID: 5956459886157147869, guid: 4ea611376b7cf474b8ced38ccef61be7, type: 3}
       size: 100
   - layerType: 1
-    pools:
-    - type: 0
-      prefab: {fileID: 7651248375382586064, guid: d97a1221e6098a44fa724bbc603b195c, type: 3}
-      size: 100
-    - type: 4
-      prefab: {fileID: 3414892728039577629, guid: b1dcf55dde5e5ba49938b2095023f337, type: 3}
-      size: 100
-    - type: 2
-      prefab: {fileID: 8687718726486887013, guid: e1b5824a9fdf8d1419bce14bd2fe1f05, type: 3}
-      size: 100
-    - type: 1
-      prefab: {fileID: 5956459886157147869, guid: 4ea611376b7cf474b8ced38ccef61be7, type: 3}
-      size: 100
+    pools: []
 --- !u!4 &579115390
 Transform:
   m_ObjectHideFlags: 0
@@ -2087,7 +2075,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1104405492}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7a536cf3ff37a2849a845c17f64324f8, type: 3}
   m_Name: 
@@ -2970,7 +2958,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   priceDatabase: {fileID: 11400000, guid: bfbcac7e18e11314096269563ea89f01, type: 2}
-  playerStats: {fileID: 694537933}
+  playerStats: {fileID: 0}
   playerInventory: {fileID: 0}
 --- !u!1001 &1854614583569768955
 PrefabInstance:
@@ -3004,6 +2992,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: 2SuyunhooPlayer
       objectReference: {fileID: 0}
+    - target: {fileID: 3623578073134097790, guid: 67d5b019d3accde4faee8d1e2beeffc7, type: 3}
+      propertyPath: itemDatabase
+      value: 
+      objectReference: {fileID: 11400000, guid: 0d0e329ea93c0e940a46ae338c32eabb, type: 2}
+    - target: {fileID: 3623578073134097790, guid: 67d5b019d3accde4faee8d1e2beeffc7, type: 3}
+      propertyPath: mineralDatabase
+      value: 
+      objectReference: {fileID: 11400000, guid: 09bd628b9b52f4b46b1a4eb64155d297, type: 2}
     - target: {fileID: 4424358768847624063, guid: 67d5b019d3accde4faee8d1e2beeffc7, type: 3}
       propertyPath: m_Size.x
       value: 0.53936815
@@ -3040,6 +3036,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6069593060920306883, guid: 67d5b019d3accde4faee8d1e2beeffc7, type: 3}
+      propertyPath: playerTransform
+      value: 
+      objectReference: {fileID: 638682850}
     - target: {fileID: 9070556607531506533, guid: 67d5b019d3accde4faee8d1e2beeffc7, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

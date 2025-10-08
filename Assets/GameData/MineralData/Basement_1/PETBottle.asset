@@ -12,10 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0d528b2d5e4abd4ea20c99a65b89b33, type: 3}
   m_Name: PETBottle
   m_EditorClassIdentifier: 
-  mineralID: 0
-  mineralName: 
-  description: 
+  mineralID: 103
+  mineralName: "\uD398\uD2B8\uD3C9"
+  description: "\u314D8\u3155\u3147\uD3C9\n"
   spawnRate: 0
-  basementLevel: 0
-  icon: {fileID: 0}
+  basementLevel: 1
+  weight: 1
+  stackable: 1
+  maxStackSize: 999
+  icon: {fileID: 6657855036881319958, guid: be7d9a130bfcd2f40a15c7b4a75d01b2, type: 3}
   mineralPrefab: {fileID: 0}
