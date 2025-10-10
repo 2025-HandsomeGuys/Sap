@@ -20,5 +20,5 @@ MonoBehaviour:
   weight: 1
   stackable: 1
   maxStackSize: 999
-  icon: {fileID: 1535325516486818496, guid: 010cc55e7e3cc2a4699d79e6a61e8f36, type: 3}
+  icon: {fileID: 7081527322082503550, guid: 3eb07c5a0b971f7479be46e7cd3ae58f, type: 3}
   mineralPrefab: {fileID: 0}
