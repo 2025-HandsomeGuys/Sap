@@ -24,7 +24,9 @@ public class PlayerData
     [Header("Inventory")]
     public int originalInventorySize;
     public int inventorySize;
-    public InventoryData inventory = new InventoryData();
+    public ItemInventoryData itemInventory = new ItemInventoryData();
+    public MineralInventoryData mineralInventory = new MineralInventoryData();
+    public ToolInventoryData toolInventory = new ToolInventoryData();
 
     [Header("Mining")]
     public float originalMiningEfficiency;
@@ -35,7 +37,7 @@ public class PlayerData
     [Header("Gold")]
     public int gold;
 
-    // ±âº»°ªÀ» SO¿¡¼­ º¹»çÇØ¼­ ÃÊ±âÈ­
+    // ï¿½âº»ï¿½ï¿½ï¿½ï¿½ SOï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ø¼ï¿½ ï¿½Ê±ï¿½È­
     public PlayerData() { }
 
     public PlayerData(PlayerSO playerSO)
@@ -60,7 +62,9 @@ public class PlayerData
         // Inventory
         originalInventorySize = playerSO.originalInventorySize;
         inventorySize = playerSO.inventorySize;
-        inventory = new InventoryData();
+        itemInventory = new ItemInventoryData();
+        mineralInventory = new MineralInventoryData();
+        toolInventory = new ToolInventoryData();
 
         // Mining
         originalMiningEfficiency = playerSO.originalMiningEfficiency;

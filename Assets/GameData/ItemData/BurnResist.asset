@@ -15,7 +15,7 @@ MonoBehaviour:
   itemID: 1002
   itemName: "\uD654\uC5FC \uC800\uD56D"
   description: "\uC544\uC774\uD15C \uC124\uBA85"
-  icon: {fileID: 0}
+  icon: {fileID: -2439699522794326382, guid: 68c6a184f17e1bb41a8b256df0c0b1d1, type: 3}
   weight: 1
   staminaReduction: 0
   stackable: 1

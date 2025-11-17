@@ -1,19 +1,32 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "ToolData", menuName = "Game Data/Tool SO")]
-public class ToolSO : ScriptableObject
+public class ToolSO : ScriptableObject, InterfaceInventoryItem
 {
-    [Header("±âº» Á¤º¸")]
-    public string id;            // °íÀ¯ ID (¿¹: "tool_001")
-    public string toolName;      // ÀÌ¸§ (¿¹: "Ã¶ °î±ªÀÌ")
+    [Header("ê¸°ë³¸ ì •ë³´")]
+    public ToolID toolID;        // ë„êµ¬ ID
+    public string toolName;       // ì´ë¦„ (ì˜ˆ: "ì²  ê³¡ê´­ì´")
     public Sprite icon;
     [TextArea]
-    public string description;   // ¼³¸í (¿¹: "Ã¶·Î ¸¸µç ±âº» °î±ªÀÌ")
+    public string description;   // ì„¤ëª… (ì˜ˆ: "ì±„êµ´ì— ì‚¬ìš©ë˜ëŠ” ê¸°ë³¸ ê³¡ê´­ì´")
 
-    [Header("´É·ÂÄ¡")]
-    public int level;            // µµ±¸ ·¹º§
-    public float miningPower;    // Ã¤±¼·Â (¿¹: ºí·Ï ±ú´Â ¼Óµµ)
-    public float miningSpeed;    // Ã¤±¼ ¼Óµµ
-    //public float durability;     // ³»±¸µµ
-    public int price;            // ±¸¸Å/¾÷±×·¹ÀÌµå ºñ¿ë
+    [Header("ëŠ¥ë ¥ì¹˜")]
+    public int level;            // ë„êµ¬ ë ˆë²¨
+    public float miningPower;    // ì±„êµ´ë ¥ (ì˜ˆ: ì±„êµ´ ê°€ëŠ¥ ì†ë„)
+    public float miningSpeed;    // ì±„êµ´ ì†ë„
+    //public float durability;     // ë‚´êµ¬ë„
+    public int price;            // êµ¬ë§¤/íŒë§¤ì‹œ ê°€ê²©
+
+    [Header("ì¸ë²¤í† ë¦¬ ì†ì„±")]
+    public float weight = 0f;        // ë„êµ¬ëŠ” ë¬´ê²Œ ì—†ìŒ
+    public bool stackable = false;   // ë„êµ¬ëŠ” ìŠ¤íƒ ë¶ˆê°€
+    public int maxStackSize = 1;     // ë„êµ¬ëŠ” í•­ìƒ 1ê°œ
+
+    // ===== InterfaceInventoryItem êµ¬í˜„ë¶€ =====
+    public string Id => toolID.ToString();
+    public string DisplayName => toolName;
+    public Sprite Icon => icon;
+    public float Weight => weight;
+    public bool Stackable => stackable;
+    public int MaxStackSize => maxStackSize;
 }

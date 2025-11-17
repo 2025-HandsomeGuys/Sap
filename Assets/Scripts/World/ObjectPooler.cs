@@ -91,16 +91,16 @@ public class ObjectPooler : MonoBehaviour
             mineable.spawnedFromLayer = layerType;
             mineable.mineralID = type; // Set the mineralID
 
-            // Find the corresponding ItemSO and assign it to itemData
-            ItemSO itemData = ItemDatabase.Instance.GetItemByID(type);
-            if (itemData != null)
+            // Find the corresponding MineralSO and assign it to itemData
+            MineralSO mineralData = MineralDatabase.Instance?.GetMineralByID(type);
+            if (mineralData != null)
             {
-                mineable.itemData = itemData;
+                mineable.itemData = mineralData;
             }
             else
             {
-                // This is not a critical error, some minerals might not have items.
-                Debug.Log($"No ItemSO found for MineralID: {type}. This may be intentional.", objectToSpawn);
+                // This is not a critical error, some minerals might not be in database.
+                Debug.Log($"No MineralSO found for MineralID: {type}. This may be intentional.", objectToSpawn);
             }
         }
         else
