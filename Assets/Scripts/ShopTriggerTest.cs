@@ -30,7 +30,7 @@ public class ShopTriggerTest : MonoBehaviour
     {
         if (isPlayerInside)
         {
-            if (Input.GetKeyDown(KeyCode.I))
+            if (Input.GetKeyDown(KeyCode.P))
             {
                 SellFirstMineral();
             }

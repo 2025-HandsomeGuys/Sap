@@ -25,14 +25,52 @@ public class PlayerInteractor : MonoBehaviour
     {
         playerStats = GetComponent<PlayerStatsController>();
 
+        // InventoryUI 자동 찾기
         if (inventoryUI == null)
         {
-            Debug.LogWarning("InventoryUI is not assigned in the PlayerInteractor inspector!");
+            inventoryUI = FindFirstObjectByType<InventoryUI>();
+            if (inventoryUI == null)
+            {
+                Debug.LogWarning("InventoryUI is not assigned in the PlayerInteractor inspector and could not be found automatically!");
+            }
         }
 
+        // PlayerInventory 자동 찾기
         if (playerInventory == null)
         {
-            Debug.LogError("PlayerInventory is not assigned in the PlayerInteractor inspector! Interactions will fail.", this);
+            // 먼저 같은 게임오브젝트에서 찾기
+            playerInventory = GetComponent<Inventory>();
+            
+            // 없으면 자식 오브젝트에서 찾기
+            if (playerInventory == null)
+            {
+                playerInventory = GetComponentInChildren<Inventory>();
+            }
+            
+            // 없으면 PlayerController에서 가져오기
+            if (playerInventory == null)
+            {
+                PlayerController playerController = GetComponent<PlayerController>();
+                if (playerController != null && playerController.playerInventory != null)
+                {
+                    playerInventory = playerController.playerInventory;
+                }
+            }
+            
+            // 여전히 없으면 씬에서 찾기
+            if (playerInventory == null)
+            {
+                playerInventory = FindFirstObjectByType<Inventory>();
+            }
+            
+            if (playerInventory == null)
+            {
+                Debug.LogError("PlayerInventory is not assigned in the PlayerInteractor inspector and could not be found automatically! Interactions will fail.", this);
+            }
+            else
+            {
+                Debug.Log("PlayerInteractor: PlayerInventory를 자동으로 찾았습니다.", this);
+            }
         }
 
         if (interactionPromptText != null)

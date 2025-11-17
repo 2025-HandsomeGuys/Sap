@@ -25,6 +25,11 @@ public class ObjectPooler : MonoBehaviour
 
     public List<StratumPool> stratumPools;
     public Dictionary<LayerType, Dictionary<MineralID, Queue<GameObject>>> poolDictionary;
+    
+    // 경고 로그를 제한하기 위한 딕셔너리 (각 풀 타입별로 한 번만 경고)
+    private Dictionary<string, bool> emptyPoolWarnings = new Dictionary<string, bool>();
+    // ItemSO 로그를 제한하기 위한 딕셔너리 (각 MineralID별로 한 번만 로그)
+    private Dictionary<MineralID, bool> itemSOWarnings = new Dictionary<MineralID, bool>();
 
     private void Awake()
     {
@@ -75,7 +80,13 @@ public class ObjectPooler : MonoBehaviour
         if (poolDictionary[layerType][type].Count == 0)
         {
             // Optionally, you could instantiate a new object here if the pool is empty
-            Debug.LogWarning($"Pool for {type} in layer {layerType} is empty.");
+            // 경고 로그를 한 번만 출력하도록 제한
+            string warningKey = $"{layerType}_{type}";
+            if (!emptyPoolWarnings.ContainsKey(warningKey))
+            {
+                emptyPoolWarnings[warningKey] = true;
+                Debug.LogWarning($"Pool for {type} in layer {layerType} is empty. (This warning will only appear once per pool type)");
+            }
             return null;
         }
 
@@ -100,7 +111,12 @@ public class ObjectPooler : MonoBehaviour
             else
             {
                 // This is not a critical error, some minerals might not have items.
-                Debug.Log($"No ItemSO found for MineralID: {type}. This may be intentional.", objectToSpawn);
+                // 각 MineralID별로 한 번만 로그 출력
+                if (!itemSOWarnings.ContainsKey(type))
+                {
+                    itemSOWarnings[type] = true;
+                    Debug.Log($"No ItemSO found for MineralID: {type}. This may be intentional. (This message will only appear once per mineral type)", objectToSpawn);
+                }
             }
         }
         else
