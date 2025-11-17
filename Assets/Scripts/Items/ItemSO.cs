@@ -5,7 +5,7 @@ using UnityEngine;
 public class ItemSO : ScriptableObject, InterfaceInventoryItem
 {
     [Header("기본 정보")]
-    public MineralID itemID; // 아이템을 식별하기 위한 고유 ID
+    public ItemID itemID; // 아이템을 식별하기 위한 고유 ID
     public string itemName = "새 아이템";
     [TextArea(3, 10)] // 인스펙터에서 여러 줄로 편집할 수 있도록 설정
     public string description = "아이템 설명";
@@ -21,7 +21,7 @@ public class ItemSO : ScriptableObject, InterfaceInventoryItem
     public int maxStackSize = 1; // 최대 몇 개까지 겹칠 수 있는지
 
     [Header("월드 프리팹")]
-    public MineralID poolType; // 이 아이템이 ObjectPooler에서 사용하는 타입
+    public ItemID poolType; // 이 아이템이 ObjectPooler에서 사용하는 타입
     public GameObject itemPrefab; // 월드에 떨어졌을 때 생성될 프리팹
 
     public string Id => itemID.ToString();        // 변경: 공통 ID로 노출

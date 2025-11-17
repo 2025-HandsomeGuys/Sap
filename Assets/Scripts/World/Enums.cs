@@ -75,3 +75,20 @@ public enum LayerType
     MagmaGround,     // 6. 마그마땅
     FinalGround      // 7. 최종땅
 }
+
+public enum ItemID
+{
+    None = 0,
+    // 아이템들 (1000번대)
+    FrostbiteResist = 1001,
+    BurnResist = 1002,
+    // 필요에 따라 추가
+}
+
+public enum ToolID
+{
+    None = 0,
+    // 도구들 (2000번대)
+    IronPickaxe = 2001,
+    // 필요에 따라 추가
+}

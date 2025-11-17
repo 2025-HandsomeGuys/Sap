@@ -51,7 +51,7 @@ public class ShopTriggerTest : MonoBehaviour
             return;
         }
 
-        var inventory = shopManager.playerInventory;
+        var inventory = shopManager.mineralInventory;
         if (inventory == null)
         {
             Debug.LogError("Player inventory not found on ShopManager!");

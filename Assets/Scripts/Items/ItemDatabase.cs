@@ -9,18 +9,18 @@ public class ItemDatabase : ScriptableObject
 
     public List<ItemSO> allItems;
 
-    private Dictionary<MineralID, ItemSO> itemDictionary;
+    private Dictionary<ItemID, ItemSO> itemDictionary;
 
     private void OnEnable()
     {
         Instance = this;
 
-        itemDictionary = new Dictionary<MineralID, ItemSO>();
+        itemDictionary = new Dictionary<ItemID, ItemSO>();
         if (allItems != null)
         {
             foreach (var item in allItems)
             {
-                if (item != null && item.itemID != MineralID.None && !itemDictionary.ContainsKey(item.itemID))
+                if (item != null && item.itemID != ItemID.None && !itemDictionary.ContainsKey(item.itemID))
                 {
                     itemDictionary.Add(item.itemID, item);
                 }
@@ -28,7 +28,7 @@ public class ItemDatabase : ScriptableObject
         }
     }
 
-    public ItemSO GetItemByID(MineralID id)
+    public ItemSO GetItemByID(ItemID id)
     {
         if (itemDictionary == null)
         {

@@ -9,13 +9,17 @@ public class SaveManager : MonoBehaviour
     public PlayerSO playerSO;
 
     private PlayerStatsController stats; // 내부에서 관리
-    private Inventory inventory;
+    private ItemInventory itemInventory;
+    private MineralInventory mineralInventory;
+    private ToolInventory toolInventory;
 
     private void Awake()
     {
         path = Path.Combine(Application.persistentDataPath, "playerData.json");
         stats = FindFirstObjectByType<PlayerStatsController>(); // 씬에서 자동 찾기
-        inventory = FindFirstObjectByType<Inventory>();
+        itemInventory = FindFirstObjectByType<ItemInventory>();
+        mineralInventory = FindFirstObjectByType<MineralInventory>();
+        toolInventory = FindFirstObjectByType<ToolInventory>();
     }
 
     public bool HasSaveData()
@@ -34,9 +38,17 @@ public class SaveManager : MonoBehaviour
         PlayerData data = new PlayerData(playerSO);
         stats.FromData(data);
 
-        if (inventory != null)
+        if (itemInventory != null)
         {
-            inventory.FromData(new InventoryData(), ItemDatabase.Instance, MineralDatabase.Instance);
+            itemInventory.FromData(new ItemInventoryData(), ItemDatabase.Instance);
+        }
+        if (mineralInventory != null)
+        {
+            mineralInventory.FromData(new MineralInventoryData(), MineralDatabase.Instance);
+        }
+        if (toolInventory != null)
+        {
+            toolInventory.FromData(new ToolInventoryData(), ToolDatabase.Instance);
         }
         Save();
         Debug.Log("새 게임 시작");
@@ -49,18 +61,32 @@ public class SaveManager : MonoBehaviour
             Debug.LogError("PlayerStatsController를 찾을 수 없습니다!");
             return;
         }
-        if (inventory == null)
+        if (itemInventory == null)
         {
-            inventory = FindFirstObjectByType<Inventory>();
-            if (inventory == null)
-            {
-                Debug.LogError("Inventory를 찾을 수 없습니다!");
-                return;
-            }
+            itemInventory = FindFirstObjectByType<ItemInventory>();
+        }
+        if (mineralInventory == null)
+        {
+            mineralInventory = FindFirstObjectByType<MineralInventory>();
+        }
+        if (toolInventory == null)
+        {
+            toolInventory = FindFirstObjectByType<ToolInventory>();
         }
 
         PlayerData data = stats.ToData();
-        data.inventory = inventory.ToData();
+        if (itemInventory != null)
+        {
+            data.itemInventory = itemInventory.ToData();
+        }
+        if (mineralInventory != null)
+        {
+            data.mineralInventory = mineralInventory.ToData();
+        }
+        if (toolInventory != null)
+        {
+            data.toolInventory = toolInventory.ToData();
+        }
         string json = JsonUtility.ToJson(data, true);
         File.WriteAllText(path, json);
         Debug.Log("저장 완료: " + path);
@@ -77,14 +103,17 @@ public class SaveManager : MonoBehaviour
                 return;
             }
         }
-        if (inventory == null)
+        if (itemInventory == null)
         {
-            inventory = FindFirstObjectByType<Inventory>();
-            if (inventory == null)
-            {
-                Debug.LogError("Inventory를 찾을 수 없습니다!");
-                return;
-            }
+            itemInventory = FindFirstObjectByType<ItemInventory>();
+        }
+        if (mineralInventory == null)
+        {
+            mineralInventory = FindFirstObjectByType<MineralInventory>();
+        }
+        if (toolInventory == null)
+        {
+            toolInventory = FindFirstObjectByType<ToolInventory>();
         }
 
         if (File.Exists(path))
@@ -96,16 +125,45 @@ public class SaveManager : MonoBehaviour
             stats.FromData(data);
 
             // 인벤토리 복원
-            if (data.inventory != null && data.inventory.slots != null && data.inventory.slots.Count > 0)
+            if (itemInventory != null)
             {
-                inventory.FromData(data.inventory, ItemDatabase.Instance, MineralDatabase.Instance);
-                Debug.Log($"인벤토리 불러오기 완료 (슬롯 개수: {data.inventory.slots.Count})");
+                if (data.itemInventory != null && data.itemInventory.slots != null && data.itemInventory.slots.Count > 0)
+                {
+                    itemInventory.FromData(data.itemInventory, ItemDatabase.Instance);
+                    Debug.Log($"아이템 인벤토리 불러오기 완료 (슬롯 개수: {data.itemInventory.slots.Count})");
+                }
+                else
+                {
+                    itemInventory.FromData(new ItemInventoryData(), ItemDatabase.Instance);
+                }
             }
-            else
+
+            if (mineralInventory != null)
             {
-                inventory.FromData(new InventoryData(), ItemDatabase.Instance, MineralDatabase.Instance); // 빈 인벤토리로 초기화
-                Debug.Log("저장된 인벤토리가 없어 빈 인벤토리로 초기화됨");
+                if (data.mineralInventory != null && data.mineralInventory.slots != null && data.mineralInventory.slots.Count > 0)
+                {
+                    mineralInventory.FromData(data.mineralInventory, MineralDatabase.Instance);
+                    Debug.Log($"광물 인벤토리 불러오기 완료 (슬롯 개수: {data.mineralInventory.slots.Count})");
+                }
+                else
+                {
+                    mineralInventory.FromData(new MineralInventoryData(), MineralDatabase.Instance);
+                }
             }
+
+            if (toolInventory != null)
+            {
+                if (data.toolInventory != null && data.toolInventory.slots != null && data.toolInventory.slots.Count > 0)
+                {
+                    toolInventory.FromData(data.toolInventory, ToolDatabase.Instance);
+                    Debug.Log($"도구 인벤토리 불러오기 완료 (슬롯 개수: {data.toolInventory.slots.Count})");
+                }
+                else
+                {
+                    toolInventory.FromData(new ToolInventoryData(), ToolDatabase.Instance);
+                }
+            }
+
             Debug.Log("불러오기 완료");
         }
         else

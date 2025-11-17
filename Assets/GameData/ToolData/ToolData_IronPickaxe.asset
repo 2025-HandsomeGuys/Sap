@@ -12,11 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6628c3eec3f98ad44aba841a8fbc1b0c, type: 3}
   m_Name: ToolData_IronPickaxe
   m_EditorClassIdentifier: 
-  id: pickaxe_001
+  toolID: 2001
   toolName: "\uB0A1\uC740 \uCCA0 \uACE1\uAD2D\uC774"
   icon: {fileID: 8959118705387878318, guid: 1a9351b5e83b14f459d59a5dc0bdba97, type: 3}
   description: "\uBD80\uC2DD\uC774 \uAF64\uB098 \uC9C4\uD589\uB41C \uB0A1\uC740 \uC0BD\uC774\uB2E4"
   level: 0
-  power: 10
-  durability: 0
+  miningPower: 0
+  miningSpeed: 0
   price: 30
+  weight: 0
+  stackable: 0
+  maxStackSize: 1

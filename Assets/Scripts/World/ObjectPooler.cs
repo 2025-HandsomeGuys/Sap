@@ -102,11 +102,11 @@ public class ObjectPooler : MonoBehaviour
             mineable.spawnedFromLayer = layerType;
             mineable.mineralID = type; // Set the mineralID
 
-            // Find the corresponding ItemSO and assign it to itemData
-            ItemSO itemData = ItemDatabase.Instance.GetItemByID(type);
-            if (itemData != null)
+            // Find the corresponding MineralSO and assign it to itemData
+            MineralSO mineralData = MineralDatabase.Instance?.GetMineralByID(type);
+            if (mineralData != null)
             {
-                mineable.itemData = itemData;
+                mineable.itemData = mineralData;
             }
             else
             {

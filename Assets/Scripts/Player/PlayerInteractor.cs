@@ -6,7 +6,9 @@ public class PlayerInteractor : MonoBehaviour
 {
     [Header("Dependencies")]
     public InventoryUI inventoryUI; // Assign in inspector
-    public Inventory playerInventory; // Assign in inspector
+    public ItemInventory itemInventory; // Assign in inspector
+    public MineralInventory mineralInventory; // Assign in inspector
+    public ToolInventory toolInventory; // Assign in inspector
 
     [Header("Interaction Settings")]
     public float collectionRadius = 1f;
@@ -168,8 +170,23 @@ public class PlayerInteractor : MonoBehaviour
             }
             
             ObjectPooler.Instance.ReturnToPool(itemObject);
-            playerInventory.AddItem(itemComponent.itemData, 1);
-            Debug.Log($"Collected 1 {itemComponent.itemData.itemName}.");
+            
+            // 아이템 타입에 따라 적절한 인벤토리에 추가
+            if (itemComponent.itemData is ItemSO itemSO)
+            {
+                itemInventory?.AddItem(itemSO, 1);
+                Debug.Log($"Collected 1 {itemSO.itemName}.");
+            }
+            else if (itemComponent.itemData is MineralSO mineralSO)
+            {
+                mineralInventory?.AddItem(mineralSO, 1);
+                Debug.Log($"Collected 1 {mineralSO.mineralName}.");
+            }
+            else if (itemComponent.itemData is ToolSO toolSO)
+            {
+                toolInventory?.AddItem(toolSO, 1);
+                Debug.Log($"Collected 1 {toolSO.toolName}.");
+            }
             // We collected an item, so let's immediately re-check for the next closest one
         FindClosestCollectibleItem();
             UpdateInteractionPrompt();
