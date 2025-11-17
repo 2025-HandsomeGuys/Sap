@@ -283,11 +283,10 @@ public class Inventory : MonoBehaviour
 
                 if (string.Equals(s.kind, "Item", StringComparison.OrdinalIgnoreCase))
                 {
-                    // 예: itemDb.GetItemByID(ItemID)
-                    // s.itemId가 enum 이름 문자열이라면 Enum.Parse 필요
+                    // ItemID를 사용하여 ItemSO 조회
                     if (itemDb != null)
                     {
-                        var itemId = (MineralID)Enum.Parse(typeof(MineralID), s.itemId);
+                        var itemId = (ItemID)Enum.Parse(typeof(ItemID), s.itemId);
                         var so = itemDb.GetItemByID(itemId);
                         resolved = so as InterfaceInventoryItem;
                     }

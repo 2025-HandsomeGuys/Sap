@@ -12,11 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6628c3eec3f98ad44aba841a8fbc1b0c, type: 3}
   m_Name: ToolData_asdsa
   m_EditorClassIdentifier: 
-  id: 
-  toolName: 
-  icon: {fileID: 0}
+  toolID: 0
+  toolName: Test Tool
+  icon: {fileID: -3766519690804746565, guid: 72b8f10ab3ae7284582816b4690742ba, type: 3}
   description: 
   level: 0
   miningPower: 0
   miningSpeed: 0
-  price: 0
+  price: 30
+  weight: 0
+  stackable: 0
+  maxStackSize: 1

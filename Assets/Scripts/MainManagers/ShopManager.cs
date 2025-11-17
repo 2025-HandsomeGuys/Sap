@@ -5,7 +5,7 @@ public class ShopManager : MonoBehaviour
     [Header("Dependencies")]
     public MineralPriceDatabase priceDatabase;
     public PlayerStatsController playerStats;
-    public Inventory playerInventory;
+    public MineralInventory mineralInventory;
 
     private void Start()
     {
@@ -14,9 +14,9 @@ public class ShopManager : MonoBehaviour
         {
             playerStats = FindFirstObjectByType<PlayerStatsController>();
         }
-        if (playerInventory == null)
+        if (mineralInventory == null)
         {
-            playerInventory = FindFirstObjectByType<Inventory>();
+            mineralInventory = FindFirstObjectByType<MineralInventory>();
         }
         if (priceDatabase == null)
         {
@@ -27,7 +27,7 @@ public class ShopManager : MonoBehaviour
     public bool SellItem(InterfaceInventoryItem itemToSell, int amount)
     {
         if (itemToSell == null || amount <= 0) return false;
-        if (priceDatabase == null || playerStats == null || playerInventory == null)
+        if (priceDatabase == null || playerStats == null || mineralInventory == null)
         {
             Debug.LogError("ShopManager is missing dependencies!");
             return false;
@@ -41,14 +41,7 @@ public class ShopManager : MonoBehaviour
         }
 
         // 1. Check if the player has enough of the item
-        int itemCount = 0;
-        foreach (var slot in playerInventory.ReadonlyItems)
-        {
-            if (slot.item.Id == itemToSell.Id)
-            {
-                itemCount += slot.quantity;
-            }
-        }
+        int itemCount = mineralInventory.CountOf(itemToSell);
 
         if (itemCount < amount)
         {
@@ -69,7 +62,7 @@ public class ShopManager : MonoBehaviour
         playerStats.AddGold(totalGold);
 
         // 4. Remove the item from the inventory
-        bool removed = playerInventory.RemoveItem(itemToSell, amount);
+        bool removed = mineralInventory.RemoveItem(mineral, amount);
         if (!removed)
         {
             // This should not happen if our initial check was correct, but as a safeguard:
