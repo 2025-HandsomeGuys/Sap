@@ -791,11 +791,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99edf13b038a2914aaa84d368d6029dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &254683328 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 657512173046244338, guid: 67d5b019d3accde4faee8d1e2beeffc7, type: 3}
+  m_PrefabInstance: {fileID: 1854614583569768955}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &254683332 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1442309280022385047, guid: 67d5b019d3accde4faee8d1e2beeffc7, type: 3}
   m_PrefabInstance: {fileID: 1854614583569768955}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &254683333
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 254683328}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed55f061b9364284db099c4090ec1b9e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerTransform: {fileID: 638682850}
+  fogOfWarMaterial: {fileID: 2100000, guid: 269909c15bb9b704daa2bd443e8b5b94, type: 2}
 --- !u!1 &286428617
 GameObject:
   m_ObjectHideFlags: 0
@@ -1801,7 +1820,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 10}
-  m_LocalScale: {x: 100, y: 100, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 254683332}
@@ -3259,6 +3278,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2867610953787235893, guid: 67d5b019d3accde4faee8d1e2beeffc7, type: 3}
       insertIndex: -1
       addedObject: {fileID: 694537944}
+    - targetCorrespondingSourceObject: {fileID: 657512173046244338, guid: 67d5b019d3accde4faee8d1e2beeffc7, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 254683333}
   m_SourcePrefab: {fileID: 100100000, guid: 67d5b019d3accde4faee8d1e2beeffc7, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
