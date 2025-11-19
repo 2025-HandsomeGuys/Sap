@@ -5356,9 +5356,17 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2209971881411740653, guid: 30da4f23848de3743b91ce6ba5e9ef57, type: 3}
+      propertyPath: maxItemCount
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2209971881411740653, guid: 30da4f23848de3743b91ce6ba5e9ef57, type: 3}
       propertyPath: playerTransform
       value: 
       objectReference: {fileID: 1177810442}
+    - target: {fileID: 4281349598194510480, guid: 30da4f23848de3743b91ce6ba5e9ef57, type: 3}
+      propertyPath: maxSlotCount
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 4281349598194510480, guid: 30da4f23848de3743b91ce6ba5e9ef57, type: 3}
       propertyPath: playerTransform
       value: 

@@ -90,5 +90,6 @@ public enum ToolID
     None = 0,
     // 도구들 (2000번대)
     IronPickaxe = 2001,
+    IronShovel = 2002,
     // 필요에 따라 추가
 }

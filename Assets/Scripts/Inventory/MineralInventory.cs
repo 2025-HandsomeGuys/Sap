@@ -343,5 +343,34 @@ public class MineralInventory : MonoBehaviour
 
         OnInventoryChanged?.Invoke();
     }
+
+    // 슬롯 순서 변경 메서드들 (드래그 앤 드롭용)
+    public bool SwapSlots(int index1, int index2)
+    {
+        if (index1 < 0 || index1 >= items.Count || index2 < 0 || index2 >= items.Count)
+            return false;
+        if (index1 == index2) return true;
+
+        var temp = items[index1];
+        items[index1] = items[index2];
+        items[index2] = temp;
+
+        OnInventoryChanged?.Invoke();
+        return true;
+    }
+
+    public bool MoveSlot(int fromIndex, int toIndex)
+    {
+        if (fromIndex < 0 || fromIndex >= items.Count || toIndex < 0 || toIndex >= items.Count)
+            return false;
+        if (fromIndex == toIndex) return true;
+
+        var item = items[fromIndex];
+        items.RemoveAt(fromIndex);
+        items.Insert(toIndex, item);
+
+        OnInventoryChanged?.Invoke();
+        return true;
+    }
 }
 

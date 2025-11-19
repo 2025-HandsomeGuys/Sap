@@ -507,7 +507,7 @@ public class InventoryUI : MonoBehaviour
             GameObject newSlot = Instantiate(inventorySlotPrefab, itemSlotContainer);
             itemSlotObjects.Add(newSlot);
 
-            SetupSlotUI(newSlot, itemSlot, (slot) =>
+            SetupSlotUI(newSlot, itemSlot, i, InventorySlotDragHandler.InventoryType.Items, (slot) =>
             {
                 UpdateDescription(slot, null, null);
             }, (item) =>
@@ -595,7 +595,7 @@ public class InventoryUI : MonoBehaviour
             GameObject newSlot = Instantiate(inventorySlotPrefab, mineralSlotContainer);
             mineralSlotObjects.Add(newSlot);
 
-            SetupSlotUI(newSlot, itemSlot, (slot) =>
+            SetupSlotUI(newSlot, itemSlot, i, InventorySlotDragHandler.InventoryType.Minerals, (slot) =>
             {
                 UpdateDescription(null, slot, null);
             }, (item) =>
@@ -681,7 +681,7 @@ public class InventoryUI : MonoBehaviour
             GameObject newSlot = Instantiate(inventorySlotPrefab, toolSlotContainer);
             toolSlotObjects.Add(newSlot);
 
-            SetupSlotUI(newSlot, itemSlot, (slot) =>
+            SetupSlotUI(newSlot, itemSlot, i, InventorySlotDragHandler.InventoryType.Tools, (slot) =>
             {
                 UpdateDescription(null, null, slot);
             }, (item) =>
@@ -741,7 +741,7 @@ public class InventoryUI : MonoBehaviour
     }
 
     // 슬롯 UI 설정 헬퍼 메서드
-    private void SetupSlotUI(GameObject newSlot, InventorySlot itemSlot,
+    private void SetupSlotUI(GameObject newSlot, InventorySlot itemSlot, int slotIndex, InventorySlotDragHandler.InventoryType inventoryType,
         System.Action<InventorySlot> onSlotClick,
         System.Action<InterfaceInventoryItem> onDropAll,
         System.Action<InterfaceInventoryItem> onDropSingle,
@@ -796,5 +796,71 @@ public class InventoryUI : MonoBehaviour
             dropAmountButton.onClick.RemoveAllListeners();
             dropAmountButton.onClick.AddListener(() => onDropAmount(itemSlot.item));
         }
+
+        // 드래그 앤 드롭 핸들러 설정
+        InventorySlotDragHandler dragHandler = newSlot.GetComponent<InventorySlotDragHandler>();
+        if (dragHandler == null)
+        {
+            dragHandler = newSlot.AddComponent<InventorySlotDragHandler>();
+        }
+        dragHandler.inventoryUI = this;
+        dragHandler.slotIndex = slotIndex;
+        dragHandler.inventoryType = inventoryType;
+    }
+
+    // 인벤토리 슬롯 교환 메서드 (드래그 앤 드롭용)
+    public bool SwapInventorySlots(InventorySlotDragHandler.InventoryType type, int index1, int index2)
+    {
+        // OnInventoryChanged 이벤트가 자동으로 슬롯을 업데이트하므로 여기서는 호출하지 않음
+        switch (type)
+        {
+            case InventorySlotDragHandler.InventoryType.Items:
+                if (itemInventory != null)
+                {
+                    return itemInventory.SwapSlots(index1, index2);
+                }
+                break;
+            case InventorySlotDragHandler.InventoryType.Minerals:
+                if (mineralInventory != null)
+                {
+                    return mineralInventory.SwapSlots(index1, index2);
+                }
+                break;
+            case InventorySlotDragHandler.InventoryType.Tools:
+                if (toolInventory != null)
+                {
+                    return toolInventory.SwapSlots(index1, index2);
+                }
+                break;
+        }
+        return false;
+    }
+
+    // 인벤토리 슬롯 이동 메서드 (드래그 앤 드롭용 - 삽입)
+    public bool MoveInventorySlot(InventorySlotDragHandler.InventoryType type, int fromIndex, int toIndex)
+    {
+        // OnInventoryChanged 이벤트가 자동으로 슬롯을 업데이트하므로 여기서는 호출하지 않음
+        switch (type)
+        {
+            case InventorySlotDragHandler.InventoryType.Items:
+                if (itemInventory != null)
+                {
+                    return itemInventory.MoveSlot(fromIndex, toIndex);
+                }
+                break;
+            case InventorySlotDragHandler.InventoryType.Minerals:
+                if (mineralInventory != null)
+                {
+                    return mineralInventory.MoveSlot(fromIndex, toIndex);
+                }
+                break;
+            case InventorySlotDragHandler.InventoryType.Tools:
+                if (toolInventory != null)
+                {
+                    return toolInventory.MoveSlot(fromIndex, toIndex);
+                }
+                break;
+        }
+        return false;
     }
 }
