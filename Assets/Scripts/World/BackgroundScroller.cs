@@ -1,33 +1,38 @@
 using UnityEngine;
 
+[RequireComponent(typeof(SpriteRenderer))]
 public class BackgroundScroller : MonoBehaviour
 {
-    public Transform playerTransform;
-    public float scrollSpeed = 0.1f; // How fast the background scrolls relative to the player
 
-    private Vector3 lastPlayerPosition;
 
-    void Start()
+
+
+    private SpriteRenderer spriteRenderer;
+
+    void Awake()
     {
-        if (playerTransform == null)
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        
+        // Sprite Tiling 모드 설정
+        // 참고: Sprite의 Import Settings에서 Mesh Type을 "Full Rect"로 설정하면 경고가 사라집니다.
+        // 하지만 경고가 나타나도 기능은 정상적으로 작동합니다.
+        if (spriteRenderer.sprite != null)
         {
-            Debug.LogError("Player Transform not assigned to BackgroundScroller!");
-            enabled = false;
-            return;
+            // Sprite가 있는 경우에만 Tiled 모드 설정
+            // Unity 내부 경고는 억제할 수 없지만, 기능에는 영향이 없습니다
+            spriteRenderer.drawMode = SpriteDrawMode.Tiled;
         }
-        lastPlayerPosition = playerTransform.position;
+    }
+
+    public void SetTileProperties(Vector3 position, Vector2 size)
+    {
+        transform.position = position;
+        spriteRenderer.size = size;
+        spriteRenderer.enabled = true;
     }
 
     void Update()
     {
-        // Calculate how much the player has moved since the last frame
-        Vector3 playerMovement = playerTransform.position - lastPlayerPosition;
-
-        // Apply a fraction of the player's movement to the background
-        // This creates the scrolling effect
-        transform.position += playerMovement * scrollSpeed;
-
-        // Update lastPlayerPosition for the next frame
-        lastPlayerPosition = playerTransform.position;
+        // This method is intentionally left empty as the background is managed externally.
     }
 }

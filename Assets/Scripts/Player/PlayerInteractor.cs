@@ -27,17 +27,17 @@ public class PlayerInteractor : MonoBehaviour
     {
         playerStats = GetComponent<PlayerStatsController>();
 
+        // InventoryUI 자동 찾기
         if (inventoryUI == null)
         {
-            Debug.LogWarning("InventoryUI is not assigned in the PlayerInteractor inspector!");
+            inventoryUI = FindFirstObjectByType<InventoryUI>();
+            if (inventoryUI == null)
+            {
+                Debug.LogWarning("InventoryUI is not assigned in the PlayerInteractor inspector and could not be found automatically!");
+            }
         }
 
-        if (itemInventory == null)
-            itemInventory = FindFirstObjectByType<ItemInventory>();
-        if (mineralInventory == null)
-            mineralInventory = FindFirstObjectByType<MineralInventory>();
-        if (toolInventory == null)
-            toolInventory = FindFirstObjectByType<ToolInventory>();
+
 
         if (interactionPromptText != null)
         {
