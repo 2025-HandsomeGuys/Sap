@@ -9,7 +9,7 @@ public class ItemInventory : MonoBehaviour
     public event Action OnInventoryChanged;
 
     [Header("개수 제한 설정")]
-    [Tooltip("아이템 인벤토리에 넣을 수 있는 최대 개수")]
+    [Tooltip("아이템 인벤토리에 넣을 수 있는 최대 총 개수 (슬롯 수가 아닌 아이템 총 개수)")]
     public int maxItemCount = 3;
 
     [Header("아이템 목록(내부 전용)")]
@@ -57,14 +57,9 @@ public class ItemInventory : MonoBehaviour
     {
         if (itemToAdd == null || quantity <= 0) return false;
 
-        // 개수 제한 확인
+        // 현재 개수를 한 번만 계산하고 로컬 변수로 추적 (O(N²) 방지)
         int currentCount = CurrentItemCount;
-        int addCount = itemToAdd.Stackable ? quantity : quantity;
-        if (currentCount + addCount > maxItemCount)
-        {
-            Debug.Log($"아이템 인벤토리가 가득 찼습니다. (최대 {maxItemCount}개)");
-            return false;
-        }
+        int initialQuantity = quantity;
 
         var existing = items.FirstOrDefault(s => s.item != null && s.item.Id == itemToAdd.Id);
 
@@ -79,62 +74,89 @@ public class ItemInventory : MonoBehaviour
                     {
                         int toAdd = Mathf.Min(canAdd, quantity);
                         existing.AddQuantity(toAdd);
+                        currentCount += toAdd; // 로컬 변수 업데이트
                         quantity -= toAdd;
                     }
 
                     // 남은 수량이 있으면 새 슬롯 생성(스택 분할)
-                    while (quantity > 0 && CurrentItemCount < maxItemCount)
+                    while (quantity > 0 && currentCount < maxItemCount)
                     {
                         int stack = Mathf.Min(itemToAdd.MaxStackSize, quantity);
-                        items.Add(new InventorySlot(itemToAdd, stack));
-                        quantity -= stack;
+                        int actualStack = Mathf.Min(stack, maxItemCount - currentCount);
+                        if (actualStack <= 0) break;
+                        
+                        items.Add(new InventorySlot(itemToAdd, actualStack));
+                        currentCount += actualStack; // 로컬 변수 업데이트
+                        quantity -= actualStack;
                     }
                 }
                 else
                 {
-                    existing.AddQuantity(quantity);
-                    quantity = 0;
+                    // MaxStackSize가 0이면 무제한 스택 가능
+                    int canAdd = maxItemCount - currentCount;
+                    int toAdd = Mathf.Min(canAdd, quantity);
+                    if (toAdd > 0)
+                    {
+                        existing.AddQuantity(toAdd);
+                        currentCount += toAdd; // 로컬 변수 업데이트
+                        quantity -= toAdd;
+                    }
                 }
             }
             else
             {
                 if (itemToAdd.MaxStackSize > 0)
                 {
-                    while (quantity > 0 && CurrentItemCount < maxItemCount)
+                    while (quantity > 0 && currentCount < maxItemCount)
                     {
                         int stack = Mathf.Min(itemToAdd.MaxStackSize, quantity);
-                        items.Add(new InventorySlot(itemToAdd, stack));
-                        quantity -= stack;
+                        int actualStack = Mathf.Min(stack, maxItemCount - currentCount);
+                        if (actualStack <= 0) break;
+                        
+                        items.Add(new InventorySlot(itemToAdd, actualStack));
+                        currentCount += actualStack; // 로컬 변수 업데이트
+                        quantity -= actualStack;
                     }
                 }
                 else
                 {
-                    items.Add(new InventorySlot(itemToAdd, quantity));
-                    quantity = 0;
+                    // MaxStackSize가 0이면 무제한 스택 가능
+                    int canAdd = maxItemCount - currentCount;
+                    int toAdd = Mathf.Min(canAdd, quantity);
+                    if (toAdd > 0)
+                    {
+                        items.Add(new InventorySlot(itemToAdd, toAdd));
+                        currentCount += toAdd; // 로컬 변수 업데이트
+                        quantity -= toAdd;
+                    }
                 }
             }
         }
         else
         {
             // 비스택형은 개수만큼 개별 슬롯
-            for (int i = 0; i < quantity && CurrentItemCount < maxItemCount; i++)
+            int canAdd = maxItemCount - currentCount;
+            int toAdd = Mathf.Min(canAdd, quantity);
+            for (int i = 0; i < toAdd; i++)
             {
                 items.Add(new InventorySlot(itemToAdd, 1));
+                currentCount++; // 로컬 변수 업데이트
             }
-            quantity = 0;
+            quantity -= toAdd;
         }
 
+        int addedCount = initialQuantity - quantity;
         if (quantity > 0)
         {
-            Debug.Log($"[ItemInventory] 일부 아이템만 추가되었습니다. (요청: {quantity + (CurrentItemCount - currentCount)}, 추가: {CurrentItemCount - currentCount})");
+            Debug.Log($"[ItemInventory] 일부 아이템만 추가되었습니다. (요청: {initialQuantity}개, 추가: {addedCount}개)");
         }
         else
         {
-            Debug.Log($"[ItemInventory] Item Added: {itemToAdd.DisplayName}, New Total Count: {CurrentItemCount}");
+            Debug.Log($"[ItemInventory] Item Added: {itemToAdd.DisplayName}, New Total Count: {currentCount}");
         }
 
         OnInventoryChanged?.Invoke();
-        return true;
+        return addedCount > 0;
     }
 
     public bool RemoveItem(ItemSO itemToRemove, int quantity = 1)
@@ -235,6 +257,9 @@ public class ItemInventory : MonoBehaviour
             return;
         }
 
+        // AddItem을 재사용하여 중복 로직 제거 (DRY 원칙)
+        // AddItem이 호출될 때마다 이벤트가 발생하지만, FromData는 로드 시점이므로
+        // 성능 최적화가 필요하면 AddItem에 이벤트 호출 제어 파라미터를 추가할 수 있음
         foreach (var s in loadedData.slots)
         {
             try
@@ -245,56 +270,11 @@ public class ItemInventory : MonoBehaviour
                     var so = itemDb.GetItemByID(itemId);
                     if (so != null)
                     {
-                        if (so.Stackable)
-                        {
-                            var existing = items.FirstOrDefault(x => x.item != null && x.item.Id == so.Id);
-                            if (existing != null)
-                            {
-                                if (so.MaxStackSize > 0)
-                                {
-                                    int remain = s.quantity;
-                                    int canAdd = so.MaxStackSize - existing.quantity;
-                                    int take = Mathf.Min(canAdd, remain);
-                                    if (take > 0)
-                                    {
-                                        existing.AddQuantity(take);
-                                        remain -= take;
-                                    }
-                                    while (remain > 0 && CurrentItemCount < maxItemCount)
-                                    {
-                                        int stack = Mathf.Min(so.MaxStackSize, remain);
-                                        items.Add(new InventorySlot(so, stack));
-                                        remain -= stack;
-                                    }
-                                }
-                                else
-                                {
-                                    existing.AddQuantity(s.quantity);
-                                }
-                            }
-                            else
-                            {
-                                if (so.MaxStackSize > 0)
-                                {
-                                    int remain = s.quantity;
-                                    while (remain > 0 && CurrentItemCount < maxItemCount)
-                                    {
-                                        int stack = Mathf.Min(so.MaxStackSize, remain);
-                                        items.Add(new InventorySlot(so, stack));
-                                        remain -= stack;
-                                    }
-                                }
-                                else
-                                {
-                                    items.Add(new InventorySlot(so, s.quantity));
-                                }
-                            }
-                        }
-                        else
-                        {
-                            for (int i = 0; i < s.quantity && CurrentItemCount < maxItemCount; i++)
-                                items.Add(new InventorySlot(so, 1));
-                        }
+                        // AddItem을 호출하여 로직 재사용
+                        // 이벤트는 AddItem 내부에서 호출되지만, FromData는 로드 시점이므로
+                        // 성능 최적화를 위해 이벤트 호출을 일시적으로 비활성화할 수 있음
+                        // 현재는 AddItem의 이벤트 호출을 그대로 사용
+                        AddItem(so, s.quantity);
                     }
                     else
                     {
@@ -308,7 +288,37 @@ public class ItemInventory : MonoBehaviour
             }
         }
 
+        // AddItem이 이미 OnInventoryChanged를 호출하므로 중복 호출 제거
+        // 단, 로드 중에는 이벤트가 여러 번 발생할 수 있음 (성능 최적화 필요시 개선 가능)
+    }
+
+    // 슬롯 순서 변경 메서드들 (드래그 앤 드롭용)
+    public bool SwapSlots(int index1, int index2)
+    {
+        if (index1 < 0 || index1 >= items.Count || index2 < 0 || index2 >= items.Count)
+            return false;
+        if (index1 == index2) return true;
+
+        var temp = items[index1];
+        items[index1] = items[index2];
+        items[index2] = temp;
+
         OnInventoryChanged?.Invoke();
+        return true;
+    }
+
+    public bool MoveSlot(int fromIndex, int toIndex)
+    {
+        if (fromIndex < 0 || fromIndex >= items.Count || toIndex < 0 || toIndex >= items.Count)
+            return false;
+        if (fromIndex == toIndex) return true;
+
+        var item = items[fromIndex];
+        items.RemoveAt(fromIndex);
+        items.Insert(toIndex, item);
+
+        OnInventoryChanged?.Invoke();
+        return true;
     }
 }
 

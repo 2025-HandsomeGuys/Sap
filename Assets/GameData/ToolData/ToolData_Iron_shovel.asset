@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6628c3eec3f98ad44aba841a8fbc1b0c, type: 3}
-  m_Name: ToolData_asdsa
+  m_Name: ToolData_Iron_shovel
   m_EditorClassIdentifier: 
-  toolID: 0
-  toolName: Test Tool
+  toolID: 2002
+  toolName: "\uCCA0\uC0BD"
   icon: {fileID: -3766519690804746565, guid: 72b8f10ab3ae7284582816b4690742ba, type: 3}
-  description: 
+  description: "\uD14C\uC2A4\uD2B8\uC6A9 \uCCA0\uC0BD\uC0BD"
   level: 0
   miningPower: 0
   miningSpeed: 0
-  price: 30
+  price: 0
   weight: 0
   stackable: 0
   maxStackSize: 1
