@@ -61,4 +61,6 @@ public class SaveManagerCopy : MonoBehaviour
             NewGame(stats); // ���� ������ �� ���� ����
         }
     }
+
+   
 }
