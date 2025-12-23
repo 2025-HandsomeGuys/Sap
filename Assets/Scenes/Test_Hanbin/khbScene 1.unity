@@ -791,6 +791,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99edf13b038a2914aaa84d368d6029dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inventoryPanel: {fileID: 0}
+  itemPanel: {fileID: 0}
+  mineralPanel: {fileID: 0}
+  toolPanel: {fileID: 0}
+  itemInventory: {fileID: 0}
+  mineralInventory: {fileID: 0}
+  toolInventory: {fileID: 0}
+  inventorySlotPrefab: {fileID: 0}
+  itemSlotContainer: {fileID: 0}
+  itemDescriptionText: {fileID: 0}
+  itemCountText: {fileID: 0}
+  mineralSlotContainer: {fileID: 0}
+  mineralDescriptionText: {fileID: 0}
+  mineralWeightText: {fileID: 0}
+  toolSlotContainer: {fileID: 0}
+  toolDescriptionText: {fileID: 0}
+  toolCountText: {fileID: 0}
+  quantityPrompt: {fileID: 0}
+  testAddItemButton: {fileID: 0}
+  testAddMineralButton: {fileID: 0}
+  testAddToolButton: {fileID: 0}
 --- !u!1 &254683328 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 657512173046244338, guid: 67d5b019d3accde4faee8d1e2beeffc7, type: 3}
@@ -3079,7 +3100,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   priceDatabase: {fileID: 11400000, guid: bfbcac7e18e11314096269563ea89f01, type: 2}
   playerStats: {fileID: 0}
-  playerInventory: {fileID: 0}
+  mineralInventory: {fileID: 0}
 --- !u!1001 &1854614583569768955
 PrefabInstance:
   m_ObjectHideFlags: 0
