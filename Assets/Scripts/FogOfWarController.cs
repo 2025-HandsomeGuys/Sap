@@ -8,6 +8,10 @@ public class FogOfWarController : MonoBehaviour
     
     [Tooltip("Fog of War 머티리얼 (비어있으면 자동으로 찾습니다)")]
     public Material fogOfWarMaterial; // 시야 제한 효과에 사용될 머티리얼
+
+    [Header("Settings")]
+    [Tooltip("이 Y좌표 위로는 안개가 끼지 않습니다 (월드 좌표)")]
+    public float worldYLimit = 100.0f; // 기본값을 높게 설정하여 초기에는 제한이 없도록 함
     
     private Camera mainCamera;
 
@@ -82,6 +86,14 @@ public class FogOfWarController : MonoBehaviour
                 
                 // Global property로도 설정 (더 확실한 동기화)
                 Shader.SetGlobalVector("_PlayerScreenPos", playerScreenPos);
+
+                // Y 제한선 계산 및 전달
+                // 월드 좌표의 제한선을 화면 좌표(0-1)로 변환
+                Vector3 limitScreenPos = mainCamera.WorldToViewportPoint(new Vector3(0, worldYLimit, 0));
+                
+                // 쉐이더에 전달 (값은 0~1 사이여야 의미가 있음)
+                fogOfWarMaterial.SetFloat("_FogYLimit", limitScreenPos.y);
+                Shader.SetGlobalFloat("_FogYLimit", limitScreenPos.y);
             }
             else
             {

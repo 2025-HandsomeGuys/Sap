@@ -5,7 +5,8 @@ Shader "Custom/FogOfWar"
         _MainTex ("Texture", 2D) = "white" {}
         _Color ("Fog Color", Color) = (0, 0, 0, 1)
         _Radius ("Radius", Float) = 0.3 // Normalized screen space radius (0 to 0.5)
-        _Softness ("Softness", Float) = 0.15 // Normalized screen space softness
+        _Softness ("Softness", Float) = 5// Normalized screen space softness
+        _FogYLimit ("Fog Y Limit", Float) = 1.0 // Screen space Y limit (0 to 1), pixels above this are clear
     }
     SubShader
     {
@@ -35,6 +36,7 @@ Shader "Custom/FogOfWar"
             fixed4 _Color;
             float _Radius;
             float _Softness;
+            float _FogYLimit;
             float4 _PlayerScreenPos; // Player position in screen UV (0-1 range)
 
             v2f vert (appdata v)
@@ -48,6 +50,12 @@ Shader "Custom/FogOfWar"
             fixed4 frag (v2f i) : SV_Target
             {
                 fixed4 originalColor = tex2D(_MainTex, i.uv);
+
+                // Y 좌표 제한 확인: 설정된 높이보다 위에 있으면 안개를 적용하지 않음
+                if (i.uv.y > _FogYLimit)
+                {
+                    return originalColor;
+                }
 
                 // Calculate distance in screen UV space
                 // UV 좌표는 (0,0)이 왼쪽 아래, (1,1)이 오른쪽 위입니다
