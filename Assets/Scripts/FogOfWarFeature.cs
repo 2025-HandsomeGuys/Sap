@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.Rendering.RenderGraphModule;
+using UnityEngine.SceneManagement;
 
 public class FogOfWarFeature : ScriptableRendererFeature
 {
@@ -147,6 +148,18 @@ public class FogOfWarFeature : ScriptableRendererFeature
     // Unity가 카메라에 렌더러를 추가할 때 호출됩니다.
     public override void AddRenderPasses(ScriptableRenderer renderer, ref RenderingData renderingData)
     {
+        // Scene View 카메라에는 효과를 적용하지 않음
+        if (renderingData.cameraData.isSceneViewCamera)
+        {
+            return;
+        }
+
+        // 특정 씬("khbScene 1")에서만 효과 적용
+        if (SceneManager.GetActiveScene().name != "khbScene 1")
+        {
+            return;
+        }
+
         // 디버깅: AddRenderPasses가 호출되는지 확인
         Debug.Log("FogOfWarFeature.AddRenderPasses 호출됨");
         
