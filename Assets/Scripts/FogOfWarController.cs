@@ -12,6 +12,13 @@ public class FogOfWarController : MonoBehaviour
     [Header("Settings")]
     [Tooltip("이 Y좌표 위로는 안개가 끼지 않습니다 (월드 좌표)")]
     public float worldYLimit = 100.0f; // 기본값을 높게 설정하여 초기에는 제한이 없도록 함
+
+    [Tooltip("시야각 (손전등 너비) -1 ~ 1 (1에 가까울수록 좁음, 0은 180도, -1은 360도)")]
+    [Range(-1f, 1f)]
+    public float sightAngle = 0.5f;
+
+    [Tooltip("손전등 사거리 (0-1 범위)")]
+    public float sightDistance = 0.5f;
     
     private Camera mainCamera;
 
@@ -94,6 +101,29 @@ public class FogOfWarController : MonoBehaviour
                 // 쉐이더에 전달 (값은 0~1 사이여야 의미가 있음)
                 fogOfWarMaterial.SetFloat("_FogYLimit", limitScreenPos.y);
                 Shader.SetGlobalFloat("_FogYLimit", limitScreenPos.y);
+
+                // --- 마우스 방향 계산 (손전등 효과) ---
+                // 마우스 위치를 화면 좌표(Viewport 0~1)로 변환
+                Vector3 mouseViewportPos = mainCamera.ScreenToViewportPoint(Input.mousePosition);
+                
+                // 플레이어 화면 좌표 (이미 계산됨: screenPos)
+                // 방향 벡터 계산 (마우스 - 플레이어)
+                Vector2 lookDir = new Vector2(mouseViewportPos.x - screenPos.x, mouseViewportPos.y - screenPos.y);
+                
+                // 화면 비율 보정 (쉐이더와 동일하게 X축 보정)
+                // 안 그러면 화면이 납작해서 원이 찌그러지는 것처럼 방향도 왜곡됨
+                float aspectRatio = (float)Screen.width / Screen.height;
+                lookDir.x *= aspectRatio;
+                
+                lookDir.Normalize();
+
+                fogOfWarMaterial.SetVector("_PlayerDir", lookDir);
+                fogOfWarMaterial.SetFloat("_SightAngle", sightAngle);
+                fogOfWarMaterial.SetFloat("_SightDistance", sightDistance);
+                
+                Shader.SetGlobalVector("_PlayerDir", lookDir);
+                Shader.SetGlobalFloat("_SightAngle", sightAngle);
+                Shader.SetGlobalFloat("_SightDistance", sightDistance);
             }
             else
             {

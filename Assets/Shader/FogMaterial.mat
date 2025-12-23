@@ -29,10 +29,14 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _FogYLimit: 10.09273
+    - _FogDarkness: 0.95
+    - _FogYLimit: 1.1819503
     - _Radius: 0.3
+    - _SightAngle: 0.8
+    - _SightDistance: 2
     - _Softness: 0.15
     m_Colors:
     - _Color: {r: 0, g: 0, b: 0, a: 1}
+    - _PlayerDir: {r: -0.99849653, g: 0.054814134, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

@@ -836,7 +836,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerTransform: {fileID: 638682850}
   fogOfWarMaterial: {fileID: 2100000, guid: 269909c15bb9b704daa2bd443e8b5b94, type: 2}
-  worldYLimit: -10
+  worldYLimit: 0
+  sightAngle: 0.8
+  sightDistance: 2
 --- !u!1 &286428617
 GameObject:
   m_ObjectHideFlags: 0
