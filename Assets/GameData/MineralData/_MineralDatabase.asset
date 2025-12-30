@@ -14,13 +14,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   allMinerals:
   - {fileID: 11400000, guid: a10472a9eaa3382409cea905ea83bbe9, type: 2}
+  - {fileID: 11400000, guid: 0f40503d1e9974f49a50b71f393fbf67, type: 2}
+  - {fileID: 11400000, guid: a9cabe37ed75cce40967f2467d02115a, type: 2}
   - {fileID: 11400000, guid: 43fcdb582f0269d4a85d2e725e0d1869, type: 2}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 11400000, guid: 99cc8b0e230d05c4b9228e58f68f0f13, type: 2}
+  - {fileID: 11400000, guid: 4d317cbff53c9744f8f19711974deaf1, type: 2}
+  - {fileID: 11400000, guid: 6e6122ceaac87b640a103eb47955ee31, type: 2}
+  - {fileID: 11400000, guid: 7ffd814cff0d8914185e8db98ab096d9, type: 2}
+  - {fileID: 11400000, guid: 2581c84c4a83c9e49aed461c46fa0173, type: 2}
+  - {fileID: 11400000, guid: 2e187294ec907514fa87e886432236e8, type: 2}
+  - {fileID: 11400000, guid: fc4e235299b199844861e29907a5e845, type: 2}
+  - {fileID: 11400000, guid: bc98f3e8b35ece84ca30ec6da1c2f993, type: 2}
+  - {fileID: 11400000, guid: 8472e83d39b66fd4b995101a45bfec08, type: 2}
+  - {fileID: 11400000, guid: 5e41ed1c3f136314b9eb036b241b6f48, type: 2}
+  - {fileID: 11400000, guid: bb8bd4674709b04439ef943c9f40aa4e, type: 2}
+  - {fileID: 11400000, guid: 5c4a218fb728ceb408a4ba934e7308b9, type: 2}
+  - {fileID: 11400000, guid: 047f48f7531e92e4e98b1b61b3d59549, type: 2}
+  - {fileID: 11400000, guid: 0863fa1c74cdd554bbe1b202b603c7d1, type: 2}
+  - {fileID: 11400000, guid: 35d169fae86facd4a9c76d85a9b6af07, type: 2}
+  - {fileID: 11400000, guid: 739f79bc48393fb46a0d049ef7bb0c30, type: 2}
+  - {fileID: 11400000, guid: b31c34f4eece80c4cb9e254e5e43e8d6, type: 2}
+  - {fileID: 11400000, guid: 0a7683c43c839854ab535747dbaac8a6, type: 2}
+  - {fileID: 11400000, guid: 4a97d87017718bf4b9abb8c628b1db1f, type: 2}
+  - {fileID: 11400000, guid: 5b79e63610246574f8f3bb85669d20d1, type: 2}

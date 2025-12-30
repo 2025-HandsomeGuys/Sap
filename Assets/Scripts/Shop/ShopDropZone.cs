@@ -6,6 +6,7 @@ public class ShopDropZone : MonoBehaviour, IDropHandler
     [Header("참조")]
     public ShopManager shopManager;
     public InventoryUI inventoryUI;
+    public ShopUI shopUI;
 
     void Awake()
     {
@@ -14,6 +15,8 @@ public class ShopDropZone : MonoBehaviour, IDropHandler
             shopManager = FindFirstObjectByType<ShopManager>();
         if (inventoryUI == null)
             inventoryUI = FindFirstObjectByType<InventoryUI>();
+        if (shopUI == null)
+            shopUI = FindFirstObjectByType<ShopUI>();
     }
 
     public void OnDrop(PointerEventData eventData)
@@ -60,15 +63,33 @@ public class ShopDropZone : MonoBehaviour, IDropHandler
         }
 
         // 판매 처리
-        int quantity = slot.quantity;
-        bool success = shopManager.SellItem(mineral, quantity);
-        
-        if (success)
+        int maxQuantity = slot.quantity;
+        QuantityPrompt quantityPrompt = shopUI.quantityPrompt;  
+        if (quantityPrompt != null)
         {
-            Debug.Log($"{mineral.DisplayName} {quantity}개를 판매했습니다.");
-            // 드래그 객체 제거 및 원본 슬롯 복원 (CleanupDragObject에서 모두 처리)
-            draggedHandler.CleanupDragObject();
-            // 인벤토리 UI 업데이트는 RemoveItem에서 OnInventoryChanged 이벤트로 자동 처리됨
+            quantityPrompt.Show(
+                title: $"판매: {mineral.DisplayName}",
+                minValue: 1,
+                maxValue: maxQuantity,
+                confirmCallback: (selectedQuantity) =>
+                {
+                    bool success = shopManager.SellItem(mineral, selectedQuantity);
+                    if (success)
+                    {
+                        Debug.Log($"{mineral.DisplayName} {selectedQuantity}개를 판매했습니다.");
+                        draggedHandler.CleanupDragObject();
+                    }
+                },
+                info: $"가격: {shopManager.priceDatabase.GetPrice(mineral.mineralID)}골드\n최대 판매 가능: {maxQuantity}개"
+            );
+        }
+        else{
+            bool success = shopManager.SellItem(mineral, maxQuantity);
+            if (success)
+            {
+                Debug.Log($"{mineral.DisplayName} {maxQuantity}개를 판매했습니다.");
+                draggedHandler.CleanupDragObject();
+            }
         }
     }
 
