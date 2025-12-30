@@ -41,7 +41,8 @@ public class InventoryUI : MonoBehaviour
     [Header("테스트 버튼 (개발용)")]
     public Button testAddItemButton;      // 아이템 추가 테스트 버튼
     public Button testAddMineralButton;  // 광물 추가 테스트 버튼
-    public Button testAddToolButton;     // 도구 추가 테스트 버튼
+    public Button testAddToolButton;     // 도구 추가 테스트 버튼 (1번째)
+    public Button testAddTool2Button;    // 도구 추가 테스트 버튼 (2번째)
 
     private List<GameObject> itemSlotObjects = new List<GameObject>();
     private List<GameObject> mineralSlotObjects = new List<GameObject>();
@@ -119,6 +120,13 @@ public class InventoryUI : MonoBehaviour
         {
             testAddToolButton.onClick.RemoveAllListeners();
             testAddToolButton.onClick.AddListener(() => TestAddTool());
+        }
+
+        // 도구 추가 테스트 버튼 (2번째)
+        if (testAddTool2Button != null)
+        {
+            testAddTool2Button.onClick.RemoveAllListeners();
+            testAddTool2Button.onClick.AddListener(() => TestAddTool2());
         }
     }
 
@@ -249,6 +257,54 @@ public class InventoryUI : MonoBehaviour
         else
         {
             Debug.LogWarning("[InventoryUI] 추가할 수 있는 도구를 찾을 수 없습니다!");
+        }
+    }
+
+    public void TestAddTool2()
+    {
+        if (toolInventory == null)
+        {
+            Debug.LogWarning("[InventoryUI] ToolInventory를 찾을 수 없습니다!");
+            return;
+        }
+
+        if (ToolDatabase.Instance == null || ToolDatabase.Instance.allTools == null || ToolDatabase.Instance.allTools.Count == 0)
+        {
+            Debug.LogWarning("[InventoryUI] ToolDatabase에 도구가 없습니다!");
+            return;
+        }
+
+        // 두 번째 도구 추가 (None이 아닌 것)
+        ToolSO toolToAdd = null;
+        int foundCount = 0;
+        foreach (var tool in ToolDatabase.Instance.allTools)
+        {
+            if (tool != null && tool.toolID != ToolID.None)
+            {
+                foundCount++;
+                if (foundCount == 2) // 두 번째 도구
+                {
+                    toolToAdd = tool;
+                    break;
+                }
+            }
+        }
+
+        if (toolToAdd != null)
+        {
+            bool success = toolInventory.AddItem(toolToAdd, 1);
+            if (success)
+            {
+                Debug.Log($"[Test] 도구 추가 성공 (2번째): {toolToAdd.toolName}");
+            }
+            else
+            {
+                Debug.LogWarning($"[Test] 도구 추가 실패 (2번째): {toolToAdd.toolName} (인벤토리 가득 참)");
+            }
+        }
+        else
+        {
+            Debug.LogWarning("[InventoryUI] 두 번째 도구를 찾을 수 없습니다!");
         }
     }
 

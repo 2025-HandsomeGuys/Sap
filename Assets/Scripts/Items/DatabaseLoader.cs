@@ -7,4 +7,5 @@ public class DatabaseLoader : MonoBehaviour
     // ItemDatabase.Instance가 설정되도록 보장합니다.
     public ItemDatabase itemDatabase;
     public MineralDatabase mineralDatabase;
+    public ToolDatabase toolDatabase;
 }
