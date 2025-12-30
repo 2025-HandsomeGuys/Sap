@@ -1,7 +1,10 @@
 using UnityEngine;
+using System;
 
 public class PlayerStatsController : MonoBehaviour
 {
+    // 골드 변경 이벤트
+    public event Action<int> OnGoldChanged;
     [Header("Stamina")]
     public float originalMaxStamina;
     public float maxStamina;
@@ -122,6 +125,7 @@ public class PlayerStatsController : MonoBehaviour
     public void AddGold(int amount)
     {
         gold += Mathf.Max(0, amount);
+        OnGoldChanged?.Invoke(gold);
     }
 
     public bool SpendGold(int amount)
@@ -129,6 +133,7 @@ public class PlayerStatsController : MonoBehaviour
         if (gold >= amount)
         {
             gold -= amount;
+            OnGoldChanged?.Invoke(gold);
             return true;
         }
         Debug.Log("금화 부족!");

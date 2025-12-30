@@ -9,9 +9,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 890ae835d37d5744e8523a70ce68598b, type: 3}
-  m_Name: ToolDatabase
+  m_Script: {fileID: 11500000, guid: dd66815b1aceca34e9a29560b34383b3, type: 3}
+  m_Name: ShopItemDatabase
   m_EditorClassIdentifier: 
-  allTools:
-  - {fileID: 11400000, guid: 8ab928660741c9e478f51fcb6db0fa8d, type: 2}
-  - {fileID: 11400000, guid: 07f229f460fffa94bb77b69e6a05ab5d, type: 2}
+  shopItems:
+  - itemID: 1001
+    price: 10
+    isAvailable: 1
+    stock: -1
+  - itemID: 1002
+    price: 15
+    isAvailable: 1
+    stock: -1
