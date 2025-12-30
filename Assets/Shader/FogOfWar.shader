@@ -11,11 +11,21 @@ Shader "Custom/FogOfWar"
         _PlayerDir ("Player Direction", Vector) = (1, 0, 0, 0) // Direction toward mouse
         _SightAngle ("Sight Angle (Cos)", Range(-1, 1)) = 0.5 // Cone width
         _SightDistance ("Sight Distance", Float) = 0.5 // Range of the flashlight
+        _FlashlightSoftness ("Flashlight Softness", Float) = 0.1 // Softness of the flashlight edge
+        _PlayerScreenPos ("Player Screen Position", Vector) = (0.5, 0.5, 0, 0)
     }
     SubShader
     {
-        Tags { "RenderType"="Opaque" }
+        Tags { "RenderType"="Opaque" "RenderPipeline" = "UniversalPipeline" }
         LOD 100
+
+        // 스텐실 설정 추가: 1이 아닌 곳만 안개를 그림
+        Stencil
+        {
+            Ref 1
+            Comp NotEqual
+            Pass Keep
+        }
 
         Pass
         {
@@ -45,6 +55,7 @@ Shader "Custom/FogOfWar"
             float2 _PlayerDir;
             float _SightAngle;
             float _SightDistance;
+            float _FlashlightSoftness;
             float4 _PlayerScreenPos; // Player position in screen UV (0-1 range)
 
             v2f vert (appdata v)
@@ -69,10 +80,10 @@ Shader "Custom/FogOfWar"
                 // 화면 비율 보정 (각도 계산용)
                 float aspectRatio = _ScreenParams.x / _ScreenParams.y;
                 
-                // 거리 계산용 보정 (타원형 시야 유지)
+                // 거리 계산용 보정 (왜곡된 상수 *2, /0.5 제거하고 정석대로 수정)
                 float2 diffAdjusted = diff;
-                diffAdjusted.x = diff.x * aspectRatio * 2; 
-                diffAdjusted.y = diff.y / 0.5;
+                diffAdjusted.x = diff.x * aspectRatio;
+                diffAdjusted.y = diff.y;
                 float dist = length(diffAdjusted);
 
                 // 2. 각도 계산 (손전등 효과)
@@ -86,8 +97,9 @@ Shader "Custom/FogOfWar"
                 float angleVisibility = smoothstep(_SightAngle, _SightAngle + 0.1, dotVal);
 
                 // 3. 거리 가시성 (손전등 전용 거리 감쇄)
-                // _SightDistance를 기준으로 감쇄 처리
-                float coneDistVisibility = 1.0 - smoothstep(_SightDistance * 0.8, _SightDistance, dist);
+                // _FlashlightSoftness를 사용하여 부드러움 조절
+                float coneStart = max(0, _SightDistance - _FlashlightSoftness);
+                float coneDistVisibility = 1.0 - smoothstep(coneStart, _SightDistance, dist);
                 
                 // 4. 기본 원형 시야 (플레이어 주변)
                 // _Radius를 기준으로 감쇄 처리

@@ -24,7 +24,7 @@ classDiagram
         -Camera mainCamera
         +Start()
         +Update()
-        note: 매 프레임 플레이어 위치를 계산해<br/>쉐이더(Material)에 전달하는 역할
+        note: 매 프레임 플레이어 위치를 계산해<br/>쉐이더(Material)에 전달하는 역할<br/>(쉐이더에 _PlayerScreenPos 속성 필수)
     }
 
     class FogOfWarFeature {
@@ -95,6 +95,100 @@ sequenceDiagram
             Pass->>GameLoop: Blit(Source -> Temp -> Dest)
         end
     end
+```
+
+---
+
+# Player System Structure
+
+이 섹션은 플레이어의 조작, 상태 관리, 데이터 영속성 구조를 설명합니다.
+
+## 1. Class Diagram (플레이어 구조)
+
+```mermaid
+classDiagram
+    %% Core Interfaces & Base Classes
+    class MonoBehaviour { <<Unity>> }
+    class ScriptableObject { <<Unity>> }
+    class IPlayerController { 
+        <<Interface>> 
+        +IsWallClimbing
+    }
+
+    %% Main Controllers
+    class Player3Controller {
+        +PlayerStatsController playerStats
+        +Rigidbody2D playerRigidbody
+        -Animator anim
+        +CurrentMod : string
+        +Update()
+        +ModWalking()
+        +ModClimbing()
+        note: 현재 메인 플레이어 컨트롤러<br/>걷기/등반 모드 전환 및 이동 관리
+    }
+
+    class PlayerStatsController {
+        +float currentStamina
+        +float maxStamina
+        +float moveSpeed
+        +float jumpForce
+        +float wallClimbingSpeed
+        +UseStamina()
+        +ToData() : PlayerData
+        +FromData(PlayerData)
+    }
+
+    %% Data Structures
+    class PlayerSO {
+        <<ScriptableObject>>
+        +float maxStamina
+        +float moveSpeed
+        +float jumpForce
+    }
+
+    class PlayerData {
+        <<DTO>>
+        +float currentStamina
+        +int gold
+        +PlayerData(PlayerSO)
+    }
+
+    %% Relationships
+    Player3Controller --|> MonoBehaviour
+    Player3Controller ..|> IPlayerController
+    Player3Controller --> PlayerStatsController : 참조 (필수)
+
+    PlayerStatsController --|> MonoBehaviour
+    PlayerStatsController ..> PlayerData : 변환 (Save/Load)
+    PlayerStatsController ..> PlayerSO : 초기값 참조
+```
+
+## 2. Movement Mode Logic (플레이어 행동 모드)
+
+플레이어의 움직임은 **CurrentMod** 변수와 **Shift** 키를 통한 모드 전환을 통해 관리됩니다.
+
+```mermaid
+stateDiagram-v2
+    [*] --> WalkingMod
+
+    state WalkingMod {
+        [*] --> Idle
+        Idle --> Moving : Horizontal Input != 0
+        Moving --> Idle : Horizontal Input == 0
+        Idle --> Jumping : Space Bar
+        Moving --> Jumping : Space Bar
+        Jumping --> Idle : IsGrounded (OnTriggerStay2D)
+    }
+
+    WalkingMod --> ClimbingMod : Left Shift (Toggle)
+    ClimbingMod --> WalkingMod : Left Shift (Toggle)
+
+    state ClimbingMod {
+        [*] --> ClimbIdle
+        ClimbIdle --> ClimbMoving : Input != 0
+        ClimbMoving --> ClimbIdle : Input == 0
+        ClimbMoving --> UseStamina : While Moving
+    }
 ```
 
 ## 확인 방법

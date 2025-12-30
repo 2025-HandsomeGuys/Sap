@@ -33,7 +33,7 @@ public class FogOfWarController : MonoBehaviour
         // 플레이어를 자동으로 찾기
         if (playerTransform == null)
         {
-            PlayerController playerController = FindFirstObjectByType<PlayerController>();
+            Player3Controller playerController = FindFirstObjectByType<Player3Controller>();
             if (playerController != null)
             {
                 playerTransform = playerController.transform;

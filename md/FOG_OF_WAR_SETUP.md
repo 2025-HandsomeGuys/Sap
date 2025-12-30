@@ -8,6 +8,8 @@
 - `Assets/Shader/FogMaterial.mat` - 셰이더를 사용하는 머티리얼
 - `Assets/Scripts/FogOfWarController.cs` - 플레이어 위치를 셰이더에 전달하는 컨트롤러
 - `Assets/Scripts/FogOfWarFeature.cs` - URP 렌더링 기능
+- `Assets/Scripts/FogOfWar/FieldOfView.cs` - 물리 기반 시야 메쉬 생성 (Shadow Casting)
+- `Assets/Shader/StencilMask.shader` - 스텐실 마스크용 쉐이더
 
 ## 설정 방법
 
@@ -32,10 +34,26 @@
 - **Radius**: 시야 반경 (0~0.5, 기본값: 0.3)
 - **Softness**: 안개 가장자리의 부드러움 (기본값: 0.15)
 
+### 4. Shadow Casting (물리 기반 시야) 설정
+벽 뒤에 그림자가 생기는 리얼한 시야를 구현하려면 다음 설정을 추가합니다.
+
+1. **머티리얼 생성**: `Assets/Shader/StencilMask.shader`를 사용하는 머티리얼(`LightMaskMaterial`)을 생성합니다.
+2. **플레이어에 FieldOfView 추가**:
+   - 플레이어 오브젝트에 `FieldOfView.cs` 스크립트를 추가합니다.
+   - `Mesh Renderer`의 Material 슬롯에 방금 만든 `LightMaskMaterial`을 할당합니다.
+3. **레이어 설정**:
+   - 벽(장애물) 타일맵의 레이어를 지정합니다 (예: `Wall`).
+   - `FieldOfView` 컴포넌트의 `Obstacle Mask`에서 해당 레이어를 체크합니다.
+4. **결과**: `FieldOfView`가 생성한 메쉬 영역은 스텐실 버퍼에 기록되어, `FogOfWar.shader`가 해당 영역을 그리지 않고 구멍을 뚫게 됩니다.
+
 ## 작동 원리
-1. `FogOfWarController`가 매 프레임 플레이어의 위치를 화면 좌표로 변환하여 셰이더에 전달합니다.
-2. `FogOfWarFeature`가 URP 렌더링 파이프라인에 통합되어 화면 전체에 안개 효과를 적용합니다.
-3. 셰이더가 플레이어 위치를 중심으로 원형 마스크를 생성하여 안개를 렌더링합니다.
+1. **데이터 전달**: `FogOfWarController`가 매 프레임 플레이어의 화면 좌표를 셰이더(`_PlayerScreenPos`)에 전달합니다.
+2. **물리 기반 마스킹 (Shadow Casting)**: 
+   - `FieldOfView` 스크립트가 `Physics2D.Raycast`를 통해 장애물을 감지하고 동적 메쉬를 만듭니다.
+   - 이 메쉬는 `StencilMask.shader`를 통해 스텐실 버퍼에 "값 1"을 기록합니다.
+3. **최종 렌더링**:
+   - `FogOfWarFeature`가 화면 전체에 안개를 덮을 때, 스텐실 값이 1인 곳(빛이 닿는 곳)은 건너뛰고 나머지 영역만 검게 칠합니다.
+   - 추가적으로 셰이더 내부 로직에 의해 플레이어 주변에 부드러운 원형 시야가 생성됩니다.
 
 ## 문제 해결
 - **안개가 보이지 않는 경우**:
@@ -50,4 +68,8 @@
 - **머티리얼을 찾을 수 없다는 오류**:
   - Assets/Shader/FogMaterial.mat 파일이 존재하는지 확인
   - 또는 FogOfWarController의 Fog Of War Material 필드에 직접 할당
+
+- **Material ... doesn't have a color property '_PlayerScreenPos' 오류**:
+  - 셰이더 파일(`Assets/Shader/FogOfWar.shader`)의 `Properties` 블록에 `_PlayerScreenPos`가 선언되어 있는지 확인
+  - 스크립트가 값을 쓰기 전에 머티리얼에 해당 속성이 정의되어 있어야 함
 
