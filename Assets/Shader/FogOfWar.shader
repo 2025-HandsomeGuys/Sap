@@ -5,12 +5,27 @@ Shader "Custom/FogOfWar"
         _MainTex ("Texture", 2D) = "white" {}
         _Color ("Fog Color", Color) = (0, 0, 0, 1)
         _Radius ("Radius", Float) = 0.3 // Normalized screen space radius (0 to 0.5)
-        _Softness ("Softness", Float) = 0.15 // Normalized screen space softness
+        _Softness ("Softness", Float) = 5// Normalized screen space softness
+        _FogYLimit ("Fog Y Limit", Float) = 1.0 // Screen space Y limit (0 to 1), pixels above this are clear
+        _FogDarkness ("Fog Darkness", Range(0, 1)) = 0.8 // 0: Invisible (Black), 1: No Fog (Bright)
+        _PlayerDir ("Player Direction", Vector) = (1, 0, 0, 0) // Direction toward mouse
+        _SightAngle ("Sight Angle (Cos)", Range(-1, 1)) = 0.5 // Cone width
+        _SightDistance ("Sight Distance", Float) = 0.5 // Range of the flashlight
+        _FlashlightSoftness ("Flashlight Softness", Float) = 0.1 // Softness of the flashlight edge
+        _PlayerScreenPos ("Player Screen Position", Vector) = (0.5, 0.5, 0, 0)
     }
     SubShader
     {
-        Tags { "RenderType"="Opaque" }
+        Tags { "RenderType"="Opaque" "RenderPipeline" = "UniversalPipeline" }
         LOD 100
+
+        // 스텐실 설정 추가: 1이 아닌 곳만 안개를 그림
+        Stencil
+        {
+            Ref 1
+            Comp NotEqual
+            Pass Keep
+        }
 
         Pass
         {
@@ -35,6 +50,12 @@ Shader "Custom/FogOfWar"
             fixed4 _Color;
             float _Radius;
             float _Softness;
+            float _FogYLimit;
+            float _FogDarkness;
+            float2 _PlayerDir;
+            float _SightAngle;
+            float _SightDistance;
+            float _FlashlightSoftness;
             float4 _PlayerScreenPos; // Player position in screen UV (0-1 range)
 
             v2f vert (appdata v)
@@ -49,33 +70,51 @@ Shader "Custom/FogOfWar"
             {
                 fixed4 originalColor = tex2D(_MainTex, i.uv);
 
-                // Calculate distance in screen UV space
-                // UV 좌표는 (0,0)이 왼쪽 아래, (1,1)이 오른쪽 위입니다
+                // Y 좌표 제한 확인
+                if (i.uv.y > _FogYLimit) return originalColor;
+
+                // 1. 거리 계산
                 float2 playerPos = _PlayerScreenPos.xy;
-                
-                // 거리 벡터를 먼저 계산 (좌표 변환 대신 거리 벡터를 보정)
                 float2 diff = i.uv - playerPos;
                 
-                // 화면 종횡비를 고려하여 보정
-                // _ScreenParams.xy는 화면의 width, height입니다
+                // 화면 비율 보정 (각도 계산용)
                 float aspectRatio = _ScreenParams.x / _ScreenParams.y;
                 
-                // 거리 벡터의 x, y 성분을 보정
-                // 양옆을 좁히려면: diff.x를 크게 만들어야 함 (곱하기)
-                // 위아래로 3배 더 길게: diff.y를 작게 만들어야 함 (나누기)
-                diff.x = diff.x * aspectRatio * 2 ;  // x 방향 거리를 크게 (양옆 좁히기)
-                diff.y = diff.y / 0.5;                 // y 방향 거리를 작게 (위아래 넓히기)
+                // 거리 계산용 보정 (왜곡된 상수 *2, /0.5 제거하고 정석대로 수정)
+                float2 diffAdjusted = diff;
+                diffAdjusted.x = diff.x * aspectRatio;
+                diffAdjusted.y = diff.y;
+                float dist = length(diffAdjusted);
+
+                // 2. 각도 계산 (손전등 효과)
+                float2 dirToPixel = diff;
+                dirToPixel.x *= aspectRatio; 
+                dirToPixel = normalize(dirToPixel);
                 
-                // 보정된 거리 벡터의 길이 계산
-                float dist = length(diff);
+                float2 playerDir = normalize(_PlayerDir);
+                float dotVal = dot(dirToPixel, playerDir);
+                
+                float angleVisibility = smoothstep(_SightAngle, _SightAngle + 0.1, dotVal);
 
-                // smoothstep for soft falloff
-                // dist가 _Radius보다 작으면 1 (보임), _Radius + _Softness보다 크면 0 (안개로 가려짐)
-                // 반대로 계산하여 주인공 주변만 보이도록 함
-                float visibility = 1.0 - smoothstep(_Radius, _Radius + _Softness, dist);
+                // 3. 거리 가시성 (손전등 전용 거리 감쇄)
+                // _FlashlightSoftness를 사용하여 부드러움 조절
+                float coneStart = max(0, _SightDistance - _FlashlightSoftness);
+                float coneDistVisibility = 1.0 - smoothstep(coneStart, _SightDistance, dist);
+                
+                // 4. 기본 원형 시야 (플레이어 주변)
+                // _Radius를 기준으로 감쇄 처리
+                float baseCircleVisibility = 1.0 - smoothstep(_Radius, _Radius + _Softness, dist);
 
-                // 기본적으로 검은색 안개, 주인공 주변만 원래 색상이 보임
-                return lerp(_Color, originalColor, visibility);
+                // 5. 최종 가시성 결합
+                // 손전등 효과: 거리 내에 있고(AND) 각도 내에 있어야(AND) 보임
+                float cone = coneDistVisibility * angleVisibility;
+                
+                // 최종 결과 = 기본 원형 시야 OR 손전등 시야
+                float visibility = max(baseCircleVisibility, cone);
+
+                // 밝기 계산
+                float brightness = lerp(1.0 - _FogDarkness, 1.0, visibility);
+                return fixed4(originalColor.rgb * brightness, originalColor.a);
             }
             ENDCG
         }

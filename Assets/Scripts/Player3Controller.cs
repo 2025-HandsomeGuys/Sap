@@ -8,6 +8,7 @@ public class Player3Controller : MonoBehaviour, IPlayerController
     // Components
     private Animator anim;
     private Camera cam;
+    private SpriteRenderer spriteRenderer;
     private PlayerStatsController playerStats; // For stamina and other stats
 
     // State Tracking
@@ -25,6 +26,7 @@ public class Player3Controller : MonoBehaviour, IPlayerController
     void Awake()
     {
         anim = GetComponent<Animator>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
         playerStats = GetComponent<PlayerStatsController>();
     }
 
@@ -103,23 +105,18 @@ public class Player3Controller : MonoBehaviour, IPlayerController
     {
         if(CurrentMod == "walking")
         {
-
-            //dirctioncheck
+            //direction check with flipX
             if (horizontalInput < 0)           
-                transform.localScale = new Vector3(1, 1, 1);   
+                spriteRenderer.flipX = false; 
             else if (horizontalInput > 0)            
-                transform.localScale = new Vector3(-1, 1, 1);
+                spriteRenderer.flipX = true;
             else // <<When horizontal input is zero, face the mouse>>
             {
-
                 Vector2 mousePos = (Vector2)cam.ScreenToWorldPoint(Input.mousePosition);
                 if (mousePos.x > transform.position.x)
-
-                    transform.localScale = new Vector3(-1, 1, 1);
-
+                    spriteRenderer.flipX = true;
                 else
-
-                    transform.localScale = new Vector3(1, 1, 1);                      
+                    spriteRenderer.flipX = false;
             }           
 
             //walk movement         
