@@ -54,6 +54,13 @@
 - `Shop Item Slot Prefab`: 상점 아이템 슬롯 프리팹
 - `Item Description Text`: 선택한 아이템 설명을 표시할 TextMeshProUGUI
 
+#### 탭 시스템
+- `Shop Tab Button`: 상점 탭 버튼
+- `Upgrade Tab Button`: 업그레이드 탭 버튼
+- `Shop Content Panel`: 상점 콘텐츠 패널 GameObject
+- `Upgrade Content Panel`: 업그레이드 콘텐츠 패널 GameObject (ToolUpgradeUI가 들어갈 패널)
+- `Tool Upgrade UI`: `ToolUpgradeUI` 컴포넌트가 있는 오브젝트 연결 (자동 찾기도 가능)
+
 #### 기타
 - `Quantity Prompt`: 수량 입력 프롬프트 (InventoryUI와 동일한 것 사용 가능)
 
@@ -105,21 +112,36 @@ ShopItemSlot (Button)
 
 ### 7. 상점 패널 UI 구성
 
-**권장 레이아웃**:
+**권장 레이아웃** (탭 시스템 포함):
 ```
 ShopPanel (Canvas 하위)
 ├── Header
 │   ├── Title (TextMeshProUGUI) - "상점"
-│   └── GoldText (TextMeshProUGUI) - 골드 표시
-├── SellArea
-│   ├── SellTitle (TextMeshProUGUI) - "판매"
-│   └── SellDropZone (RectTransform) - 드롭 존
-├── BuyArea
-│   ├── BuyTitle (TextMeshProUGUI) - "구매"
-│   ├── BuyItemContainer (ScrollView > Content) - 아이템 슬롯 컨테이너
-│   └── ItemDescriptionText (TextMeshProUGUI) - 아이템 설명
+│   ├── GoldText (TextMeshProUGUI) - 골드 표시
+│   └── TabButtons
+│       ├── ShopTabButton (Button) - "상점" 탭
+│       └── UpgradeTabButton (Button) - "업그레이드" 탭
+├── ContentArea
+│   ├── ShopContentPanel (GameObject) - 상점 콘텐츠
+│   │   ├── SellArea
+│   │   │   ├── SellTitle (TextMeshProUGUI) - "판매"
+│   │   │   └── SellDropZone (RectTransform) - 드롭 존
+│   │   └── BuyArea
+│   │       ├── BuyTitle (TextMeshProUGUI) - "구매"
+│   │       ├── BuyItemContainer (ScrollView > Content) - 아이템 슬롯 컨테이너
+│   │       └── ItemDescriptionText (TextMeshProUGUI) - 아이템 설명
+│   └── UpgradeContentPanel (GameObject) - 업그레이드 콘텐츠
+│       └── ToolUpgradeUI (GameObject with ToolUpgradeUI)
+│           └── (도구 강화 슬롯들)
 └── CloseButton (Button)
 ```
+
+**탭 시스템 설정**:
+- `ShopContentPanel`: 상점 콘텐츠가 들어있는 GameObject
+- `UpgradeContentPanel`: 업그레이드 콘텐츠가 들어있는 GameObject (ToolUpgradeUI가 들어갈 패널)
+- `ShopTabButton`: 상점 탭 버튼
+- `UpgradeTabButton`: 업그레이드 탭 버튼
+- `Tool Upgrade UI`: ToolUpgradeUI 컴포넌트가 있는 오브젝트 (UpgradeContentPanel 내부 또는 별도)
 
 ## 🎮 사용 방법
 
@@ -136,6 +158,12 @@ ShopPanel (Canvas 하위)
 4. 수량 입력 (또는 1개 자동 구매)
 5. 골드가 차감되고 아이템이 인벤토리에 추가됨
 
+### 탭 전환
+1. 상점 창 상단의 탭 버튼 클릭
+2. "상점" 탭: 아이템 구매/판매
+3. "업그레이드" 탭: 도구 강화 (ToolUpgradeUI)
+4. 양방향 탭 전환 가능 (상점 ↔ 업그레이드)
+
 ### 상점 닫기
 - 닫기 버튼 클릭
 - ESC 키 누르기
@@ -146,6 +174,8 @@ ShopPanel (Canvas 하위)
 2. **ShopItemSlotPrefab**의 자식 요소 이름이 정확해야 UI가 제대로 표시됩니다.
 3. 상점 이미지 클릭이 작동하지 않으면 Camera에 Physics Raycaster를 추가하세요.
 4. 골드 표시가 업데이트되지 않으면 `PlayerStatsController`의 `OnGoldChanged` 이벤트가 제대로 연결되었는지 확인하세요.
+
+
 
 
 

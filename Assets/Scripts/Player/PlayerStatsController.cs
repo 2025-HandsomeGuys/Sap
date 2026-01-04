@@ -141,56 +141,18 @@ public class PlayerStatsController : MonoBehaviour
     }
 
     // ------------ Upgrade Functions ------------
-    public void UpgradeMaxStamina(int cost, float increaseAmount)
-    {
-        if (SpendGold(cost))
-        {
-            originalMaxStamina += increaseAmount;
-            maxStamina += increaseAmount;
-            currentStamina += increaseAmount;
-            Debug.Log($"MaxStamina 업그레이드! 현재: {maxStamina}");
-        }
-    }
-
-    public void UpgradeMoveSpeed(int cost, float increaseAmount)
-    {
-        if (SpendGold(cost))
-        {
-            originalMoveSpeed += increaseAmount;
-            moveSpeed = originalMoveSpeed;
-            Debug.Log($"MoveSpeed 업그레이드! 현재: {moveSpeed}");
-        }
-    }
-
-    public void UpgradeJumpForce(int cost, float increaseAmount)
-    {
-        if (SpendGold(cost))
-        {
-            originalJumpForce += increaseAmount;
-            jumpForce = originalJumpForce;
-            Debug.Log($"jumpForce 업그레이드! 현재: {jumpForce}");
-        }
-    }
-
-    public void UpgradeMiningEfficiency(int cost, float increaseAmount)
-    {
-        if (SpendGold(cost))
-        {
-            originalMiningEfficiency = Mathf.Clamp(miningEfficiency + increaseAmount, 0.1f, 10f);
-            miningEfficiency = originalMiningEfficiency;
-            Debug.Log($"MiningEfficiency 업그레이드! 현재: {miningEfficiency}");
-        }
-    }
-
-    public void UpgradeMiningPower(int cost, int increaseAmount)
-    {
-        if (SpendGold(cost))
-        {
-            originalMiningPower += increaseAmount;
-            miningPower = originalMiningPower;
-            Debug.Log($"MiningPower 업그레이드! 현재: {miningPower}");
-        }
-    }
+    // 주의: 플레이어 자체 스텟은 아이템이나 장비로 버프 가능하지만 자체 업그레이드는 없습니다.
+    // 도구 강화는 ToolUpgradeManager를 통해 관리됩니다.
+    
+    // [구버전 호환용 - 더 이상 사용되지 않음]
+    // 플레이어 스텟 업그레이드는 ToolUpgradeSystem으로 대체되었습니다.
+    /*
+    public void UpgradeMaxStamina(int cost, float increaseAmount) { }
+    public void UpgradeMoveSpeed(int cost, float increaseAmount) { }
+    public void UpgradeJumpForce(int cost, float increaseAmount) { }
+    public void UpgradeMiningEfficiency(int cost, float increaseAmount) { }
+    public void UpgradeMiningPower(int cost, int increaseAmount) { }
+    */
 
     // ------------ Stamina ------------
     public void UseStamina(float amount)
