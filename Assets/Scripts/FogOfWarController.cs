@@ -19,6 +19,39 @@ public class FogOfWarController : MonoBehaviour
 
     [Tooltip("손전등 사거리 (0-1 범위)")]
     public float sightDistance = 0.5f;
+<<<<<<< Updated upstream
+=======
+
+    [Header("Tile Spotlight Settings")]
+    [Tooltip("타일 스포트라이트 반경 (월드 단위)")]
+    public float tileSpotlightRadius = 10.0f;
+
+    [Tooltip("타일 스포트라이트 부드러움 정도")]
+    public float tileSpotlightSoftness = 1.0f;
+
+    [Header("Tile Flashlight Settings")]
+    [Tooltip("손전등 활성화 여부")]
+    public bool enableFlashlight = true;
+    
+    [Tooltip("디버그: 원형 spotlight 비활성화 (손전등만 보기)")]
+    public bool disableCircularSpotlight = false;
+
+    [Tooltip("손전등 각도 (도 단위, 기본값 60도)")]
+    [Range(15f, 180f)]
+    public float flashlightAngle = 60f;
+
+    [Tooltip("손전등 거리 (월드 단위)")]
+    [Range(1f, 50f)]
+    public float flashlightDistance = 15f;
+
+    [Tooltip("손전등 밝기 (0-1, 기본값 1.0)")]
+    [Range(0f, 1f)]
+    public float flashlightBrightness = 1.0f;
+
+    [Tooltip("손전등 가장자리 부드러움 (월드 단위)")]
+    [Range(0.1f, 10f)]
+    public float flashlightSoftness = 2f;
+>>>>>>> Stashed changes
     
     private Camera mainCamera;
 
@@ -124,6 +157,116 @@ public class FogOfWarController : MonoBehaviour
                 Shader.SetGlobalVector("_PlayerDir", lookDir);
                 Shader.SetGlobalFloat("_SightAngle", sightAngle);
                 Shader.SetGlobalFloat("_SightDistance", sightDistance);
+<<<<<<< Updated upstream
+=======
+                
+                // --- World Space Spotlight for Tiles ---
+                Shader.SetGlobalVector("_PlayerWorldPos", playerTransform.position);
+                // 디버그 모드: 원형 spotlight 비활성화
+                float effectiveRadius = disableCircularSpotlight ? 0 : tileSpotlightRadius;
+                Shader.SetGlobalFloat("_SightRadiusWorld", effectiveRadius);
+                Shader.SetGlobalFloat("_SightSoftnessWorld", tileSpotlightSoftness);
+                
+                // 디버그 로그 (1초마다)
+                if (Time.frameCount % 60 == 0)
+                {
+                    Debug.Log($"[Spotlight Debug] Player World Pos: {playerTransform.position}, Radius: {effectiveRadius}, Softness: {tileSpotlightSoftness}");
+                }
+
+                // --- Flashlight Direction (World Space) for Tiles ---
+                if (enableFlashlight)
+                {
+                    // 마우스 위치를 월드 좌표로 변환 (2D 게임용)
+                    Vector2 mouseWorldPos = (Vector2)mainCamera.ScreenToWorldPoint(Input.mousePosition);
+
+                    // 플레이어 위치에서 마우스로의 방향 벡터 계산 (월드 좌표계)
+                    Vector2 playerWorldDir = mouseWorldPos - (Vector2)playerTransform.position;
+                    
+                    // 디버그 로그 (1초마다)
+                    if (Time.frameCount % 60 == 0)
+                    {
+                        Debug.Log($"[Flashlight Debug] Enable: {enableFlashlight}, Mouse World: {mouseWorldPos}, Player: {playerTransform.position}");
+                        Debug.Log($"[Flashlight Debug] Direction (before normalize): {playerWorldDir}, Magnitude: {playerWorldDir.magnitude}");
+                        Debug.Log($"[Flashlight Debug] Settings - Angle: {flashlightAngle}, Distance: {flashlightDistance}, Brightness: {flashlightBrightness}, Softness: {flashlightSoftness}");
+                    }
+                    
+                    // 0 벡터 체크 (마우스가 플레이어와 같은 위치에 있을 때)
+                    if (playerWorldDir.magnitude > 0.001f)
+                    {
+                        playerWorldDir.Normalize();
+
+                        // 디버그 로그
+                        if (Time.frameCount % 60 == 0)
+                        {
+                            Debug.Log($"[Flashlight Debug] Direction (normalized): {playerWorldDir}");
+                        }
+
+                        // 쉐이더에 전달
+                        Shader.SetGlobalVector("_PlayerWorldDir", new Vector4(playerWorldDir.x, playerWorldDir.y, 0, 0));
+                        Shader.SetGlobalFloat("_FlashlightAngle", flashlightAngle);
+                        Shader.SetGlobalFloat("_FlashlightDistance", flashlightDistance);
+                        Shader.SetGlobalFloat("_FlashlightBrightness", flashlightBrightness);
+                        Shader.SetGlobalFloat("_FlashlightSoftness", flashlightSoftness);
+                        
+                        // 쉐이더 프로퍼티 검증 (1초마다)
+                        if (Time.frameCount % 60 == 0)
+                        {
+                            Vector4 shaderDir = Shader.GetGlobalVector("_PlayerWorldDir");
+                            float shaderAngle = Shader.GetGlobalFloat("_FlashlightAngle");
+                            float shaderDistance = Shader.GetGlobalFloat("_FlashlightDistance");
+                            float shaderBrightness = Shader.GetGlobalFloat("_FlashlightBrightness");
+                            float shaderSoftness = Shader.GetGlobalFloat("_FlashlightSoftness");
+                            
+                            Debug.Log($"[Shader Properties] Dir: ({shaderDir.x:F3}, {shaderDir.y:F3}), Angle: {shaderAngle}, Distance: {shaderDistance}, Brightness: {shaderBrightness}, Softness: {shaderSoftness}");
+                            
+                            // 값이 올바르게 전달되었는지 확인
+                            if (Mathf.Abs(shaderAngle - flashlightAngle) > 0.01f)
+                                Debug.LogWarning($"[Shader Properties] Angle mismatch! Expected: {flashlightAngle}, Got: {shaderAngle}");
+                            if (Mathf.Abs(shaderDistance - flashlightDistance) > 0.01f)
+                                Debug.LogWarning($"[Shader Properties] Distance mismatch! Expected: {flashlightDistance}, Got: {shaderDistance}");
+                            if (shaderDir.magnitude < 0.001f)
+                                Debug.LogWarning("[Shader Properties] Direction vector is zero in shader!");
+                        }
+                    }
+                    else
+                    {
+                        // 마우스가 플레이어 위치에 있으면 기본 방향 (오른쪽) 사용
+                        if (Time.frameCount % 60 == 0)
+                        {
+                            Debug.LogWarning("[Flashlight Debug] Direction vector is zero, using default direction (1, 0)");
+                        }
+                        
+                        Shader.SetGlobalVector("_PlayerWorldDir", new Vector4(1, 0, 0, 0));
+                        Shader.SetGlobalFloat("_FlashlightAngle", flashlightAngle);
+                        Shader.SetGlobalFloat("_FlashlightDistance", flashlightDistance);
+                        Shader.SetGlobalFloat("_FlashlightBrightness", flashlightBrightness);
+                        Shader.SetGlobalFloat("_FlashlightSoftness", flashlightSoftness);
+                    }
+                }
+                else
+                {
+                    // 손전등 비활성화 시 기본값 설정
+                    if (Time.frameCount % 60 == 0)
+                    {
+                        Debug.Log("[Flashlight Debug] Flashlight is disabled");
+                    }
+                    
+                    Shader.SetGlobalVector("_PlayerWorldDir", Vector4.zero);
+                    Shader.SetGlobalFloat("_FlashlightAngle", 0);
+                    Shader.SetGlobalFloat("_FlashlightDistance", 0);
+                    Shader.SetGlobalFloat("_FlashlightBrightness", 0);
+                    Shader.SetGlobalFloat("_FlashlightSoftness", 0);
+                }
+                
+                // 디버깅: Material 속성 확인 (1초마다)
+                if (Time.frameCount % 60 == 0)
+                {
+                    Vector2 matDir = fogOfWarMaterial.GetVector("_PlayerDir");
+                    float matAngle = fogOfWarMaterial.GetFloat("_SightAngle");
+                    float matDist = fogOfWarMaterial.GetFloat("_SightDistance");
+                    // Debug.Log($"[FogOfWarController] Material 속성 - Dir: {matDir}, Angle: {matAngle}, Distance: {matDist}");
+                }
+>>>>>>> Stashed changes
             }
             else
             {
