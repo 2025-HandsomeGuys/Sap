@@ -3,6 +3,12 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 using TMPro;
 
+public enum TabType
+{
+    Shop,
+    Upgrade
+}
+
 public class ShopUI : MonoBehaviour
 {
     [Header("UI 패널 연결")]
@@ -20,7 +26,13 @@ public class ShopUI : MonoBehaviour
     [Header("구매 영역 UI")]
     public Transform buyItemContainer; // 구매 가능한 아이템 슬롯 컨테이너
     public GameObject shopItemSlotPrefab; // 상점 아이템 슬롯 프리팹
-    public TextMeshProUGUI itemDescriptionText; // 아이템 설명 텍스트
+
+    [Header("탭 시스템")]
+    public Button shopTabButton; // 상점 탭 버튼
+    public Button upgradeTabButton; // 업그레이드 탭 버튼
+    public GameObject shopContentPanel; // 상점 콘텐츠 패널
+    public GameObject upgradeContentPanel; // 업그레이드 콘텐츠 패널
+    public ToolUpgradeUI toolUpgradeUI; // 도구 강화 UI
 
     [Header("기타")]
     public QuantityPrompt quantityPrompt; // 수량 입력 프롬프트
@@ -28,6 +40,7 @@ public class ShopUI : MonoBehaviour
     private List<GameObject> shopItemSlotObjects = new List<GameObject>();
     private bool isShopOpen = false;
     private ShopItemData selectedShopItem;
+    private TabType currentTab = TabType.Shop;
 
     void Start()
     {
@@ -61,11 +74,30 @@ public class ShopUI : MonoBehaviour
             closeButton.onClick.AddListener(() => CloseShop());
         }
 
+        // 탭 버튼 설정
+        if (shopTabButton != null)
+        {
+            shopTabButton.onClick.RemoveAllListeners();
+            shopTabButton.onClick.AddListener(() => SwitchTab(TabType.Shop));
+        }
+        if (upgradeTabButton != null)
+        {
+            upgradeTabButton.onClick.RemoveAllListeners();
+            upgradeTabButton.onClick.AddListener(() => SwitchTab(TabType.Upgrade));
+        }
+
+        // 도구 강화 UI 자동 참조
+        if (toolUpgradeUI == null)
+            toolUpgradeUI = FindFirstObjectByType<ToolUpgradeUI>();
+
         // 골드 변경 이벤트 구독
         SubscribeToGoldEvents();
 
         // 초기 골드 표시
         UpdateGoldDisplay();
+
+        // 초기 탭 설정
+        SwitchTab(TabType.Shop);
     }
 
     void OnDestroy()
@@ -117,8 +149,61 @@ public class ShopUI : MonoBehaviour
         Time.timeScale = 0f; // 게임 일시정지
 
         UpdateGoldDisplay();
-        UpdateShopItems();
-        UpdateDescription(null);
+        SwitchTab(currentTab); // 마지막으로 본 탭으로 전환
+    }
+
+    public void SwitchTab(TabType tab)
+    {
+        currentTab = tab;
+
+        // 상점 탭
+        if (shopContentPanel != null)
+        {
+            shopContentPanel.SetActive(tab == TabType.Shop);
+        }
+
+        // 업그레이드 탭
+        if (upgradeContentPanel != null)
+        {
+            upgradeContentPanel.SetActive(tab == TabType.Upgrade);
+        }
+
+        // 탭 버튼 활성화 상태 업데이트
+        UpdateTabButtons();
+
+        // 탭에 따른 콘텐츠 업데이트
+        if (tab == TabType.Shop)
+        {
+            UpdateShopItems();
+            UpdateDescription(null);
+        }
+        else if (tab == TabType.Upgrade)
+        {
+            if (toolUpgradeUI != null)
+            {
+                toolUpgradeUI.OnUpgradeTabActivated(); // 도구 강화 UI 업데이트
+            }
+        }
+    }
+
+    private void UpdateTabButtons()
+    {
+        // 상점 탭 버튼
+        if (shopTabButton != null)
+        {
+            // 활성화된 탭은 약간 어둡게, 비활성화된 탭은 밝게 표시
+            var colors = shopTabButton.colors;
+            colors.normalColor = currentTab == TabType.Shop ? new Color(0.8f, 0.8f, 0.8f, 1f) : Color.white;
+            shopTabButton.colors = colors;
+        }
+
+        // 업그레이드 탭 버튼
+        if (upgradeTabButton != null)
+        {
+            var colors = upgradeTabButton.colors;
+            colors.normalColor = currentTab == TabType.Upgrade ? new Color(0.8f, 0.8f, 0.8f, 1f) : Color.white;
+            upgradeTabButton.colors = colors;
+        }
     }
 
     public void CloseShop()
@@ -247,6 +332,22 @@ public class ShopUI : MonoBehaviour
             buyButton.onClick.RemoveAllListeners();
             buyButton.onClick.AddListener(() => OnBuyButtonClicked(shopItemData, itemSO));
         }
+
+        // 툴팁 트리거 추가
+        TooltipTrigger tooltipTrigger = slotObject.GetComponent<TooltipTrigger>();
+        if (tooltipTrigger == null)
+        {
+            tooltipTrigger = slotObject.AddComponent<TooltipTrigger>();
+        }
+
+        // 툴팁 제공자 추가
+        ShopItemTooltipProvider tooltipProvider = slotObject.GetComponent<ShopItemTooltipProvider>();
+        if (tooltipProvider == null)
+        {
+            tooltipProvider = slotObject.AddComponent<ShopItemTooltipProvider>();
+        }
+        tooltipProvider.Initialize(shopItemData, itemSO);
+        tooltipTrigger.tooltipProvider = tooltipProvider;
     }
 
     private void OnBuyButtonClicked(ShopItemData shopItemData, ItemSO itemSO)
@@ -304,20 +405,8 @@ public class ShopUI : MonoBehaviour
 
     private void UpdateDescription(ShopItemData shopItemData)
     {
-        if (itemDescriptionText == null) return;
-
-        if (shopItemData == null)
-        {
-            itemDescriptionText.text = string.Empty;
-            return;
-        }
-
-        if (ItemDatabase.Instance == null) return;
-        ItemSO itemSO = ItemDatabase.Instance.GetItemByID(shopItemData.itemID);
-        if (itemSO == null) return;
-
-        string stockInfo = shopItemData.stock < 0 ? "재고: 무제한" : $"재고: {shopItemData.stock}";
-        itemDescriptionText.text = $"{itemSO.DisplayName}\n{itemSO.description}\n판매 가격: {shopItemData.price}골드\n{stockInfo}";
+        // 모든 상세 설명은 툴팁으로 표시됨
+        // 선택된 아이템 상태만 업데이트 (필요한 경우를 위해 유지)
     }
 
     // 골드 업데이트 (외부에서 호출 가능)
