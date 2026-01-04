@@ -20,11 +20,17 @@ public class DiggingController : MonoBehaviour
 
     private float _nextDigTime = 0f;
     private Camera _cam;
+    private float _baseDigRadius; // 기본 파는 범위 저장
+    private float _baseDigCooldown; // 기본 쿨다운 저장
 
     private void Start()
     {
         _playerStats = GetComponent<PlayerStatsController>();
         _cam = Camera.main;
+
+        // 기본값 저장
+        _baseDigRadius = digRadius;
+        _baseDigCooldown = digCooldown;
 
         if (inventoryUI == null)
         {
@@ -34,6 +40,23 @@ public class DiggingController : MonoBehaviour
         {
             Debug.LogError($"{nameof(PlayerStatsController)} component not found on player! Stamina reduction will not work.");
         }
+
+        // 도구 강화 효과 적용
+        ApplyToolUpgrades();
+    }
+
+    private void ApplyToolUpgrades()
+    {
+        if (ToolUpgradeManager.Instance == null) return;
+
+        // 공통: 파는 범위 증가
+        float rangeIncrease = ToolUpgradeManager.Instance.GetCommonDigRangeIncrease();
+        digRadius = _baseDigRadius * (1f + rangeIncrease / 100f);
+
+        // 강인도: 쿨다운 감소
+        float cooldownReduction = ToolUpgradeManager.Instance.GetHardnessCooldownReduction();
+        digCooldown = _baseDigCooldown * (1f - cooldownReduction / 100f);
+        digCooldown = Mathf.Max(0.05f, digCooldown); // 최소 0.05초
     }
 
     /// <summary>
@@ -87,6 +110,13 @@ public class DiggingController : MonoBehaviour
             TileType type = WorldManager.Instance.GetTileTypeAt(cellWorldCenter);
             if (type != TileType.Empty)
             {
+                // 강인도 체크
+                if (ToolUpgradeManager.Instance != null && !ToolUpgradeManager.Instance.CanBreakTile(type))
+                {
+                    // 강인도가 부족하면 파지 않음
+                    continue;
+                }
+
                 ReducePlayerStaminaForTile(type);
                 cellPositionsToDig.Add(cellPos);
             }
@@ -161,11 +191,20 @@ public class DiggingController : MonoBehaviour
         if (_playerStats == null) return;
 
         TileDataJson data = TileDataManager.Instance.GetData(tileType);
-                if (data != null && data.maxStaminaReduction > 0)
-                {
-                    _playerStats.ReduceMaxStamina(data.maxStaminaReduction);
-                }
+        if (data != null && data.maxStaminaReduction > 0)
+        {
+            float reduction = data.maxStaminaReduction;
+
+            // 삽 강화: 스테미나 소모 감소 적용
+            if (ToolUpgradeManager.Instance != null)
+            {
+                float staminaReduction = ToolUpgradeManager.Instance.GetShovelStaminaReduction();
+                reduction = reduction * (1f - staminaReduction / 100f);
             }
+
+            _playerStats.ReduceMaxStamina(reduction);
+        }
+    }
         
             public void IncreaseDigRadius(float amount)
             {
