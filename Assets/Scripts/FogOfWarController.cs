@@ -19,8 +19,6 @@ public class FogOfWarController : MonoBehaviour
 
     [Tooltip("손전등 사거리 (0-1 범위)")]
     public float sightDistance = 0.5f;
-<<<<<<< Updated upstream
-=======
 
     [Header("Tile Spotlight Settings")]
     [Tooltip("타일 스포트라이트 반경 (월드 단위)")]
@@ -51,7 +49,6 @@ public class FogOfWarController : MonoBehaviour
     [Tooltip("손전등 가장자리 부드러움 (월드 단위)")]
     [Range(0.1f, 10f)]
     public float flashlightSoftness = 2f;
->>>>>>> Stashed changes
     
     private Camera mainCamera;
 
@@ -157,8 +154,6 @@ public class FogOfWarController : MonoBehaviour
                 Shader.SetGlobalVector("_PlayerDir", lookDir);
                 Shader.SetGlobalFloat("_SightAngle", sightAngle);
                 Shader.SetGlobalFloat("_SightDistance", sightDistance);
-<<<<<<< Updated upstream
-=======
                 
                 // --- World Space Spotlight for Tiles ---
                 Shader.SetGlobalVector("_PlayerWorldPos", playerTransform.position);
@@ -266,7 +261,6 @@ public class FogOfWarController : MonoBehaviour
                     float matDist = fogOfWarMaterial.GetFloat("_SightDistance");
                     // Debug.Log($"[FogOfWarController] Material 속성 - Dir: {matDir}, Angle: {matAngle}, Distance: {matDist}");
                 }
->>>>>>> Stashed changes
             }
             else
             {
