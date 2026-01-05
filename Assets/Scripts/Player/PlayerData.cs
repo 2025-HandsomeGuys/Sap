@@ -37,7 +37,10 @@ public class PlayerData
     [Header("Gold")]
     public int gold;
 
-    // �⺻���� SO���� �����ؼ� �ʱ�ȭ
+    [Header("Upgrade")]
+    public ToolUpgradeInventoryData toolUpgradeData = new ToolUpgradeInventoryData(); // 도구 강화 데이터
+
+    // 기본값을 SO에서 가져와서 초기화
     public PlayerData() { }
 
     public PlayerData(PlayerSO playerSO)
@@ -74,5 +77,8 @@ public class PlayerData
 
         // Gold
         gold = playerSO.gold;
+
+        // Tool Upgrade
+        toolUpgradeData = new ToolUpgradeInventoryData();
     }
 }

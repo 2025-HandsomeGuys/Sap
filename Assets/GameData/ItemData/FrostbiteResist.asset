@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemID: 1001
   itemName: "\uC5BC\uC74C \uC800\uD56D \uC544\uC774\uD15C"
-  description: "\uC544\uC774\uD15C \uC124\uBA85"
+  description: "\uC5BC\uC74C \uC800\uD56D \uC544\uC774\uD15C \uC785\uB2C8\uB2F9"
   icon: {fileID: -1375128330109496422, guid: 23d39f332c25b3a45bd836166ead2678, type: 3}
   weight: 2
   staminaReduction: 0
   stackable: 1
   maxStackSize: 106
-  poolType: 0
+  poolType: 1001
   itemPrefab: {fileID: 5856741498514625634, guid: 525919d2c0fc0f449a56de6e6eb9d2a3, type: 3}

@@ -143,8 +143,21 @@ public class PlayerInteractor : MonoBehaviour
             }
             else if (itemComponent.itemData is MineralSO mineralSO)
             {
-                mineralInventory?.AddItem(mineralSO, 1);
-                Debug.Log($"Collected 1 {mineralSO.mineralName}.");
+                int quantity = 1;
+                
+                // 곡괭이 강화: 광물 추가 드랍률 증가 적용
+                if (ToolUpgradeManager.Instance != null)
+                {
+                    float dropRateIncrease = ToolUpgradeManager.Instance.GetPickaxeDropRateIncrease();
+                    // 드랍률 증가에 따라 추가 광물 획득 확률
+                    if (dropRateIncrease > 0 && UnityEngine.Random.Range(0f, 100f) < dropRateIncrease)
+                    {
+                        quantity++; // 추가 광물 1개 획득
+                    }
+                }
+                
+                mineralInventory?.AddItem(mineralSO, quantity);
+                Debug.Log($"Collected {quantity} {mineralSO.mineralName}.");
             }
             else if (itemComponent.itemData is ToolSO toolSO)
             {

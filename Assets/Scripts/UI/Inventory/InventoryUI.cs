@@ -22,17 +22,14 @@ public class InventoryUI : MonoBehaviour
 
     [Header("Items 패널 UI")]
     public Transform itemSlotContainer;
-    public TextMeshProUGUI itemDescriptionText;
     public TextMeshProUGUI itemCountText; // 개수 표시 (무게 대신)
 
     [Header("Minerals 패널 UI")]
     public Transform mineralSlotContainer;
-    public TextMeshProUGUI mineralDescriptionText;
     public TextMeshProUGUI mineralWeightText; // 무게 표시
 
     [Header("Tools 패널 UI")]
     public Transform toolSlotContainer;
-    public TextMeshProUGUI toolDescriptionText;
     public TextMeshProUGUI toolCountText; // 슬롯 수 표시
 
     [Header("기타")]
@@ -448,81 +445,14 @@ public class InventoryUI : MonoBehaviour
         }
     }
 
-    // 설명 업데이트 (3개 패널 중 선택된 슬롯에 따라)
+    // 설명 업데이트 - 툴팁으로 대체되어 더 이상 사용하지 않음
+    // 슬롯 선택 상태만 업데이트 (필요한 경우를 위해 유지)
     public void UpdateDescription(InventorySlot itemSlot, InventorySlot mineralSlot, InventorySlot toolSlot)
     {
         selectedItemSlot = itemSlot;
         selectedMineralSlot = mineralSlot;
         selectedToolSlot = toolSlot;
-
-        // Items 설명
-        if (itemDescriptionText != null)
-        {
-            if (itemSlot != null && itemSlot.item != null)
-            {
-                var iitem = itemSlot.item;
-                string name = iitem.DisplayName;
-                string desc = string.Empty;
-                if (iitem is ItemSO itemSo)
-                    desc = itemSo.description;
-                int qty = itemSlot.quantity;
-                bool stackable = iitem.Stackable;
-                int maxStack = iitem.MaxStackSize;
-                string stackInfo = stackable
-                    ? (maxStack > 0 ? $"(최대 {maxStack})" : "(스택 가능)")
-                    : "(스택 불가)";
-                itemDescriptionText.text = $"{name}\n{desc}\n수량: {qty} {stackInfo}";
-            }
-            else
-            {
-                itemDescriptionText.text = string.Empty;
-            }
-        }
-
-        // Minerals 설명
-        if (mineralDescriptionText != null)
-        {
-            if (mineralSlot != null && mineralSlot.item != null)
-            {
-                var iitem = mineralSlot.item;
-                string name = iitem.DisplayName;
-                string desc = string.Empty;
-                if (iitem is MineralSO mineralSo)
-                    desc = mineralSo.description;
-                float weight = iitem.Weight;
-                int qty = mineralSlot.quantity;
-                bool stackable = iitem.Stackable;
-                int maxStack = iitem.MaxStackSize;
-                string stackInfo = stackable
-                    ? (maxStack > 0 ? $"(최대 {maxStack})" : "(스택 가능)")
-                    : "(스택 불가)";
-                string encum = (mineralInventory != null && mineralInventory.IsEncumbered) ? "\n[경고] 과적 상태입니다." : string.Empty;
-                mineralDescriptionText.text = $"{name}\n{desc}\n무게: {weight:0.0}  수량: {qty} {stackInfo}{encum}";
-            }
-            else
-            {
-                mineralDescriptionText.text = string.Empty;
-            }
-        }
-
-        // Tools 설명
-        if (toolDescriptionText != null)
-        {
-            if (toolSlot != null && toolSlot.item != null)
-            {
-                var iitem = toolSlot.item;
-                string name = iitem.DisplayName;
-                string desc = string.Empty;
-                if (iitem is ToolSO toolSo)
-                    desc = toolSo.description;
-                int qty = toolSlot.quantity;
-                toolDescriptionText.text = $"{name}\n{desc}\n수량: {qty}";
-            }
-            else
-            {
-                toolDescriptionText.text = string.Empty;
-            }
-        }
+        // 모든 상세 설명은 툴팁으로 표시됨
     }
 
     public void UpdateAllSlots()
@@ -862,6 +792,22 @@ public class InventoryUI : MonoBehaviour
         dragHandler.inventoryUI = this;
         dragHandler.slotIndex = slotIndex;
         dragHandler.inventoryType = inventoryType;
+
+        // 툴팁 트리거 추가
+        TooltipTrigger tooltipTrigger = newSlot.GetComponent<TooltipTrigger>();
+        if (tooltipTrigger == null)
+        {
+            tooltipTrigger = newSlot.AddComponent<TooltipTrigger>();
+        }
+
+        // 툴팁 제공자 추가
+        InventorySlotTooltipProvider tooltipProvider = newSlot.GetComponent<InventorySlotTooltipProvider>();
+        if (tooltipProvider == null)
+        {
+            tooltipProvider = newSlot.AddComponent<InventorySlotTooltipProvider>();
+        }
+        tooltipProvider.Initialize(itemSlot, this);
+        tooltipTrigger.tooltipProvider = tooltipProvider;
     }
 
     // 인벤토리 슬롯 교환 메서드 (드래그 앤 드롭용)
