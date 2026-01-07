@@ -96,7 +96,7 @@ public class FogOfWarFeature : ScriptableRendererFeature
         // Compatibility Mode를 사용하는 것을 권장합니다 (Edit > Project Settings > Graphics > URP)
         public override void RecordRenderGraph(RenderGraph renderGraph, ContextContainer frameData)
         {
-            Debug.LogWarning($"FogOfWarPass.RecordRenderGraph 호출됨 (Frame {Time.frameCount}) - RenderGraph 모드가 활성화되어 있습니다! Compatibility Mode를 사용하도록 설정하세요.");
+            //Debug.LogWarning($"FogOfWarPass.RecordRenderGraph 호출됨 (Frame {Time.frameCount}) - RenderGraph 모드가 활성화되어 있습니다! Compatibility Mode를 사용하도록 설정하세요.");
             // RenderGraph 구현이 복잡하므로, Compatibility Mode에서 Execute 메서드를 사용하도록 권장합니다.
             // RenderGraph를 사용하려면 Unity 버전에 맞는 API를 사용해야 합니다.
             // 여기서는 빈 구현으로 두고, Execute 메서드를 사용하도록 합니다.
@@ -161,21 +161,21 @@ public class FogOfWarFeature : ScriptableRendererFeature
         }
 
         // 디버깅: AddRenderPasses가 호출되는지 확인
-        Debug.Log("FogOfWarFeature.AddRenderPasses 호출됨");
+        //Debug.Log("FogOfWarFeature.AddRenderPasses 호출됨");
         
         if (settings.material == null)
         {
-            Debug.LogWarningFormat("Fog of War 머티리얼이 할당되지 않았습니다.");
+            //Debug.LogWarningFormat("Fog of War 머티리얼이 할당되지 않았습니다.");
             return;
         }
         
         if (fogOfWarPass == null)
         {
-            Debug.LogWarning("FogOfWarFeature: fogOfWarPass가 null입니다. Create()가 호출되었는지 확인하세요.");
+            //Debug.LogWarning("FogOfWarFeature: fogOfWarPass가 null입니다. Create()가 호출되었는지 확인하세요.");
             return;
         }
         
-        Debug.Log("FogOfWarFeature: Pass를 Enqueue합니다.");
+        //Debug.Log("FogOfWarFeature: Pass를 Enqueue합니다.");
         renderer.EnqueuePass(fogOfWarPass);
     }
 }

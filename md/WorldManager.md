@@ -9,23 +9,32 @@
 classDiagram
     class WorldManager {
         <<Singleton>>
-        +Instance : WorldManager
-        --
+        +static Instance
         +float CellSize
         --
         -Dictionary~Vector2Int, ChunkData~ _chunkDataMap
         -Dictionary~Vector2Int, Tilemap~ _activeRegionTilemaps
+        -Dictionary~Vector2Int, int~ _activeChunksPerRegion
         -Queue~GameObject~ _regionPool
+        -HashSet~Vector2Int~ _dirtyRegionColliders
         --
         +DigTiles(IEnumerable~Vector3Int~)
         +GetTileTypeAt(Vector3)
         +GetMineralIDAt(Vector3)
+        +ClearMineralAt(Vector3)
+        +GetHiddenMineralAt(Vector3)
         +SaveWorld(string)
+        +WorldToCell(Vector3)
+        +GetCellCenterWorld(Vector3Int)
+        +GetLayerForDepth(int)
+        +GetNextLayerDepth(TerrainLayer)
         --
         -UpdateChunksCoroutine()
         -LoadAndGenerateChunksInRange()
         -PlaceTilesForChunk(ChunkData)
         -UnloadChunk(Vector2Int)
+        -GetOrCreateRegionTilemap(Vector2Int)
+        -DecrementRegionChunkCount(Vector2Int)
     }
 
     class ChunkData {
@@ -33,7 +42,10 @@ classDiagram
         +ChunkStatus status
         +TileType[,] terrainLayer
         +MineralID[,] mineralLayer
+        +Dictionary~Vector2Int, GameObject~ hiddenMinerals
+        +List~GameObject~ spawnedItems
         +TileBase[] tiles
+        +Coroutine generationCoroutine
     }
 
     class ChunkStatus {
@@ -44,8 +56,16 @@ classDiagram
         Unloaded
     }
 
+    class WorldGenerator {
+        +TerrainGenerationProfile terrainProfile
+        +InitializeChunkDataCoroutine(ChunkData)
+        +CreateTilebaseArray(Vector2Int, ChunkData)
+        +PreSpawnMineralsForChunk(ChunkData)
+    }
+
     WorldManager *-- ChunkData : Manages
     WorldManager ..> ChunkStatus : Uses
+    WorldManager --> WorldGenerator : Uses
 ```
 
 ## 2. Key Logic Flow (핵심 로직)
@@ -125,7 +145,27 @@ sequenceDiagram
 `DigTiles` 함수는 여러 타일을 한 번에 팔 때 호출됩니다.
 - 타일 변경(`SetTiles`)은 즉시 일어나지만, 물리 연산 비용이 높은 `CompositeCollider2D` 갱신은 `_dirtyRegionColliders` 집합에 모아두었다가 매 프레임의 마지막(`LateUpdate`)에 한 번만 수행합니다.
 
-## 4. Dependencies
+## 4. 주요 메서드 설명
+
+### 4.1 Public API
+- **DigTiles**: 여러 타일을 한 번에 파괴합니다. 콜라이더 갱신은 `LateUpdate`에서 지연 처리됩니다.
+- **GetTileTypeAt**: 특정 월드 위치의 타일 타입을 조회합니다.
+- **GetMineralIDAt**: 특정 월드 위치의 광물 ID를 조회합니다.
+- **ClearMineralAt**: 특정 위치의 광물을 제거합니다.
+- **GetHiddenMineralAt**: 숨겨진 광물 오브젝트를 조회합니다 (채굴 전).
+- **SaveWorld**: 현재 로드된 모든 청크 데이터를 JSON 파일로 저장합니다.
+- **GetLayerForDepth**: 특정 깊이에 해당하는 TerrainLayer를 반환합니다.
+- **GetNextLayerDepth**: 현재 레이어의 다음 레이어 깊이를 반환합니다.
+
+### 4.2 내부 메서드
+- **UpdateChunksCoroutine**: 청크 업데이트의 메인 코루틴입니다.
+- **LoadAndGenerateChunksInRange**: 시야 범위 내의 청크를 로드하고 생성합니다.
+- **PlaceTilesForChunk**: 생성된 청크의 타일을 Region Tilemap에 배치합니다.
+- **UnloadChunk**: 청크를 언로드하고 Region 풀로 반환합니다.
+- **GetOrCreateRegionTilemap**: Region Tilemap을 가져오거나 생성합니다 (풀링 사용).
+- **DecrementRegionChunkCount**: Region의 활성 청크 카운트를 감소시킵니다.
+
+## 5. Dependencies
 - **WorldGenerator**: 실제 지형 데이터 생성을 위임합니다.
 - **ObjectPooler**: 광물 오브젝트 생성을 위임합니다.
 - **TileData (JSON)**: `TileType`은 `Enums.cs`에 정의되어 있지만, 실제 속성은 `TileDataManager`를 통해 로드됩니다.

@@ -19,8 +19,6 @@ public class FogOfWarController : MonoBehaviour
 
     [Tooltip("손전등 사거리 (0-1 범위)")]
     public float sightDistance = 0.5f;
-<<<<<<< Updated upstream
-=======
 
     [Header("Tile Spotlight Settings")]
     [Tooltip("타일 스포트라이트 반경 (월드 단위)")]
@@ -51,7 +49,6 @@ public class FogOfWarController : MonoBehaviour
     [Tooltip("손전등 가장자리 부드러움 (월드 단위)")]
     [Range(0.1f, 10f)]
     public float flashlightSoftness = 2f;
->>>>>>> Stashed changes
     
     private Camera mainCamera;
 
@@ -157,8 +154,6 @@ public class FogOfWarController : MonoBehaviour
                 Shader.SetGlobalVector("_PlayerDir", lookDir);
                 Shader.SetGlobalFloat("_SightAngle", sightAngle);
                 Shader.SetGlobalFloat("_SightDistance", sightDistance);
-<<<<<<< Updated upstream
-=======
                 
                 // --- World Space Spotlight for Tiles ---
                 Shader.SetGlobalVector("_PlayerWorldPos", playerTransform.position);
@@ -185,9 +180,9 @@ public class FogOfWarController : MonoBehaviour
                     // 디버그 로그 (1초마다)
                     if (Time.frameCount % 60 == 0)
                     {
-                        Debug.Log($"[Flashlight Debug] Enable: {enableFlashlight}, Mouse World: {mouseWorldPos}, Player: {playerTransform.position}");
-                        Debug.Log($"[Flashlight Debug] Direction (before normalize): {playerWorldDir}, Magnitude: {playerWorldDir.magnitude}");
-                        Debug.Log($"[Flashlight Debug] Settings - Angle: {flashlightAngle}, Distance: {flashlightDistance}, Brightness: {flashlightBrightness}, Softness: {flashlightSoftness}");
+                        //Debug.Log($"[Flashlight Debug] Enable: {enableFlashlight}, Mouse World: {mouseWorldPos}, Player: {playerTransform.position}");
+                        //Debug.Log($"[Flashlight Debug] Direction (before normalize): {playerWorldDir}, Magnitude: {playerWorldDir.magnitude}");
+                        //Debug.Log($"[Flashlight Debug] Settings - Angle: {flashlightAngle}, Distance: {flashlightDistance}, Brightness: {flashlightBrightness}, Softness: {flashlightSoftness}");
                     }
                     
                     // 0 벡터 체크 (마우스가 플레이어와 같은 위치에 있을 때)
@@ -198,7 +193,7 @@ public class FogOfWarController : MonoBehaviour
                         // 디버그 로그
                         if (Time.frameCount % 60 == 0)
                         {
-                            Debug.Log($"[Flashlight Debug] Direction (normalized): {playerWorldDir}");
+                            //Debug.Log($"[Flashlight Debug] Direction (normalized): {playerWorldDir}");
                         }
 
                         // 쉐이더에 전달
@@ -217,15 +212,15 @@ public class FogOfWarController : MonoBehaviour
                             float shaderBrightness = Shader.GetGlobalFloat("_FlashlightBrightness");
                             float shaderSoftness = Shader.GetGlobalFloat("_FlashlightSoftness");
                             
-                            Debug.Log($"[Shader Properties] Dir: ({shaderDir.x:F3}, {shaderDir.y:F3}), Angle: {shaderAngle}, Distance: {shaderDistance}, Brightness: {shaderBrightness}, Softness: {shaderSoftness}");
+                            //Debug.Log($"[Shader Properties] Dir: ({shaderDir.x:F3}, {shaderDir.y:F3}), Angle: {shaderAngle}, Distance: {shaderDistance}, Brightness: {shaderBrightness}, Softness: {shaderSoftness}");
                             
                             // 값이 올바르게 전달되었는지 확인
-                            if (Mathf.Abs(shaderAngle - flashlightAngle) > 0.01f)
-                                Debug.LogWarning($"[Shader Properties] Angle mismatch! Expected: {flashlightAngle}, Got: {shaderAngle}");
-                            if (Mathf.Abs(shaderDistance - flashlightDistance) > 0.01f)
-                                Debug.LogWarning($"[Shader Properties] Distance mismatch! Expected: {flashlightDistance}, Got: {shaderDistance}");
-                            if (shaderDir.magnitude < 0.001f)
-                                Debug.LogWarning("[Shader Properties] Direction vector is zero in shader!");
+                            //if (Mathf.Abs(shaderAngle - flashlightAngle) > 0.01f)
+                                //Debug.LogWarning($"[Shader Properties] Angle mismatch! Expected: {flashlightAngle}, Got: {shaderAngle}");
+                            //if (Mathf.Abs(shaderDistance - flashlightDistance) > 0.01f)
+                                //Debug.LogWarning($"[Shader Properties] Distance mismatch! Expected: {flashlightDistance}, Got: {shaderDistance}");
+                            //if (shaderDir.magnitude < 0.001f)
+                                //Debug.LogWarning("[Shader Properties] Direction vector is zero in shader!");
                         }
                     }
                     else
@@ -259,14 +254,7 @@ public class FogOfWarController : MonoBehaviour
                 }
                 
                 // 디버깅: Material 속성 확인 (1초마다)
-                if (Time.frameCount % 60 == 0)
-                {
-                    Vector2 matDir = fogOfWarMaterial.GetVector("_PlayerDir");
-                    float matAngle = fogOfWarMaterial.GetFloat("_SightAngle");
-                    float matDist = fogOfWarMaterial.GetFloat("_SightDistance");
-                    // Debug.Log($"[FogOfWarController] Material 속성 - Dir: {matDir}, Angle: {matAngle}, Distance: {matDist}");
-                }
->>>>>>> Stashed changes
+                
             }
             else
             {
@@ -279,12 +267,7 @@ public class FogOfWarController : MonoBehaviour
         else
         {
             // 디버깅: 왜 업데이트가 안 되는지 확인
-            if (playerTransform == null)
-                Debug.LogWarning("FogOfWarController: playerTransform이 null입니다.");
-            if (fogOfWarMaterial == null)
-                Debug.LogWarning("FogOfWarController: fogOfWarMaterial이 null입니다.");
-            if (mainCamera == null)
-                Debug.LogWarning("FogOfWarController: mainCamera가 null입니다.");
+
         }
     }
 }

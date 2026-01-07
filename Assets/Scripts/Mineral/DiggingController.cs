@@ -17,6 +17,10 @@ public class DiggingController : MonoBehaviour
     [Tooltip("The radius of the hole to dig.")]
     [SerializeField] private float digRadius = 0.5f;
     [SerializeField] private float digCooldown = 0.2f;
+    
+    [Header("TerrainChunk Settings")]
+    [Tooltip("LayerMask for detecting TerrainChunk colliders.")]
+    [SerializeField] private LayerMask terrainChunkLayer = -1; // 모든 레이어 기본값
 
     private float _nextDigTime = 0f;
     private Camera _cam;
@@ -83,6 +87,64 @@ public class DiggingController : MonoBehaviour
         // 3. Set the dig location on the circumference of the actionRadius.
         Vector2 digCenter = pivot + (currentDigDirection * actionRadius);
 
+        // TerrainChunk 시스템 사용 (우선)
+        bool terrainChunkFound = TryDigTerrainChunk(digCenter);
+        
+        // WorldManager 시스템 사용 (fallback, WorldManager가 있는 경우)
+        if (!terrainChunkFound && WorldManager.Instance != null)
+        {
+            DigWithWorldManager(digCenter);
+        }
+    }
+
+    /// <summary>
+    /// TerrainChunk를 사용하여 땅을 팝니다.
+    /// </summary>
+    private bool TryDigTerrainChunk(Vector2 digCenter)
+    {
+        // TerrainChunk를 찾기 위해 Physics2D 사용 (LayerMask 적용)
+        Collider2D[] hits = Physics2D.OverlapCircleAll(digCenter, digRadius, terrainChunkLayer);
+        
+        bool foundTerrainChunk = false;
+        foreach (Collider2D hit in hits)
+        {
+            TerrainChunk chunk = hit.GetComponent<TerrainChunk>();
+            if (chunk != null)
+            {
+                foundTerrainChunk = true;
+                chunk.Dig(digCenter, digRadius);
+                
+                // 스테미나 소모 (기본 타일 타입으로 가정, 실제로는 TerrainChunk에서 타입을 가져와야 함)
+                if (_playerStats != null)
+                {
+                    // TerrainChunk에서는 타일 타입을 직접 알기 어려우므로 기본값 사용
+                    // TODO: TerrainChunk에서 타일 타입 정보를 가져올 수 있도록 개선 필요
+                    TileDataJson data = TileDataManager.Instance?.GetData(TileType.Dirt);
+                    if (data != null && data.maxStaminaReduction > 0)
+                    {
+                        float reduction = data.maxStaminaReduction;
+                        
+                        // 삽 강화: 스테미나 소모 감소 적용
+                        if (ToolUpgradeManager.Instance != null)
+                        {
+                            float staminaReduction = ToolUpgradeManager.Instance.GetShovelStaminaReduction();
+                            reduction = reduction * (1f - staminaReduction / 100f);
+                        }
+                        
+                        _playerStats.ReduceMaxStamina(reduction);
+                    }
+                }
+            }
+        }
+        
+        return foundTerrainChunk;
+    }
+
+    /// <summary>
+    /// WorldManager를 사용하여 땅을 팝니다 (기존 방식).
+    /// </summary>
+    private void DigWithWorldManager(Vector2 digCenter)
+    {
         HashSet<Vector3Int> cellsToProcess = GetCellsInDigRadius(digCenter);
 
         if (cellsToProcess.Count == 0)
@@ -144,12 +206,9 @@ public class DiggingController : MonoBehaviour
             return false;
         }
 
-        if (WorldManager.Instance == null)
-        {
-            Debug.LogError($"{nameof(WorldManager)}.Instance is null. Cannot dig.");
-            return false;
-        }
-
+        // WorldManager가 없어도 TerrainChunk를 사용할 수 있으므로 null 체크 제거
+        // WorldManager.Instance가 null이어도 TerrainChunk 시스템을 사용할 수 있습니다.
+        
         return true;
     }
 
@@ -159,6 +218,13 @@ public class DiggingController : MonoBehaviour
     private HashSet<Vector3Int> GetCellsInDigRadius(Vector2 digCenter)
     {
         var cells = new HashSet<Vector3Int>();
+        
+        // WorldManager가 없으면 빈 집합 반환
+        if (WorldManager.Instance == null)
+        {
+            return cells;
+        }
+        
         float cellSize = WorldManager.Instance.CellSize;
         if (cellSize <= 0) return cells; // Prevent division by zero
 

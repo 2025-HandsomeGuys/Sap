@@ -14,6 +14,10 @@ public class TerrainChunk : MonoBehaviour
     public int height = 1000;
     public float PPU = 100f;
 
+    [Header("단독 씬용 자동 초기화")]
+    [Tooltip("WorldManager 없이 단독으로 사용하는 씬이라면 체크해서 Start 시 자동 초기화합니다.")]
+    public bool autoInitializeOnStart = false;
+
     [Header("플레이어 설정")]
     public Transform player;
     public float reachOffset = 1.0f;
@@ -41,40 +45,39 @@ public class TerrainChunk : MonoBehaviour
     private int borderW, borderH;
     private bool isTextureLoaded = false;
 
+    // WorldGenerator 통합 변수
+    private Vector2Int chunkCoord;      // 청크 좌표
+    private float cellSize;              // 월드 단위 (0.3125f)
+    private bool isInitialized = false;  // 초기화 상태
+
+    // TileType → Color 매핑
+    private static Color GetColorForTileType(TileType tileType)
+    {
+        return tileType switch
+        {
+            TileType.Dirt => new Color(0.6f, 0.4f, 0.2f, 1f),           // 갈색
+            TileType.HardStone => new Color(0.5f, 0.5f, 0.5f, 1f),      // 회색
+            TileType.CoolStone => new Color(0.4f, 0.5f, 0.6f, 1f),       // 청회색
+            TileType.Ice => new Color(0.7f, 0.9f, 1f, 1f),              // 하늘색
+            TileType.HotStone => new Color(1f, 0.6f, 0.2f, 1f),          // 주황색
+            TileType.MagmaRock => new Color(0.8f, 0.2f, 0.2f, 1f),      // 빨간색
+            TileType.MeteoriteRock => new Color(0.6f, 0.3f, 0.8f, 1f),  // 보라색
+            TileType.Bedrock => new Color(0.1f, 0.1f, 0.1f, 1f),        // 검은색
+            TileType.Empty => new Color(0, 0, 0, 0),                     // 투명
+            _ => new Color(0.5f, 0.5f, 0.5f, 1f)                        // 기본 회색
+        };
+    }
+
     void Start()
     {
         sr = GetComponent<SpriteRenderer>();
         polyCollider = GetComponent<PolygonCollider2D>();
 
-        if (textureThickness <= solidThickness + 0.01f) textureThickness = solidThickness + 0.1f;
-
-        Texture2D original = sr.sprite.texture;
-        texture = new Texture2D(width, height, TextureFormat.RGBA32, false);
-        texture.filterMode = FilterMode.Point;
-
-        if (original.width == width && original.height == height)
-            texture.SetPixels32(original.GetPixels32());
-        else
-            texture.SetPixels32(new Color32[width * height]);
-
-        texture.Apply();
-        pixelData = texture.GetPixels32();
-        solidColor32 = (Color32)solidBorderColor;
-
-        if (borderTexture != null && borderTexture.isReadable)
+        // WorldManager 없이 사용하는 씬에서는 간단한 자동 초기화를 사용할 수 있다.
+        if (!isInitialized && autoInitializeOnStart)
         {
-            borderPixels = borderTexture.GetPixels32();
-            borderW = borderTexture.width;
-            borderH = borderTexture.height;
-            isTextureLoaded = true;
+            SimpleAutoInitialize();
         }
-
-        // 초기화
-        UpdateBordersInArea(0, 0, width, height, (player != null) ? (Vector2)player.position : Vector2.zero, 1.0f, 0.0f, 1.0f);
-        ApplyTexture();
-
-        sr.sprite = Sprite.Create(texture, new Rect(0, 0, width, height), new Vector2(0.5f, 0.5f), PPU);
-        UpdateCollider();
     }
 
     void Update()
@@ -91,8 +94,191 @@ public class TerrainChunk : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// ChunkData를 기반으로 TerrainChunk를 초기화합니다.
+    /// </summary>
+    /// <param name="chunkData">WorldManager의 ChunkData</param>
+    /// <param name="chunkCoord">청크 좌표</param>
+    /// <param name="cellSize">월드 단위 (기본값 0.3125f)</param>
+    public void Initialize(WorldManager.ChunkData chunkData, Vector2Int chunkCoord, float cellSize)
+    {
+        if (isInitialized)
+        {
+            Debug.LogWarning($"TerrainChunk at {chunkCoord} is already initialized!");
+            return;
+        }
+
+        this.chunkCoord = chunkCoord;
+        this.cellSize = cellSize;
+
+        // PPU는 100f로 고정 (계산하지 않음)
+        // 월드 크기 = width / PPU = 1000 / 100 = 10 유니티 단위
+        // 청크 월드 크기 = chunkSize * cellSize = 32 * 0.3125 = 10 유니티 단위
+        // → 1:1 매핑 완료
+
+        // Transform 위치 설정 (청크들이 겹치지 않도록)
+        // WorldManager의 GetChunkCoordFromPosition과 일치하도록 설정
+        // WorldManager는 groundTilemap.WorldToCell을 사용하므로, 
+        // TerrainChunk의 위치도 동일한 방식으로 계산해야 함
+        float chunkWorldSize = WorldGenerator.chunkSize * cellSize; // 10 유니티 단위
+        // 청크의 중심점을 기준으로 위치 설정 (스프라이트의 pivot이 0.5, 0.5이므로)
+        float worldX = chunkCoord.x * chunkWorldSize + (chunkWorldSize * 0.5f);
+        float worldY = chunkCoord.y * chunkWorldSize + (chunkWorldSize * 0.5f);
+        transform.position = new Vector3(worldX, worldY, 0);
+        
+        Debug.Log($"TerrainChunk position calculated: chunkCoord={chunkCoord}, chunkWorldSize={chunkWorldSize}, position={transform.position}");
+
+        // 컴포넌트 가져오기
+        if (sr == null) sr = GetComponent<SpriteRenderer>();
+        if (polyCollider == null) polyCollider = GetComponent<PolygonCollider2D>();
+
+        // 테두리 두께 검증
+        if (textureThickness <= solidThickness + 0.01f) textureThickness = solidThickness + 0.1f;
+
+        // 텍스처 생성
+        texture = new Texture2D(width, height, TextureFormat.RGBA32, false);
+        texture.filterMode = FilterMode.Point;
+
+        // ChunkData 기반으로 텍스처 생성
+        GenerateTextureFromChunkData(chunkData);
+
+        texture.Apply();
+        pixelData = texture.GetPixels32();
+        solidColor32 = (Color32)solidBorderColor;
+
+        // 테두리 텍스처 로드
+        if (borderTexture != null && borderTexture.isReadable)
+        {
+            borderPixels = borderTexture.GetPixels32();
+            borderW = borderTexture.width;
+            borderH = borderTexture.height;
+            isTextureLoaded = true;
+        }
+
+        // 초기 테두리 생성 (전체 영역)
+        UpdateBordersInArea(0, 0, width, height, Vector2.zero, 1.0f, 0.0f, 1.0f);
+        ApplyTexture();
+
+        // 스프라이트 생성
+        sr.sprite = Sprite.Create(texture, new Rect(0, 0, width, height), new Vector2(0.5f, 0.5f), PPU);
+        
+        // Collider 생성 (Digger가 Physics2D.OverlapCircleAll로 찾을 수 있도록)
+        UpdateCollider();
+
+        // 플레이어 자동 찾기 (없는 경우)
+        if (player == null)
+        {
+            if (WorldManager.Instance != null && WorldManager.Instance.playerTransformPublic != null)
+            {
+                player = WorldManager.Instance.playerTransformPublic;
+            }
+            else
+            {
+                Player3Controller playerController = FindFirstObjectByType<Player3Controller>();
+                if (playerController != null)
+                {
+                    player = playerController.transform;
+                }
+            }
+        }
+
+        isInitialized = true;
+        
+        Debug.Log($"TerrainChunk at {chunkCoord} initialized successfully. Position: {transform.position}, Collider: {(polyCollider != null ? "Created" : "NULL")}");
+    }
+
+    /// <summary>
+    /// WorldManager/WorldGenerator 없이 단독 씬에서 사용할 수 있는 간단한 자동 초기화.
+    /// 전체를 하나의 타일 타입(기본 Dirt)으로 채운 뒤 텍스처/콜라이더를 세팅한다.
+    /// </summary>
+    private void SimpleAutoInitialize()
+    {
+        // 이미 다른 곳에서 초기화했다면 패스
+        if (isInitialized)
+            return;
+
+        // 기본 컴포넌트 확보
+        if (sr == null) sr = GetComponent<SpriteRenderer>();
+        if (polyCollider == null) polyCollider = GetComponent<PolygonCollider2D>();
+
+        // 텍스처 생성 및 전체를 Dirt 색으로 채우기
+        texture = new Texture2D(width, height, TextureFormat.RGBA32, false);
+        texture.filterMode = FilterMode.Point;
+
+        Color32 baseColor = (Color32)GetColorForTileType(TileType.Dirt);
+        Color32[] pixels = new Color32[width * height];
+        for (int i = 0; i < pixels.Length; i++)
+        {
+            pixels[i] = baseColor;
+        }
+        texture.SetPixels32(pixels);
+        texture.Apply();
+
+        pixelData = texture.GetPixels32();
+        solidColor32 = (Color32)solidBorderColor;
+
+        // 테두리 텍스처 준비
+        if (borderTexture != null && borderTexture.isReadable)
+        {
+            borderPixels = borderTexture.GetPixels32();
+            borderW = borderTexture.width;
+            borderH = borderTexture.height;
+            isTextureLoaded = true;
+        }
+
+        // 전체 영역 테두리 적용
+        UpdateBordersInArea(0, 0, width, height, Vector2.zero, 1.0f, 0.0f, 1.0f);
+        ApplyTexture();
+
+        // 스프라이트 및 콜라이더 세팅
+        sr.sprite = Sprite.Create(texture, new Rect(0, 0, width, height), new Vector2(0.5f, 0.5f), PPU);
+        UpdateCollider();
+
+        isInitialized = true;
+        Debug.Log("TerrainChunk: SimpleAutoInitialize completed (standalone mode).");
+    }
+
+    /// <summary>
+    /// ChunkData의 terrainLayer를 기반으로 텍스처를 생성합니다.
+    /// </summary>
+    private void GenerateTextureFromChunkData(WorldManager.ChunkData chunkData)
+    {
+        Color32[] pixels = new Color32[width * height];
+
+        // 청크 데이터 크기 (32 x 32)
+        // 텍스처 크기 (1000 x 1000)로 스케일링
+        float scaleX = (float)width / WorldGenerator.chunkSize;
+        float scaleY = (float)height / WorldGenerator.chunkSize;
+
+        for (int y = 0; y < height; y++)
+        {
+            for (int x = 0; x < width; x++)
+            {
+                // 텍스처 좌표를 청크 데이터 좌표로 변환
+                int chunkX = Mathf.FloorToInt(x / scaleX);
+                int chunkY = Mathf.FloorToInt(y / scaleY);
+
+                // 범위 체크
+                if (chunkX >= 0 && chunkX < WorldGenerator.chunkSize && chunkY >= 0 && chunkY < WorldGenerator.chunkSize)
+                {
+                    TileType tileType = chunkData.terrainLayer[chunkX, chunkY];
+                    Color color = GetColorForTileType(tileType);
+                    pixels[y * width + x] = (Color32)color;
+                }
+                else
+                {
+                    // 범위 밖은 투명
+                    pixels[y * width + x] = new Color32(0, 0, 0, 0);
+                }
+            }
+        }
+
+        texture.SetPixels32(pixels);
+    }
+
     void ApplyTexture()
     {
+        if (texture == null || pixelData == null) return;
         texture.SetPixels32(pixelData);
         texture.Apply(false);
     }
@@ -102,7 +288,36 @@ public class TerrainChunk : MonoBehaviour
     // ==================================================================================
     public void Dig(Vector2 mouseWorldPos, float radius)
     {
-        if (player == null) return;
+        if (!isInitialized)
+        {
+            Debug.LogWarning($"TerrainChunk at {chunkCoord}: Not initialized! Call Initialize() first.");
+            return;
+        }
+        
+        // 디버그 로그 추가
+        Debug.Log($"TerrainChunk.Dig() called at {mouseWorldPos} with radius {radius}");
+
+        // 플레이어 자동 찾기
+        if (player == null)
+        {
+            if (WorldManager.Instance != null && WorldManager.Instance.playerTransformPublic != null)
+            {
+                player = WorldManager.Instance.playerTransformPublic;
+            }
+            else
+            {
+                Player3Controller playerController = FindFirstObjectByType<Player3Controller>();
+                if (playerController != null)
+                {
+                    player = playerController.transform;
+                }
+                else
+                {
+                    Debug.LogWarning("TerrainChunk: Player Transform is not assigned and cannot be found!");
+                    return;
+                }
+            }
+        }
 
         Vector2 playerPos = player.position;
         Vector2 direction = (mouseWorldPos - playerPos).normalized;
@@ -186,6 +401,8 @@ public class TerrainChunk : MonoBehaviour
                                     float cos = 1f, float sin = 0f, float scaleCorrection = 1f,
                                     bool isPixelSpace = false)
     {
+        if (!isInitialized) return;
+
         int solidPx = Mathf.CeilToInt(solidThickness * PPU);
         int texPx = Mathf.CeilToInt(textureThickness * PPU);
         float thicknessDelta = Mathf.Max(1f, texPx - solidPx);
@@ -282,7 +499,56 @@ public class TerrainChunk : MonoBehaviour
 
     void UpdateCollider()
     {
-        Destroy(polyCollider);
+        // 기존 Collider 제거
+        if (polyCollider != null)
+        {
+            Destroy(polyCollider);
+            polyCollider = null;
+        }
+        
+        // 새 Collider 생성
         polyCollider = gameObject.AddComponent<PolygonCollider2D>();
+        
+        if (polyCollider == null)
+        {
+            Debug.LogError($"TerrainChunk: Failed to create PolygonCollider2D at {chunkCoord}");
+        }
+    }
+
+    // ==================================================================================
+    //  좌표 변환 유틸리티
+    // ==================================================================================
+    
+    /// <summary>
+    /// 월드 좌표를 청크 내부 픽셀 좌표로 변환합니다.
+    /// </summary>
+    public Vector2Int WorldToChunkPixel(Vector2 worldPos)
+    {
+        if (!isInitialized) return Vector2Int.zero;
+
+        Vector2 localPos = transform.InverseTransformPoint(worldPos);
+        float worldWidth = width / PPU;
+        float worldHeight = height / PPU;
+        
+        int pixelX = Mathf.FloorToInt((localPos.x + (worldWidth * 0.5f)) * PPU);
+        int pixelY = Mathf.FloorToInt((localPos.y + (worldHeight * 0.5f)) * PPU);
+        
+        return new Vector2Int(pixelX, pixelY);
+    }
+
+    /// <summary>
+    /// 청크 내부 픽셀 좌표를 월드 좌표로 변환합니다.
+    /// </summary>
+    public Vector2 ChunkPixelToWorld(int pixelX, int pixelY)
+    {
+        if (!isInitialized) return Vector2.zero;
+
+        float worldWidth = width / PPU;
+        float worldHeight = height / PPU;
+        
+        float localX = (pixelX / PPU) - (worldWidth * 0.5f);
+        float localY = (pixelY / PPU) - (worldHeight * 0.5f);
+        
+        return transform.TransformPoint(new Vector3(localX, localY, 0));
     }
 }

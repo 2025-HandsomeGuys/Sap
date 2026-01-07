@@ -13,21 +13,45 @@ classDiagram
     %% Core Managers
     class WorldManager {
         +static Instance
+        +float CellSize
         +int viewDistanceInChunks
-        -Dictionary chunkDataMap
-        -Dictionary activeRegionTilemaps
-        +DigTiles()
-        +GetTileTypeAt()
+        -Dictionary~Vector2Int, ChunkData~ chunkDataMap
+        -Dictionary~Vector2Int, Tilemap~ activeRegionTilemaps
+        -Dictionary~Vector2Int, int~ activeChunksPerRegion
+        -Queue~GameObject~ regionPool
+        -HashSet~Vector2Int~ dirtyRegionColliders
+        +DigTiles(IEnumerable~Vector3Int~)
+        +GetTileTypeAt(Vector3)
+        +GetMineralIDAt(Vector3)
+        +ClearMineralAt(Vector3)
+        +GetHiddenMineralAt(Vector3)
+        +SaveWorld(string)
+        +GetLayerForDepth(int)
+        +GetNextLayerDepth(TerrainLayer)
         -UpdateChunksCoroutine()
+        -LoadAndGenerateChunksInRange()
+        -PlaceTilesForChunk(ChunkData)
+        -UnloadChunk(Vector2Int)
+        -GetOrCreateRegionTilemap(Vector2Int)
         note: 월드 시스템의 총괄 관리자<br/>청크 로드/언로드 및 타일맵 풀링 처리
     }
 
     class WorldGenerator {
+        +const int chunkSize
         +TerrainGenerationProfile terrainProfile
+        +float cellSize
+        +float mineralSizeMultiplier
         +RuleTile dirtTile
         +RuleTile hardStoneTile
-        +InitializeChunkDataCoroutine()
-        +CreateTilebaseArray()
+        +RuleTile coolStoneTile
+        +RuleTile iceTile
+        +RuleTile hotStoneTile
+        +RuleTile magmaRockTile
+        +RuleTile meteoriteRockTile
+        +RuleTile bedrockTile
+        +InitializeChunkDataCoroutine(ChunkData)
+        +CreateTilebaseArray(Vector2Int, ChunkData)
+        +PreSpawnMineralsForChunk(ChunkData)
         note: 순수 생성 로직 담당<br/>노이즈 알고리즘 및 지형 데이터 채우기
     }
 
@@ -43,8 +67,20 @@ classDiagram
         <<Data Class>>
         +TileType[,] terrainLayer
         +MineralID[,] mineralLayer
+        +Dictionary~Vector2Int, GameObject~ hiddenMinerals
+        +List~GameObject~ spawnedItems
         +Vector2Int chunkCoord
         +ChunkStatus status
+        +TileBase[] tiles
+        +Coroutine generationCoroutine
+    }
+    
+    class ChunkStatus {
+        <<Enumeration>>
+        Loading
+        Generated
+        Ready
+        Unloaded
     }
 
     class TileDataManager {
@@ -71,6 +107,7 @@ classDiagram
     WorldManager --> WorldGenerator : 참조 & 사용
     WorldManager --> ObjectPooler : 광물 스폰 요청
     WorldManager *-- ChunkData : 관리 (Dictionary)
+    WorldManager ..> ChunkStatus : Uses
     
     WorldGenerator --|> MonoBehaviour
     WorldGenerator ..> ChunkData : 데이터 채움 (Write)

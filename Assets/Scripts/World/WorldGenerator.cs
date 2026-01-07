@@ -13,7 +13,8 @@ public class WorldGenerator : MonoBehaviour
     public TerrainGenerationProfile terrainProfile;
 
     [Header("World Settings")]
-    public float cellSize = 0.05f;
+    [Tooltip("월드 단위 (TerrainChunk와 1:1 매핑을 위해 0.3125f 사용)")]
+    public float cellSize = 0.3125f;
     public float mineralSizeMultiplier = 1.5f;
 
     private int bedrockStartDepth; // Added for dynamic bedrock depth

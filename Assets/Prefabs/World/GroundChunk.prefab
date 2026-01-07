@@ -28,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 4467176375184804918}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -10, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -156,3 +156,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8a4c65d89614d64ea197dc6347ed574, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TerrainChunk
+  width: 1000
+  height: 1000
+  PPU: 100
+  autoInitializeOnStart: 1
+  player: {fileID: 0}
+  reachOffset: 0.25
+  verticalScale: 0.6
+  solidBorderColor: {r: 0.2627451, g: 0.12156863, b: 0.08627451, a: 1}
+  solidThickness: 0.025
+  textureThickness: 0.2
+  textureTiling: 0.8
+  borderTexture: {fileID: 2800000, guid: 21f3e05f2094f0a47b8268617235e242, type: 3}

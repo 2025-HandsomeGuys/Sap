@@ -34,6 +34,9 @@ public class WorldManager : MonoBehaviour
     [SerializeField] private Tilemap groundTilemap; // The 'master' tilemap for visuals
     [SerializeField] private GameObject regionPrefab;
 
+    // Public property for external access
+    public Transform playerTransformPublic => playerTransform;
+
     [Header("World Settings")]
     [Tooltip("The view distance in chunks around the player.")]
     [SerializeField] private int viewDistanceInChunks = 1;
@@ -48,12 +51,18 @@ public class WorldManager : MonoBehaviour
     private readonly Dictionary<Vector2Int, int> _activeChunksPerRegion = new Dictionary<Vector2Int, int>();
     private readonly Queue<GameObject> _regionPool = new Queue<GameObject>();
 
+    // --- TerrainChunk Management ---
+    private readonly Dictionary<Vector2Int, TerrainChunk> _activeTerrainChunks = new Dictionary<Vector2Int, TerrainChunk>();
+
     [Header("Region Pool Settings")]
     [SerializeField] private int regionSize = 1; // Each region is 1x1 chunks
     [SerializeField] private int maxRegionPoolSize = 30;
 
     // --- Deferred Collider Generation ---
     private readonly HashSet<Vector2Int> _dirtyRegionColliders = new HashSet<Vector2Int>();
+
+    // --- Initial Loading State ---
+    private bool _isInitialLoadComplete = false;
 
     private static TileBase[] emptyTileArray;
 
@@ -93,6 +102,13 @@ public class WorldManager : MonoBehaviour
             return;
         }
 
+        // 초기 로딩 동안 플레이어 비활성화
+        /*if (playerTransform.gameObject != null)
+        {
+            playerTransform.gameObject.SetActive(false);
+            Debug.Log("WorldManager: Player disabled during initial chunk loading.");
+        }*/
+
         _currentPlayerChunkCoord = GetChunkCoordFromPosition(playerTransform.position);
         RequestChunkUpdate();
     }
@@ -120,6 +136,48 @@ public class WorldManager : MonoBehaviour
                 }
             }
             _dirtyRegionColliders.Clear();
+        }
+    }
+    #endregion
+
+    #region Player Stabilization
+    /// <summary>
+    /// 주어진 X 좌표에서 땅 표면의 Y 좌표를 찾습니다.
+    /// </summary>
+    private float FindGroundSurfaceY(float x)
+    {
+        // 플레이어 위치에서 위로 올라가면서 땅 찾기
+        Vector3Int startCell = groundTilemap.WorldToCell(new Vector3(x, 100f, 0)); // 위에서 시작
+        
+        // 위에서 아래로 내려가면서 첫 번째 비어있지 않은 타일 찾기
+        for (int y = startCell.y; y >= startCell.y - 100; y--)
+        {
+            Vector3Int checkCell = new Vector3Int(startCell.x, y, 0);
+            Vector3 worldPos = groundTilemap.GetCellCenterWorld(checkCell);
+            TileType tileType = GetTileTypeAt(worldPos);
+            
+            if (tileType != TileType.Empty)
+            {
+                // 땅을 찾았으면 그 셀의 위쪽 경계 반환
+                return groundTilemap.GetCellCenterWorld(checkCell).y + (worldGenerator.cellSize * 0.5f);
+            }
+        }
+        
+        return float.MinValue; // 땅을 찾지 못함
+    }
+    
+    private IEnumerator StabilizePlayerAfterActivation()
+    {
+        yield return null; // 한 프레임 대기
+        
+        if (playerTransform != null)
+        {
+            Rigidbody2D rb = playerTransform.GetComponent<Rigidbody2D>();
+            if (rb != null)
+            {
+                rb.linearVelocity = Vector2.zero;
+                rb.angularVelocity = 0f;
+            }
         }
     }
     #endregion
@@ -328,6 +386,53 @@ public class WorldManager : MonoBehaviour
             _dirtyRegionColliders.Add(regionCoord);
         }
 
+        // 초기 로딩이 완료되면 플레이어 활성화
+        /*if (!_isInitialLoadComplete)
+        {
+            _isInitialLoadComplete = true;
+            if (playerTransform != null && playerTransform.gameObject != null)
+            {
+                // 플레이어 위치를 땅 위로 조정
+                Vector3 playerPos = playerTransform.position;
+                Vector3Int playerCell = groundTilemap.WorldToCell(playerPos);
+                
+                // 플레이어의 X 위치에서 땅 표면 찾기 (위에서 아래로)
+                float playerX = playerPos.x;
+                float groundY = FindGroundSurfaceY(playerX);
+                
+                // 땅을 찾지 못한 경우 기본 위치 사용
+                if (groundY == float.MinValue)
+                {
+                    Vector3 cellCenter = groundTilemap.GetCellCenterWorld(playerCell);
+                    groundY = cellCenter.y + 1.0f;
+                }
+                else
+                {
+                    // 땅 위 1 유니티 단위
+                    groundY += 1.0f;
+                }
+                
+                playerPos.y = groundY;
+                playerTransform.position = playerPos;
+                
+                // Rigidbody2D가 있다면 velocity 초기화
+                Rigidbody2D rb = playerTransform.GetComponent<Rigidbody2D>();
+                if (rb != null)
+                {
+                    rb.linearVelocity = Vector2.zero;
+                    rb.angularVelocity = 0f;
+                }
+                
+                // 플레이어 활성화
+                playerTransform.gameObject.SetActive(true);
+                
+                // 한 프레임 대기 후 다시 velocity 초기화 (물리 시뮬레이션 안정화)
+                StartCoroutine(StabilizePlayerAfterActivation());
+                
+                Debug.Log($"WorldManager: Initial chunk loading complete. Player enabled at position {playerPos}.");
+            }
+        }*/
+
         _chunkUpdateCoroutine = null;
     }
     #endregion
@@ -423,33 +528,55 @@ public class WorldManager : MonoBehaviour
 
     private void PlaceTilesForChunk(ChunkData chunkData)
     {
+        // TerrainChunk를 사용하는 경우
+        if (!_activeTerrainChunks.ContainsKey(chunkData.chunkCoord))
+        {
+            // TerrainChunk GameObject 생성
+            GameObject terrainChunkObj = new GameObject($"TerrainChunk_{chunkData.chunkCoord.x}_{chunkData.chunkCoord.y}");
+            terrainChunkObj.transform.SetParent(transform);
+            
+            // TerrainChunk 컴포넌트 추가
+            TerrainChunk terrainChunk = terrainChunkObj.AddComponent<TerrainChunk>();
+            
+            // SpriteRenderer 추가 (TerrainChunk의 RequireComponent)
+            SpriteRenderer sr = terrainChunkObj.GetComponent<SpriteRenderer>();
+            if (sr == null) sr = terrainChunkObj.AddComponent<SpriteRenderer>();
+            
+            // 초기 스프라이트 생성 (빈 텍스처)
+            Texture2D initialTexture = new Texture2D(terrainChunk.width, terrainChunk.height, TextureFormat.RGBA32, false);
+            initialTexture.SetPixels32(new Color32[terrainChunk.width * terrainChunk.height]);
+            initialTexture.Apply();
+            sr.sprite = Sprite.Create(initialTexture, new Rect(0, 0, terrainChunk.width, terrainChunk.height), new Vector2(0.5f, 0.5f), terrainChunk.PPU);
+            
+            // Initialize 호출
+            float cellSize = worldGenerator != null ? worldGenerator.cellSize : 0.3125f;
+            terrainChunk.Initialize(chunkData, chunkData.chunkCoord, cellSize);
+            
+            _activeTerrainChunks[chunkData.chunkCoord] = terrainChunk;
+        }
+
+        // 기존 Tilemap 시스템도 유지 (필요한 경우)
+        // Region 관리 로직은 유지하되, 타일 배치는 TerrainChunk가 담당
         Vector2Int regionCoord = GetRegionCoord(chunkData.chunkCoord);
         if (!_activeChunksPerRegion.ContainsKey(regionCoord)) _activeChunksPerRegion[regionCoord] = 0;
         _activeChunksPerRegion[regionCoord]++;
 
-        Tilemap regionTilemap = GetOrCreateRegionTilemap(regionCoord);
-
-        int startX = chunkData.chunkCoord.x * WorldGenerator.chunkSize;
-        int startY = chunkData.chunkCoord.y * WorldGenerator.chunkSize;
-        var bounds = new BoundsInt(startX, startY, 0, WorldGenerator.chunkSize, WorldGenerator.chunkSize, 1);
-
-        regionTilemap.SetTilesBlock(bounds, chunkData.tiles);
+        // Tilemap은 더 이상 사용하지 않지만, Region 관리를 위해 유지
+        GetOrCreateRegionTilemap(regionCoord);
     }
 
     private void UnloadChunk(Vector2Int chunkCoord)
     {
         if (_chunkDataMap.TryGetValue(chunkCoord, out ChunkData chunkData) && chunkData.status == ChunkStatus.Ready)
         {
-            // 1. 해당 청크가 속한 Region의 Tilemap에서 타일들을 제거합니다.
-            Vector2Int regionCoord = GetRegionCoord(chunkCoord);
-            if (_activeRegionTilemaps.TryGetValue(regionCoord, out Tilemap regionTilemap))
+            // 1. TerrainChunk 제거
+            if (_activeTerrainChunks.TryGetValue(chunkCoord, out TerrainChunk terrainChunk))
             {
-                int startX = chunkCoord.x * WorldGenerator.chunkSize;
-                int startY = chunkCoord.y * WorldGenerator.chunkSize;
-                var bounds = new BoundsInt(startX, startY, 0, WorldGenerator.chunkSize, WorldGenerator.chunkSize, 1);
-                
-                // emptyTileArray는 모든 타일을 null(빈 타일)로 설정하기 위한 배열입니다.
-                regionTilemap.SetTilesBlock(bounds, emptyTileArray); 
+                if (terrainChunk != null && terrainChunk.gameObject != null)
+                {
+                    Destroy(terrainChunk.gameObject);
+                }
+                _activeTerrainChunks.Remove(chunkCoord);
             }
 
             // 2. Region의 활성 청크 카운트를 줄입니다.

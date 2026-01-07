@@ -31,14 +31,14 @@ Material:
     m_Floats:
     - _FlashlightSoftness: 0.9
     - _FogDarkness: 0.99
-    - _FogYLimit: 0.09733132
+    - _FogYLimit: -0.2699778
     - _Radius: 0.01
     - _SightAngle: 0.96
     - _SightDistance: 1
     - _Softness: 0.1
     m_Colors:
     - _Color: {r: 0.9433962, g: 0.062299617, b: 0.062299617, a: 1}
-    - _PlayerDir: {r: 0.059239164, g: 0.9982438, b: 0, a: 0}
-    - _PlayerScreenPos: {r: 0.5001134, g: 0.49976993, b: 0, a: 0}
+    - _PlayerDir: {r: 0.30740508, g: 0.95157874, b: 0, a: 0}
+    - _PlayerScreenPos: {r: 0.49988654, g: 0.49977306, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

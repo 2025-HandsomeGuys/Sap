@@ -11,6 +11,16 @@ public class Digger : MonoBehaviour
     public LayerMask groundLayer;
 
     private float nextDigTime = 0f;
+    private Camera cam;
+
+    private void Start()
+    {
+        cam = Camera.main;
+        if (cam == null)
+        {
+            Debug.LogError("[Digger] Camera.main not found. Assign a Camera tagged MainCamera.");
+        }
+    }
 
     void Update()
     {
@@ -27,7 +37,10 @@ public class Digger : MonoBehaviour
 
     void AttemptDig()
     {
-        Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        if (cam == null)
+            return;
+
+        Vector2 mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
         Vector2 playerPos = transform.position;
 
         // 사거리 체크
@@ -44,14 +57,34 @@ public class Digger : MonoBehaviour
     void DigAt(Vector2 position)
     {
         Collider2D[] hits = Physics2D.OverlapCircleAll(position, digRadius, groundLayer);
+        
+        Debug.Log($"Digger: Attempting to dig at {position} with radius {digRadius}. Found {hits.Length} colliders.");
 
+        bool foundTerrainChunk = false;
         foreach (Collider2D hit in hits)
         {
+            // 플레이어나 다른 GameObject는 무시
+            if (hit.CompareTag("Player"))
+            {
+                continue;
+            }
+            
             TerrainChunk chunk = hit.GetComponent<TerrainChunk>();
             if (chunk != null)
             {
+                foundTerrainChunk = true;
+                Debug.Log($"Digger: Found TerrainChunk at {chunk.transform.position}, calling Dig()");
                 chunk.Dig(position, digRadius);
             }
+        }
+        
+        if (!foundTerrainChunk && hits.Length > 0)
+        {
+            Debug.LogWarning($"Digger: Found {hits.Length} collider(s) but no TerrainChunk component. Check LayerMask and TerrainChunk collider setup.");
+        }
+        else if (hits.Length == 0)
+        {
+            Debug.LogWarning($"Digger: No colliders found at {position}. Check LayerMask and TerrainChunk collider setup.");
         }
     }
 
