@@ -4,20 +4,28 @@ public class Digger : MonoBehaviour
 {
     [Header("채굴 설정")]
     public float digRadius = 0.5f;
-    public float digCooldown = 0.1f;    // 광클 제한 (0.1초보다 빠르게 클릭하면 무시됨)
+    public float digCooldown = 0.1f;
     public float maxDigRange = 3.0f;
 
-    [Header("레이어")]
-    public LayerMask groundLayer;
+    [Header("매니저 연결")]
+    public InfinityMapManager mapManager;
 
     private float nextDigTime = 0f;
 
+    void Start()
+    {
+        // 혹시 인스펙터에서 연결 안 했을 경우 자동으로 찾기
+        if (mapManager == null)
+        {
+            mapManager = FindObjectOfType<InfinityMapManager>();
+        }
+    }
+
     void Update()
     {
-        // [변경됨] 꾹 누르기가 아니라 '누르는 순간' 감지
+        // 클릭 순간 감지
         if (Input.GetMouseButtonDown(0))
         {
-            // 쿨타임 체크 (너무 빠른 연타 방지)
             if (Time.time >= nextDigTime)
             {
                 AttemptDig();
@@ -36,22 +44,19 @@ public class Digger : MonoBehaviour
         if (distance <= maxDigRange)
         {
             DigAt(mousePos);
-            // 다음 클릭 가능 시간 설정
             nextDigTime = Time.time + digCooldown;
         }
     }
 
     void DigAt(Vector2 position)
     {
-        Collider2D[] hits = Physics2D.OverlapCircleAll(position, digRadius, groundLayer);
+        // [핵심 변경 사항]
+        // 기존: Physics2D로 콜라이더를 찾아서 각각 Dig 호출 (경계선에서 부정확할 수 있음)
+        // 변경: 매니저에게 좌표와 범위를 주면, 매니저가 알아서 걸쳐있는 모든 청크를 찾아 계산함 (정확함)
 
-        foreach (Collider2D hit in hits)
+        if (mapManager != null)
         {
-            TerrainChunk chunk = hit.GetComponent<TerrainChunk>();
-            if (chunk != null)
-            {
-                chunk.Dig(position, digRadius);
-            }
+            mapManager.ModifyTerrain(position, digRadius);
         }
     }
 
