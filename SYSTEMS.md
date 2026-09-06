@@ -1,4 +1,4 @@
-# Sap-Sap 구현된 시스템 목록 (2026-03-21 기준)
+# Stovel 구현된 시스템 목록 (2026-03-21 기준)
 
 ## 지형/세계 생성
 - 무한 스크롤 맵 (InfinityMapManager, ChunkPool, ActiveChunkRegistry)
