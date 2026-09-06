@@ -1,0 +1,39 @@
+{
+  "enabled": true,
+
+  "rock": {
+    "baseChance": 0.0035,
+    "mineralRockMultiplier": 2.0,
+    "pityRocks": 400,
+    "sortingOrder": 1
+  },
+
+  "dungeonChest": {
+    "chance": 0.35,
+    "pityChests": 6
+  },
+
+  "layers": [
+    { "tileType": "Dirt",          "tierWeights": [100,   0,   0] },
+    { "tileType": "Ice",           "tierWeights": [100,   8,   0] },
+    { "tileType": "MagmaRock",     "tierWeights": [ 25, 100,   8] },
+    { "tileType": "MeteoriteRock", "tierWeights": [ 10,  25, 100] }
+  ],
+
+  "tiers": [
+    {
+      "tier": 1,
+      "relics": ["PigeonFeather", "Magnet", "SpiderGlove", "JunkSpring", "ToolSwap", "Mp3", "Blind"]
+    },
+    {
+      "tier": 2,
+      "relics": ["Generator", "GamblerGlasses", "Anvil", "Steroid", "GravityFlip", "DashBomb",
+                 "Furnace", "BlackMarket", "DetectionPulse", "OverloadBattery", "OneWayPortal", "Trident"]
+    },
+    {
+      "tier": 3,
+      "relics": ["Invincibility", "PlasmaCutter", "DrillDrone", "Lightning", "MinerDrone",
+                 "Jetpack", "XRay", "Hourglass"]
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+﻿7일차 2층 드릴 보유
+
+saved : 2026-08-11 22:34:31
+slot  : 1
+scene : DemoUnderground
+day   : 15일차 오전
+gold  : 629
+pos   : (4.1, 5.9)  청크 (0, 0)

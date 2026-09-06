@@ -1,0 +1,508 @@
+key,kr,en,cn
+tt_quantity,수량: {0},Quantity: {0},數量: {0}
+tt_max_stack, (최대 {0}), (Max {0}), (最大 {0})
+tt_stackable, (스택 가능), (Stackable), (可堆疊)
+tt_unstackable, (스택 불가), (Unstackable), (不可堆疊)
+tt_weight,"무게: {0:0.0}","Weight: {0:0.0}","重量: {0:0.0}"
+tt_quantity_label,수량,Quantity,數量
+tt_weight_label,무게,Weight,重量
+tt_enhance_label,강화,Enhance,強化
+tt_encumbered,"
+[경고] 과적 상태입니다.","
+[Warning] Overweight.","
+[警告] 超重。"
+tt_effect_label,효과: ,Effect: ,效果: 
+tt_cost_format,비용: {0} 골드,Cost: {0} Gold,花費: {0} 金幣
+tt_unlocked,해금됨,Unlocked,已解鎖
+tt_can_unlock,해금 가능,Can Unlock,可解鎖
+tt_locked,잠김,Locked,鎖定
+tt_prereq_label,선행 조건:,Prerequisite:,先決條件:
+tt_insufficient_gold,골드 부족 (현재: {0}),Not enough Gold (Have: {0}),金幣不足 (現有: {0})
+tt_price_label,판매 가격: {0}골드,Price: {0} Gold,售價: {0}金幣
+ui_shop_gold_prefix,골드: ,Gold: ,金幣: 
+ui_shop_sell_format,"{0} {1}개 판매
+예상 가격: {2} G","Sell {1}x {0}
+Expected: {2} G","出賣 {1}個 {0}
+預計: {2} G"
+ui_shop_price_format,{0}골드,{0} Gold,{0}金幣
+ui_shop_stock_unlimited,재고: 무제한,Stock: Unlimited,庫存: 無限
+ui_shop_stock_format,재고: {0},Stock: {0},庫存: {0}
+ui_shop_buy_title_format,{0} 구매,Buy {0},購買 {0}
+ui_shop_buy_info_format,"가격: {0}골드
+최대 구매 가능: {1}개","Price: {0} Gold
+Max Buy: {1}","價格: {0}金幣
+最大購買量: {1}"
+ui_inv_item,아이템,Items,物品
+ui_inv_weight,무게,Weight,重量
+ui_inv_equip,장비,Equipment,裝備
+ui_inv_drop,버리기,Drop,丟棄
+ui_inv_owned,현재 보유,Owned,當前持有
+ui_inv_count_unit,개,,個
+ui_inv_enter_drop_count,버릴 개수를 입력하세요.,Enter drop amount.,請輸入丟棄數量。
+ui_inv_head,머리,Head,頭部
+ui_inv_clothes,옷,Clothes,服裝
+ui_inv_shoes,신발,Shoes,鞋子
+ui_inv_relic,유물,Relic,遺物
+ui_relic_slot_locked,잠김,Locked,鎖定
+ui_warehouse_bag,가방,Bag,背包
+ui_subquest_title,서브퀘스트,Sub Quests,支線任務
+ui_subquest_slot_info,서브퀘스트 슬롯: {0}/{1},Quest Slots: {0}/{1},任務槽: {0}/{1}
+ui_subquest_empty,수락 가능한 서브퀘스트가 없습니다.,No available sub quests.,沒有可接的支線任務。
+ui_subquest_no_manager,퀘스트 매니저를 찾을 수 없습니다.,Quest Manager not found.,找不到任務管理器。
+ui_subquest_mining_level,채광 Lv.{0},Mining Lv.{0},採礦 Lv.{0}
+ui_subquest_accept,수락,Accept,接受
+ui_subquest_no_slot,슬롯 부족,No Slots,欄位不足
+quest_reward_money,돈 {0},Money {0},金錢 {0}
+quest_reward_item,아이템,Item,物品
+quest_reward_equipment,장비,Equipment,裝備
+quest_reward_mineral,광물,Mineral,礦石
+ui_warehouse_all,전체,All,全部
+ui_warehouse_mineral,광물,Mineral,礦石
+ui_warehouse_equipment,장비,Equipment,裝備
+ui_warehouse_item,소모품,Items,消耗品
+ui_warehouse_sort,정렬,Sort,排序
+ui_settlement_continue,아무 키나 눌러서 계속,Press any key to continue,按任意鍵繼續
+ui_loading_progress,로딩 중... {0:F0}%,Loading... {0:F0}%,載入中... {0:F0}%
+ui_trash_confirm_title,버리기 확인,Confirm Drop,確認丟棄
+ui_trash_confirm_item_format,"정말 {0} {1}개를 버리시겠습니까?
+(버린 아이템은 복구할 수 없습니다)","Do you really want to drop {0} x{1}?
+(Dropped items cannot be recovered)","您確定要丟棄 {0} x{1} 嗎？
+(丟棄的物品無法恢復)"
+ui_trash_confirm_equip_format,"정말 {0} 장비를 버리시겠습니까?
+(버린 장비는 복구할 수 없습니다)","Do you really want to drop the equipment {0}?
+(Dropped equipment cannot be recovered)","您確定要丟棄裝備 {0} 嗎？
+(丟棄的裝備無法恢復)"
+ui_pause_mainmenu_title,메인 화면으로 이동,Return to Main Menu,返回主選單
+ui_pause_mainmenu_msg,"지하에서의 진행 내용은 저장되지 않습니다.
+정말 메인 화면으로 이동하시겠습니까?","Underground progress will not be saved.
+Do you really want to return to the main menu?","地下進度將不會被儲存。
+您確定要返回主選單嗎？"
+ui_elevator_surface_title,지상으로 이동,Return to Surface,返回地面
+ui_elevator_surface_msg,정산 후 지상으로 이동하시겠습니까?,Proceed to settlement and return to the surface?,是否結算並返回地面？
+MainQuestButton,메인 퀘스트,Main Quest,主線任務
+FirstSubQuestButton,서브 퀘스트 1,Sub Quest 1,支線任務 1
+SecondSubQuestButton,서브 퀘스트 2,Sub Quest 2,支線任務 2
+quest_status_need_accept,수락 필요,Needs Acceptance,需要接受
+quest_status_completed,완료됨,Completed,已完成
+quest_status_submit_at_truck,트럭에서 제출 가능,Submit at Truck,可在卡車處提交
+quest_status_progress,진행 중,In Progress,進行中
+quest_status_submittable,제출 가능,Ready to Submit,可提交
+quest_empty_status,없음,None,無 
+quest_empty_title,퀘스트 없음,No Quests,無任務
+quest_empty_sub,서브 퀘스트를 수락하세요,Accept Sub Quests,接受支線任務
+ds_title,{0}일차 정산,Day {0} Summary,第{0}天結算
+ds_mineral,광물 판매,Minerals Sold,礦物出售
+ds_stock,주식 손익,Stock P/L,股票損益
+ds_coin,코인 손익,Coin P/L,虛擬幣損益
+ds_shop,상점 구매,Shop Purchases,商店購買
+ds_upgrade,업그레이드,Upgrades,升級
+ds_other,기타,Other,其他
+ds_total,최종 손익,Net Profit,最終損益
+ds_gold_after,보유 골드,Gold,持有金幣
+ds_continue,클릭하여 계속,Click to continue,點擊繼續
+ui_settings_title,설 정,Settings,設 定
+ui_settings_sec_sound,사운드,Sound,音效
+ui_settings_master,마스터 볼륨,Master Volume,主音量
+ui_settings_bgm,배경음악 (BGM),Music (BGM),背景音樂 (BGM)
+ui_settings_sfx,효과음 (SFX),Sound Effects (SFX),音效 (SFX)
+ui_settings_sec_graphic,그래픽,Graphics,畫面
+ui_settings_resolution,해상도,Resolution,解析度
+ui_settings_fullscreen,전체화면,Fullscreen,全螢幕
+ui_settings_vsync,수직동기화 (VSync),VSync,垂直同步 (VSync)
+ui_settings_framerate,프레임 제한,Frame Limit,幀數限制
+ui_settings_fps_unlimited,무제한,Unlimited,無限制
+ui_settings_sec_language,언어,Language,語言
+ui_settings_language,게임 언어,Game Language,遊戲語言
+ui_settings_sec_control,조작,Controls,操作
+ui_settings_key_move,이동,Move,移動
+ui_settings_key_jump,점프,Jump,跳躍
+ui_settings_key_mine,채굴 / 공격,Mine / Attack,挖掘 / 攻擊
+ui_settings_key_lclick,좌클릭,Left Click,左鍵
+ui_settings_key_interact,상호작용,Interact,互動
+ui_settings_key_inventory,인벤토리,Inventory,背包
+ui_settings_key_quest,퀘스트 로그,Quest Log,任務日誌
+ui_settings_key_pause,일시정지,Pause,暫停
+ui_settings_close,닫 기,Close,關 閉
+quest_title,퀘 스 트,Quests,任 務
+quest_tab_main,메인,Main,主線
+quest_tab_sub1,서브 I,Sub I,支線 I
+quest_tab_sub2,서브 II,Sub II,支線 II
+quest_submit,제출하기,Submit,提交
+quest_hint,Q / E : 탭 전환   ·   J / ESC : 닫기,Q / E : Switch tab   ·   J / ESC : Close,Q / E : 切換頁籤   ·   J / ESC : 關閉
+quest_requirements,필요 광물,Required,所需礦石
+quest_rewards,보상,Rewards,獎勵
+quest_no_requirements,필요한 광물이 없습니다.,No minerals required.,無需礦石。
+quest_no_rewards,보상이 없습니다.,No rewards.,無獎勵。
+quest_empty_main,진행 가능한 메인 퀘스트가 없습니다.,No main quest available.,沒有可進行的主線任務。
+ui_subquest_hint,수락하면 슬롯에 담깁니다   ·   Space / ESC : 닫기,Accepting fills a slot   ·   Space / ESC : Close,接受後佔用一個槽位   ·   Space / ESC : 關閉
+ui_subquest_accepted,{0} 수락됨,Accepted: {0},已接受：{0}
+ui_settlement_title,탐험 정산,Expedition Report,探險結算
+ui_settlement_depth,최대 깊이,Max Depth,最大深度
+ui_settlement_time,체류 시간,Time Underground,滯留時間
+ui_settlement_minerals,가져온 광물,Minerals Brought,帶回的礦石
+ui_settlement_total,총 {0}개 획득,{0} collected,共獲得 {0} 個
+ui_settlement_nothing,가져온 광물이 없습니다.,No minerals brought up.,沒有帶回任何礦石。
+ui_escape_title,긴급 탈출,Emergency Escape,緊急脫出
+ui_escape_subtitle,서둘러 빠져나오며 짐의 대부분을 떨어뜨렸습니다.,You dropped most of your haul while escaping.,匆忙撤離時掉落了大部分收穫。
+ui_death_title,탈진,Collapsed,力竭
+ui_death_subtitle,"쓰러진 당신을 누군가 끌어올렸습니다. 손에 쥔 것만 남았습니다.","Someone hauled you back up. Only what was in your hand remains.","有人把你拖了上來。只剩下手中緊握的東西。"
+ui_death_subtitle_alllost,"쓰러진 당신을 누군가 끌어올렸습니다. 캔 광물은 모두 잃었습니다.","Someone hauled you back up. Everything you mined is gone.","有人把你拖了上來。挖到的礦石全部失去了。"
+ui_escape_subtitle_alllost,서둘러 빠져나오느라 캔 광물을 모두 떨어뜨렸습니다.,You dropped everything you mined while escaping.,匆忙撤離時掉落了所有挖到的礦石。
+ui_escape_lost,잃은 광물,Lost,失去的礦石
+ui_escape_kept,챙겨온 광물,Kept,帶回的礦石
+ui_escape_none,없음,None,無
+ui_escape_count,{0}개,{0} pcs,{0} 個
+ui_escape_confirm,확인,Confirm,確認
+ui_escape_hint,Space / ESC : 확인,Space / ESC : Confirm,Space / ESC : 確認
+ui_escape_seq_alert,경 고,WARNING,警 告
+ui_escape_seq_title,긴급 탈출,EMERGENCY ESCAPE,緊急脫出
+ui_escape_seq_sub,캔 광물의 일부를 버리고 지상으로 대피합니다…,You flee to the surface — dropping part of your haul…,丟下部分收穫 逃向地面…
+ui_guide_no_preview,미리보기 없음,No preview,無預覽
+ui_guide_close,닫기 ESC,Close ESC,關閉 ESC
+ui_guide_controls_title,조작,Controls,操作
+interact_generic,상호작용,Interact,互動
+interact_pickup,줍기,Pick up,拾取
+interact_chest_open,상자 열기,Open chest,打開寶箱
+interact_relic_pickup,유물 줍기,Pick up relic,拾取遺物
+interact_elevator,엘리베이터,Elevator,電梯
+interact_npc_talk,{0}와 대화,Talk to {0},與{0}對話
+interact_board,게시판 확인,Check board,查看佈告欄
+interact_market,거래소 단말기,Market terminal,交易終端
+interact_bed_sleep,하루를 마무리 하기,End the day,結束一天
+interact_bed_daytime,낮에는 잘 수 없다,You can't sleep during the day,白天無法入睡
+interact_bed_choose,수면 / 낮잠,Sleep / Nap,睡眠 / 小睡
+interact_bed_nap,낮잠 자기,Take a nap,小睡片刻
+ui_bed_rest_title,침대,Bed,床
+ui_bed_nap,낮잠 (다음 시세까지),Nap (until next tick),小睡（至下一波行情）
+ui_bed_sleep,하루 마무리 (수면),End the day (sleep),結束一天（睡眠）
+ui_bed_rest_remaining,남은 낮잠 {0}회,{0} naps left,剩餘小睡 {0} 次
+ui_bed_rest_hint,W / S : 이동    Space : 선택    ESC : 취소,W / S : Move    Space : Select    ESC : Cancel,W / S：移動    Space：選擇    ESC：取消
+interact_dungeon_enter,지하로 들어가기,Go underground,進入地下
+interact_dungeon_night,날이 어두워져 들어갈 수 없다,It's too dark to go down,天色已暗 無法進入
+interact_dungeon_used,이미 탐험한 던전,Already explored,已探索過的地城
+interact_surface_enter,지상으로 나가기,Go to the surface,前往地面
+interact_chunk_enter,들어가기,Enter,進入
+interact_chunk_exit,지하로 돌아가기,Back to the mine,返回地下
+interact_wardrobe,옷장,Wardrobe,衣櫃
+ui_relic_active,액티브,Active,主動
+ui_relic_passive,패시브,Passive,被動
+ui_pause_cancel,취소,Cancel,取消
+ui_preview_no_prefab,"UiPlayer 프리뷰 프리팹을
+인스펙터에 지정하세요","Assign the UiPlayer preview prefab
+in the Inspector","請在檢視面板
+指定 UiPlayer 預覽預製體"
+ui_preview_no_art,"플레이어 기본 모습 스프라이트를
+인스펙터에 지정하세요","Assign the player's default sprite
+in the Inspector","請在檢視面板
+指定玩家默認外觀精靈"
+stat_defense,방어력,Defense,防禦力
+ui_elevator_entry_title,어느 층으로 내려갈까요?,Which floor do you want to go to?,要下到哪一層？
+ui_close,닫기,Close,關閉
+ui_equp_hint,WASD : 이동   ·   Space : 선택 / 강화   ·   Q / E : 필터 전환   ·   ESC / Tab : 닫기,WASD : Move   ·   Space : Select / Upgrade   ·   Q / E : Switch filter   ·   ESC / Tab : Close,WASD : 移動   ·   Space : 選擇 / 強化   ·   Q / E : 切換篩選   ·   ESC / Tab : 關閉
+ui_equp_title,장 비 강 화,UPGRADE GEAR,裝 備 強 化
+ui_equp_list,보유 장비·유물,Owned Gear & Relics,持有裝備·遺物
+ui_equp_f_all,전체,All,全部
+ui_equp_f_equip,장비,Equipment,裝備
+ui_equp_f_relic,유물,Relic,遺物
+ui_equp_detail,강화,Upgrade,強化
+ui_equp_stat_header,강화 시 변화,Changes on Upgrade,強化後變化
+ui_equp_cost,강화 비용,Upgrade Cost,強化費用
+ui_equp_do,강화,Upgrade,強化
+ui_equp_empty,왼쪽에서 강화할 장비나 유물을 선택하세요.,Select gear or a relic to upgrade on the left.,請在左側選擇要強化的裝備或遺物。
+ui_equp_material,필요 재료,Materials Needed,所需材料
+ui_equp_testwarn,⚠ 임시 테스트 값 (밸런스 미확정),⚠ Temporary test values (balance not final),⚠ 臨時測試數值（平衡未定）
+ui_equp_maxed,최대 강화,Max Level,已滿級
+ui_equp_no_change,변화 없음,No change,無變化
+ui_equp_relic_effect,유물 효과,Relic Effect,遺物效果
+ui_equp_no_material,없음,None,無
+ui_inv_hint,쓰레기통으로 끌어다 놓으면 버립니다   ·   WASD : 이동 / Space : 선택   ·   마우스를 올리면 설명   ·   ESC / Tab : 닫기,Drag to the trash to discard   ·   WASD: move cursor / Space: select   ·   Hover for details   ·   ESC / Tab : Close,拖到垃圾桶即可丟棄   ·   WASD：移動游標 / Space：選擇   ·   懸停查看說明   ·   ESC / Tab : 關閉
+ui_inv_equip_locked,지하에서는 장비·유물을 벗을 수 없습니다. 지상 창고에서 바꾸세요.,You cannot remove gear or relics underground. Change them at the surface storage.,地下無法卸下裝備或遺物。請在地面倉庫更換。
+ui_inv_title,가 방,BAG,背 包
+ui_inv_mineral,광물,Minerals,礦物
+ui_inv_trash,쓰레기통,Trash,垃圾桶
+ui_inv_trash_hint,여기로 끌어다 놓으면 버립니다. 집은 채로 우클릭하면 하나씩 버립니다.,Drag here to discard. Right-click while holding to discard one at a time.,拖到此處丟棄。手持物品時按右鍵可逐個丟棄。
+ui_inv_gear,장비 · 아이템,Gear · Items,裝備 · 物品
+ui_inv_trash_equip_locked,지하에서는 장비·유물을 벗거나 버릴 수 없습니다.,You can't remove or discard gear/relics underground.,在地下無法脫下或丟棄裝備·遺物。
+ui_inv_trash_confirm_title,버리기,Discard,丟棄
+ui_inv_trash_confirm_msg,"{0}을(를) 버립니다.
+버린 물건은 되돌릴 수 없습니다.","Discard {0}.
+Discarded items can't be recovered.","丟棄 {0}。
+丟棄的物品無法找回。"
+ui_inv_trash_done,{0}을(를) 버렸습니다.,Discarded {0}.,已丟棄 {0}。
+npc_talk,대화,Talk,對話
+npc_quest,퀘스트,Quests,任務
+npc_shop,상점,Shop,商店
+npc_upgrade,업그레이드,Upgrade,升級
+npc_close,닫기,Close,關閉
+ui_pause_title,일시정지,Paused,暫停
+ui_pause_resume,계속하기,Resume,繼續
+ui_pause_settings,설 정,Settings,設 置
+ui_pause_escape,긴급 탈출,Emergency Escape,緊急撤離
+ui_pause_mainmenu,메인 화면,Main Menu,主界面
+ui_pause_quit,게임 종료,Quit Game,退出遊戲
+ui_pause_confirm,확인,Confirm,確認
+ui_pause_escape_title,긴급 탈출,Emergency Escape,緊急撤離
+ui_pause_escape_msg,"지상으로 즉시 돌아갑니다.
+가장 비싼 광물 1~2개만 챙기고 나머지는 모두 잃습니다.","Return to the surface immediately.
+You'll keep only your 1-2 most valuable minerals and lose the rest.","立即返回地面。
+只能帶走最貴重的1~2個礦物，其餘全部失去。"
+ui_pause_quit_title,게임 종료,Quit Game,退出遊戲
+ui_pause_quit_msg,게임을 종료하시겠습니까?,Quit the game?,確定要退出遊戲嗎？
+ui_settings_cancel,취 소,Cancel,取 消
+ui_settings_apply,적 용,Apply,應 用
+interact_workbench,작업대 (강화),Workbench (Upgrade),工作臺 (強化)
+interact_workbench_upgrade,업그레이드,Upgrade Tree,升級
+interact_elevator_enter,엘리베이터로 내려가기,Descend by Elevator,乘電梯下降
+interact_locked_facility,아직 사용할 수 없다,Not available yet,尚無法使用
+ui_shop_hint,구매한 물건은 창고로 들어갑니다   ·   판매는 창고의 광물만   ·   ESC : 닫기,Purchases go to your storage   ·   Only storage minerals can be sold   ·   ESC : Close,購買的物品進入倉庫   ·   僅可出售倉庫中的礦物   ·   ESC : 關閉
+ui_shop_title,상 점,SHOP,商 店
+ui_shop_buy,구매,Buy,購買
+ui_shop_tab_item,소모품,Consumables,消耗品
+ui_shop_tab_equip,장비,Equipment,裝備
+ui_shop_tab_relic,유물,Relic,遺物
+ui_shop_sell,판매,Sell,出售
+ui_shop_sell_source,창고의 광물,Storage Minerals,倉庫礦物
+ui_shop_sell_all,전부 팔기,Sell All,全部出售
+ui_shop_buy_btn,구매,Buy,購買
+ui_shop_sell_one,1개,One,單個
+ui_shop_sell_stack,전부,All,全部
+ui_shop_owned,보유 중,Owned,已擁有
+ui_shop_stock_label,재고,Stock,庫存
+ui_shop_owned_btn,보유,Owned,擁有
+ui_shop_locked,업그레이드 필요,Upgrade Required,需要升級
+ui_shop_locked_btn,잠김,Locked,鎖定
+ui_shop_layer_1,1층 · 땅,Layer 1 · Ground,第1層 · 土地
+ui_shop_layer_2,2층 · 얼음땅,Layer 2 · Ice,第2層 · 冰地
+ui_shop_layer_3,3층 · 용암땅,Layer 3 · Magma,第3層 · 熔岩地
+ui_shop_layer_4,4층 · 우주,Layer 4 · Space,第4層 · 宇宙
+ui_shop_layer_other,기타,Other,其他
+ui_shop_need_upgrade,'{0}' 업그레이드 필요,Requires '{0}',需要「{0}」
+ui_shop_unit_price,개당,Each,單價
+ui_shop_expected,예상 수익,Est. Profit,預計收益
+ui_shop_already_owned,이미 보유 중입니다.,You already own this.,你已擁有此物品。
+ui_shop_no_gold,골드가 부족합니다.,Not enough gold.,金幣不足。
+ui_shop_bought_relic,유물을 얻었습니다. 창고·가방의 유물 칸에서 확인·교체하세요.,Relic acquired. Check or swap it in the relic slots of your storage/bag.,已獲得遺物。請在倉庫·背包的遺物欄查看或更換。
+ui_shop_bought,구매했습니다. 물건은 창고에 있습니다.,Purchased. The item is in your storage.,購買成功，物品已存入倉庫。
+ui_shop_buy_failed,구매하지 못했습니다.,Purchase failed.,購買失敗。
+ui_shop_sell_failed,판매하지 못했습니다.,Sale failed.,出售失敗。
+ui_shop_sold_all,창고의 광물을 전부 팔았습니다.,Sold all minerals from storage.,已售出倉庫中所有礦物。
+ui_shop_nothing_to_sell,팔 광물이 없습니다.,No minerals to sell.,沒有可出售的礦物。
+ui_shop_max,최대 수량,Max Quantity,最大數量
+ui_shop_confirm,구매,Buy,購買
+ui_shop_cancel,취소,Cancel,取消
+ui_shop_max_label,최대,Max,最大
+ui_shop_total,총액,Total,總額
+ui_upgrade_hint,'해금' 으로 구매   ·   드래그로 이동   ·   휠로 확대/축소   ·   ESC : 닫기,'Unlock' to purchase   ·   Drag to move   ·   Wheel to zoom   ·   ESC : Close,點擊'解鎖'購買   ·   拖動移動   ·   滾輪縮放   ·   ESC : 關閉
+ui_upgrade_title,업 그 레 이 드,UPGRADES,升 級
+ui_upgrade_unlock,해금,Unlock,解鎖
+ui_upgrade_nodata,업그레이드 데이터를 찾을 수 없습니다.,Upgrade data not found.,找不到升級數據。
+ui_upgrade_tier_locked,이전 단계를 완료하면 열립니다.,Unlocks after completing the previous tier.,完成上一階段後解鎖。
+ui_upgrade_owned,보유,Owned,擁有
+ui_upgrade_effect,효과,Effect,效果
+ui_upgrade_cost,비용,Cost,費用
+ui_upgrade_status_owned,보유 중,Owned,已擁有
+ui_upgrade_status_tierlocked,계층 잠김,Tier Locked,階層鎖定
+ui_upgrade_status_prereq,선행 업그레이드 필요,Requires Prerequisite,需要前置升級
+ui_upgrade_status_nogold,골드 부족,Not Enough Gold,金幣不足
+ui_upgrade_status_ready,해금 가능,Can Unlock,可解鎖
+ui_upgrade_owned_full,보유 완료,Fully Owned,已全部擁有
+ui_upgrade_prereq_label,필요:,Requires:,需要:
+ui_upgrade_levelup,강화,Upgrade,強化
+ui_upgrade_status_levelup,강화 가능,Can Upgrade,可強化
+ui_upgrade_status_maxlevel,최대 레벨,Max Level,已達最高等級
+ui_upgrade_level_maxed,최대 레벨,Max Level,已達最高等級
+ui_upgrade_level_max,MAX,MAX,MAX
+ui_upgrade_per_level,레벨당,per level,每級
+ui_wh_hint,좌클릭 : 손에 집기·전부 옮기기   ·   우클릭 : 장착 / 해제 (아이템 1개씩)   ·   WASD : 이동 / Space : 선택   ·   쓰레기통 : 버리기   ·   ESC / Tab : 닫기,Left-click: pick up / move all   ·   Right-click: equip / unequip (items one by one)   ·   WASD: move cursor / Space: select   ·   Trash: discard   ·   ESC / Tab: Close,左鍵：拿取·全部移動   ·   右鍵：裝備 / 卸下（物品逐個）   ·   WASD：移動游標 / Space：選擇   ·   垃圾桶：丟棄   ·   ESC / Tab：關閉
+ui_wh_title,창 고,STORAGE,倉 庫
+ui_wh_storage,창고,Storage,倉庫
+ui_wh_tab_all,전체,All,全部
+ui_wh_tab_mineral,광물,Minerals,礦物
+ui_wh_tab_item,아이템,Items,物品
+ui_wh_tab_equip,장비,Equipment,裝備
+ui_wh_tab_relic,유물,Relic,遺物
+ui_wh_sort,정렬,Sort,整理
+ui_wh_deposit_all,가방 비우기,Empty Bag,清空背包
+ui_wh_bag,가방,Bag,背包
+ui_wh_quest,퀘스트,Quests,任務
+ui_wh_quest_main,메인,Main,主線
+ui_wh_quest_sub,서브,Sub,支線
+ui_wh_quest_none_main,진행 중인 메인 퀘스트 없음,No active main quest,無進行中的主線任務
+ui_wh_quest_none_sub,빈 슬롯 — 게시판에서 수락,Empty slot — accept at the board,空槽 — 在公告板接取
+ui_wh_quest_ready,완료 가능,Ready to complete,可完成
+ui_wh_quest_no_req,요구 조건 없음,No requirements,無要求
+ui_wh_deposited,가방의 물건과 장비·유물을 모두 창고에 넣었습니다.,"Moved all bag items, gear, and relics into storage.",已將背包物品與裝備·遺物全部存入倉庫。
+ui_wh_trash_relic_locked,유물은 버릴 수 없습니다.,Relics can't be discarded.,遺物無法丟棄。
+ui_wh_trash_equip_locked,장비는 버릴 수 없습니다.,Equipment can't be discarded.,裝備無法丟棄。
+ui_wh_bag_full_item,아이템 칸이 가득 찼습니다.,Item slots are full.,物品欄已滿。
+ui_wh_relic_no_slot,"유물 칸이 없습니다. 업그레이드에서 유물 슬롯을 먼저 여세요.","No relic slot yet. Unlock a relic slot in Upgrades first.","尚無遺物欄位。請先在升級中解鎖遺物欄位。"
+ui_wh_mineral_locked,광물은 창고에 보관합니다. 상점에서 판매하세요.,Minerals stay in storage. Sell them at the shop.,礦物存放於倉庫，請在商店出售。
+ui_wh_no_bag,가방을 찾을 수 없습니다.,Bag not found.,找不到背包。
+ui_wh_equip_bad_slot,이 장비를 넣을 수 있는 칸이 아닙니다.,This gear can't go in that slot.,該裝備無法放入此欄。
+ui_wh_equip_full,해당 부위에 이미 장비가 있습니다.,That slot already has gear equipped.,該部位已裝備物品。
+ui_wh_full,창고가 가득 찼습니다.,Storage is full.,倉庫已滿。
+ui_stat_title,스탯,Stats,屬性
+ui_stat_none,강화된 스탯이 없습니다.,No enhanced stats.,沒有強化的屬性。
+ui_topquest_hint,WASD : 이동 / Space : 선택   ·   Q / E : 퀘스트 탭 전환   ·   ESC / Tab : 닫기,WASD : Move / Space : Select   ·   Q / E : Switch quest tab   ·   ESC / Tab : Close,WASD：移動 / Space：選擇   ·   Q / E：切換任務分頁   ·   ESC / Tab：關閉
+ui_statcat_mining,채광,Mining,採礦
+ui_statcat_movement,이동,Movement,移動
+ui_statcat_stamina,스태미나,Stamina,耐力
+ui_statcat_drill,드릴,Drill,鑽頭
+ui_statcat_combat,전투,Combat,戰鬥
+ui_statcat_economy,경제,Economy,經濟
+ui_statcat_exploration,탐색,Exploration,探索
+ui_stat_mining_level,채광 레벨,Mining Level,採礦等級
+ui_stat_mining_speed,채굴 속도,Mining Speed,挖掘速度
+ui_stat_mining_range,채굴 범위,Mining Range,挖掘範圍
+ui_stat_mining_cd,채굴 쿨다운,Mining Cooldown,挖掘冷卻
+ui_stat_pickaxe_dmg,곡괭이 피해,Pickaxe Damage,鎬子傷害
+ui_stat_tool_range,도구 사거리,Tool Range,工具範圍
+ui_stat_rare_chance,희귀 광물 확률,Rare Mineral Chance,稀有礦物機率
+ui_stat_extra_drop,추가 드롭 확률,Extra Drop Chance,額外掉落機率
+ui_stat_rock_drop_count,돌 광물 수,Rock Mineral Yield,岩石礦物數量
+ui_stat_move_speed,이동 속도,Move Speed,移動速度
+ui_stat_jump,점프력,Jump Power,跳躍力
+ui_stat_climb,벽타기 속도,Climb Speed,攀爬速度
+ui_stat_fall_dmg,낙하 피해,Fall Damage,墜落傷害
+ui_stat_max_stamina,최대 스태미나,Max Stamina,最大耐力
+ui_stat_stamina_cost,스태미나 소모,Stamina Cost,耐力消耗
+ui_stat_stamina_regen,스태미나 재생,Stamina Regen,耐力回復
+ui_stat_drill_cap,드릴 배터리,Drill Battery,鑽頭電量
+ui_stat_drill_regen,배터리 회복,Battery Regen,電量回復
+ui_stat_max_hp,최대 체력,Max HP,最大生命
+ui_stat_damage,공격력,Attack,攻擊力
+ui_stat_crit,치명타 확률,Crit Chance,暴擊機率
+ui_stat_sell_bonus,판매 보너스,Sell Bonus,售價加成
+ui_stat_weight,무게 한도,Weight Limit,重量上限
+ui_stat_bag_slots,인벤 슬롯,Bag Slots,背包格數
+ui_stat_wh_slots,창고 확장,Storage Slots,倉庫格數
+ui_stat_vision,시야 범위,Vision Range,視野範圍
+ui_stat_flashlight,손전등 사거리,Flashlight Range,手電筒範圍
+ui_stat_env_resist,환경 저항,Env. Resistance,環境抗性
+ui_stat_defense,방어력,Defense,防禦力
+ui_stat_frost_resist,빙결 저항,Frost Resist,凍結抗性
+ui_stat_burn_resist,화상 저항,Burn Resist,燒傷抗性
+ui_stat_rad_resist,방사선 저항,Radiation Resist,輻射抗性
+ui_stat_dig_penalty,지층,Strata,地層
+ui_stat_dig_penalty_frost,동결,Frozen,凍結
+ui_stat_dig_penalty_burn,열기,Scorched,灼熱
+ui_stat_dig_penalty_rad,침식,Eroded,侵蝕
+ui_menu_start,새 게임,New Game,新遊戲
+ui_menu_continue,이어하기,Continue,繼續
+ui_menu_settings,설정,Settings,設定
+ui_menu_quit,게임 종료,Quit,退出遊戲
+ui_saveslot_title_continue,이어하기,Continue,繼續遊戲
+ui_saveslot_title_new,새 게임,New Game,新遊戲
+ui_saveslot_hint_continue,이어할 슬롯을 선택하세요,Select a slot to continue,選擇要繼續的存檔
+ui_saveslot_hint_new,새로 시작할 슬롯을 선택하세요,Select a slot for a new game,選擇開始新遊戲的存檔
+ui_saveslot_name,슬롯,Slot,存檔
+ui_saveslot_day_fmt,{0}일차,Day {0},第{0}天
+ui_saveslot_time_morning,오전,Morning,上午
+ui_saveslot_time_afternoon,오후,Afternoon,下午
+ui_saveslot_empty,비어 있음,Empty,空存檔
+ui_saveslot_empty_new,비어 있음 — 새 게임 시작,Empty — start a new game,空 — 開始新遊戲
+ui_saveslot_close,닫기,Close,關閉
+ui_saveslot_delete_title,데이터 삭제,Delete Save,刪除存檔
+ui_saveslot_delete_msg_fmt,{0} 데이터를 삭제할까요? 되돌릴 수 없습니다.,Delete {0}? This cannot be undone.,刪除{0}存檔嗎？此操作無法復原。
+ui_saveslot_overwrite_title,새 게임,New Game,新遊戲
+ui_saveslot_overwrite_msg_fmt,{0}에 저장 데이터가 있습니다. 덮어쓰고 새로 시작할까요?,{0} has save data. Overwrite and start new?,{0}已有存檔。覆蓋並重新開始嗎？
+ui_saveslot_yes_delete,삭제,Delete,刪除
+ui_saveslot_yes_overwrite,덮어쓰기,Overwrite,覆蓋
+ui_saveslot_cancel,취소,Cancel,取消
+ui_saveslot_rename_short,이름,Name,名稱
+ui_saveslot_rename_title,이름 변경,Rename Save,重新命名
+ui_saveslot_name_title,세이브 이름,Save Name,存檔名稱
+ui_saveslot_name_placeholder,세이브 이름을 입력하세요,Enter a save name,請輸入存檔名稱
+ui_saveslot_name_hint,최대 16자 · 비워두면 슬롯 번호로 표시됩니다,Up to 16 characters · leave blank to use the slot number,最多16個字元 · 留空則顯示存檔編號
+ui_saveslot_name_ok,확인,OK,確定
+ui_elevator_title,엘리베이터,Elevator,電梯
+ui_elevator_position,현재 위치  X : {0},Current position  X : {0},目前位置  X : {0}
+ui_elevator_depth,깊이 {0},Depth {0},深度 {0}
+ui_elevator_here,현재 위치,You are here,目前位置
+ui_elevator_unloaded,미로드,Not loaded,未載入
+ui_elevator_locked,미발견,Undiscovered,未發現
+ui_elevator_locked_name,???,???,???
+ui_elevator_surface,지상으로 나가기,Return to Surface,返回地面
+ui_elevator_confirm,이동,Move,移動
+ui_elevator_hint,W / S : 이동    Space : 선택    ESC : 닫기,W / S : Move    Space : Select    ESC : Close,W / S：移動    Space：選擇    ESC：關閉
+ui_explore_exit_title,탐험 종료,End Expedition,結束探險
+ui_explore_exit_msg,정말 탐험을 종료하고 지상으로 올라가시겠습니까? 캔 광물은 창고로 옮겨집니다.,End the expedition and return to the surface? Mined minerals will be moved to the warehouse.,確定要結束探險並返回地面嗎？已開採的礦物將移入倉庫。
+ui_explore_exit_confirm,지상으로,Go Up,返回地面
+ui_explore_exit_hint,A / D : 이동    Space : 선택    ESC : 취소,A / D : Move    Space : Select    ESC : Cancel,A / D：移動    Space：選擇    ESC：取消
+ui_pause_hint,W / S : 이동    Space : 선택    ESC : 닫기,W / S : Move    Space : Select    ESC : Close,W / S：移動    Space：選擇    ESC：關閉
+hud_day_count,{0}일차,Day {0},第{0}天
+hud_time_morning,오전,Morning,上午
+hud_time_afternoon,오후,Afternoon,下午
+ui_codex_new_badge,새 광물!,NEW!,新礦物！
+ui_codex_title,도감,Codex,圖鑑
+ui_codex_progress,발견 {0} / {1},Discovered {0} / {1},已發現 {0} / {1}
+ui_codex_undiscovered,???,???,???
+ui_codex_undiscovered_desc,아직 발견하지 못했습니다. 계속 탐험해 보세요.,Not yet discovered. Keep exploring.,尚未發現。繼續探索吧。
+ui_codex_hint,Q / E : 탭    ·    W A S D : 이동    ·    ESC : 닫기,Q / E : Tab    ·    W A S D : Move    ·    ESC : Close,Q / E：頁籤    ·    W A S D：移動    ·    ESC：關閉
+ui_codex_empty,도감 데이터를 불러올 수 없습니다.,Failed to load codex data.,無法載入圖鑑資料。
+ui_codex_group_etc,기타,Misc,其他
+ui_codex_tab_mineral,광물,Minerals,礦物
+ui_codex_tab_equipment,장비,Equipment,裝備
+ui_codex_tab_item,아이템,Items,道具
+ui_codex_tab_relic,유물,Relics,遺物
+ui_codex_tab_guide,가이드,Guides,指南
+ui_codex_guide_group,가이드,Guides,指南
+ui_codex_guide_unseen,아직 보지 않음,Not seen yet,尚未閱讀
+ui_codex_guide_unseen_desc,아직 이 가이드를 만나지 못했습니다. 계속 진행해 보세요.,You have not seen this guide yet. Keep playing.,你還沒看過這個指南。繼續遊玩吧。
+ui_codex_guide_empty,아직 가이드가 없습니다.,No guides yet.,尚無指南。
+ui_codex_hint_guide,Q / E : 탭    ·    W S : 목록    ·    A D : 페이지    ·    Space : 크게 보기    ·    ESC : 닫기,Q / E : Tab    ·    W S : List    ·    A D : Page    ·    Space : View    ·    ESC : Close,Q / E：頁籤    ·    W S：清單    ·    A D：翻頁    ·    空白鍵：放大檢視    ·    ESC：關閉
+ui_codex_tier_label,{0}단계,Tier {0},第{0}階
+ui_codex_tier1,1단계 · 잡동사니와 기초 광물,Tier 1 · Junk & Basic Ores,第一階 · 雜物與基礎礦物
+ui_codex_tier2,2단계 · 보석과 희귀 금속,Tier 2 · Gems & Rare Metals,第二階 · 寶石與稀有金屬
+ui_codex_tier3,3단계 · 고가치 광물과 보석,Tier 3 · High-Value Minerals,第三階 · 高價值礦物與寶石
+ui_codex_tier4,4단계 · 초희귀·우주 물질,Tier 4 · Ultra-Rare & Cosmic Matter,第四階 · 超稀有與宇宙物質
+ui_codex_eq_head,머리,Head,頭部
+ui_codex_eq_clothes,옷,Body,服裝
+ui_codex_eq_shoes,신발,Shoes,鞋子
+ui_codex_item_instant,즉시 사용,Instant,即時
+ui_codex_item_buff,버프,Buff,增益
+ui_codex_item_hybrid,복합,Hybrid,複合
+ui_codex_item_utility,유틸리티,Utility,實用
+ui_codex_relic_passive,패시브,Passive,被動
+ui_codex_relic_active,액티브,Active,主動
+hud_quest_header,퀘스트,Quests,任務
+hud_quest_main,메인 퀘스트,Main Quest,主線任務
+hud_quest_sub,서브 퀘스트,Sub Quest,支線任務
+ui_guide_ctrl_move_title,이동과 점프,Move & Jump,移動與跳躍
+ui_guide_ctrl_move_body,"A · D 키로 좌우로 이동하고, Space 키로 점프합니다. 동굴은 아래로 갈수록 어두워지니 발밑을 잘 살피세요.","Use A and D to move, Space to jump. The deeper you go, the darker it gets - watch your footing.",用 A · D 左右移動，空白鍵跳躍。 越往下越暗，注意腳下。
+ui_guide_ctrl_dig_title,땅 파기,Digging,挖掘
+ui_guide_ctrl_dig_body,좌클릭으로 지형을 팝니다. 꾹 누르면 더 넓게 파낼 수 있습니다. 도구 등급보다 단단한 땅은 팔 수 없습니다.,Left-click to dig. Hold to carve a wider area. Ground harder than your tool tier cannot be dug.,左鍵挖掘地形，長按可挖得更廣。 超過工具等級的硬地無法挖掘。
+ui_guide_ctrl_interact_title,상호작용,Interact,互動
+ui_guide_ctrl_interact_body,F 키로 주변 대상과 상호작용합니다. 할 수 있는 일이 여럿이면 목록이 뜨고 마우스 휠로 고릅니다.,"Press F to interact with nearby objects. When there is more than one thing to do, pick from the list with the mouse wheel.",按 F 與附近目標互動。 可做的事有多項時，用滑鼠滾輪選擇。
+ui_guide_ctrl_map_title,지도,Map,地圖
+ui_guide_ctrl_map_body,화면 구석의 미니맵이 주변 지형을 보여줍니다. M 키를 누르면 전체 지도가 열립니다.,The minimap shows nearby terrain. Press M to open the full map.,角落的小地圖顯示周圍地形，按 M 開啟全地圖。
+ui_guide_mining_charge_title,차징 채굴,Charged Swing,蓄力採礦
+ui_guide_mining_charge_body,마우스를 꾹 누르면 차징 게이지가 찹니다. 가득 채워 놓으면 한 번에 더 넓은 범위를 파냅니다.,Hold the mouse to fill the charge gauge. A full charge carves a wider area at once.,長按滑鼠累積蓄力量表，蓄滿時一次挖掘更大範圍。
+ui_guide_mining_stamina_title,스태미나,Stamina,體力
+ui_guide_mining_stamina_body,파기와 달리기는 스태미나를 씁니다. 다 떨어지면 움직임이 크게 느려지니 무리하지 말고 제때 지상으로 돌아가세요.,Digging and sprinting consume stamina. When it runs out you slow to a crawl - head back to the surface before that happens.,挖掘與奔跑消耗體力。耗盡後行動會變得極慢， 請在那之前回到地面。
+ui_guide_mining_pickup_title,광물 줍기,Picking Up Ore,拾取礦物
+ui_guide_mining_pickup_body,캐낸 광물은 잠시 뒤 사라집니다. 떨어지자마자 주우세요. 가방이 가득 차면 더 담을 수 없습니다.,Dug-up ore disappears after a while - grab it right away. A full bag cannot hold any more.,挖出的礦物過一會就會消失，請立刻拾取。 背包滿了就裝不下了。
+ui_guide_mining_weight_title,짐 무게,Encumbrance,負重
+ui_guide_mining_weight_body,가방이 무거울수록 이동과 점프가 둔해집니다. 값싼 광물은 과감히 버리고 비싼 것만 들고 나오는 편이 낫습니다.,"The heavier your bag, the slower you move and jump. Drop cheap ore and carry only what is worth hauling up.",背包越重，移動與跳躍越遲鈍。 丟掉便宜的礦物，只帶值錢的上去。
+ui_guide_mining_title,채굴,Mining,採礦
+ui_guide_elevator_find_title,정류장 찾기,Finding a Stop,尋找停靠站
+ui_guide_elevator_find_body,"층마다 엘리베이터가 하나씩 있고, 위치는 층마다 좌우로 달라집니다. 지도에 표시된 마커를 따라가세요.","Each layer has exactly one elevator, and its position shifts left or right per layer. Follow the marker on your map.",每一層只有一台電梯，位置每層左右不同。 請跟著地圖上的標記走。
+ui_guide_elevator_unlock_title,정류장 해금,Unlocking Stops,解鎖停靠站
+ui_guide_elevator_unlock_body,한 번 직접 걸어가 본 정류장만 다음부터 바로 내려갈 수 있습니다. 깊은 층은 결국 한 번은 걸어서 도달해야 합니다.,You can only travel to stops you have physically reached at least once. Deeper layers must be walked to the first time.,只有親自抵達過的停靠站，之後才能直接前往。 更深的層第一次仍得自己走下去。
+ui_guide_elevator_exit_title,지상으로,Back to the Surface,返回地面
+ui_guide_elevator_exit_body,엘리베이터에서 지상으로 나갈 수 있습니다. 천장 구멍에서 새어드는 빛기둥 아래에서 F 키로도 나갈 수 있습니다.,"You can ride the elevator back up to the surface. Standing in the shaft of light below the entrance hole, F works too.",可以搭電梯回到地面。 站在入口洞口灑下的光柱下按 F 也可以。
+ui_guide_elevator_title,엘리베이터,Elevator,電梯
+ui_guide_market_stock_title,주식,Stocks,股票
+ui_guide_market_stock_body,뉴스에 따라 주가가 움직입니다. 찌라시가 먼저 돌고 공식 발표가 뒤따르는 종목도 있습니다. 채광 레벨을 올리면 더 높은 등급의 종목이 상장됩니다.,Prices move with the news - rumors often break before the official announcement. Raising your mining level lists higher-tier companies.,股價隨新聞波動，小道消息常先於官方公告。 提升採礦等級可解鎖更高級別的股票。
+ui_guide_market_coin_title,코인,Coins,虛擬幣
+ui_guide_market_coin_body,단판 베팅입니다. 적중해도 이익은 잘리고 빗나가면 손실은 더 크게 잡힙니다. 오래 할수록 반드시 잃는 판이니 재미로만 즐기세요.,"One-shot bets. Wins are clipped, losses are not - the longer you play, the more you lose. Treat it as a thrill, never as income.",單局下注。贏的收益被削減，輸的損失更大 —— 玩越久輸越多。 請只當作消遣。
+ui_guide_market_risk_title,청산과 상장폐지,Liquidation & Delisting,清算與下市
+ui_guide_market_risk_body,레버리지를 올리면 보상도 크지만 마진을 통째로 날릴 확률도 함께 오릅니다. 코인이 −100%를 찍으면 상장폐지되고 새 코인으로 교체됩니다.,Higher leverage means bigger payouts and a bigger chance of losing the whole margin. A coin that hits -100% is delisted and replaced by a new one.,提高槓桿，報酬更高，但整筆保證金歸零的機率也更高。 跌到 −100% 的幣會下市並由新幣取代。
+ui_guide_market_title,마켓,Market,市場
+ui_codex_guide_done,완료,Done,已完成
+ui_codex_guide_locked,잠김,Locked,未解鎖
+ui_codex_guide_progress,완료 {0} / {1},Done {0} / {1},已完成 {0} / {1}
+interact_npc_quest,퀘스트,Quest,任務
+interact_npc_shop,상점,Shop,商店
+interact_npc_upgrade,강화,Upgrade,強化
+ui_dig_mining_level_required,채광 레벨 {0} 필요 (현재 {1}),Mining Level {0} required (current {1}),需要採礦等級 {0}（目前 {1}）

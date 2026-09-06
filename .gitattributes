@@ -1,0 +1,21 @@
+* text=auto eol=lf
+
+# Unity YAML — 텍스트로 두고 UnityYAMLMerge 사용
+*.unity      -text merge=unityyamlmerge diff
+*.prefab     -text merge=unityyamlmerge diff
+*.asset      -text merge=unityyamlmerge diff
+*.meta       -text merge=unityyamlmerge diff
+*.controller -text merge=unityyamlmerge diff
+*.anim       -text merge=unityyamlmerge diff
+*.mat        -text merge=unityyamlmerge diff
+
+# 바이너리 (LFS 미사용 — 최대 파일 26MB로 GitHub 제한 내)
+*.psd binary
+*.png binary
+*.jpg binary
+*.wav binary
+*.mp3 binary
+*.mp4 binary
+*.ttf binary
+*.otf binary
+*.pdf binary

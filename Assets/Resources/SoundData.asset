@@ -1,0 +1,159 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e5c3d787d766774bbb0a9aec0704b47, type: 3}
+  m_Name: SoundData
+  m_EditorClassIdentifier: GameScripts::SoundDataSO
+  bgmClips: []
+  sfxClips:
+  - soundName: footsteps
+    audioClip: {fileID: 8300000, guid: 53072918b25b4964da6d4a3422bc8cc3, type: 3}
+  - soundName: footsteps2
+    audioClip: {fileID: 8300000, guid: 9acae2b1895a2b64992d76f18afbd3f1, type: 3}
+  - soundName: amb_cave_drip
+    audioClip: {fileID: 8300000, guid: f77b168efb03ad2419348fcd653e9fa5, type: 3}
+  - soundName: amb_layer_wind
+    audioClip: {fileID: 8300000, guid: 1018aae3d6d38354994c3b0eff556ada, type: 3}
+  - soundName: amb_surface_day_birds
+    audioClip: {fileID: 8300000, guid: 0186622e1e3b89f41bb8d3848c7af030, type: 3}
+  - soundName: amb_surface_day_cicada
+    audioClip: {fileID: 8300000, guid: 7f13fd10136856749b5399abcc3ef601, type: 3}
+  - soundName: amb_surface_night_insects
+    audioClip: {fileID: 8300000, guid: 182decfc71744dd47abe5a8104465139, type: 3}
+  - soundName: cauldron_brew
+    audioClip: {fileID: 8300000, guid: eee930eff7649a94cb29ec7e8aff526a, type: 3}
+  - soundName: coin_tick
+    audioClip: {fileID: 8300000, guid: f0c04f298c074314d8c1f1859c60d50d, type: 3}
+  - soundName: daysummary_loss
+    audioClip: {fileID: 8300000, guid: 040e173722838224fba9179b694096fd, type: 3}
+  - soundName: daysummary_profit
+    audioClip: {fileID: 8300000, guid: c867cb773228af74cbbee35bf517b3b7, type: 3}
+  - soundName: dig_blocked
+    audioClip: {fileID: 8300000, guid: ef0e1863b94557a48b70f51eb29baedb, type: 3}
+  - soundName: dig_hit
+    audioClip: {fileID: 8300000, guid: 73ce7412035a979438db75294adaaf01, type: 3}
+  - soundName: dig_hit2
+    audioClip: {fileID: 8300000, guid: 27729e29073bce6448d0a3ca57bcfa65, type: 3}
+  - soundName: dig_hit3
+    audioClip: {fileID: 8300000, guid: ce04b6295e83fee4d9e2e6e47d4edc80, type: 3}
+  - soundName: dig_swing
+    audioClip: {fileID: 8300000, guid: 0b36d037601c97842b1127da336178a3, type: 3}
+  - soundName: drill_motor
+    audioClip: {fileID: 8300000, guid: 3a316d026c4dc2a4cacbfbc6b2ec7d2e, type: 3}
+  - soundName: drill_on
+    audioClip: {fileID: 8300000, guid: 1cbc838e0ae98544295d0c75fde8461b, type: 3}
+  - soundName: elevator_move
+    audioClip: {fileID: 8300000, guid: 73cd7d7a65ca4934fbd1ede573c6befd, type: 3}
+  - soundName: explosion
+    audioClip: {fileID: 8300000, guid: 03a9574e4ede9124e8abccc6dd57410e, type: 3}
+  - soundName: game_over
+    audioClip: {fileID: 8300000, guid: b1ebc72b45ebc3842b7b35a1f9ceaeb8, type: 3}
+  - soundName: ice_break
+    audioClip: {fileID: 8300000, guid: c50fda57d6e5944418dcf7175273373a, type: 3}
+  - soundName: jetpack_thrust
+    audioClip: {fileID: 8300000, guid: ac303ebaf5904fe43b2dbda4e93526ce, type: 3}
+  - soundName: mission_success
+    audioClip: {fileID: 8300000, guid: 584fc697a67a1b243a963802b99b2c2b, type: 3}
+  - soundName: morning_rooster
+    audioClip: {fileID: 8300000, guid: 9347b34c9dccade4aa8a5021e09ba243, type: 3}
+  - soundName: player_heartbeat
+    audioClip: {fileID: 8300000, guid: 446de69cd28763542bb06b641e80054f, type: 3}
+  - soundName: player_jump
+    audioClip: {fileID: 8300000, guid: 66bbf1725efcfed40a5fce559c09cbeb, type: 3}
+  - soundName: portal_enter
+    audioClip: {fileID: 8300000, guid: 10698fadcbec0b547984794646e2ba0e, type: 3}
+  - soundName: power_down
+    audioClip: {fileID: 8300000, guid: 8f96276d356dea949a69ed205d534c21, type: 3}
+  - soundName: quest_complete
+    audioClip: {fileID: 8300000, guid: 2f701b80d853e7745a13ac8f859ae189, type: 3}
+  - soundName: relic_activate
+    audioClip: {fileID: 8300000, guid: f14038177af697d42a20c7ffe16c4190, type: 3}
+  - soundName: relic_detect_ping
+    audioClip: {fileID: 8300000, guid: 2a510910205e2a649b65567f172ccbc0, type: 3}
+  - soundName: relic_lightning
+    audioClip: {fileID: 8300000, guid: 04d7b98705d73114ea8ee869dca94890, type: 3}
+  - soundName: relic_portal_return
+    audioClip: {fileID: 8300000, guid: 09bca96502d60be478a23b5b9508e178, type: 3}
+  - soundName: rock_break
+    audioClip: {fileID: 8300000, guid: 3ac07dd732b37bc46821e975c2627f2e, type: 3}
+  - soundName: shop_buy
+    audioClip: {fileID: 8300000, guid: 0e3c2e37ad754524895e7247a6192f85, type: 3}
+  - soundName: shop_sell
+    audioClip: {fileID: 8300000, guid: 76e0bc9ae87588546b356081a792a6ef, type: 3}
+  - soundName: sleep_snore
+    audioClip: {fileID: 8300000, guid: 9706df29959e37949b345bae4f3dae2f, type: 3}
+  - soundName: step_dirt
+    audioClip: {fileID: 8300000, guid: 5a9e220a4fc67ff4fb631e9536605f09, type: 3}
+  - soundName: step_grass
+    audioClip: {fileID: 8300000, guid: c6ef1fb0ff17ba944a3e64ce76a399a1, type: 3}
+  - soundName: ui_button
+    audioClip: {fileID: 8300000, guid: b1f158f421855234b890e7e32f16b273, type: 3}
+  - soundName: ui_back
+    audioClip: {fileID: 8300000, guid: f2edfec325d68b44ca6428c9230aa396, type: 3}
+  - soundName: ui_terminal_on
+    audioClip: {fileID: 8300000, guid: 2ce39c1dd01cc584bb700dff4451a660, type: 3}
+  - soundName: upgrade_unlock
+    audioClip: {fileID: 8300000, guid: 83bb2657ab4a3c24f9b9e94a2562ae03, type: 3}
+  - soundName: dig_sap
+    audioClip: {fileID: 8300000, guid: 38a95abf2d806f647931380503565579, type: 3}
+  - soundName: equip_enhance
+    audioClip: {fileID: 8300000, guid: a2e02c608770839448b9f1390566dd6d, type: 3}
+  - soundName: mineral_pickup
+    audioClip: {fileID: 8300000, guid: 12be4b718b1c709438dc83a6a2913451, type: 3}
+  - soundName: player_hurt
+    audioClip: {fileID: 8300000, guid: fbc94b0adebd14d4da62e77a60d864de, type: 3}
+  - soundName: relic_gravity
+    audioClip: {fileID: 8300000, guid: d6921aa583bfc2b419bf53c20b999c8e, type: 3}
+  - soundName: relic_invincible
+    audioClip: {fileID: 8300000, guid: 2a06b141c83add644a7c6f9206438c93, type: 3}
+  - soundName: upgrade_tier
+    audioClip: {fileID: 8300000, guid: 7d04845976d45024099ce007b4843c86, type: 3}
+  - soundName: upground_grass
+    audioClip: {fileID: 8300000, guid: d722e4a44c58d1d4d80190697a45401b, type: 3}
+  - soundName: player_land
+    audioClip: {fileID: 8300000, guid: 3d90071dc3787204eb3508d1f172f872, type: 3}
+  - soundName: step_dirt_b
+    audioClip: {fileID: 8300000, guid: 4ba224044eaadf949bde1fe41984e46f, type: 3}
+  - soundName: step_grass_b
+    audioClip: {fileID: 8300000, guid: c7a6f136252891e49b8ed274e0c77477, type: 3}
+  - soundName: jump_dirt
+    audioClip: {fileID: 8300000, guid: 090b60411b773ac449aaf70d4f9b525a, type: 3}
+  - soundName: jump_grass
+    audioClip: {fileID: 8300000, guid: 5ce92e1209e40484589e1d58b8d2caec, type: 3}
+  - soundName: land_dirt
+    audioClip: {fileID: 8300000, guid: 34d9f330febeb3a4f872baa5a34fcf29, type: 3}
+  - soundName: land_grass
+    audioClip: {fileID: 8300000, guid: 56afa93fed7b1474e83db04195140de9, type: 3}
+  - soundName: step_hardstone
+    audioClip: {fileID: 8300000, guid: a287df2def4fdde4ba8bb87388a5b907, type: 3}
+  - soundName: step_hardstone_b
+    audioClip: {fileID: 8300000, guid: 35afd9be10d79eb429c14a4f8960e803, type: 3}
+  - soundName: step_home_a
+    audioClip: {fileID: 8300000, guid: a9698245e056bf744b206a2af437f513, type: 3}
+  - soundName: step_home_b
+    audioClip: {fileID: 8300000, guid: 318d8b35852d6694a9965039184baad2, type: 3}
+  - soundName: drone_move
+    audioClip: {fileID: 8300000, guid: 185d8d9f61cdd2c40a1a9bdcbc093090, type: 3}
+  - soundName: dig_hit1
+    audioClip: {fileID: 8300000, guid: 73ce7412035a979438db75294adaaf01, type: 3}
+  - soundName: dig_hit2
+    audioClip: {fileID: 8300000, guid: 27729e29073bce6448d0a3ca57bcfa65, type: 3}
+  - soundName: dig_hit3
+    audioClip: {fileID: 8300000, guid: ce04b6295e83fee4d9e2e6e47d4edc80, type: 3}
+  - soundName: ui_back
+    audioClip: {fileID: 8300000, guid: f2edfec325d68b44ca6428c9230aa396, type: 3}
+  - soundName: tool_switch
+    audioClip: {fileID: 8300000, guid: 0008ce7a0adf4fd4d9986c8bdbcb9fcb, type: 3}
+  - soundName: ES_Fight, Impact, Punch, Fat, Only Impact x5 01 - Epidemic Sound -
+      2044-3022_C_minor__bpm_47 (1)
+    audioClip: {fileID: 8300000, guid: d4de4dd6b953cba4b9385cbdedad3018, type: 3}
+  - soundName: ES_User Interface, Alert, Alert, Device, App, Startup - Epidemic Sound
+    audioClip: {fileID: 8300000, guid: a6ff0292258007945bff0583f3049eac, type: 3}

@@ -1,0 +1,76 @@
+nodeId,tier,effectType,effectValue,isPercentage,parentIds,cost,uiX,uiY,displayNameKey,descriptionKey,locked,targetMineral,icon,lineBends
+MiningRange_T0_01,0,MiningRangeUp,0.1,false,,20,0,150,넓은 삽날 I,한 번에 파내는 범위가 +0.1 넓어집니다.,false,,,
+ShovelStamina_T0_01,0,ShovelStaminaReduce,-0.1,false,MiningRange_T0_01,30,-262.5,270,가벼운 삽질 I,삽질 1회 비용이 0.05 줄어듭니다(기준 0.5).,false,,,MiningRange_T0_01=-262.5:210
+InventoryWeight_T0_01,0,InventoryWeightUp,4,false,MiningRange_T0_01,40,87.5,390,가방 확장 I,가방 무게 한도가 +4 늘어납니다.,false,,,MiningRange_T0_01=87.5:210|87.5:270|87.5:330
+Facility_Map_T0,0,None,0,false,MiningRange_T0_01,50,262.5,510,지도 장비 구입,휴대용 지도 장비를 들여 미니맵과 전체 지도(M)를 볼 수 있게 됩니다.,false,,,MiningRange_T0_01=262.5:210|262.5:270|262.5:330|262.5:390|262.5:450
+MiningSpeed_T0_01,0,MiningSpeedUp,0.15,false,MiningRange_T0_01,50,-87.5,510,빠른 차징 I,삽 차징 속도가 +0.15 빨라집니다(기준 1.0).,false,,,MiningRange_T0_01=-87.5:210|-87.5:270|-87.5:330|-87.5:390|-87.5:450
+RelicUnlock_ElevatorTracker_T0,0,None,0,false,InventoryWeight_T0_01;Facility_Map_T0,60,262.5,660,엘리베이터 신호기 입수,유물 '엘리베이터 신호기'를 얻습니다. 엘리베이터가 지도에 표시됩니다.,false,,,InventoryWeight_T0_01=87.5:450|87.5:510|262.5:585
+MaxStamina_T0_01,0,MaxStaminaUp,10,false,MiningSpeed_T0_01;MiningRange_T0_02,60,-262.5,660,지구력 강화 I,최대 스태미나가 +10 증가합니다.,false,,,MiningSpeed_T0_01=-262.5:585
+PickaxeUnlock_T0_01,0,None,0,false,RelicUnlock_ElevatorTracker_T0;MaxStamina_T0_01,70,0,810,곡괭이 입수,곡괭이를 쓸 수 있게 됩니다. 단단한 돌을 캐 희귀 광물을 얻습니다.,false,,,RelicUnlock_ElevatorTracker_T0=0:735;MaxStamina_T0_01=0:735
+ClimbSpeed_T0_01,0,WallClimbSpeed,0.1,false,PickaxeUnlock_T0_01,100,175,930,등반 요령 I,벽 타기 속도가 +0.1 빨라집니다(기준 1.0).,false,,,PickaxeUnlock_T0_01=175:870
+ClimbMiningUnlock_T0,0,None,0,false,ClimbSpeed_T0_01,130,175,1050,한 손 채굴,벽에 매달린 채로 삽질·곡괭이질을 할 수 있게 됩니다.,false,,,
+PickaxeStamina_T0_01,0,PickaxeStaminaReduce,-0.1,false,PickaxeUnlock_T0_01,100,-175,930,가벼운 곡괭이질 I,곡괭이질 1회 비용이 0.05 줄어듭니다(기준 0.5).,false,,,PickaxeUnlock_T0_01=-175:870
+MiningRange_T0_03,0,MiningRangeUp,0.2,false,PickaxeStamina_T0_01,130,-262.5,1170,넓은 삽날 III,한 번에 파내는 범위가 +0.2 넓어집니다.,false,,,PickaxeStamina_T0_01=-175:990|-175:1050|-262.5:1110
+InventoryWeight_T0_02,0,InventoryWeightUp,8,false,ClimbMiningUnlock_T0,150,87.5,1290,가방 확장 II,가방 무게 한도가 +8 늘어납니다.,false,,,ClimbMiningUnlock_T0=175:1110|175:1170|87.5:1230
+JumpForce_T0_01,0,JumpForceUp,0.75,false,InventoryWeight_T0_02,160,262.5,1410,점프력 강화 I,점프력이 +0.75 증가합니다(기준 5).,false,,,InventoryWeight_T0_02=262.5:1350
+MiningSpeed_T0_03,0,MiningSpeedUp,0.3,false,MiningSpeed_T0_02,190,-262.5,1770,빠른 차징 III,삽 차징 속도가 +0.3 빨라집니다(기준 1.0).,false,,,
+InventorySlot_T0_01,0,InventorySlotUp,1,false,InventoryWeight_T0_02,170,87.5,1530,수납 주머니 I,소모품을 넣을 수 있는 칸이 1개 늘어납니다.,false,,,
+MineralPrice_Recycle,0,MineralPriceUp,5,false,JumpForce_T0_01,200,262.5,1890,재활용 계약,쓰레기봉지·페트병·고철 판매가가 각각 +10골드 오릅니다.,false,GarbageBag;PETBottle;ScrapMetal,,
+ShovelStamina_T0_02,0,ShovelStaminaReduce,-0.1,false,Facility_Computer_T0,450,-262.5,2160,가벼운 삽질 II,삽질 1회 비용이 0.05 줄어듭니다(기준 0.5).,false,,,Facility_Computer_T0=-262.5:2100
+MaxStamina_T0_02,0,MaxStaminaUp,15,false,Facility_Computer_T0,450,-87.5,2160,지구력 강화 II,최대 스태미나가 +15 증가합니다.,false,,,Facility_Computer_T0=-87.5:2100
+InventoryWeight_T0_04,0,InventoryWeightUp,16,false,Facility_Computer_T0,500,87.5,2280,가방 확장 IV,가방 무게 한도가 +16 늘어납니다.,false,,,Facility_Computer_T0=87.5:2100|87.5:2160|87.5:2220
+StaminaCost_T0_01,0,StaminaCostReduce,-0.15,false,MaxStamina_T0_02,550,-87.5,2400,효율적인 호흡 I,행동 시 스태미나 소모가 15%p 감소합니다(기준 1.0).,false,,,
+MineralPrice_Coal,0,MineralPriceUp,15,false,Facility_Computer_T0,550,262.5,2400,석탄 등급 인증,석탄 판매가가 +15골드 오릅니다.,false,Coal,,Facility_Computer_T0=262.5:2100|262.5:2160|262.5:2220|262.5:2280|262.5:2340
+MineralExtraDrop_T0_01,0,MineralExtraDropChance,10,false,RelicSlot_T0_01,700,87.5,2790,광물 탐지기 I,광물을 캘 때 추가로 하나 더 나올 확률이 10% 늘어납니다.,false,,,
+PickaxeDamage_T0_03,0,PickaxeDamageUp,1.5,false,ShovelStamina_T0_02,600,-262.5,2550,곡괭이 위력 III,곡괭이의 돌 파괴력이 증가합니다.,false,,,
+Facility_Computer_T0,0,None,0,false,MineralPrice_Recycle;MiningSpeed_T0_03;MiningRange_T0_04;InventoryWeight_T0_03,400,0,2040,단말기 개통,거래소 단말기가 켜져 주식을 거래할 수 있게 됩니다.,false,,,MineralPrice_Recycle=0:1965;MiningSpeed_T0_03=-262.5:1830|-262.5:1890|0:1965;MiningRange_T0_04=-87.5:1830|-87.5:1890|0:1965;InventoryWeight_T0_03=87.5:1830|87.5:1890|0:1965
+MiningRange_T0_05,0,MiningRangeUp,0.12,false,StaminaCost_T0_01,700,-87.5,2550,넓은 삽날 V,한 번에 파내는 범위가 +0.12 넓어집니다.,false,,,
+RareMineral_T0_01,0,RareMineralChance,20,false,InventoryWeight_T0_05,1000,87.5,3510,감별사의 눈 I,돌에서 비싼 광물이 나올 확률이 오릅니다.,false,,,
+MineralPrice_Copper,0,MineralPriceUp,20,false,MineralExtraDrop_T0_01,750,262.5,2910,구리 정련 계약,구리 판매가가 +20골드 오릅니다.,false,Copper,,MineralExtraDrop_T0_01=262.5:2850
+MiningSpeed_T0_04,0,MiningSpeedUp,0.12,false,PickaxeDamage_T0_03,800,-262.5,2790,빠른 차징 IV,삽 차징 속도가 +0.12 빨라집니다(기준 1.0).,false,,,
+ClimbSpeed_T0_02,0,WallClimbSpeed,0.15,false,MiningRange_T0_05,800,-87.5,3030,등반 요령 II,벽 타기 속도가 +0.15 빨라집니다(기준 1.0).,false,,,
+Nap_T0_01,0,NapCount,1,false,MineralPrice_Copper,850,262.5,3150,짧은 낮잠 I,하루에 낮잠을 1회 잘 수 있습니다. 시세가 한 틱 흐릅니다.,false,,,
+InventoryWeight_T0_05,0,InventoryWeightUp,20,false,Nap_T0_01,900,87.5,3270,가방 확장 V,가방 무게 한도가 +20 늘어납니다.,false,,,Nap_T0_01=87.5:3210
+MineralPrice_Iron,0,MineralPriceUp,30,false,Nap_T0_01,950,262.5,3390,제철소 직거래,철 판매가가 +30골드 오릅니다.,false,Iron,,
+PickaxeStamina_T0_02,0,PickaxeStaminaReduce,-0.1,false,MoveSpeed_T0_01,800,-262.5,3270,가벼운 곡괭이질 II,곡괭이질 1회 비용이 0.05 줄어듭니다(기준 0.5).,false,,,
+MiningRange_T0_06,0,MiningRangeUp,0.15,false,MaxStamina_T0_03,1050,-87.5,3630,넓은 삽날 VI,한 번에 파내는 범위가 +0.15 넓어집니다.,false,,,
+MiningLevel_T0_Final,0,MiningLevel,1,false,MineralPrice_Iron;MiningRange_T0_06;RareMineral_T0_01;PickaxeDamage_T0_04,1500,0,3780,채광 면허 I,얼음 지층을 팔 수 있는 면허입니다.,false,,,MineralPrice_Iron=262.5:3450|262.5:3510|262.5:3570|262.5:3630|0:3705;MiningRange_T0_06=0:3705;RareMineral_T0_01=87.5:3570|87.5:3630|0:3705;PickaxeDamage_T0_04=-262.5:3570|-262.5:3630|0:3705
+InventoryWeight_T1_06,1,InventoryWeightUp,24,false,MiningLevel_T0_Final,1600,-87.5,3900,가방 확장 VI,가방 무게 한도가 +24 늘어납니다.,false,,,MiningLevel_T0_Final=-87.5:3840
+ShovelStamina_T1_03,1,ShovelStaminaReduce,-0.1,false,InventoryWeight_T1_06,1700,-262.5,4020,가벼운 삽질 III,삽질 1회 비용이 0.05 줄어듭니다(기준 0.5).,false,,,InventoryWeight_T1_06=-262.5:3960
+InventorySlot_T1_02,1,InventorySlotUp,1,false,MiningLevel_T0_Final,1900,87.5,4140,수납 주머니 II,소모품을 넣을 수 있는 칸이 1개 늘어납니다.,false,,,MiningLevel_T0_Final=87.5:3840|87.5:3900|87.5:3960|87.5:4020|87.5:4080
+MineralPrice_Fossil,1,MineralPriceUp,20,false,InventorySlot_T1_02,2000,262.5,4260,화석 감정,화석 판매가가 +20골드 오릅니다.,false,Fossil,,InventorySlot_T1_02=262.5:4200
+MaxStamina_T1_04,1,MaxStaminaUp,10,false,ShovelStamina_T1_03,2100,-87.5,4380,지구력 강화 IV,최대 스태미나가 +10 증가합니다.,false,,,ShovelStamina_T1_03=-262.5:4080|-262.5:4140|-262.5:4200|-262.5:4260|-87.5:4320
+MiningRange_T1_07,1,MiningRangeUp,0.18,false,ShovelStamina_T1_03,2200,-262.5,4500,넓은 삽날 VII,한 번에 파내는 범위가 +0.18 넓어집니다.,false,,,
+DrillCapacity_T1_01,1,DrillBatteryCapacity,2.5,false,MiningRange_T1_07;MaxStamina_T1_04;MineralPrice_Fossil;RelicSlot_T1_02,2700,0,4650,드릴 입수,드릴을 쓸 수 있게 됩니다. 최대 배터리가 +2.5 늘어납니다(기준 5).,false,,,MiningRange_T1_07=0:4575;MaxStamina_T1_04=-87.5:4440|-87.5:4500|0:4575;MineralPrice_Fossil=262.5:4320|262.5:4380|262.5:4440|262.5:4500|0:4575;RelicSlot_T1_02=87.5:4440|87.5:4500|0:4575
+MineralPrice_Silver,1,MineralPriceUp,25,false,DrillCapacity_T1_01,3000,262.5,4770,은 정련 계약,은 판매가가 +25골드 오릅니다.,false,Silver,,DrillCapacity_T1_01=262.5:4710
+InventoryWeight_T1_07,1,InventoryWeightUp,28,false,DrillCapacity_T1_01,3000,-87.5,4770,가방 확장 VII,가방 무게 한도가 +28 늘어납니다.,false,,,DrillCapacity_T1_01=-87.5:4710
+DrillRegen_T1_01,1,DrillBatteryRegen,0.1,false,InventoryWeight_T1_07,3300,-262.5,4890,드릴 충전기 I,드릴 배터리가 초당 0.1씩 저절로 회복됩니다(용량 기준 5).,false,,,InventoryWeight_T1_07=-262.5:4830
+DrillRadius_T1_01,1,DrillRadiusUp,0.05,false,InventoryWeight_T1_07,3400,-87.5,4890,드릴 확장 비트 I,드릴이 파는 범위가 +0.05 넓어집니다(기준 0.5).,false,,,
+DrillDrain_T1_01,1,DrillDrainReduce,-0.15,false,DrillRegen_T1_01,3500,-262.5,5010,드릴 절전 모드 I,드릴 배터리 소모가 15% 줄어듭니다(기준 1).,false,,,
+RareMineral_T1_02,1,RareMineralChance,20,false,MineralPrice_Silver,3600,87.5,5010,감별사의 눈 II,돌에서 비싼 광물이 나올 확률이 더 오릅니다.,false,,,MineralPrice_Silver=87.5:4830|87.5:4890|87.5:4950
+ShovelStamina_T1_04,1,ShovelStaminaReduce,-0.1,false,DrillDrain_T1_01,4100,-262.5,5130,가벼운 삽질 IV,삽질 1회 비용이 0.05 줄어듭니다(기준 0.5).,false,,,
+Facility_Coin_T1,1,None,0,false,ShovelStamina_T1_04;RareMineral_T1_02;MineralPrice_Silver,4500,0,5280,코인 거래 개통,단말기에 코인 거래 계열이 열립니다. 단판 베팅으로 판돈을 걸 수 있게 됩니다.,false,,,ShovelStamina_T1_04=0:5205;RareMineral_T1_02=87.5:5070|87.5:5130|0:5205;MineralPrice_Silver=262.5:4830|262.5:4890|262.5:4950|262.5:5010|262.5:5070|262.5:5130|0:5205
+MiningRange_T1_08,1,MiningRangeUp,0.21,false,Facility_Coin_T1,5000,-262.5,5400,넓은 삽날 VIII,한 번에 파내는 범위가 +0.21 넓어집니다.,false,,,Facility_Coin_T1=-262.5:5340
+StaminaCost_T1_02,1,StaminaCostReduce,-0.15,false,Facility_Coin_T1,5500,-87.5,5520,효율적인 호흡 II,행동 시 스태미나 소모가 15%p 감소합니다(기준 1.0).,false,,,Facility_Coin_T1=-87.5:5340|-87.5:5400|-87.5:5460
+MineralPrice_Meteorite,1,MineralPriceUp,35,false,Facility_Coin_T1,5100,262.5,5640,운석 감정,운석 판매가가 +35골드 오릅니다.,false,Meteorite,,Facility_Coin_T1=262.5:5340|262.5:5400|262.5:5460|262.5:5520|262.5:5580
+Nap_T1_02,1,NapCount,1,false,MineralPrice_Meteorite,5600,262.5,5760,짧은 낮잠 II,하루에 낮잠을 1회 잘 수 있습니다. 시세가 한 틱 흐릅니다.,false,,,
+MaxStamina_T1_05,1,MaxStaminaUp,12,false,StaminaCost_T1_02,6100,-87.5,5880,지구력 강화 V,최대 스태미나가 +12 증가합니다.,false,,,
+MiningSpeed_T1_05,1,MiningSpeedUp,0.12,false,MiningRange_T1_08,6300,-262.5,6000,빠른 차징 V,삽 차징 속도가 +0.12 빨라집니다(기준 1.0).,false,,,
+MineralPrice_Topaz,1,MineralPriceUp,40,false,Nap_T1_02,7000,262.5,6120,보석 세공 계약,토파즈 판매가가 +40골드 오릅니다.,false,Topaz,,
+InventoryWeight_T1_08,1,InventoryWeightUp,32,false,MaxStamina_T1_05,7600,-87.5,6240,가방 확장 VIII,가방 무게 한도가 +32 늘어납니다.,false,,,
+PickaxeStamina_T1_03,1,PickaxeStaminaReduce,-0.1,false,MiningSpeed_T1_05,7800,-262.5,6360,가벼운 곡괭이질 III,곡괭이질 1회 비용이 0.05 줄어듭니다(기준 0.5).,false,,,
+MineralExtraDrop_T1_02,1,MineralExtraDropChance,10,false,Facility_Coin_T1,8700,87.5,6480,광물 탐지기 II,광물을 캘 때 추가로 하나 더 나올 확률이 10% 늘어납니다.,false,,,Facility_Coin_T1=87.5:5340|87.5:5400|87.5:5460|87.5:5520|87.5:5580|87.5:5640|87.5:5700|87.5:5760|87.5:5820|87.5:5880|87.5:5940|87.5:6000|87.5:6060|87.5:6120|87.5:6180|87.5:6240|87.5:6300|87.5:6360|87.5:6420
+MiningRange_T1_09,1,MiningRangeUp,0.24,false,PickaxeStamina_T1_03,9000,-262.5,6600,넓은 삽날 IX,한 번에 파내는 범위가 +0.24 넓어집니다.,false,,,
+ClimbSpeed_T1_03,1,WallClimbSpeed,0.15,false,InventoryWeight_T1_08,9500,-87.5,6720,등반 요령 III,벽 타기 속도가 +0.15 빨라집니다(기준 1.0).,false,,,
+MiningLevel_T1_Final,1,MiningLevel,1,false,MiningRange_T1_09;ClimbSpeed_T1_03;MineralExtraDrop_T1_02;MineralPrice_Topaz,12300,0,6870,채광 면허 II,용암 지층을 팔 수 있는 면허입니다.,false,,,MiningRange_T1_09=-262.5:6660|-262.5:6720|0:6795;ClimbSpeed_T1_03=0:6795;MineralExtraDrop_T1_02=87.5:6540|87.5:6600|87.5:6660|87.5:6720|0:6795;MineralPrice_Topaz=262.5:6180|262.5:6240|262.5:6300|262.5:6360|262.5:6420|262.5:6480|262.5:6540|262.5:6600|262.5:6660|262.5:6720|0:6795
+MoveSpeed_T0_01,0,MoveSpeedUp,0.25,false,MiningSpeed_T0_04,900,-262.5,3030,하체 운동 I,이동 속도가 +0.25 빨라집니다(기준 2.4).,false,,,
+RelicSlot_T1_02,1,RelicSlotUp,1,false,InventorySlot_T1_02,2100,87.5,4380,유물 슬롯 II,유물 칸이 한칸 증가합니다,false,,,
+RelicSlot_T0_01,0,RelicSlotUp,1,false,InventoryWeight_T0_04;MineralPrice_Coal,600,87.5,2550,유물 슬롯 I,유물칸이 한칸 생깁니다,false,,,MineralPrice_Coal=87.5:2475
+MaxStamina_T0_03,0,MaxStaminaUp,20,false,ClimbSpeed_T0_02,900,-87.5,3270,지구력 강화 III,최대 스태미나가 +20 증가합니다.,false,,,
+MiningRange_T0_02,0,None,0.15,false,ShovelStamina_T0_01,50,-262.5,510,넓은 삽날 II,한 번에 파내는 범위가 +0.15 넓어집니다.,false,,,
+PickaxeDamage_T0_02,0,None,1,false,PickaxeDamage_T0_01,170,-87.5,1530,곡괭이 위력 II,,false,,,
+MiningSpeed_T0_02,0,None,0.2,false,MiningRange_T0_03,160,-262.5,1410,빠른 차징 II,삽 차징 속도가 +0.2 빨라집니다(기준 1.0).,false,,,
+MiningRange_T0_04,0,None,0.3,false,PickaxeDamage_T0_02,190,-87.5,1770,넓은 삽날 IV,한 번에 파내는 범위가 +0.3 넓어집니다.,false,,,
+PickaxeDamage_T0_01,0,None,0.5,false,PickaxeStamina_T0_01,130,-87.5,1170,곡괭이 위력 I,,false,,,PickaxeStamina_T0_01=-175:990|-175:1050|-87.5:1110
+InventoryWeight_T0_03,0,None,12,false,InventorySlot_T0_01,190,87.5,1770,가방 확장 III,가방 무게 한도가 +12 늘어납니다.,false,,,
+PickaxeDamage_T0_04,0,None,2,false,PickaxeStamina_T0_02,1000,-262.5,3510,곡괭이 위력 IV,,false,,,

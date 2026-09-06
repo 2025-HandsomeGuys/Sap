@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba20e9d7d6c4d6e4a86867f93d4e679a, type: 3}
+  m_Name: Equip_Heat_Boots
+  m_EditorClassIdentifier: Assembly-CSharp::EquipmentSO
+  equipmentID: 3207
+  equipmentNameKey: equip_heat_boots_name
+  icon: {fileID: 2643698984855104248, guid: aafb946ee871af84798f6186a4fe9a4d, type: 3}
+  descriptionKey: equip_heat_boots_desc
+  previewSprite: {fileID: 2261072724519657324, guid: 3341c8a338a08194998caaf774063d8d, type: 3}
+  equipmentType: 3
+  level: 0
+  defense: 3
+  durability: 0
+  price: 1000
+  statModifiers:
+  - statType: 35
+    modifierType: 0
+    value: 9
+  weight: 1
+  stackable: 0
+  maxStackSize: 1

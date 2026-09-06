@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0d528b2d5e4abd4ea20c99a65b89b33, type: 3}
+  m_Name: LavaStone
+  m_EditorClassIdentifier: Assembly-CSharp::MineralSO
+  mineralID: 305
+  mineralNameKey: mineral_lavastone_name
+  descriptionKey: mineral_lavastone_desc
+  spawnRate: 0
+  basementLevel: 0
+  weight: 1
+  stackable: 1
+  maxStackSize: 999
+  icon: {fileID: 21300000, guid: d048cf017c6e5684081f948f6d6c42e2, type: 3}
+  mineralPrefab: {fileID: 7651248375382586064, guid: 5a6eddfdcf375c04fb01d39d28183c21, type: 3}

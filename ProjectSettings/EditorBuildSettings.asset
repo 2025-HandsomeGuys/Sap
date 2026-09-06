@@ -1,0 +1,59 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1045 &1
+EditorBuildSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/Demo/MainMenuScene.unity
+    guid: 77845ae91149a4f48baee5f0514b1dce
+  - enabled: 1
+    path: Assets/Scenes/Test_YeonHu/Intro.unity
+    guid: 0a0d44c91d502254bbd3410954559e20
+  - enabled: 1
+    path: Assets/Scenes/Demo/MainMenuScene.unity
+    guid: 77845ae91149a4f48baee5f0514b1dce
+  - enabled: 1
+    path: Assets/Scenes/Test_YeonHu/Intro.unity
+    guid: 0a0d44c91d502254bbd3410954559e20
+  - enabled: 0
+    path: Assets/Scenes/Demo/MainMenuScene.unity
+    guid: 77845ae91149a4f48baee5f0514b1dce
+  - enabled: 1
+    path: Assets/Scenes/Test_Hanbin/khbScene.unity
+    guid: 8c9cfa26abfee488c85f1582747f6a02
+  - enabled: 1
+    path: Assets/Scenes/Demo/DemoUnderground.unity
+    guid: 6e618df3c13c7954fba3bed38ba73ab2
+  - enabled: 1
+    path: Assets/Scenes/Demo/LoadingScene.unity
+    guid: c51f5163655758649a01e15004d8cb88
+  - enabled: 1
+    path: Assets/Scenes/Demo/DemoUpground.unity
+    guid: 44759d5eb0980bd43bcce97a41d59020
+  - enabled: 1
+    path: Assets/Scenes/Demo/SettlementScene.unity
+    guid: 235582b749242434798e1d3a5b87c1fd
+  - enabled: 1
+    path: Assets/Scenes/Demo/MarketScene.unity
+    guid: 45624b99b18590647b565c643b69fb33
+  - enabled: 0
+    path: Assets/Scenes/Test_Hanbin/Dungeon_Test.unity
+    guid: d8ed19eee15e06c4c88815006dec2b55
+  - enabled: 0
+    path: Assets/Scenes/Demo/Dungeon1.unity
+    guid: 05b9e8461afb8344eb00fae83b50a842
+  - enabled: 1
+    path: Assets/Scenes/Demo/Tutorial/ComicScene.unity
+    guid: 9315ed8b64df7314e901bb067158a2b4
+  - enabled: 0
+    path: Assets/Scenes/Demo/Tutorial/TutorialScene1.unity
+    guid: 4b63872fa7c199a45a4f3160dc79000f
+  - enabled: 1
+    path: Assets/Scenes/Demo/Tutorial/TutorialScene.unity
+    guid: b6ab9557429fe0145943760b6593b4c5
+  m_configObjects:
+    com.unity.addressableassets: {fileID: 11400000, guid: 49757063efc889246b55b5eb57c8f0a2, type: 2}
+    com.unity.dt.app-ui: {fileID: 11400000, guid: 1b1c20d82303e4b5781c3ef50ac1449f, type: 2}
+  m_UseUCBPForAssetBundles: 0

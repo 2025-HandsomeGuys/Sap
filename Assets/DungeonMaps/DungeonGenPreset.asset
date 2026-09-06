@@ -1,0 +1,64 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8c82c5855a81f1499323315df8e9d0e, type: 3}
+  m_Name: DungeonGenPreset
+  m_EditorClassIdentifier: GameScripts::Gameplay.Dungeon.Authoring.Generation.DungeonGenPresetSO
+  roomWidth: 10
+  roomHeight: 6
+  roomTemplateFiles:
+  - {fileID: 4900000, guid: 54a6ae7fe1b8c6249ab7c43734b3251b, type: 3}
+  shapeFiles:
+  - {fileID: 4900000, guid: 23a0d404506dca05427cb55bc122f21a, type: 3}
+  extraConnectionChance: 0.25
+  wallSymbol: W
+  emptySymbol: .
+  chanceTiles:
+  - symbol: 0
+    chance: 0.5
+    onHit: W
+    onMiss: .
+  - symbol: 1
+    chance: 0.25
+    onHit: W
+    onMiss: .
+  - symbol: 2
+    chance: 0.75
+    onHit: W
+    onMiss: .
+  objectSlots:
+  - symbol: '?'
+    fillChance: 0.6
+    candidates:
+    - symbol: '!'
+      weight: 3
+    - symbol: f
+      weight: 2
+    - symbol: _
+      weight: 2
+    - symbol: C
+      weight: 1
+    - symbol: w
+      weight: 1
+  - symbol: D
+    fillChance: 0.5
+    candidates:
+    - symbol: '>'
+      weight: 1
+  - symbol: d
+    fillChance: 0.5
+    candidates:
+    - symbol: <
+      weight: 1
+  rewardCount: 3
+  rewardSlotSymbol: '%'
+  rewardSymbol: $
+  forceCarveBoundaries: 1

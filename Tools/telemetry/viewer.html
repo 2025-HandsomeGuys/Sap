@@ -1,0 +1,1408 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Telemetry Viewer</title>
+<style>
+  :root {
+    --bg: #0f1216;
+    --panel: #161b22;
+    --panel2: #1c232c;
+    --line: #262e39;
+    --text: #d7dee7;
+    --dim: #8a95a3;
+    --dim2: #5d6875;
+    --accent: #e8a33d;
+    --accent-dim: #7a5a24;
+    --good: #5fbf7d;
+    --bad: #e2635c;
+    --info: #5aa9e6;
+    --mono: ui-monospace, "Cascadia Mono", Consolas, "D2Coding", monospace;
+  }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font: 14px/1.5 "Pretendard", "Malgun Gothic", system-ui, sans-serif;
+    overflow: hidden;
+  }
+  .num { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+
+  /* ---------- drop screen ---------- */
+  #drop {
+    position: fixed; inset: 0; display: flex; align-items: center; justify-content: center;
+    flex-direction: column; gap: 18px; z-index: 50; background: var(--bg);
+  }
+  #drop.hide { display: none; }
+  .dz {
+    border: 2px dashed var(--line); border-radius: 16px; padding: 56px 72px;
+    text-align: center; transition: .15s; cursor: pointer;
+  }
+  .dz:hover, body.dragging .dz { border-color: var(--accent); background: #14181d; }
+  .dz h1 { margin: 0 0 8px; font-size: 20px; font-weight: 600; }
+  .dz p { margin: 4px 0; color: var(--dim); font-size: 13px; }
+  .dz .big { font-size: 40px; margin-bottom: 12px; }
+  #dropHint { color: var(--dim2); font-size: 12px; text-align: center; max-width: 560px; line-height: 1.7; }
+  #dropHint code { font-family: var(--mono); color: var(--dim); }
+
+  /* ---------- shell ---------- */
+  #app { display: none; height: 100%; grid-template-columns: 300px 1fr; }
+  #app.on { display: grid; }
+  #side { border-right: 1px solid var(--line); background: var(--panel); display: flex; flex-direction: column; min-height: 0; }
+  #sideHead { padding: 12px 14px; border-bottom: 1px solid var(--line); display: flex; align-items: baseline; gap: 8px; }
+  #sideHead b { font-size: 13px; }
+  #sideHead span { color: var(--dim2); font-size: 11px; }
+  #runs { overflow-y: auto; flex: 1; padding: 8px; }
+  .run {
+    padding: 10px 12px; border-radius: 8px; cursor: pointer; margin-bottom: 6px;
+    border: 1px solid transparent; background: var(--panel2);
+  }
+  .run:hover { border-color: var(--line); }
+  .run.sel { border-color: var(--accent); }
+  .run .rt { font-size: 13px; font-weight: 600; margin-bottom: 3px; }
+  .run .rs { font-size: 11px; color: var(--dim); font-family: var(--mono); }
+  .run .rid { font-size: 10px; color: var(--dim2); font-family: var(--mono); margin-top: 4px; }
+  .badge { display: inline-block; font-size: 10px; padding: 1px 5px; border-radius: 4px; background: var(--accent-dim); color: #ffdca6; margin-left: 4px; vertical-align: 1px; }
+  #sideFoot { padding: 8px; border-top: 1px solid var(--line); display: flex; gap: 6px; }
+  button {
+    font: inherit; font-size: 12px; padding: 6px 10px; border-radius: 6px; cursor: pointer;
+    background: var(--panel2); color: var(--text); border: 1px solid var(--line);
+  }
+  button:hover { border-color: var(--dim2); }
+
+  #main { overflow-y: auto; min-height: 0; padding: 0 0 60px; }
+  #mainHead { padding: 18px 24px 0; }
+  #mainHead h2 { margin: 0 0 2px; font-size: 19px; }
+  #mainHead .sub { color: var(--dim); font-size: 12px; font-family: var(--mono); }
+  #tabs { display: flex; gap: 2px; padding: 16px 24px 0; border-bottom: 1px solid var(--line); position: sticky; top: 0; background: var(--bg); z-index: 5; }
+  .tab { padding: 8px 14px; cursor: pointer; font-size: 13px; color: var(--dim); border-bottom: 2px solid transparent; }
+  .tab:hover { color: var(--text); }
+  .tab.on { color: var(--accent); border-bottom-color: var(--accent); }
+  .tab i { font-style: normal; color: var(--dim2); font-size: 11px; margin-left: 4px; font-family: var(--mono); }
+  #view { padding: 20px 24px; }
+
+  /* ---------- pieces ---------- */
+  .tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; margin-bottom: 22px; }
+  .tile { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; }
+  .tile .k { font-size: 11px; color: var(--dim); margin-bottom: 4px; }
+  .tile .v { font-size: 21px; font-family: var(--mono); font-variant-numeric: tabular-nums; }
+  .tile .v small { font-size: 12px; color: var(--dim); margin-left: 2px; }
+
+  h3 { font-size: 14px; margin: 26px 0 10px; font-weight: 600; }
+  h3:first-child { margin-top: 0; }
+  h3 em { font-style: normal; color: var(--dim2); font-size: 11px; font-weight: 400; margin-left: 6px; font-family: var(--mono); }
+
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th, td { padding: 7px 10px; text-align: right; border-bottom: 1px solid var(--line); white-space: nowrap; }
+  th { color: var(--dim); font-weight: 500; font-size: 11px; background: var(--panel); }
+  th.l, td.l { text-align: left; }
+  tbody tr:hover { background: #ffffff06; }
+  .tw { border: 1px solid var(--line); border-radius: 10px; overflow-x: auto; }
+  .pos { color: var(--good); } .neg { color: var(--bad); } .zero { color: var(--dim2); }
+
+  .chips { display: flex; flex-wrap: wrap; gap: 5px; }
+  .chip { font-size: 11px; padding: 2px 7px; border-radius: 20px; background: var(--panel2); border: 1px solid var(--line); font-family: var(--mono); }
+  .chip b { color: var(--accent); font-weight: 600; }
+
+  .bar { display: flex; height: 8px; border-radius: 4px; overflow: hidden; background: var(--panel2); min-width: 90px; }
+  .bar div { height: 100%; }
+
+  .err { border: 1px solid var(--line); border-radius: 8px; margin-bottom: 6px; background: var(--panel); }
+  .err summary { padding: 9px 12px; cursor: pointer; display: flex; gap: 10px; align-items: baseline; font-size: 13px; }
+  .err summary::-webkit-details-marker { display: none; }
+  .err .cnt { font-family: var(--mono); color: var(--bad); min-width: 40px; font-size: 12px; }
+  .err .msg { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .err .when { color: var(--dim2); font-size: 11px; font-family: var(--mono); }
+  .err pre { margin: 0; padding: 10px 12px 12px 62px; font-family: var(--mono); font-size: 11px; color: var(--dim); white-space: pre-wrap; border-top: 1px solid var(--line); }
+
+  #rawBar { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; margin-bottom: 12px; }
+  #rawBar input { font: inherit; font-size: 12px; padding: 6px 10px; border-radius: 6px; background: var(--panel2); border: 1px solid var(--line); color: var(--text); min-width: 220px; }
+  .fchip { font-size: 11px; padding: 3px 9px; border-radius: 20px; border: 1px solid var(--line); background: var(--panel2); cursor: pointer; color: var(--dim); font-family: var(--mono); }
+  .fchip.on { color: #10141a; background: var(--accent); border-color: var(--accent); }
+  .ev { border-bottom: 1px solid var(--line); }
+  .ev summary { padding: 6px 10px; cursor: pointer; display: flex; gap: 12px; font-size: 12px; font-family: var(--mono); align-items: baseline; }
+  .ev summary::-webkit-details-marker { display: none; }
+  .ev .t { color: var(--dim2); }
+  .ev .d { color: var(--dim); min-width: 40px; }
+  .ev .n { color: var(--info); min-width: 140px; }
+  .ev .s { color: var(--dim); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .ev pre { margin: 0; padding: 8px 10px 12px 34px; font-family: var(--mono); font-size: 11px; color: var(--dim); white-space: pre-wrap; }
+  .more { margin-top: 12px; }
+  .empty { color: var(--dim2); font-size: 13px; padding: 20px 0; }
+  /* ---------- 일지 ---------- */
+  .jbanner { display: flex; align-items: center; gap: 10px; background: var(--accent-dim); border: 1px solid var(--accent); border-radius: 10px; padding: 10px 14px; margin-bottom: 16px; font-size: 13px; }
+  .jbanner b { color: #fff; }
+  .jcard { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; margin-bottom: 12px; }
+  .jcard.live { border-color: var(--accent-dim); }
+  .jcard > h4 { margin: 0 0 4px; font-size: 13px; font-weight: 600; }
+  .jcard > .hint { font-size: 11px; color: var(--dim2); margin-bottom: 10px; line-height: 1.6; }
+  .jq { font-size: 12px; color: var(--dim); margin-bottom: 8px; }
+  .jq b { color: var(--accent); }
+  .jf { font: inherit; width: 100%; padding: 8px 10px; border-radius: 6px; background: var(--panel2); border: 1px solid var(--line); color: var(--text); resize: vertical; }
+  .jf:focus { outline: none; border-color: var(--dim2); }
+  textarea.jf { min-height: 54px; line-height: 1.6; }
+  .jlab { font-size: 12px; color: var(--dim); margin: 12px 0 5px; }
+  .jlab:first-child { margin-top: 0; }
+  .jlab small { color: var(--dim2); margin-left: 6px; font-size: 11px; }
+  .inc { border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; margin-bottom: 8px; background: var(--panel2); }
+  .inc .top { display: flex; gap: 6px; align-items: center; margin-bottom: 6px; flex-wrap: wrap; }
+  .inc .top .jf { width: auto; padding: 4px 7px; font-size: 12px; }
+  .inc input.tt { width: 62px; font-family: var(--mono); text-align: center; }
+  .inc .sub { display: grid; grid-template-columns: 40px 1fr; gap: 4px 8px; align-items: center; }
+  .inc .sub span { font-size: 11px; color: var(--dim2); text-align: right; }
+  .inc .sub .jf { padding: 5px 8px; font-size: 12px; }
+  .inc .del { margin-left: auto; background: none; border: none; color: var(--dim2); cursor: pointer; font-size: 14px; padding: 0 4px; }
+  .inc .del:hover { color: var(--bad); }
+  .inc.fixme { border-color: var(--accent-dim); }
+  .chkw { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; color: var(--dim); cursor: pointer; user-select: none; }
+  .jbtns { display: flex; gap: 8px; align-items: center; margin-top: 14px; flex-wrap: wrap; }
+  .jbtns .go { background: var(--accent); border-color: var(--accent); color: #1b1206; font-weight: 600; }
+  .jbtns .go:hover { filter: brightness(1.1); }
+  .jbtns .note { font-size: 11px; color: var(--dim2); }
+  .yn { display: flex; gap: 6px; }
+  .yn button.on { background: var(--accent); border-color: var(--accent); color: #1b1206; font-weight: 600; }
+  .dayrow { display: flex; align-items: center; gap: 10px; padding: 9px 12px; border: 1px solid var(--line); border-radius: 8px; margin-bottom: 6px; cursor: pointer; background: var(--panel); }
+  .dayrow:hover { border-color: var(--dim2); }
+  .dayrow .d { font-family: var(--mono); width: 52px; }
+  .dayrow .st { font-size: 11px; padding: 1px 7px; border-radius: 20px; border: 1px solid var(--line); color: var(--dim2); }
+  .dayrow .st.w0 { border-color: var(--bad); color: var(--bad); }
+  .dayrow .st.w1 { border-color: var(--accent); color: var(--accent); }
+  .dayrow .st.w2 { border-color: var(--good); color: var(--good); }
+  .dayrow .peek { margin-left: auto; font-size: 11px; color: var(--dim2); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 46%; }
+  .masked { color: var(--dim2) !important; letter-spacing: 2px; }
+  .maskbar { display: flex; align-items: center; gap: 8px; font-size: 11px; color: var(--dim2); margin: 8px 0; }
+  .maskbar button { font-size: 11px; padding: 3px 8px; }
+
+  #toast { position: fixed; bottom: 16px; right: 16px; background: var(--panel2); border: 1px solid var(--line); border-radius: 8px; padding: 10px 14px; font-size: 12px; opacity: 0; transition: .2s; pointer-events: none; }
+  #toast.on { opacity: 1; }
+</style>
+</head>
+<body>
+
+<div id="drop">
+  <div class="dz" id="dz">
+    <div class="big">📊</div>
+    <h1>텔레메트리 로그 뷰어</h1>
+    <p><b>.jsonl 파일</b> 또는 <b>telemetry 폴더</b>를 여기로 드래그</p>
+    <p style="color:var(--dim2)">클릭하면 파일 선택</p>
+  </div>
+  <div style="display:flex;gap:8px">
+    <button id="btnPickFiles">파일 선택</button>
+    <button id="btnPickDir">폴더 선택</button>
+  </div>
+  <div id="dropHint">
+    한 회차(run)가 파일 여러 개에 흩어져 있어도 <code>run_id</code>로 자동으로 합친다.<br>
+    폴더째 넣는 걸 권장 — <code>%LOCALAPPDATA%Low\DefaultCompany\My project (1)\telemetry</code><br>
+    <span style="color:var(--dim2)">드래그가 안 먹으면 <b>폴더 선택</b> 버튼을 쓰거나, <code>viewer.bat</code>으로 열자.</span>
+  </div>
+  <input type="file" id="picker" multiple accept=".jsonl" style="display:none">
+  <input type="file" id="pickerDir" webkitdirectory directory style="display:none">
+</div>
+
+<div id="app">
+  <div id="side">
+    <div id="sideHead"><b>회차</b><span id="sideCnt"></span></div>
+    <div id="runs"></div>
+    <div id="sideFoot">
+      <button id="btnAdd">파일 추가</button>
+      <button id="btnAddDir">폴더 추가</button>
+      <button id="btnClear">초기화</button>
+    </div>
+  </div>
+  <div id="main">
+    <div id="mainHead"><h2 id="rTitle"></h2><div class="sub" id="rSub"></div></div>
+    <div id="tabs"></div>
+    <div id="view"></div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+"use strict";
+
+// ============================ 상태 ============================
+const S = {
+  events: [],          // 모든 이벤트 (시간순 정렬)
+  seen: new Set(),     // session_id#seq — 같은 줄 중복 투입 차단
+  files: new Set(),
+  runs: [],
+  cur: null,
+  tab: "overview",
+  rawFilter: null,     // null = 전체
+  rawQuery: "",
+  rawLimit: 300,
+
+  // ---- 라이브(서버 모드) ----
+  live: null,          // { dir, offsets } — viewer.bat 으로 열었을 때만
+  seenDays: new Set(), // "run#day" — 이미 알던 정산. 새로 뜬 것만 일지 화면으로 전환한다
+  booted: false,       // 첫 적재 끝났나 (백로그로 전환이 터지는 걸 막는다)
+
+  // ---- 일지 ----
+  journal: null,       // 현재 회차의 { run_id, days:{} }
+  jDay: null,          // 작성 중인 일차 (null = 목록 화면)
+  reveal: new Set()    // "run#day" — 미작성인데 '그냥 보기'로 뚫은 것
+};
+
+const FN_RE = /^(\d{4})(\d{2})(\d{2})-(\d{2})(\d{2})(\d{2})_([0-9a-f]+)\.jsonl$/i;
+
+// ============================ 유틸 ============================
+const $ = s => document.querySelector(s);
+const esc = s => String(s == null ? "" : s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const n0 = v => (v == null || isNaN(v)) ? "–" : Math.round(v).toLocaleString();
+const n1 = v => (v == null || isNaN(v)) ? "–" : (Math.round(v * 10) / 10).toLocaleString();
+// 편의성 지표는 0.2~2 대의 작은 값이 많아 소수 둘째 자리까지 봐야 변화가 보인다
+const n2 = v => (v == null || isNaN(v)) ? "–" : (Math.round(v * 100) / 100).toLocaleString();
+
+// dive_end의 최대 스태미나 잔량. "종료치/시작치 (백분율)" 형태로, 많이 깎였으면 빨갛게.
+function maxStaminaCell(p) {
+  if (p.max_stamina_start == null || !(p.max_stamina_start > 0)) return '<span style="color:var(--dim2)">–</span>';
+  const pct = (p.max_stamina_pct != null ? p.max_stamina_pct : p.max_stamina_end / p.max_stamina_start) * 100;
+  const cls = pct <= 25 ? ' class="neg"' : "";
+  return '<span' + cls + '>' + n1(p.max_stamina_end) + '<span style="color:var(--dim2)">/'
+    + n1(p.max_stamina_start) + '</span> ' + n0(pct) + '%</span>';
+}
+
+function dur(sec) {
+  if (sec == null || isNaN(sec)) return "–";
+  sec = Math.round(sec);
+  const h = Math.floor(sec / 3600), m = Math.floor(sec % 3600 / 60), s = sec % 60;
+  if (h) return h + "시간 " + m + "분";
+  if (m) return m + "분 " + s + "초";
+  return s + "초";
+}
+const pad2 = x => String(x).padStart(2, "0");
+function clock(d) { return d ? pad2(d.getHours()) + ":" + pad2(d.getMinutes()) + ":" + pad2(d.getSeconds()) : "–"; }
+function dstr(d) { return d ? (d.getMonth() + 1) + "/" + pad2(d.getDate()) + " " + pad2(d.getHours()) + ":" + pad2(d.getMinutes()) : "–"; }
+function goldCls(v) { return v > 0 ? "pos" : v < 0 ? "neg" : "zero"; }
+function signed(v) { return (v > 0 ? "+" : "") + n0(v); }
+function toast(msg) {
+  const t = $("#toast"); t.textContent = msg; t.classList.add("on");
+  clearTimeout(toast._h); toast._h = setTimeout(() => t.classList.remove("on"), 2800);
+}
+
+const REGION_COLORS = { Dirt: "#a9773f", Ice: "#5aa9e6", Rock: "#8a95a3", Lava: "#e2635c", Crystal: "#b07de0", Sand: "#d8bd6a" };
+function regionColor(r) {
+  if (REGION_COLORS[r]) return REGION_COLORS[r];
+  let h = 0; for (const c of String(r)) h = (h * 31 + c.charCodeAt(0)) % 360;
+  return "hsl(" + h + " 45% 55%)";
+}
+
+// ============================ 파일 읽기 ============================
+function readFile(file) {
+  return new Promise(res => {
+    const r = new FileReader();
+    r.onload = () => res({ name: file.name, text: String(r.result) });
+    r.onerror = () => res(null);
+    r.readAsText(file);
+  });
+}
+
+// 폴더 드롭 지원
+function walkEntry(entry, out) {
+  return new Promise(res => {
+    if (!entry) return res();
+    if (entry.isFile) return entry.file(f => { out.push(f); res(); }, () => res());
+    if (!entry.isDirectory) return res();
+    const rd = entry.createReader();
+    const kids = [];
+    const step = () => rd.readEntries(async ents => {
+      if (!ents.length) { await Promise.all(kids.map(e => walkEntry(e, out))); return res(); }
+      kids.push(...ents); step();
+    }, () => res());
+    step();
+  });
+}
+
+async function filesFromDrop(dt) {
+  // dt.files / dt.items 는 await 이후 무효화되므로 동기적으로 먼저 캡처한다
+  const plain = dt.files ? [...dt.files] : [];
+  let entries = [];
+  try {
+    entries = dt.items ? [...dt.items].map(i => i.webkitGetAsEntry && i.webkitGetAsEntry()).filter(Boolean) : [];
+  } catch { entries = []; }
+
+  const out = [];
+  if (entries.length) {
+    // file: 오리진에서는 디렉토리 순회가 막힐 수 있다 — 실패하면 통째로 폴백
+    try { await Promise.all(entries.map(e => walkEntry(e, out))); } catch { }
+  }
+  const picked = out.length ? out : plain;
+  return picked.filter(f => /\.jsonl$/i.test(f.name));
+}
+
+// ============================ 파싱 ============================
+async function ingest(fileList) {
+  const jsonl = [...fileList].filter(f => /\.jsonl$/i.test(f.name));
+  if (!jsonl.length) { toast(".jsonl 파일이 없다"); return; }
+
+  const results = await Promise.all(jsonl.map(readFile));
+  const st = ingestTexts(results.filter(Boolean), false);
+
+  let msg = (jsonl.length - st.dupFiles) + "개 파일 · " + st.added.toLocaleString() + "개 이벤트 로드";
+  if (st.dupFiles) msg += " · 중복 파일 " + st.dupFiles + "개 건너뜀";
+  if (st.bad) msg += " · 깨진 줄 " + st.bad + "개 무시";
+  toast(msg);
+}
+
+/// [{name,text}] 를 이벤트로 밀어 넣는다.
+/// incremental=true 는 tail 로 새로 붙은 조각이다 — 같은 파일명이 계속 오므로
+/// 파일명 중복 차단은 건너뛰고 session_id#seq 중복만 본다.
+function ingestTexts(results, incremental) {
+  let added = 0, dupFiles = 0, bad = 0;
+
+  for (const r of results) {
+    if (!r) continue;
+    if (!incremental && S.files.has(r.name)) { dupFiles++; continue; }
+    S.files.add(r.name);
+
+    // 파일명 = 세션 시작 벽시계 시각 → playtime 더해서 실제 시각 복원
+    const m = FN_RE.exec(r.name);
+    const base = m ? new Date(+m[1], +m[2] - 1, +m[3], +m[4], +m[5], +m[6]) : null;
+
+    for (const line of r.text.split("\n")) {
+      const s = line.trim();
+      if (!s) continue;
+      let e;
+      try { e = JSON.parse(s); } catch { bad++; continue; }
+      if (!e || !e.event) { bad++; continue; }
+
+      const key = (e.session_id || r.name) + "#" + e.seq;
+      if (S.seen.has(key)) continue;
+      S.seen.add(key);
+
+      e._file = r.name;
+      e._base = base ? base.getTime() : 0;
+      e._t = base ? new Date(e._base + (e.playtime || 0) * 1000) : null;
+      S.events.push(e);
+      added++;
+    }
+  }
+
+  S.events.sort((a, b) => (a._base - b._base) || ((a.seq || 0) - (b.seq || 0)));
+  buildRuns();
+  return { added, dupFiles, bad };
+}
+
+// run_id로 회차 묶기. run_id가 빈 줄(session_start 등)은 같은 세션의 run에 붙인다.
+function buildRuns() {
+  const sessionRun = new Map();
+  for (const e of S.events) {
+    if (e.run_id && e.session_id && !sessionRun.has(e.session_id)) sessionRun.set(e.session_id, e.run_id);
+  }
+
+  const map = new Map();
+  for (const e of S.events) {
+    const rid = e.run_id || sessionRun.get(e.session_id) || ("session:" + (e.session_id || "?"));
+    let r = map.get(rid);
+    if (!r) { r = { id: rid, events: [], sessions: new Set(), files: new Set() }; map.set(rid, r); }
+    r.events.push(e);
+    if (e.session_id) r.sessions.add(e.session_id);
+    r.files.add(e._file);
+  }
+
+  S.runs = [...map.values()].map(deriveRun).sort((a, b) => b.tStart - a.tStart);
+
+  const prevId = S.cur && S.cur.id;
+  const keep = S.cur && S.runs.find(r => r.id === S.cur.id);
+  S.cur = keep || S.runs[0] || null;
+  if (S.cur && S.cur.id !== prevId) { S.journal = null; S.jDay = null; loadJournal(S.cur.id); }
+
+  renderSide();
+  renderMain();
+  // 라이브 모드에서 아직 한 줄도 안 들어왔으면 드롭 화면을 그대로 둔다
+  if (S.runs.length) { $("#drop").classList.add("hide"); $("#app").classList.add("on"); }
+}
+
+function deriveRun(r) {
+  const ev = r.events;
+  // 스프레드(Math.max(...arr))는 이벤트가 수만 개면 인자 한도에 걸린다 — 루프로 접는다
+  let tMin = Infinity, tMax = -Infinity, maxDay = 0;
+  for (const e of ev) {
+    if (e._t) { const t = e._t.getTime(); if (t < tMin) tMin = t; if (t > tMax) tMax = t; }
+    if ((e.day || 0) > maxDay) maxDay = e.day || 0;
+  }
+  r.tStart = tMin === Infinity ? 0 : tMin;
+  r.tEnd = tMax === -Infinity ? 0 : tMax;
+  r.maxDay = maxDay;
+  r.isFixture = ev.some(e => e.is_fixture);
+  r.version = (ev.find(e => e.version) || {}).version || "";
+  r.build = (ev.find(e => e.build_type) || {}).build_type || "";
+  r.sysinfo = (ev.find(e => e.event === "session_start") || {}).payload || null;
+
+  // 플레이 시간 = 파일(세션)별 playtime 최대치의 합
+  const byFile = new Map();
+  for (const e of ev) if ((e.playtime || 0) > (byFile.get(e._file) || 0)) byFile.set(e._file, e.playtime || 0);
+  r.playSeconds = [...byFile.values()].reduce((a, b) => a + b, 0);
+
+  r.days = ev.filter(e => e.event === "day_settled")
+             .map(e => e.payload || {})
+             .sort((a, b) => (a.ended_day || 0) - (b.ended_day || 0));
+
+  // 다이브 짝짓기 (start → end)
+  r.dives = [];
+  let open = null;
+  for (const e of ev) {
+    if (e.event === "dive_start") {
+      if (open) r.dives.push({ start: open, day: open.day, end: null, p: null, incomplete: true });
+      open = e;
+    } else if (e.event === "dive_end") {
+      r.dives.push({ start: open, day: (open && open.day) != null ? open.day : e.day, end: e, p: e.payload || {} });
+      open = null;
+    }
+  }
+  if (open) r.dives.push({ start: open, day: open.day, end: null, p: null, incomplete: true });
+
+  r.shops = ev.filter(e => e.event === "shop_transaction");
+  r.upgrades = ev.filter(e => e.event === "upgrade_purchased");
+  r.market = ev.filter(e => ["coin_bet", "stock_trade", "market_visit", "coin_day_summary"].includes(e.event));
+  r.fails = ev.filter(e => ["stamina_depleted", "emergency_escape", "encumbered_enter"].includes(e.event));
+  r.errors = ev.filter(e => e.event === "error");
+
+  r.maxDepth = r.dives.reduce((m, d) => Math.max(m, (d.p && d.p.max_depth) || 0), 0);
+  r.pixels = r.dives.reduce((a, d) => a + ((d.p && d.p.pixels_dug) || 0), 0);
+  r.goldEnd = r.days.length ? r.days[r.days.length - 1].gold_end : null;
+
+  // 지출 누적 — 정산의 음수 항목 전부(업글·상점구매·주식/코인 손실·기타)
+  r.spent = r.days.reduce((a, d) => a + spentOf(d), 0);
+  r.grossEnd = r.goldEnd == null ? null : r.goldEnd + r.spent;
+  return r;
+}
+
+const LEDGER_KEYS = ["mineral_sale", "stock", "coin", "shop_purchase", "upgrade", "other"];
+/// 하루 정산에서 '쓴 돈'(양수로 환산). 음수 항목만 센다.
+function spentOf(d) {
+  return LEDGER_KEYS.reduce((a, k) => a - Math.min(0, d[k] || 0), 0);
+}
+
+// ============================ 사이드바 ============================
+function renderSide() {
+  $("#sideCnt").textContent = S.runs.length + "개 회차 · 파일 " + S.files.size;
+  $("#runs").innerHTML = S.runs.map(r =>
+    '<div class="run' + (S.cur && r.id === S.cur.id ? " sel" : "") + '" data-id="' + esc(r.id) + '">' +
+      '<div class="rt">' + dstr(new Date(r.tStart)) + ' <span style="color:var(--dim2)">·</span> ' +
+        n0(r.maxDay) + '일차' + (r.isFixture ? '<span class="badge">fixture</span>' : '') + '</div>' +
+      '<div class="rs">' + dur(r.playSeconds) + ' · 다이브 ' + r.dives.length + ' · 세션 ' + r.sessions.size + '</div>' +
+      '<div class="rid">' + esc(r.id.slice(0, 12)) + '</div>' +
+    '</div>').join("") || '<div class="empty" style="padding:12px">회차 없음</div>';
+
+  $("#runs").querySelectorAll(".run").forEach(el => el.onclick = () => {
+    S.cur = S.runs.find(r => r.id === el.dataset.id);
+    S.tab = "overview"; S.rawLimit = 300; S.rawFilter = null; S.rawQuery = "";
+    renderSide(); renderMain();
+    $("#main").scrollTop = 0;
+  });
+}
+
+// ============================ 메인 ============================
+const TABS = [
+  { id: "overview", label: "개요" },
+  { id: "journal", label: "일지", count: r => unwrittenDays(r).length },
+  { id: "dives", label: "다이브", count: r => r.dives.length },
+  { id: "econ", label: "경제", count: r => r.shops.length + r.upgrades.length + r.market.length },
+  { id: "comfort", label: "편의성" },
+  { id: "errors", label: "에러", count: r => r.errors.length },
+  { id: "raw", label: "원본", count: r => r.events.length }
+];
+
+function renderMain() {
+  const r = S.cur;
+  if (!r) { $("#view").innerHTML = '<div class="empty">회차를 고르자</div>'; return; }
+
+  $("#rTitle").textContent = dstr(new Date(r.tStart)) + " ~ " + clock(new Date(r.tEnd)) + " · " + r.maxDay + "일차 회차";
+  $("#rSub").textContent = "run " + r.id.slice(0, 16) + "  ·  파일 " + r.files.size + "개  ·  " +
+    (r.build ? r.build + " " + r.version + "  ·  " : "") + (r.isFixture ? "⚠ fixture(디버그 조작) 포함" : "정상 플레이");
+
+  $("#tabs").innerHTML = TABS.map(t => {
+    const c = t.count ? t.count(r) : null;
+    return '<div class="tab' + (S.tab === t.id ? " on" : "") + '" data-t="' + t.id + '">' + t.label +
+      (c != null ? '<i>' + c.toLocaleString() + '</i>' : '') + '</div>';
+  }).join("");
+  $("#tabs").querySelectorAll(".tab").forEach(el => el.onclick = () => {
+    S.tab = el.dataset.t; S.rawLimit = 300; renderMain();
+  });
+
+  // 라이브로 새 줄이 들어와도 타이핑 중인 칸을 잃지 않게 포커스·커서를 되돌린다
+  const a = document.activeElement;
+  const fid = a && a.id ? a.id : null;
+  let ss = null, se = null;
+  if (fid) { try { ss = a.selectionStart; se = a.selectionEnd; } catch { } }
+
+  $("#view").innerHTML = { overview: viewOverview, journal: viewJournal, dives: viewDives, econ: viewEcon, comfort: viewComfort, errors: viewErrors, raw: viewRaw }[S.tab](r);
+  if (S.tab === "raw") wireRaw(r);
+  if (S.tab === "journal") wireJournal(r);
+
+  // 가림 해제는 어느 탭에서든 뜬다
+  $("#view").querySelectorAll('[data-act="reveal"]').forEach(el => el.onclick = () => {
+    for (const d of settledList(r)) S.reveal.add(r.id + "#" + d);
+    renderMain();
+  });
+
+  if (fid) {
+    const n = document.getElementById(fid);
+    if (n) { n.focus(); if (ss != null) { try { n.setSelectionRange(ss, se); } catch { } } }
+  }
+}
+
+// ---------- 개요 ----------
+function viewOverview(r) {
+  const tiles = [
+    ["플레이 시간", dur(r.playSeconds)],
+    ["도달 일차", n0(r.maxDay) + "<small>일</small>"],
+    ["다이브", n0(r.dives.length) + "<small>회</small>"],
+    ["최대 깊이", n1(r.maxDepth) + "<small>m</small>"],
+    ["최종 골드", r.goldEnd == null ? "–" : n0(r.goldEnd) + "<small>G</small>"],
+    ["누적 지출", n0(r.spent) + "<small>G</small>"],
+    ["지출 포함", r.grossEnd == null ? "–" : n0(r.grossEnd) + "<small>G</small>"],
+    ["판 픽셀", n0(r.pixels)],
+    ["세션", n0(r.sessions.size) + "<small>회</small>"],
+    ["에러", n0(r.errors.length) + "<small>건</small>"]
+  ].map(([k, v]) => '<div class="tile"><div class="k">' + k + '</div><div class="v">' + v + '</div></div>').join("");
+
+  let h = '<div class="tiles">' + tiles + '</div>';
+
+  // 일지를 쓰기 전에 숫자를 보면 기억이 숫자에 맞춰 왜곡된다 — 미작성 일차는 가린다
+  const hidden = r.days.filter(d => isMasked(r, d.ended_day));
+  const shown = r.days.filter(d => !isMasked(r, d.ended_day));
+  if (hidden.length) h += maskBar(r, hidden.length);
+
+  if (shown.length > 1) h += '<h3>골드 추이</h3>' + goldChart(shown);
+
+  h += '<h3>일자별 정산<em>day_settled</em></h3>';
+  if (!r.days.length) h += '<div class="empty">정산 기록 없음 — 하루를 넘긴 적이 없다</div>';
+  else {
+    const cols = ["일차", "시작 G", "종료 G", "증감", "누적지출", "지출포함", "광물", "주식", "코인", "상점", "업글", "기타", "최대깊이", "채광Lv", "노드", "창고"];
+    let accSpent = 0;
+    h += '<div class="tw"><table><thead><tr>' +
+      cols.map((c, i) => '<th' + (i === 0 ? ' class="l"' : "") + '>' + c + '</th>').join("") +
+      '</tr></thead><tbody>' +
+      r.days.map(d => {
+        const delta = (d.gold_end || 0) - (d.gold_start || 0);
+        accSpent += spentOf(d);
+        if (isMasked(r, d.ended_day)) {
+          return '<tr><td class="l num">' + n0(d.ended_day) + '일</td>' +
+            '<td class="num masked" colspan="' + (cols.length - 1) + '">' +
+            '•••• 일지 먼저 (일지 탭)</td></tr>';
+        }
+        const cell = v => '<td class="num ' + goldCls(v || 0) + '">' + (v ? signed(v) : '<span class="zero">0</span>') + '</td>';
+        return '<tr><td class="l num">' + n0(d.ended_day) + '일</td>' +
+          '<td class="num">' + n0(d.gold_start) + '</td>' +
+          '<td class="num">' + n0(d.gold_end) + '</td>' +
+          '<td class="num ' + goldCls(delta) + '"><b>' + signed(delta) + '</b></td>' +
+          '<td class="num" style="color:var(--dim)">' + (accSpent ? n0(accSpent) : '<span class="zero">0</span>') + '</td>' +
+          '<td class="num" style="color:var(--good)">' + n0((d.gold_end || 0) + accSpent) + '</td>' +
+          cell(d.mineral_sale) + cell(d.stock) + cell(d.coin) + cell(d.shop_purchase) + cell(d.upgrade) + cell(d.other) +
+          '<td class="num">' + n1(d.max_depth) + '</td>' +
+          '<td class="num">' + n0(d.mining_level) + '</td>' +
+          '<td class="num">' + n0(d.unlocked_nodes) + '</td>' +
+          '<td class="num">' + n0(d.warehouse_count) + '</td></tr>';
+      }).join("") + '</tbody></table></div>';
+  }
+
+  // 지역 체류 합계
+  const reg = {};
+  for (const d of r.dives) for (const [k, v] of Object.entries((d.p && d.p.region_seconds) || {})) reg[k] = (reg[k] || 0) + v;
+  const regList = Object.entries(reg).sort((a, b) => b[1] - a[1]);
+  if (regList.length) {
+    const tot = regList.reduce((a, b) => a + b[1], 0) || 1;
+    h += '<h3>지역 체류 시간<em>합 ' + dur(tot) + '</em></h3>' +
+      '<div class="bar" style="height:14px;margin-bottom:8px">' +
+      regList.map(([k, v]) => '<div style="width:' + (v / tot * 100) + '%;background:' + regionColor(k) + '" title="' + esc(k) + ' ' + dur(v) + '"></div>').join("") +
+      '</div><div class="chips">' +
+      regList.map(([k, v]) => '<span class="chip"><span style="color:' + regionColor(k) + '">●</span> ' +
+        esc(k) + ' <b>' + dur(v) + '</b> ' + Math.round(v / tot * 100) + '%</span>').join("") + '</div>';
+  }
+
+  if (r.fails.length) {
+    h += '<h3>스태미나·탈출<em>' + r.fails.length + '건</em></h3><div class="chips">' +
+      r.fails.map(e => {
+        const p = e.payload || {};
+        let d = "";
+        if (e.event === "emergency_escape") d = "잃음 " + n0(p.lost_count) + " / 지킴 " + n0(p.kept_count);
+        else if (e.event === "stamina_depleted") d = "무게 " + n1(p.weight) + (p.encumbered ? " · 과적" : "");
+        return '<span class="chip">' + n0(e.day) + '일차 <b>' + esc(e.event) + '</b> ' + esc(d) + '</span>';
+      }).join("") + '</div>';
+  }
+
+  if (r.sysinfo && r.sysinfo.os) {
+    const s = r.sysinfo;
+    h += '<h3>환경</h3><div class="chips">' +
+      [["OS", s.os], ["CPU", s.cpu], ["GPU", s.gpu], ["RAM", s.ram_mb ? n0(s.ram_mb) + "MB" : null], ["해상도", s.screen], ["언어", s.language]]
+        .filter(x => x[1]).map(x => '<span class="chip">' + x[0] + ' <b>' + esc(String(x[1]).trim()) + '</b></span>').join("") + '</div>';
+  }
+  return h;
+}
+
+function goldChart(days) {
+  const W = 680, H = 150, pad = 30;
+
+  // 보유 골드 / 지출 포함(= 보유 + 그때까지 쓴 돈 누적)
+  const held = days.map(d => d.gold_end || 0);
+  let acc = 0;
+  const gross = days.map((d, i) => { acc += spentOf(d); return held[i] + acc; });
+  const totalSpent = acc;
+
+  const max = Math.max(1, ...held, ...gross);
+  const x = i => pad + (days.length < 2 ? 0 : i * (W - pad * 2) / (days.length - 1));
+  const y = v => H - pad - (v / max) * (H - pad * 2);
+  const line = (arr, color, dash) =>
+    '<polyline points="' + arr.map((v, i) => x(i) + "," + y(v)).join(" ") + '" fill="none" stroke="' + color +
+    '" stroke-width="2"' + (dash ? ' stroke-dasharray="5 3"' : "") + '/>';
+  const dots = (arr, color, label) => arr.map((v, i) =>
+    '<circle cx="' + x(i) + '" cy="' + y(v) + '" r="3" fill="' + color + '"><title>' +
+    days[i].ended_day + '일차 ' + label + ': ' + n0(v) + 'G</title></circle>').join("");
+
+  return '<svg viewBox="0 0 ' + W + ' ' + H + '" style="width:100%;max-width:780px;height:auto;background:var(--panel);border:1px solid var(--line);border-radius:10px">' +
+    (totalSpent ? line(gross, "#5fbf7d", true) + dots(gross, "#5fbf7d", "지출 포함") : "") +
+    line(held, "#e8a33d", false) + dots(held, "#e8a33d", "보유") +
+    '<text x="' + pad + '" y="15" fill="#8a95a3" font-size="10" font-family="monospace">최대 ' + n0(max) + 'G</text>' +
+    '<text x="' + (W - pad) + '" y="15" text-anchor="end" font-size="10" font-family="monospace">' +
+      '<tspan fill="#e8a33d">■ 보유 골드</tspan>' +
+      (totalSpent ? '<tspan fill="#5fbf7d">   ▨ 지출 포함 (누적 ' + n0(totalSpent) + 'G 사용)</tspan>' : "") +
+    '</text>' +
+    days.map((d, i) => '<text x="' + x(i) + '" y="' + (H - 8) + '" fill="#5d6875" font-size="9" text-anchor="middle" font-family="monospace">' + d.ended_day + '</text>').join("") +
+    '</svg>';
+}
+
+// ---------- 다이브 ----------
+// ---------- 편의성 ----------
+//
+// 채굴 속도·이동 속도·벽타기·스태미나 소모율은 **수입을 안 올린다.** 런 모델의
+// income()이 그 축을 수식에 안 써서 한계효용이 언제나 0이고, 그래서 "함정인지
+// 편의성인지"를 모델로는 못 가린다(Assets/Docs/economy/upgrade-balance-charter.md §7).
+//
+// 그래서 잣대를 바꿔 **체감 지표**로 본다. 이 탭은 그 지표가 편의성 노드를 산 뒤에
+// 실제로 꺾이는지를 한 회차 안에서 눈으로 보는 자리다.
+//
+// ⚠ 여기서 PASS/FAIL을 찍지 않는다. 한 회차로는 판정이 안 된다 — 잠수 간 변동이
+//   커서 표본이 모여야 한다(check_principles.py 의 P12·P13이 그 판정을 맡는다).
+//   여기 있는 것은 수치와 표본 수뿐이다.
+const COMFORT_AXES = [
+  { key: "swingRate", label: "초당 스윙", node: "MiningSpeed", better: +1,
+    calc: p => (p.swings && p.real_seconds > 5) ? p.swings / (p.real_seconds * 0.65) : null },
+  { key: "secPerDepth", label: "깊이당 실시간", node: "MoveSpeed", better: -1,
+    calc: p => (p.real_seconds && Math.abs(p.max_depth) > 1) ? p.real_seconds / Math.abs(p.max_depth) : null },
+  { key: "climbSec", label: "매달린 시간", node: "ClimbSpeed", better: -1,
+    calc: p => (p.climb_seconds != null) ? p.climb_seconds : null },
+  { key: "climbDrain", label: "등반 초당 드레인", node: "StaminaCost", better: -1,
+    calc: p => (p.climb_stamina != null && p.climb_seconds > 1) ? p.climb_stamina / p.climb_seconds : null }
+];
+
+function viewComfort(r) {
+  const dives = r.dives.filter(d => d.p && !d.incomplete && !isMasked(r, d.day));
+  if (!dives.length) return '<div class="empty">다이브 기록 없음</div>';
+
+  // 어느 일차에 어느 편의성 축을 샀나
+  const boughtOn = {};
+  for (const u of r.upgrades) {
+    const id = (u.payload || {}).node || "";
+    for (const ax of COMFORT_AXES) {
+      if (id.startsWith(ax.node)) (boughtOn[u.day] = boughtOn[u.day] || []).push(ax.key);
+    }
+  }
+
+  let h = '<div class="note">수입으로 못 재는 축을 <b>체감 지표</b>로 본다. ' +
+    '노드를 산 일차에 <b>▲</b> 표시가 붙고, 그 뒤로 지표가 꺾이는지 보면 된다.<br>' +
+    '한 회차로는 판정하지 않는다 — PASS/FAIL은 <code>check_principles.py</code>의 P13이 낸다.</div>';
+
+  const cols = ["일차", "결과"].concat(COMFORT_AXES.map(a => a.label));
+  h += '<div class="tw"><table><thead><tr>' +
+    cols.map((c, i) => '<th' + (i === 0 ? ' class="l"' : "") + '>' + c + '</th>').join("") +
+    '</tr></thead><tbody>';
+
+  const prev = {};
+  for (const d of dives) {
+    const p = d.p || {};
+    const marks = boughtOn[d.day] || [];
+    h += '<tr><td class="l num">' + n0(d.day) + '일</td>' +
+      '<td class="num">' + ({ return: "복귀", escape: "긴급탈출", death: "사망" }[p.result] || "–") + '</td>';
+    for (const ax of COMFORT_AXES) {
+      const v = ax.calc(p);
+      let cell;
+      if (v == null) cell = '<span style="color:var(--dim2)">–</span>';
+      else {
+        const b = prev[ax.key];
+        let delta = "";
+        if (b != null && b > 0) {
+          const ch = (v / b - 1) * 100;
+          if (Math.abs(ch) >= 5) {
+            // 좋아진 방향이면 강조. better=-1인 축은 값이 줄어야 좋다.
+            const good = (ch * ax.better) > 0;
+            delta = ' <small style="color:' + (good ? "var(--ok,#4c9)" : "var(--dim2)") + '">' +
+              (ch > 0 ? "+" : "") + ch.toFixed(0) + '%</small>';
+          }
+        }
+        cell = n2(v) + delta;
+        prev[ax.key] = v;
+      }
+      h += '<td class="num">' + (marks.includes(ax.key) ? '<b title="이 일차에 구매">▲</b> ' : "") + cell + '</td>';
+    }
+    h += '</tr>';
+  }
+  h += '</tbody></table></div>';
+
+  // 계측이 아직 없는 축을 명시한다 — 빈 칸을 '값이 0'으로 오해하지 않게.
+  const missing = COMFORT_AXES.filter(a => dives.every(d => a.calc(d.p || {}) == null));
+  if (missing.length) {
+    h += '<div class="note">계측이 없는 축: <b>' + missing.map(a => a.label).join(", ") + '</b><br>' +
+      'climb_seconds / climb_stamina 는 2026-08-31에 추가됐다. 그 이전 로그에는 없고, ' +
+      '몇 판 더 돌리면 채워진다.</div>';
+  }
+  return h;
+}
+
+function viewDives(r) {
+  if (!r.dives.length) return '<div class="empty">다이브 기록 없음</div>';
+  const cols = ["일차", "시각", "결과", "최대깊이", "소요", "판 픽셀", "광물", "남은 스태미나", "최대치 잔량", "무게비", "지역"];
+  const hid = r.dives.filter(d => isMasked(r, d.day)).length;
+  // 최대 스태미나 잔량 = 종료 max / 시작 max. 이 게임은 부상·환경·파기가 MaxStamina를 깎으므로
+  // 이게 그 잠수가 얼마나 빡셌는지를 나타낸다. 필드가 없는 옛 로그는 '–'.
+  let h = (hid ? maskBar(r, hid, "다이브") : "") + '<div class="tw"><table><thead><tr>' +
+    cols.map((c, i) => '<th' + (i === 0 ? ' class="l"' : "") + '>' + c + '</th>').join("") + '</tr></thead><tbody>';
+
+  for (const d of r.dives) {
+    const sp = (d.start && d.start.payload) || {};
+    if (isMasked(r, d.day)) {
+      h += '<tr><td class="l num">' + n0(d.day) + '일</td>' +
+        '<td class="num masked" colspan="' + (cols.length - 1) + '">•••• 일지 먼저 (일지 탭)</td></tr>';
+      continue;
+    }
+    if (d.incomplete) {
+      h += '<tr><td class="l num">' + n0(d.day) + '일</td><td class="num">' + clock(d.start && d.start._t) + '</td>' +
+        '<td class="l" colspan="8" style="color:var(--dim2)">기록 없이 종료 (dive_end 없음) · 시작 골드 ' + n0(sp.gold) + '</td></tr>';
+      continue;
+    }
+    const p = d.p || {};
+    const regs = Object.entries(p.region_seconds || {}).sort((a, b) => b[1] - a[1]);
+    const rtot = regs.reduce((a, b) => a + b[1], 0) || 1;
+    const bar = '<div class="bar">' + regs.map(([k, v]) =>
+      '<div style="width:' + (v / rtot * 100) + '%;background:' + regionColor(k) + '" title="' + esc(k) + ' ' + dur(v) + '"></div>').join("") + '</div>';
+    const mins = Object.entries(p.minerals || {}).sort((a, b) => b[1] - a[1]);
+    const resTxt = { return: "복귀", escape: "긴급탈출", death: "사망" }[p.result] || p.result || "–";
+
+    h += '<tr><td class="l num">' + n0(d.day) + '일</td>' +
+      '<td class="num">' + clock(d.start && d.start._t) + '</td>' +
+      '<td class="' + (p.result === "return" ? "" : "neg") + '">' + esc(resTxt) + '</td>' +
+      '<td class="num">' + n1(p.max_depth) + 'm</td>' +
+      '<td class="num">' + dur(p.seconds) + '</td>' +
+      '<td class="num">' + n0(p.pixels_dug) + '</td>' +
+      '<td class="num">' + n0(p.mineral_count) + '<span style="color:var(--dim2)">/' + n0(p.mineral_kinds) + '종</span></td>' +
+      '<td class="num">' + n1(p.stamina_left) + '</td>' +
+      '<td class="num">' + maxStaminaCell(p) + '</td>' +
+      '<td class="num">' + n1((p.weight_ratio || 0) * 100) + '%</td>' +
+      '<td>' + bar + '</td></tr>';
+
+    if (mins.length) {
+      h += '<tr><td></td><td colspan="10" style="padding-top:0;border-bottom:1px solid var(--line)"><div class="chips">' +
+        mins.map(([k, v]) => '<span class="chip">' + esc(k) + ' <b>' + v + '</b></span>').join("") + '</div></td></tr>';
+    }
+  }
+  return h + '</tbody></table></div>';
+}
+
+// ---------- 경제 ----------
+function viewEcon(r) {
+  let h = "";
+
+  const agg = { sell: {}, buy: {} };
+  for (const e of r.shops) {
+    const p = e.payload || {};
+    const k = p.kind === "buy" ? "buy" : "sell";
+    const it = agg[k][p.item] || (agg[k][p.item] = { amount: 0, gold: 0, n: 0 });
+    it.amount += p.amount || 0; it.gold += p.gold || 0; it.n++;
+  }
+  for (const [kind, label] of [["sell", "판매"], ["buy", "구매"]]) {
+    const rows = Object.entries(agg[kind]).sort((a, b) => b[1].gold - a[1].gold);
+    if (!rows.length) continue;
+    const tot = rows.reduce((a, b) => a + b[1].gold, 0) || 1;
+    const totAmt = rows.reduce((a, b) => a + b[1].amount, 0);
+    h += '<h3>' + label + ' 집계<em>' + rows.length + '종 · ' + n0(totAmt) + '개 · ' + n0(tot) + 'G</em></h3>' +
+      '<div class="tw"><table><thead><tr><th class="l">아이템</th><th>수량</th><th>골드</th><th>개당</th><th>거래</th><th>비중</th></tr></thead><tbody>' +
+      rows.map(([item, v]) => '<tr><td class="l">' + esc(item) + '</td>' +
+        '<td class="num">' + n0(v.amount) + '</td>' +
+        '<td class="num ' + (kind === "sell" ? "pos" : "neg") + '">' + n0(v.gold) + '</td>' +
+        '<td class="num" style="color:var(--dim)">' + n1(v.amount ? v.gold / v.amount : 0) + '</td>' +
+        '<td class="num" style="color:var(--dim)">' + n0(v.n) + '회</td>' +
+        '<td><div class="bar"><div style="width:' + (v.gold / tot * 100) + '%;background:var(--accent)"></div></div></td></tr>').join("") +
+      '</tbody></table></div>';
+  }
+
+  if (r.upgrades.length) {
+    const tot = r.upgrades.reduce((a, e) => a + ((e.payload || {}).cost || 0), 0);
+    h += '<h3>업그레이드 구매<em>' + r.upgrades.length + '개 · ' + n0(tot) + 'G</em></h3>' +
+      '<div class="tw"><table><thead><tr><th class="l">일차</th><th class="l">노드</th><th>비용</th><th>시각</th></tr></thead><tbody>' +
+      r.upgrades.map(e => '<tr><td class="l num">' + n0(e.day) + '일</td>' +
+        '<td class="l" style="font-family:var(--mono);font-size:12px">' + esc((e.payload || {}).node) + '</td>' +
+        '<td class="num neg">-' + n0((e.payload || {}).cost) + '</td>' +
+        '<td class="num" style="color:var(--dim2)">' + clock(e._t) + '</td></tr>').join("") + '</tbody></table></div>';
+  }
+
+  if (r.market.length) {
+    h += '<h3>마켓<em>' + r.market.length + '건</em></h3><div class="chips">' +
+      r.market.map(e => '<span class="chip">' + n0(e.day) + '일차 <b>' + esc(e.event) + '</b> ' +
+        esc(JSON.stringify(e.payload || {})) + '</span>').join("") + '</div>';
+  }
+
+  if (r.shops.length) {
+    h += '<h3>거래 시간순<em>' + r.shops.length + '건</em></h3>' +
+      '<div class="tw"><table><thead><tr><th class="l">일차</th><th class="l">종류</th><th class="l">아이템</th><th>수량</th><th>골드</th><th>창고</th><th>시각</th></tr></thead><tbody>' +
+      r.shops.map(e => {
+        const p = e.payload || {};
+        const buy = p.kind === "buy";
+        return '<tr><td class="l num">' + n0(e.day) + '일</td>' +
+          '<td class="l ' + (buy ? "neg" : "pos") + '">' + (buy ? "구매" : "판매") + '</td>' +
+          '<td class="l">' + esc(p.item) + '</td>' +
+          '<td class="num">' + n0(p.amount) + '</td>' +
+          '<td class="num ' + (buy ? "neg" : "pos") + '">' + (buy ? "-" : "+") + n0(p.gold) + '</td>' +
+          '<td style="color:var(--dim2)">' + (p.warehouse ? "창고" : "–") + '</td>' +
+          '<td class="num" style="color:var(--dim2)">' + clock(e._t) + '</td></tr>';
+      }).join("") + '</tbody></table></div>';
+  }
+
+  return h || '<div class="empty">경제 활동 기록 없음</div>';
+}
+
+// ---------- 에러 ----------
+function viewErrors(r) {
+  if (!r.errors.length) return '<div class="empty">에러 없음 👍</div>';
+  const g = new Map();
+  for (const e of r.errors) {
+    const p = e.payload || {};
+    const k = (p.type || "") + "|" + (p.message || "");
+    let it = g.get(k);
+    if (!it) { it = { msg: p.message, trace: p.trace, n: 0, days: new Set(), first: e }; g.set(k, it); }
+    it.n++; it.days.add(e.day || 0);
+    if (!it.trace && p.trace) it.trace = p.trace;
+  }
+  const list = [...g.values()].sort((a, b) => b.n - a.n);
+  return '<h3>메시지별 묶음<em>' + list.length + '종 / 총 ' + r.errors.length.toLocaleString() + '건</em></h3>' +
+    list.map(it => {
+      const days = [...it.days].sort((a, b) => a - b);
+      const dtxt = days.slice(0, 6).join(",") + (days.length > 6 ? "…" : "") + "일차";
+      return '<details class="err"><summary>' +
+        '<span class="cnt">' + it.n.toLocaleString() + '×</span>' +
+        '<span class="msg">' + esc(it.msg) + '</span>' +
+        '<span class="when">' + dtxt + ' · ' + clock(it.first._t) + '</span></summary>' +
+        '<pre>' + esc(it.trace || "(스택 없음)") + '</pre></details>';
+    }).join("");
+}
+
+// ---------- 원본 ----------
+function summarize(e) {
+  const p = e.payload || {};
+  switch (e.event) {
+    case "session_start": return String(p.os || "").trim();
+    case "session_end": return p.screen + " · " + dur(p.session_seconds);
+    case "heartbeat": return p.screen || "";
+    case "error": return p.message || "";
+    case "dive_start": return p.time_of_day + " · 스태미나 " + n1(p.stamina)
+      + (p.max_stamina ? "/" + n1(p.max_stamina) : "") + " · " + n0(p.gold) + "G";
+    case "dive_end": return p.result + " · " + n1(p.max_depth) + "m · " + dur(p.seconds) + " · 광물 " + n0(p.mineral_count);
+    case "region_first_enter": return p.region + " @ " + n1(p.depth) + "m";
+    case "day_settled": return n0(p.gold_start) + "G → " + n0(p.gold_end) + "G · 깊이 " + n1(p.max_depth);
+    case "shop_transaction": return p.kind + " " + p.item + " ×" + p.amount + " = " + n0(p.gold) + "G";
+    case "upgrade_purchased": return p.node + " (-" + n0(p.cost) + "G)";
+    default: return JSON.stringify(p).slice(0, 140);
+  }
+}
+
+function viewRaw(r) {
+  const types = [...new Set(r.events.map(e => e.event))].sort();
+  const active = S.rawFilter || new Set(types);
+
+  const q = S.rawQuery.toLowerCase();
+  const rows = r.events.filter(e => {
+    if (!active.has(e.event)) return false;
+    if (!q) return true;
+    return (e.event + " " + JSON.stringify(e.payload || {})).toLowerCase().includes(q);
+  });
+  const shown = rows.slice(0, S.rawLimit);
+
+  return '<div id="rawBar">' +
+      '<input id="rawQ" placeholder="payload 내용 검색…" value="' + esc(S.rawQuery) + '">' +
+      types.map(t => '<span class="fchip' + (active.has(t) ? " on" : "") + '" data-t="' + esc(t) + '">' +
+        esc(t) + ' ' + r.events.filter(e => e.event === t).length.toLocaleString() + '</span>').join("") +
+      '<button id="rawAll">전체</button><button id="rawNone">해제</button>' +
+    '</div>' +
+    '<div style="color:var(--dim2);font-size:12px;margin-bottom:8px">' +
+      rows.length.toLocaleString() + '건 중 ' + shown.length.toLocaleString() + '건 표시</div>' +
+    shown.map(e => '<details class="ev"><summary>' +
+      '<span class="t">' + clock(e._t) + '</span>' +
+      '<span class="d">' + (e.day || 0) + '일</span>' +
+      '<span class="n">' + esc(e.event) + '</span>' +
+      '<span class="s">' + esc(summarize(e)) + '</span></summary>' +
+      '<pre>' + esc(JSON.stringify(e.payload, null, 2)) + '\n\n' +
+        'file: ' + esc(e._file) + '   seq: ' + e.seq + '   playtime: ' + e.playtime + 's   depth: ' + n1(e.depth) +
+      '</pre></details>').join("") +
+    (rows.length > shown.length
+      ? '<button class="more" id="rawMore">' + (rows.length - shown.length).toLocaleString() + '건 더 보기</button>' : "");
+}
+
+function redrawRaw(r) { $("#view").innerHTML = viewRaw(r); wireRaw(r); }
+
+function wireRaw(r) {
+  const types = [...new Set(r.events.map(e => e.event))];
+  const q = $("#rawQ");
+  if (q) q.oninput = () => {
+    S.rawQuery = q.value; S.rawLimit = 300;
+    redrawRaw(r);
+    const nq = $("#rawQ"); nq.focus(); nq.setSelectionRange(nq.value.length, nq.value.length);
+  };
+  $("#view").querySelectorAll(".fchip").forEach(el => el.onclick = () => {
+    const t = el.dataset.t;
+    if (!S.rawFilter) S.rawFilter = new Set(types);
+    S.rawFilter.has(t) ? S.rawFilter.delete(t) : S.rawFilter.add(t);
+    S.rawLimit = 300; redrawRaw(r);
+  });
+  const all = $("#rawAll"), none = $("#rawNone"), more = $("#rawMore");
+  if (all) all.onclick = () => { S.rawFilter = new Set(types); redrawRaw(r); };
+  if (none) none.onclick = () => { S.rawFilter = new Set(); redrawRaw(r); };
+  if (more) more.onclick = () => { S.rawLimit += 1000; redrawRaw(r); };
+}
+
+// ============================ 일지 — 모델 ============================
+// 저장 위치는 서버가 정한다: Tools/telemetry/journal/<run_id>.json
+// 한 일차 = { question, incidents[], expected, quit, again, mismatch, next_question, stage }
+//   stage 0 = 작성 중(숫자 가림) · 1 = 1단 제출(숫자 공개) · 2 = 완료
+
+const TAGS = ["지루", "짜증", "좋음", "의외", "버그"];
+
+function blankDay() {
+  return { question: "", incidents: [], expected: "", quit: "", again: null,
+           mismatch: "", next_question: "", stage: 0 };
+}
+
+function journalDay(day, create) {
+  if (!S.journal || !S.journal.days || day == null) return null;
+  const k = String(day);
+  if (!S.journal.days[k] && create) S.journal.days[k] = blankDay();
+  const e = S.journal.days[k];
+  if (e && !Array.isArray(e.incidents)) e.incidents = [];
+  return e || null;
+}
+
+/// 일차 항목을 확보하고, 비어 있으면 **전날의 '내일의 질문'을 이월**한다.
+function ensureDay(r, day) {
+  const e = journalDay(day, true);
+  if (!e) return null;
+  if (!e.question) {
+    const prev = journalDay(day - 1, false);
+    if (prev && prev.next_question) e.question = prev.next_question;
+  }
+  return e;
+}
+
+function isWritten(day) { const e = journalDay(day, false); return !!(e && (e.stage || 0) >= 1); }
+
+/// 정산이 끝난 일차 목록 (r 객체는 buildRuns 마다 새로 만들어지므로 캐시가 상하지 않는다)
+function settledList(r) {
+  if (!r._settled) r._settled = r.days.map(d => d.ended_day).filter(d => d != null);
+  return r._settled;
+}
+function settledSet(r) {
+  if (!r._settledSet) r._settledSet = new Set(settledList(r));
+  return r._settledSet;
+}
+function unwrittenDays(r) {
+  if (!S.journal || !S.cur || S.cur.id !== r.id) return [];
+  return settledList(r).filter(d => !isWritten(d));
+}
+
+/// 진행 중인 일차 = 마지막 이벤트의 day
+function currentDay(r) {
+  for (let i = r.events.length - 1; i >= 0; i--) if (r.events[i].day != null) return r.events[i].day;
+  return r.maxDay || 1;
+}
+
+/// 일지를 쓰기 전에 숫자를 보면 기억이 숫자에 맞춰 왜곡된다 — 그래서 가린다.
+/// 서버 없이(드래그로) 연 로그는 애초에 일지를 쓸 수 없으니 안 가린다.
+function isMasked(r, day) {
+  if (!S.journal || day == null) return false;
+  if (S.reveal.has(r.id + "#" + day)) return false;
+  if (!settledSet(r).has(day)) return false;   // 아직 안 끝난 일차 = 가릴 정산이 없다
+  return !isWritten(day);
+}
+
+function maskBar(r, n, what) {
+  return '<div class="maskbar">' + (what || "정산") + ' ' + n + '일치가 가려져 있다 — 일지를 쓰면 열린다.' +
+    '<button data-act="reveal">그냥 보기</button></div>';
+}
+
+// ============================ 일지 — 서버 왕복 ============================
+async function loadJournal(runId) {
+  if (!S.live) return;   // 서버 없이는 저장할 곳이 없다
+  let j = null;
+  try { j = await (await fetch("/api/journal?run=" + encodeURIComponent(runId))).json(); } catch { }
+  if (!S.cur || S.cur.id !== runId) return;   // 그새 회차를 바꿨다
+  S.journal = (j && j.days) ? j : { run_id: runId, days: {} };
+  renderMain();
+}
+
+let saveTimer = null;
+function saveJournal(now) {
+  if (!S.journal || !S.live) return;
+  clearTimeout(saveTimer);
+  const go = async () => {
+    try {
+      const res = await fetch("/api/journal", {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(S.journal)
+      });
+      const j = await res.json();
+      if (j && j.error) toast("일지 저장 실패: " + j.error);
+    } catch { toast("일지 저장 실패 — 서버 창이 꺼졌나?"); }
+  };
+  if (now) go(); else saveTimer = setTimeout(go, 700);
+}
+
+// ============================ 일지 — 화면 ============================
+function viewJournal(r) {
+  if (!S.live) return '<div class="empty">일지는 <code>viewer.bat</code> 으로 열었을 때만 쓸 수 있다 — 저장할 서버가 필요하다.</div>';
+  if (!S.journal) return '<div class="empty">일지 불러오는 중…</div>';
+  return S.jDay == null ? journalIndex(r) : journalForm(r, S.jDay);
+}
+
+function incHtml(day, i, x) {
+  const sel = (k, opts) => '<select class="jf" data-k="' + k + '">' + opts + '</select>';
+  return '<div class="inc' + (x.fix && !x.done ? ' fixme' : '') + '" data-i="' + i + '">' +
+    '<div class="top">' +
+      '<input class="jf tt" id="j' + day + '_i' + i + '_t" data-k="t" value="' + esc(x.t || "") + '" placeholder="시각">' +
+      sel("tag", TAGS.map(t => '<option' + (x.tag === t ? ' selected' : '') + '>' + t + '</option>').join("")) +
+      sel("sev", [1, 2, 3].map(s => '<option value="' + s + '"' + (+x.sev === s ? ' selected' : '') + '>심각 ' + s + '</option>').join("")) +
+      '<label class="chkw"><input type="checkbox" data-k="fix"' + (x.fix ? ' checked' : '') + '> 고칠 것</label>' +
+      (x.fix ? '<label class="chkw"><input type="checkbox" data-k="done"' + (x.done ? ' checked' : '') + '> 고침</label>' : '') +
+      '<button class="del" data-act="delinc" title="지우기">✕</button>' +
+    '</div>' +
+    '<div class="sub">' +
+      '<span>관찰</span><input class="jf" id="j' + day + '_i' + i + '_obs" data-k="obs" value="' + esc(x.obs || "") + '" placeholder="무슨 일이 있었나 — 해석 말고 사실만">' +
+      '<span>해석</span><input class="jf" id="j' + day + '_i' + i + '_why" data-k="why" value="' + esc(x.why || "") + '" placeholder="왜 그랬을까 (나중에 틀려도 됨)">' +
+      '<span>안</span><input class="jf" id="j' + day + '_i' + i + '_idea" data-k="idea" value="' + esc(x.idea || "") + '" placeholder="어떻게 고칠까 (미확정)">' +
+    '</div></div>';
+}
+
+function incsHtml(day, e) {
+  if (!e.incidents.length) return '<div class="hint" style="margin-bottom:8px">아직 없음</div>';
+  return '<div class="incs" data-day="' + day + '">' +
+    e.incidents.map((x, i) => incHtml(day, i, x)).join("") + '</div>';
+}
+
+function journalIndex(r) {
+  const cur = currentDay(r);
+  const settled = settledList(r);
+  let h = "";
+
+  // 진행 중인 일차 — 사건은 겪은 자리에서 적는 게 원칙이라 항상 맨 위
+  if (!settledSet(r).has(cur)) {
+    const e = ensureDay(r, cur);
+    h += '<div class="jcard live"><h4>진행 중 · ' + cur + '일차</h4>' +
+      '<div class="hint">사건은 <b>겪은 그 자리에서</b> 적는다 — 나중에 몰아 쓰면 합리화된다.<br>' +
+      '관찰(사실)과 해석(왜)은 다른 줄에. 해석이 나중에 틀린 걸로 밝혀져도 관찰은 남는다.</div>' +
+      '<div class="jlab">오늘의 질문 <small>오늘 뭘 보려고 하는가</small></div>' +
+      '<input class="jf" id="jq' + cur + '" data-f="question" data-day="' + cur + '" value="' + esc(e.question || "") + '" placeholder="예) 3층 엘베까지 걷는 시간이 참을 만한가">' +
+      '<div class="jlab">사건 <small>' + e.incidents.length + '건</small></div>' +
+      incsHtml(cur, e) +
+      '<div class="jbtns" style="margin-top:0"><button data-act="addinc" data-day="' + cur + '">+ 사건 추가</button>' +
+      '<span class="note">시각은 지금 시각이 자동으로 들어간다</span></div></div>';
+  }
+
+  // 미해결 — '고칠 것'만 체크되고 아직 안 고친 사건
+  const open = [];
+  for (const [k, e] of Object.entries(S.journal.days || {}))
+    (e.incidents || []).forEach(x => { if (x.fix && !x.done) open.push({ day: +k, x }); });
+  if (open.length) {
+    h += '<h3>미해결<em>' + open.length + '건</em></h3>' +
+      open.sort((a, b) => a.day - b.day).map(o =>
+        '<div class="dayrow" data-act="open" data-day="' + o.day + '">' +
+          '<span class="d">' + o.day + '일</span>' +
+          '<span class="st w1">' + esc(o.x.tag || "") + ' ' + (o.x.sev || "") + '</span>' +
+          '<span class="peek" style="max-width:70%">' + esc(o.x.obs || "(내용 없음)") + '</span></div>').join("");
+  }
+
+  h += '<h3>일차별 일지<em>' + settled.length + '일</em></h3>';
+  if (!settled.length) h += '<div class="empty">아직 하루를 넘긴 적이 없다 — 자고 나면 이 화면으로 넘어온다</div>';
+  else h += settled.slice().sort((a, b) => b - a).map(d => {
+    const e = journalDay(d, false);
+    const st = e ? (e.stage || 0) : 0;
+    const inc = e ? (e.incidents || []).length : 0;
+    const peek = e ? (e.question || (e.incidents || []).map(x => x.obs).filter(Boolean)[0] || "") : "";
+    return '<div class="dayrow" data-act="open" data-day="' + d + '">' +
+      '<span class="d">' + d + '일</span>' +
+      '<span class="st w' + st + '">' + ["미작성", "1단 완료", "완료"][st] + '</span>' +
+      (inc ? '<span class="st">사건 ' + inc + '</span>' : '') +
+      '<span class="peek">' + esc(peek) + '</span></div>';
+  }).join("");
+
+  return h;
+}
+
+function stage1Fields(day, e) {
+  return '<div class="jlab">오늘의 질문 <small>오늘 뭘 보려고 했나</small></div>' +
+    '<input class="jf" id="jq' + day + '" data-f="question" data-day="' + day + '" value="' + esc(e.question || "") + '" placeholder="예) 3층 엘베까지 걷는 시간이 참을 만한가">' +
+    '<div class="jlab">사건 <small>관찰과 해석은 다른 줄에. 해결책은 \'안\' 칸에만</small></div>' +
+    incsHtml(day, e) +
+    '<div class="jbtns" style="margin-top:0"><button data-act="addinc" data-day="' + day + '">+ 사건 추가</button></div>' +
+    '<div class="jlab">예상 vs 실제 <small>오늘 예상에서 벗어난 것</small></div>' +
+    '<textarea class="jf" id="je' + day + '" data-f="expected" data-day="' + day + '" placeholder="예) 3판이면 다음 노드 살 줄 알았는데 5판 걸렸다">' + esc(e.expected || "") + '</textarea>' +
+    '<div class="jlab">그만두고 싶었던 지점 <small>없었으면 비워두자</small></div>' +
+    '<textarea class="jf" id="jz' + day + '" data-f="quit" data-day="' + day + '">' + esc(e.quit || "") + '</textarea>' +
+    '<div class="jlab">내일 또 켜고 싶은가 <small>혼자 테스트에서 유일하게 안 거짓말하는 질문</small></div>' +
+    '<div class="yn">' +
+      '<button data-act="again" data-day="' + day + '" data-v="1" class="' + (e.again === true ? "on" : "") + '">예</button>' +
+      '<button data-act="again" data-day="' + day + '" data-v="0" class="' + (e.again === false ? "on" : "") + '">아니오</button>' +
+    '</div>';
+}
+
+/// 1단 제출 뒤에만 보여주는 그날 숫자
+function dayNumbers(r, day) {
+  const d = r.days.find(x => x.ended_day === day);
+  const dv = r.dives.filter(x => x.day === day && !x.incomplete);
+  let h = '<div class="jcard"><h4>' + day + '일차 숫자</h4>';
+
+  if (!d) h += '<div class="hint">정산 기록이 없다</div>';
+  else {
+    const delta = (d.gold_end || 0) - (d.gold_start || 0);
+    h += '<div class="tiles">' + [
+      ["증감", '<span class="' + goldCls(delta) + '">' + signed(delta) + '</span><small>G</small>'],
+      ["종료 골드", n0(d.gold_end) + "<small>G</small>"],
+      ["광물 판매", signed(d.mineral_sale || 0)],
+      ["업그레이드", signed(d.upgrade || 0)],
+      ["상점", signed(d.shop_purchase || 0)],
+      ["최대 깊이", n1(d.max_depth) + "<small>m</small>"],
+      ["다이브", n0(dv.length) + "<small>회</small>"],
+      ["노드", n0(d.unlocked_nodes)]
+    ].map(([k, v]) => '<div class="tile"><div class="k">' + k + '</div><div class="v">' + v + '</div></div>').join("") + '</div>';
+  }
+
+  if (dv.length) {
+    h += '<div class="jlab">다이브</div><div class="tw"><table><thead><tr>' +
+      '<th class="l">시각</th><th>결과</th><th>깊이</th><th>소요</th><th>광물</th><th>최대치 잔량</th>' +
+      '</tr></thead><tbody>' + dv.map(x => {
+        const p = x.p || {};
+        return '<tr><td class="l num">' + clock(x.start && x.start._t) + '</td>' +
+          '<td class="' + (p.result === "return" ? "" : "neg") + '">' + esc({ return: "복귀", escape: "긴급탈출" }[p.result] || p.result || "–") + '</td>' +
+          '<td class="num">' + n1(p.max_depth) + 'm</td><td class="num">' + dur(p.seconds) + '</td>' +
+          '<td class="num">' + n0(p.mineral_count) + '</td><td class="num">' + maxStaminaCell(p) + '</td></tr>';
+      }).join("") + '</tbody></table></div>';
+  }
+
+  const ups = r.upgrades.filter(u => u.day === day);
+  if (ups.length) h += '<div class="jlab">산 업그레이드</div><div class="chips">' + ups.map(u => {
+    const p = u.payload || {};
+    return '<span class="chip">' + esc(p.node || "?") + ' <b>' + n0(p.cost) + 'G</b></span>';
+  }).join("") + '</div>';
+
+  const fails = r.fails.filter(f => f.day === day);
+  if (fails.length) h += '<div class="jlab">실패</div><div class="chips">' +
+    fails.map(f => '<span class="chip">' + esc(f.event) + '</span>').join("") + '</div>';
+
+  return h + '</div>';
+}
+
+function journalForm(r, day) {
+  const e = ensureDay(r, day);
+  const stage = e.stage || 0;
+
+  let h = '<div class="jbtns" style="margin:0 0 14px"><button data-act="back">← 목록</button>' +
+    '<b style="font-size:15px">' + day + '일차 일지</b>' +
+    '<span class="note">' + ["1단 · 숫자 가려짐", "2단 · 숫자 공개", "완료"][stage] + '</span></div>';
+
+  if (stage === 0) {
+    return h + '<div class="jcard">' +
+      '<div class="hint">이 화면은 <b>그날 숫자를 안 보여준다.</b> 표를 먼저 보면 기억이 숫자에 맞춰 왜곡된다 — 만든 사람 본인이면 더 심하다.</div>' +
+      stage1Fields(day, e) +
+      '<div class="jbtns"><button class="go" data-act="submit" data-day="' + day + '">1단 제출 · 숫자 보기</button>' +
+      '<span class="note">제출하면 그날 표가 열린다</span></div></div>';
+  }
+
+  h += dayNumbers(r, day);
+  h += '<div class="jcard"><h4>2단 — 숫자를 보고 나서</h4>' +
+    '<div class="jlab">표와 기억이 어긋난 곳 <small>이 칸이 제일 값어치 있다</small></div>' +
+    '<textarea class="jf" id="jm' + day + '" data-f="mismatch" data-day="' + day + '" placeholder="예) 체감은 2판이었는데 실제로는 5판이었다">' + esc(e.mismatch || "") + '</textarea>' +
+    '<div class="jlab">내일의 질문 <small>다음 일차의 첫 칸으로 자동으로 넘어간다</small></div>' +
+    '<input class="jf" id="jn' + day + '" data-f="next_question" data-day="' + day + '" value="' + esc(e.next_question || "") + '" placeholder="예) 드릴 사고 나면 판당 시간이 실제로 줄어드나">' +
+    (stage >= 2 ? '' : '<div class="jbtns"><button class="go" data-act="finish" data-day="' + day + '">일지 마감</button></div>') +
+    '</div>';
+
+  return h + '<div class="jcard"><h4>1단 — 숫자 보기 전에 쓴 것</h4>' + stage1Fields(day, e) + '</div>';
+}
+
+// ============================ 일지 — 배선 ============================
+function wireJournal(r) {
+  const v = $("#view");
+
+  // 단순 칸 (질문·예상·그만두고 싶었던 지점·어긋난 곳·내일의 질문)
+  v.querySelectorAll("[data-f]").forEach(el => {
+    el.oninput = () => {
+      const e = journalDay(+el.dataset.day, true);
+      if (!e) return;
+      e[el.dataset.f] = el.value;
+      saveJournal();
+    };
+  });
+
+  // 사건 칸
+  v.querySelectorAll(".incs").forEach(box => {
+    const day = +box.dataset.day;
+    box.querySelectorAll(".inc").forEach(row => {
+      const i = +row.dataset.i;
+      row.querySelectorAll("[data-k]").forEach(el => {
+        const k = el.dataset.k;
+        const apply = () => {
+          const e = journalDay(day, true);
+          if (!e || !e.incidents[i]) return;
+          e.incidents[i][k] = el.type === "checkbox" ? el.checked : (k === "sev" ? +el.value : el.value);
+          saveJournal();
+          if (k === "fix" || k === "done") renderMain();   // 뱃지·미해결 목록이 바뀐다
+        };
+        if (el.tagName === "SELECT" || el.type === "checkbox") el.onchange = apply; else el.oninput = apply;
+      });
+      const del = row.querySelector('[data-act="delinc"]');
+      if (del) del.onclick = () => {
+        const e = journalDay(day, true);
+        if (!e) return;
+        e.incidents.splice(i, 1);
+        saveJournal(true); renderMain();
+      };
+    });
+  });
+
+  // 버튼
+  v.querySelectorAll("[data-act]").forEach(el => {
+    const act = el.dataset.act, day = +el.dataset.day;
+    if (act === "addinc") el.onclick = () => {
+      const e = journalDay(day, true);
+      if (!e) return;
+      e.incidents.push({ t: clock(new Date()).slice(0, 5), tag: "지루", sev: 2, obs: "", why: "", idea: "", fix: false, done: false });
+      saveJournal(true); renderMain();
+      const n = document.getElementById("j" + day + "_i" + (e.incidents.length - 1) + "_obs");
+      if (n) n.focus();
+    };
+    else if (act === "open") el.onclick = () => { S.jDay = day; renderMain(); $("#main").scrollTop = 0; };
+    else if (act === "back") el.onclick = () => { S.jDay = null; renderMain(); $("#main").scrollTop = 0; };
+    else if (act === "again") el.onclick = () => {
+      const e = journalDay(day, true);
+      if (!e) return;
+      e.again = el.dataset.v === "1";
+      saveJournal(true); renderMain();
+    };
+    else if (act === "submit") el.onclick = () => {
+      const e = journalDay(day, true);
+      if (!e) return;
+      e.stage = Math.max(1, e.stage || 0);
+      e.submitted_at = new Date().toISOString();
+      saveJournal(true); renderMain(); $("#main").scrollTop = 0;
+      toast(day + "일차 1단 제출 — 이제 숫자를 보자");
+    };
+    else if (act === "finish") el.onclick = () => {
+      const e = journalDay(day, true);
+      if (!e) return;
+      e.stage = 2;
+      e.done_at = new Date().toISOString();
+      saveJournal(true); S.jDay = null; renderMain();
+      toast(day + "일차 일지 마감");
+    };
+  });
+}
+
+// ============================ 라이브 (viewer.bat 으로 열었을 때) ============================
+function markSeenDays(run) { for (const d of settledList(run)) S.seenDays.add(run.id + "#" + d); }
+
+async function tailOnce(wait) {
+  const res = await fetch("/api/tail", {
+    method: "POST", headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ offsets: S.live.offsets, wait: !!wait })
+  });
+  const j = await res.json();
+  if (j && j.offsets) S.live.offsets = j.offsets;
+  if (j && j.chunks && j.chunks.length) { ingestTexts(j.chunks, true); return j.chunks.length; }
+  return 0;
+}
+
+/// 롱폴링 — 서버가 새 줄이 생길 때까지 응답을 붙잡고 있는다.
+/// 그래서 평소엔 왕복이 없고, 일차가 끝나는 순간엔 바로 온다.
+async function liveLoop() {
+  while (S.live) {
+    try {
+      if (await tailOnce(true)) onLiveIngest();
+    } catch {
+      await new Promise(res => setTimeout(res, 3000));   // 서버가 잠깐 없다 — 쉬었다 다시
+    }
+  }
+}
+
+/// 새 day_settled 가 들어오면 그 일차 작성 화면으로 넘긴다
+function onLiveIngest() {
+  const fresh = [];
+  for (const r of S.runs) for (const d of settledList(r)) {
+    const key = r.id + "#" + d;
+    if (S.seenDays.has(key)) continue;
+    S.seenDays.add(key);
+    fresh.push({ run: r, day: d });
+  }
+  if (!fresh.length) return;
+
+  fresh.sort((a, b) => (a.run.tStart - b.run.tStart) || (a.day - b.day));
+  const hit = fresh[fresh.length - 1];
+
+  S.tab = "journal";
+  S.jDay = hit.day;
+  if (!S.cur || S.cur.id !== hit.run.id) {
+    S.cur = hit.run; S.journal = null;
+    loadJournal(hit.run.id);      // 끝나면 스스로 다시 그린다
+    renderSide();
+  }
+  renderMain();
+  $("#main").scrollTop = 0;
+  toast(hit.day + "일차 종료 — 숫자 보기 전에 일지부터");
+  try { window.focus(); } catch { }
+}
+
+async function bootLive() {
+  let hello = null;
+  try { hello = await (await fetch("/api/hello")).json(); } catch { return; }  // 드래그 모드 그대로
+  if (!hello || !hello.ok) return;
+
+  S.live = { dir: hello.dir || "", offsets: {} };
+  const hint = $("#dropHint");
+  if (hint) hint.innerHTML = hello.dir
+    ? '라이브 연결됨 — <code>' + esc(hello.dir) + '</code><br>게임을 켜고 플레이하면 여기로 자동으로 들어온다. 일차가 끝나면 일지 화면으로 넘어간다.'
+    : 'telemetry 폴더를 못 찾았다 — 폴더를 드래그하거나 <code>viewer.bat "폴더경로"</code> 로 열자.';
+
+  try { await tailOnce(false); } catch { }   // 기존 로그를 먼저 전부 적재
+  S.runs.forEach(markSeenDays);              // 백로그로 전환이 터지지 않게 기준선을 잡는다
+  S.booted = true;
+  liveLoop();
+}
+
+// ============================ 입력 배선 ============================
+let dragDepth = 0;
+window.addEventListener("dragenter", e => { e.preventDefault(); dragDepth++; document.body.classList.add("dragging"); });
+window.addEventListener("dragover", e => e.preventDefault());
+window.addEventListener("dragleave", () => { if (--dragDepth <= 0) document.body.classList.remove("dragging"); });
+window.addEventListener("drop", async e => {
+  e.preventDefault(); dragDepth = 0; document.body.classList.remove("dragging");
+  const files = await filesFromDrop(e.dataTransfer);
+  if (!files.length) { toast(".jsonl 을 못 읽었다 — '폴더 선택' 버튼을 쓰거나 viewer.bat 으로 열자"); return; }
+  ingest(files);
+});
+
+$("#dz").onclick = () => $("#picker").click();
+$("#btnAdd").onclick = () => $("#picker").click();
+$("#btnPickFiles").onclick = () => $("#picker").click();
+$("#btnPickDir").onclick = () => $("#pickerDir").click();
+$("#btnAddDir").onclick = () => $("#pickerDir").click();
+$("#picker").onchange = e => { ingest(e.target.files); e.target.value = ""; };
+$("#pickerDir").onchange = e => { ingest(e.target.files); e.target.value = ""; };
+$("#btnClear").onclick = () => {
+  S.events = []; S.seen = new Set(); S.files = new Set(); S.runs = []; S.cur = null;
+  S.rawFilter = null; S.rawQuery = ""; S.rawLimit = 300;
+  S.journal = null; S.jDay = null; S.seenDays = new Set(); S.reveal = new Set();
+  if (S.live) S.live.offsets = {};   // 다음 tail 이 처음부터 다시 읽어 온다
+  $("#app").classList.remove("on"); $("#drop").classList.remove("hide");
+};
+
+bootLive();
+</script>
+</body>
+</html>

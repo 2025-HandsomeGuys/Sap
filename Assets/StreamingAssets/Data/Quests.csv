@@ -1,0 +1,19 @@
+key,kr,en,cn
+quest_main1_name,쓰레기 수집가,Trash Collector,垃圾收集者
+quest_main1_desc,지하로 내려가 쓰레기를 5개 주워오세요.,Go underground and collect 5 wastes.,下到地下收集5个垃圾。
+quest_main2_name,구리가 필요해,I need copper,我需要铜
+quest_main2_desc,광산에서 구리 1개를 주워 상점 주인에게 가져다주세요.,Get 1 copper from the mine and bring it to the shop owner.,从矿井中获取1块铜，带给商店老板。
+quest_sub1_name,구리 수집가,Copper Collector,铜收集者
+quest_sub1_desc,대장장이를 위해 구리 광석 5개를 구해주세요.,Get 5 copper ores for the blacksmith.,为铁匠寻找5块铜矿石。
+quest_sub2_name,광산의 위협,Threat of the Mine,矿山的威胁
+quest_sub2_desc,광산 내부의 불안정한 요소를 조사하세요.,Investigate structural instability inside the mine.,调查矿山内部的不稳定因素。
+quest_intro1_name,첫 삽,First Dig,第一铲
+quest_intro1_desc,지하로 내려가 쓰레기를 3개 주워 상점 주인에게 가져다주세요.,Go underground, collect 3 pieces of trash and bring them to the shopkeeper.,下到地下收集3个垃圾并带给店主。
+quest_intro2_name,첫 정비,First Tune-up,第一次保养
+quest_intro2_desc,구리 1개를 캐서 상점 주인에게 가져다주세요.,Mine 1 copper and bring it to the shopkeeper.,开采1块铜并带给店主。
+quest_tuto1_name,첫 삽,First Dig,第一铲
+quest_tuto1_desc,트럭 주인에게 말을 거세요.,Talk to the truck owner.,与卡车主人交谈。
+quest_tuto2_name,첫 삽,First Dig,第一铲
+quest_tuto2_desc,땅 아래로 다녀오세요.,Go underground.,前往地下。
+quest_tuto3_name,휴식,Rest,休息
+quest_tuto3_desc,집 안 침대에서 주무세요.,Sleep in the bed inside the house.,在屋里的床上睡觉。

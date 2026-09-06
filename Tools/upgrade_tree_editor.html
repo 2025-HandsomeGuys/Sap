@@ -1,0 +1,3108 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>업그레이드 트리 편집기</title>
+<style>
+  :root{
+    --bg:#0d1226; --panel:#151b34; --panel2:#1b2340; --line:#2a3452;
+    --node:#232c4d; --text:#e6ebff; --dim:#8b97c4;
+    --gold:#ffd24a; --wire:#5a6a9e; --err:#ff6b6b; --warn:#ffb454; --ok:#6bd48a;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%;margin:0}
+  body{background:var(--bg);color:var(--text);
+       font:13px/1.5 "Malgun Gothic",-apple-system,system-ui,sans-serif;
+       display:flex;flex-direction:column;overflow:hidden}
+
+  #bar{display:flex;gap:6px;align-items:center;flex-wrap:wrap;
+       padding:8px 10px;background:var(--panel);border-bottom:1px solid var(--line)}
+  button,select,input{font:inherit;color:var(--text);background:var(--panel2);
+       border:1px solid var(--line);border-radius:5px;padding:5px 9px}
+  button{cursor:pointer}
+  button:hover:not(:disabled){background:#26305a}
+  button:disabled{opacity:.4;cursor:default}
+  button.primary{background:#2d4a8a;border-color:#3d5aa8}
+  #bar .sep{width:1px;height:22px;background:var(--line);margin:0 4px}
+  #bar .hint{color:var(--dim);font-size:12px;margin-left:auto;text-align:right}
+
+  #main{flex:1;display:flex;min-height:0}
+  #canvasWrap{flex:1;position:relative;min-width:0;overflow:hidden}
+  svg{width:100%;height:100%;display:block;cursor:grab;touch-action:none}
+  svg.panning{cursor:grabbing}
+  #hud{position:absolute;left:10px;bottom:10px;color:var(--dim);font-size:12px;
+       background:rgba(13,18,38,.85);padding:5px 9px;border-radius:5px;
+       border:1px solid var(--line);pointer-events:none;white-space:pre}
+
+  #side{width:340px;flex:none;background:var(--panel);border-left:1px solid var(--line);
+        display:flex;flex-direction:column;min-height:0}
+  .sect{border-bottom:1px solid var(--line);padding:10px}
+  .sect h3{margin:0 0 8px;font-size:12px;letter-spacing:.06em;color:var(--dim);
+           text-transform:uppercase;font-weight:700}
+  .row{display:flex;gap:6px;align-items:center;margin-bottom:6px}
+  .row label{width:88px;flex:none;color:var(--dim);font-size:12px}
+  .row input,.row select{flex:1;min-width:0;padding:4px 7px}
+  .row input[type=checkbox]{flex:none;width:auto}
+  #inspector{max-height:42%;overflow:auto}
+  #seriesPanel{max-height:36%;overflow:auto}
+  .sRow{display:flex;gap:6px;align-items:center;margin-bottom:5px}
+  .sRow label{width:74px;flex:none;color:var(--dim);font-size:11px}
+  .sRow input,.sRow select{flex:1;min-width:0;padding:3px 6px;font-size:12px}
+  .sRow input[type=checkbox]{flex:none;width:auto}
+  .sBtns{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
+  .sBtns button{padding:4px 7px;font-size:11px}
+  .sNote{color:var(--dim);font-size:11px;margin-top:5px;line-height:1.45}
+  .sNote b{color:var(--gold);font-weight:600}
+  .sStale{color:var(--warn)}
+  #problems{flex:1;overflow:auto;padding:10px}
+  .prob{padding:6px 8px;margin-bottom:5px;border-radius:5px;cursor:pointer;
+        background:var(--panel2);border-left:3px solid var(--warn);font-size:12px}
+  .prob.err{border-left-color:var(--err)}
+  .prob:hover{background:#26305a}
+  .prob b{color:var(--text)}
+  .prob span{color:var(--dim)}
+  #probCount{float:right;font-weight:400;text-transform:none;letter-spacing:0}
+  .empty{color:var(--dim);font-size:12px;padding:4px}
+
+  .nodeBox{cursor:move}
+  .nodeBox rect.body{fill:var(--node);stroke:var(--line);stroke-width:2;rx:10}
+  .nodeBox.sel rect.body{stroke:var(--gold);stroke-width:3}
+  .nodeBox.bad rect.body{stroke:var(--err);stroke-width:3}
+  .nodeBox text{fill:var(--text);font-size:15px;text-anchor:middle;
+                pointer-events:none;font-family:inherit}
+  .nodeBox text.cost{fill:var(--gold);font-size:14px}
+  .nodeBox text.nid{fill:var(--dim);font-size:11px}
+  .nodeBox image{pointer-events:none}
+  .iconRow{align-items:flex-start}
+  .mineralPick{display:flex;flex-wrap:wrap;gap:4px;max-height:132px;overflow:auto;
+               padding:5px;border:1px solid var(--line);border-radius:6px;background:var(--panel2)}
+  .mchk{display:flex;align-items:center;gap:3px;font-size:11px;color:var(--dim);
+        padding:2px 6px;border:1px solid var(--line);border-radius:10px;cursor:pointer;
+        user-select:none;white-space:nowrap}
+  .mchk.on{color:var(--text);border-color:var(--gold)}
+  .mchk input[type=checkbox]{margin:0}
+  .iconPrev{width:52px;height:52px;flex:none;border:1px solid var(--line);border-radius:6px;
+            background:var(--panel2);object-fit:contain;image-rendering:pixelated}
+  .iconPrev.miss{border-color:var(--err);opacity:.35}
+  .iconHint{color:var(--dim);font-size:11px;margin-top:3px}
+  .iconHint.miss{color:var(--err)}
+  .wire{fill:none;stroke:var(--wire);stroke-width:4;stroke-linecap:square}
+  .wire.sel{stroke:var(--gold);stroke-width:6}
+  .wire.bad{stroke:var(--err)}
+  .wireHit{fill:none;stroke:transparent;stroke-width:18;cursor:pointer}
+  .jogHandle{stroke:transparent;stroke-width:20;cursor:ns-resize}
+  .jogHandle:hover{stroke:rgba(255,210,74,.25)}
+  .jogMark{stroke:var(--gold);stroke-width:4;pointer-events:none}
+  .laneHandle{stroke:transparent;stroke-width:20;cursor:ew-resize}
+  .laneHandle:hover{stroke:rgba(255,210,74,.25)}
+  .laneMark{stroke:var(--gold);stroke-width:4;pointer-events:none}
+  .port{fill:var(--gold);opacity:.3;cursor:crosshair}
+  .nodeBox:hover .port{opacity:1}
+  button.on{background:#2d4a8a;border-color:var(--gold);color:var(--gold)}
+  svg.linking{cursor:crosshair}
+  .nodeBox.from rect.body{stroke:var(--gold);stroke-width:3;stroke-dasharray:7 5}
+  #dragWire{stroke:var(--gold);stroke-width:3;stroke-dasharray:7 5;fill:none;pointer-events:none}
+  /* ── 격자 모드 ───────────────────────────────────────────────── */
+  .gline{stroke:#1e2740;stroke-width:1.5;fill:none;pointer-events:none}
+  .ghalf{stroke:#171f36;stroke-width:1.5;fill:none;pointer-events:none;stroke-dasharray:5 7}
+  .gghost{stroke:#4a3a22;stroke-width:2;fill:none;pointer-events:none;stroke-dasharray:9 7}
+  .gon{stroke:#4b5b93;stroke-width:7;stroke-linecap:round;fill:none;pointer-events:none}
+  .gorphan{stroke:var(--warn);stroke-width:7;stroke-linecap:round;fill:none;
+           stroke-dasharray:11 8;pointer-events:none}
+  .ghot{stroke:var(--gold);stroke-width:12;stroke-linecap:round;fill:none;
+        opacity:.8;pointer-events:none}
+  .ghot.rm{stroke:var(--err)}
+  .gslot{fill:none;stroke:var(--gold);stroke-width:3;stroke-dasharray:7 5;pointer-events:none}
+  .growins{stroke:var(--gold);stroke-width:4;fill:none;pointer-events:none;stroke-dasharray:15 9}
+  .growlab{fill:var(--gold);font-size:15px;text-anchor:middle;pointer-events:none}
+  .glift{fill:var(--warn);font-size:13px;text-anchor:middle;pointer-events:none;opacity:.75}
+  /* 지층 띠 경계선 */
+  .bandLine{stroke:#7a6030;stroke-width:2.5;fill:none;pointer-events:none;stroke-dasharray:14 9}
+  .bandLine.set{stroke:var(--gold);stroke-width:3;stroke-dasharray:none;opacity:.75}
+  .bandGrab{cursor:ns-resize}
+  .bandGrab rect{fill:#1b2340;stroke:#7a6030;stroke-width:2;rx:9}
+  .bandGrab.set rect{stroke:var(--gold)}
+  .bandGrab:hover rect{fill:#26305a}
+  .bandGrab.drag rect{fill:#2d4a8a;stroke:var(--gold)}
+  .bandGrab text{fill:var(--dim);font-size:15px;text-anchor:middle;pointer-events:none;
+                 font-family:inherit;dominant-baseline:central}
+  .bandGrab.set text{fill:var(--gold)}
+  svg.gridding{cursor:crosshair}
+  svg.gridding .wireHit{cursor:crosshair}
+  svg.gridding.panning{cursor:grabbing}
+  /* 격자 모드 스크롤 막대 — 격자가 화면보다 넓어서 지금 어디쯤인지 보여 준다 */
+  .sbar{position:absolute;z-index:3;background:rgba(21,27,52,.72);
+        border:1px solid var(--line);border-radius:8px;touch-action:none}
+  .sbar[hidden]{display:none}
+  #scrollV{top:6px;right:6px;bottom:24px;width:13px;cursor:default}
+  #scrollH{left:6px;right:24px;bottom:6px;height:13px;cursor:default}
+  .sbar .thumb{position:absolute;background:#3d4b7f;border-radius:7px;cursor:grab}
+  .sbar .thumb:hover{background:#4f61a3}
+  .sbar.drag .thumb{background:var(--gold);cursor:grabbing}
+  .sbar.full{opacity:.4}
+  .sbar.full .thumb{cursor:default}
+  #scrollV .thumb{left:1px;right:1px}
+  #scrollH .thumb{top:1px;bottom:1px}
+  #canvasWrap.hasbars #hud{bottom:26px}
+</style>
+</head>
+<body>
+
+<div id="bar">
+  <button id="open" class="primary">CSV 열기</button>
+  <button id="save" disabled>CSV 저장</button>
+  <input type="file" id="file" accept=".csv" hidden>
+  <span class="sep"></span>
+  <button id="add" disabled>노드 추가</button>
+  <button id="link" disabled title="켜고 부모 → 자식 순서로 클릭한다. 이은 자식이 다음 부모가 되어 줄줄이 이어진다.">선 추가</button>
+  <button id="del" disabled>삭제</button>
+  <button id="undo" disabled>실행취소</button>
+  <span class="sep"></span>
+  <button id="gridBtn" disabled title="격자에 맞춰 편집한다. 눈금을 눌러 연결선을 켜고 끈다. (G)">격자 모드</button>
+  <span id="gridTools" hidden>
+    <button id="toolLine" class="on" title="눈금을 눌러 선을 켜고 끈다. 끌면 이어서 칠한다. (L)">선</button>
+    <button id="toolNode" title="격자 모서리를 눌러 노드를 놓는다. (N)">노드</button>
+    <button id="toolRow" title="짚은 층부터 위를 통째로 밀어 올려 빈 층을 만든다. 선은 늘어나 이어진다. (R)">층 삽입</button>
+    <label style="color:var(--dim);font-size:12px;margin-left:2px">칸
+      <input id="rowN" type="number" value="1" step="1" min="1" max="20"
+             style="width:46px;padding:3px 5px" title="한 번에 밀어 올릴 칸 수">
+    </label>
+    <label style="color:var(--dim);font-size:12px;margin-left:4px">모이는 층 올림
+      <input id="lift" type="number" value="30" step="5" min="0" max="90"
+             style="width:58px;padding:3px 5px" title="모이는 노드가 있는 층을 모서리보다 얼마나 올릴지">
+    </label>
+  </span>
+  <span class="sep"></span>
+  <button id="restair" disabled title="가격 오름차순으로 y를 다시 쌓는다. 같은 가격은 같은 층.">가격순 재정렬</button>
+  <button id="fit" disabled>전체 보기</button>
+  <span class="hint">노드 드래그=이동 · 선 구간 드래그=모양 조정 · <b>선 더블클릭=꺾임점 추가</b><br>
+    <b>격자 모드(G)</b>: 눈금 클릭=선 켜고 끄기 · <b>있는 선을 눌러도 지워짐</b>(끌면 이어 지우기) · Alt+클릭=연결 고르기(Delete=통째)<br>
+    격자에서 <b>휠=세로 스크롤 · Shift+휠=가로 · Ctrl+휠=확대</b> · 노드(N)=모서리에 놓기 · <b>층 삽입(R)=짚은 층부터 위를 밀어 올려 자리 만들기</b> · 막대·가운데·오른쪽 끌기=이동</span>
+</div>
+
+<div id="main">
+  <div id="canvasWrap">
+    <svg id="svg"><g id="view">
+      <g id="gridLayer"></g><g id="bands"></g><g id="wires"></g><g id="nodes"></g><path id="dragWire"></path>
+    </g></svg>
+    <div id="hud">CSV를 열거나 이 창에 끌어다 놓으세요.</div>
+    <div id="scrollV" class="sbar" hidden><div class="thumb"></div></div>
+    <div id="scrollH" class="sbar" hidden><div class="thumb"></div></div>
+  </div>
+
+  <div id="side">
+    <div class="sect" id="inspector">
+      <h3>선택 노드</h3>
+      <div class="empty">노드를 고르면 여기서 편집합니다.</div>
+    </div>
+    <div class="sect" id="seriesPanel">
+      <h3>계열 <span id="seriesCount"></span></h3>
+      <div id="seriesBody"><div class="empty">계열 규칙이 없습니다.</div></div>
+    </div>
+    <div class="sect" style="flex:1;display:flex;flex-direction:column;min-height:0;padding:0">
+      <h3 style="padding:10px 10px 0;margin:0">검사 <span id="probCount"></span></h3>
+      <div id="problems"><div class="empty">아직 없음</div></div>
+    </div>
+  </div>
+</div>
+
+<script>
+"use strict";
+
+/* =========================================================================
+   업그레이드 트리 편집기 — UpgradeTree.csv를 직접 편집한다.
+
+   이 파일이 배치·연결·가격·노드의 **정본 편집 도구**다.
+   reprice_template.py는 처음부터 다시 짤 때만 쓴다(--force 필요).
+
+   선 미리보기는 게임(UpgradeLaneRouter + OrthogonalUILineRenderer)의 규칙을
+   그대로 옮긴 것이다. 규칙을 바꾸면 **양쪽을 같이** 고쳐야 화면이 안 어긋난다.
+   Tools/telemetry/check_editor_routing.mjs가 두 벌이 같은 답을 내는지 검사한다.
+
+   손 편집(노드 끌기 · 선 구간 끌기)과 **격자 모드** 둘이 있다. 격자 모드는
+   자리와 선을 눈금 위에서만 만든다 — 눈금을 누르면 선이 생기고 한 번 더
+   누르면 없어지며, 부모·자식은 그려진 눈금에서 되읽는다. 아래 "격자 편집"
+   블록이 그쪽이고, Tools/telemetry/check_grid_mode.mjs가 왕복 무손실을
+   검사한다(격자에 들어갔다 나와도 좌표·선행이 한 글자도 안 바뀌어야 한다).
+   ========================================================================= */
+
+// ── UpgradeOverlayUI의 SerializeField 기본값과 맞춰야 한다 ──────────────
+const GS = 1.5;                 // graphScale
+const NODE_W = 132, NODE_H = 146;
+const OBSTACLE_PAD = 12;
+const TRUNK_GAP = 22;
+const CLEARANCE = NODE_H * 0.5 + TRUNK_GAP;
+const DETOUR_LANE = NODE_W * 0.5 + 46;
+const TREE_PAD_H = 100;
+const STAIR_DY = 120;           // 생성기의 계단 한 칸
+
+const EFFECT_TYPES = ["None","MiningSpeedMultiplier","MiningRangeMultiplier","MiningLevel",
+  "MiningCooldownMultiplier","MiningRangeUp","MiningSpeedUp","ToolRange","ToolChargeTimeReduce","PickaxeDamageUp",
+  "ShovelStaminaReduce","PickaxeStaminaReduce","DrillBatteryCapacity","DrillBatteryRegen","DrillDrainReduce","DrillRadiusUp",
+  "DamageMultiplier","CritChanceUp","MoveSpeedMultiplier","ClimbSpeedMultiplier","WallClimbSpeed",
+  "StaminaCostMultiplier","MaxStaminaUp","FallDamageReduce","JumpForceMultiplier",
+  "MoveSpeedUp","JumpForceUp","StaminaCostReduce",
+  "MineralExtraDropChance","RareMineralChance","MineralSellBonus","MineralPriceUp",
+  "InventorySlotUp","InventoryWeightUp","WarehouseCapacityUp","ConsumableSlotUnlock","RelicSlotUp",
+  "VisionRadiusUp","FlashlightRangeUp","EnvironmentResistance","MapExploreRadiusUp","NapCount"];
+
+const MINERALS = ["ScrapMetal","GarbageBag","PETBottle","Coal","Copper","Iron","Meteorite",
+  "Fossil","Silver","Sapphire","Emerald","Topaz","Obsidian","Quartz","Gold","Ruby","Diamond",
+  "LavaStone","Mithril","Gravitonium","Uranium","VoidStone","StarFragment"];
+
+// icon = 노드 카드 아이콘의 에셋 경로("Assets/.../foo.png").
+// **빈 칸이면 생성기가 손대지 않는다** — 유니티 인스펙터에 물려 둔 값이 그대로 남는다.
+const FIELDS = ["nodeId","tier","effectType","effectValue","isPercentage","parentIds","cost",
+  "uiX","uiY","displayNameKey","descriptionKey","locked","targetMineral","icon","lineBends"];
+
+// 꺾임점을 끌 때 높이에 붙는 눈금. 10이면 여러 선을 같은 높이로 다시 맞추기 쉽다.
+// x는 눈금이 아니라 **레인에만** 붙는다(아래 snapLane) — 선은 레인을 따라서만 흐른다.
+const JOG_SNAP = 10;
+
+// 지층별 가격 단위 (reprice_template.PRICE_STEP_BY_TIER)
+const PRICE_STEP = {0:10, 1:100};
+const GATE_FLOOR_RATIO = 1.1;   // 합류점을 지난 노드의 가격 하한 배수
+
+// ===== ROUTING-START — check_editor_routing.mjs가 이 블록을 그대로 떼어 검사한다 =====
+const LANE_Q = 8;
+const STUB_FRACTIONS = [0.25, 0.4, 0.12];
+const MAX_LANE_STEPS = 4;
+
+function laneKey(x){ return Math.round(x / LANE_Q); }
+function stubFor(span, clearance){ return span >= clearance * 2 ? clearance : span * 0.5; }
+
+/** UpgradeLaneRouter — 레인 점유 + 허브(분기·합류) 공유 꺾임 높이. */
+function makeRouter(points, links, clearance){
+  const lanes = new Map();
+  for (const p of points){
+    const k = laneKey(p.x);
+    if (!lanes.has(k)) lanes.set(k, []);
+    lanes.get(k).push(p.y);
+  }
+  const forkStub = new Map(), mergeStub = new Map();
+  const keepMin = (m,k,v)=>{ if(!k) return; m.set(k, m.has(k) ? Math.min(m.get(k), v) : v); };
+
+  for (const l of links){
+    const span = Math.abs(l.end.y - l.start.y);
+    if (span < 1) continue;                                  // 같은 행은 가로 직선
+    if (Math.abs(l.end.x - l.start.x) < LANE_Q) continue;    // 같은 레인은 세로 직선
+    const s = stubFor(span, clearance);
+    if (l.parentForks) keepMin(forkStub, l.parentId, s);
+    if (l.childMerges) keepMin(mergeStub, l.childId, s);
+  }
+
+  function isLaneAlive(laneX, yA, yB){
+    const ys = lanes.get(laneKey(laneX));
+    if (!ys) return false;
+    const lo = Math.min(yA, yB) + 1, hi = Math.max(yA, yB) - 1;
+    if (hi <= lo) return false;
+    return ys.some(y => y > lo && y < hi);
+  }
+
+  function jogY(link){
+    const s = link.start, e = link.end;
+    const dy = e.y - s.y;
+    if (Math.abs(dy) < 1) return NaN;
+    if (Math.abs(e.x - s.x) < LANE_Q) return NaN;
+
+    // 사람이 그린 모양(link.bends)은 여기가 아니라 buildPath가 처리한다 —
+    // 이 함수는 **자동일 때의 높이**만 정한다(C#의 UpgradeLaneRouter.JogY와 같다).
+    const dir = Math.sign(dy);
+
+    if (link.childMerges && mergeStub.has(link.childId))
+      return e.y - dir * mergeStub.get(link.childId);
+    if (link.parentForks && forkStub.has(link.parentId))
+      return s.y + dir * forkStub.get(link.parentId);
+
+    const st = stubFor(Math.abs(dy), clearance);
+    if (!isLaneAlive(s.x, s.y, e.y) && isLaneAlive(e.x, s.y, e.y)) return s.y + dir * st;
+    return e.y - dir * st;
+  }
+  return { jogY, isLaneAlive };
+}
+
+/** OrthogonalUILineRenderer.IsBlocked — 끝점을 품은 사각형은 연결 당사자라 건너뛴다. */
+function isBlocked(path, obstacles, start, end){
+  const inBox = (b,p)=> p.x >= b.x0 && p.x < b.x1 && p.y >= b.y0 && p.y < b.y1;
+  for (const b of obstacles){
+    if (inBox(b,start) || inBox(b,end)) continue;
+    for (let i=1;i<path.length;i++){
+      const a = path[i-1], c = path[i];
+      if (Math.max(a.x,c.x) > b.x0 && Math.min(a.x,c.x) < b.x1 &&
+          Math.max(a.y,c.y) > b.y0 && Math.min(a.y,c.y) < b.y1) return true;
+    }
+  }
+  return false;
+}
+
+function trunkPath(s,e,t){ return [s,{x:s.x,y:t},{x:e.x,y:t},e]; }
+
+/** laneX를 타는 S자 경로 하나. 막히면 null. */
+function tryLanePath(s,e,obstacles,trunkY,dir,clear,laneX,bulgeOut){
+  const run = bulgeOut ? (trunkY - s.y) * dir : (e.y - trunkY) * dir;
+  if (run - clear < 2) return null;                 // 밀 구간이 남지 않는다
+  const breakY = bulgeOut ? s.y + dir*clear : e.y - dir*clear;
+  const path = bulgeOut
+    ? [s,{x:s.x,y:breakY},{x:laneX,y:breakY},{x:laneX,y:trunkY},{x:e.x,y:trunkY},e]
+    : [s,{x:s.x,y:trunkY},{x:laneX,y:trunkY},{x:laneX,y:breakY},{x:e.x,y:breakY},e];
+  return isBlocked(path, obstacles, s, e) ? null : path;
+}
+
+/** 트렁크가 남의 노드를 관통할 때 — 긴 세로 구간만 반 레인 옆으로 밀어 붙여 지나간다. */
+function huggingPath(s,e,obstacles,lane,trunkY){
+  const dy = e.y - s.y;
+  if (Math.abs(dy) < 1) return null;
+  const dir = Math.sign(dy);
+  const runOut = (trunkY - s.y) * dir, runIn = (e.y - trunkY) * dir;
+  if (runOut <= 0 || runIn <= 0) return null;
+  const clear = Math.min(runOut, runIn);
+
+  const bulgeOut = runOut >= runIn;
+  if ((bulgeOut ? runOut : runIn) - clear < 2) return null;
+  const pivotX = bulgeOut ? s.x : e.x;
+  const toward = e.x >= s.x ? 1 : -1;
+  for (let step=1; step<=2; step++){
+    for (let k=0; k<2; k++){
+      const laneX = pivotX + (k===0 ? toward : -toward) * lane * step;
+      const path = tryLanePath(s,e,obstacles,trunkY,dir,clear,laneX,bulgeOut);
+      if (path) return path;
+    }
+  }
+  return null;
+}
+
+function directPath(s,e){
+  if (Math.abs(e.y-s.y) > Math.abs(e.x-s.x)*0.5){
+    const m = (s.y+e.y)*0.5;
+    return [s,{x:s.x,y:m},{x:e.x,y:m},e];
+  }
+  const m = (s.x+e.x)*0.5;
+  return [s,{x:m,y:s.y},{x:m,y:e.y},e];
+}
+
+function detourPath(s,e,laneX,stub){
+  const span = Math.abs(e.y-s.y), ss = Math.min(stub, span*0.45);
+  const dir = e.y >= s.y ? 1 : -1;
+  const y1 = s.y + dir*ss, y2 = e.y - dir*ss;
+  return [s,{x:s.x,y:y1},{x:laneX,y:y1},{x:laneX,y:y2},{x:e.x,y:y2},e];
+}
+
+/** OrthogonalUILineRenderer.BuildPath — 트렁크 → 허깅 → 직선 → 우회 사다리. */
+/**
+ * 사람이 그린 꺾임점으로 경로를 만든다.
+ * 꺾임점 하나 = "이 높이(y)에서 가로로 건너가 이 레인(x)을 탄다".
+ * **마지막 꺾임점은 자식 레인으로 강제** — 안 그러면 선이 노드 옆 허공에서 끝난다.
+ */
+function bendPath(s,e,bends){
+  const pts = [s];
+  let x = s.x;
+  for (let i=0;i<bends.length;i++){
+    const bx = (i === bends.length-1) ? e.x : bends[i].x;
+    const by = bends[i].y;
+    pts.push({x:x, y:by});
+    pts.push({x:bx, y:by});
+    x = bx;
+  }
+  pts.push(e);
+  return pts;
+}
+
+function buildPath(s,e,obstacles,lane,trunkY,bends){
+  // 사람이 그린 모양이 먼저다. 막히면 아래 자동 경로로 떨어진다.
+  if (bends && bends.length){
+    const drawn = bendPath(s,e,bends);
+    if (!isBlocked(drawn,obstacles,s,e)) return {path:drawn, kind:"drawn"};
+  }
+  if (trunkY !== null && trunkY !== undefined && !Number.isNaN(trunkY)){
+    const t = trunkPath(s,e,trunkY);
+    if (!isBlocked(t,obstacles,s,e)) return {path:t, kind:"trunk"};
+    const h = huggingPath(s,e,obstacles,lane,trunkY);
+    if (h) return {path:h, kind:"hug"};
+  }
+  const d = directPath(s,e);
+  if (!isBlocked(d,obstacles,s,e)) return {path:d, kind:"direct"};
+
+  const span = Math.abs(e.y-s.y);
+  if (span < 1) return {path:d, kind:"direct"};
+  const mid = (s.x+e.x)*0.5, outward = mid >= 0 ? 1 : -1;
+  for (const f of STUB_FRACTIONS){
+    for (let step=1; step<=MAX_LANE_STEPS; step++){
+      for (let k=0;k<2;k++){
+        const sign = k===0 ? outward : -outward;
+        const p = detourPath(s,e,mid + sign*lane*step, span*f);
+        if (!isBlocked(p,obstacles,s,e)) return {path:p, kind:"detour"};
+      }
+    }
+  }
+  return {path:d, kind:"blocked"};
+}
+// ===== ROUTING-END =====
+
+/* ================================ CSV ================================== */
+
+function parseCSV(text){
+  const rows=[]; let row=[], cell="", q=false;
+  text = text.replace(/^﻿/, "");
+  for (let i=0;i<text.length;i++){
+    const c = text[i];
+    if (q){
+      if (c === '"'){ if (text[i+1] === '"'){ cell+='"'; i++; } else q=false; }
+      else cell += c;
+    } else if (c === '"') q = true;
+    else if (c === ','){ row.push(cell); cell=""; }
+    else if (c === '\n'){ row.push(cell); rows.push(row); row=[]; cell=""; }
+    else if (c !== '\r') cell += c;
+  }
+  if (cell !== "" || row.length){ row.push(cell); rows.push(row); }
+  return rows.filter(r => r.length > 1 || (r[0]||"").trim() !== "");
+}
+
+function csvCell(v){
+  const s = String(v === null || v === undefined ? "" : v);
+  return /[",\r\n]/.test(s) ? '"' + s.replace(/"/g,'""') + '"' : s;
+}
+
+function toCSV(nodes){
+  const lines = [FIELDS.join(",")];
+  for (const n of nodes){
+    lines.push(FIELDS.map(f => csvCell(
+      f === "parentIds" ? n.parents.join(";") :
+      f === "isPercentage" ? (n.isPercentage ? "true" : "false") :
+      f === "locked" ? (n.locked ? "true" : "false") :
+      f === "effectValue" ? fmtNum(n.effectValue) :
+      f === "lineBends" ? bendsToText(n) :
+      n[f]
+    )).join(","));
+  }
+  return lines.join("\r\n") + "\r\n";
+}
+
+/**
+ * 지정한 꺾임 높이를 `부모ID=uiY;부모ID=uiY`로 굽는다.
+ * 부모 순서를 CSV의 parentIds와 맞춰 둬야 diff가 조용하다.
+ */
+/** 꺾임점을 `부모ID=x:y|x:y;...`로 굽는다. 부모 순서는 parentIds와 맞춘다. */
+function bendsToText(n){
+  const out = [];
+  for (const p of n.parents){
+    const pts = n.lineBends ? n.lineBends[p] : null;
+    if (pts && pts.length)
+      out.push(p + "=" + pts.map(b => fmtNum(b.x) + ":" + fmtNum(b.y)).join("|"));
+  }
+  return out.join(";");
+}
+
+function parseBends(text){
+  const map = {};
+  for (const entry of String(text || "").split(";")){
+    if (!entry) continue;
+    const eq = entry.indexOf("=");
+    if (eq <= 0) continue;
+    const pts = [];
+    for (const pt of entry.slice(eq+1).split("|")){
+      const c = pt.indexOf(":");
+      if (c <= 0) continue;
+      const x = parseFloat(pt.slice(0,c)), y = parseFloat(pt.slice(c+1));
+      if (!Number.isNaN(x) && !Number.isNaN(y)) pts.push({x, y});
+    }
+    if (pts.length) map[entry.slice(0,eq).trim()] = pts;
+  }
+  return map;
+}
+
+/** 파이썬 "%g"와 같은 모양 — 1.0을 1로 쓴다(에셋 diff가 튀지 않게). */
+function fmtNum(v){
+  const n = Number(v);
+  if (!isFinite(n)) return "0";
+  return String(parseFloat(n.toPrecision(6)));
+}
+
+function fromCSV(text){
+  const rows = parseCSV(text);
+  if (!rows.length) throw new Error("빈 파일");
+  const head = rows[0].map(h => h.trim());
+  const idx = {}; FIELDS.forEach(f => idx[f] = head.indexOf(f));
+  if (idx.nodeId < 0) throw new Error("nodeId 열이 없다 — UpgradeTree.csv가 맞나?");
+  const out = [];
+  for (let r=1; r<rows.length; r++){
+    const c = rows[r];
+    const get = f => idx[f] >= 0 ? (c[idx[f]] === undefined ? "" : c[idx[f]]) : "";
+    if (!get("nodeId").trim()) continue;
+    out.push({
+      nodeId: get("nodeId").trim(),
+      tier: parseInt(get("tier")) || 0,
+      effectType: get("effectType") || "None",
+      effectValue: parseFloat(get("effectValue")) || 0,
+      isPercentage: get("isPercentage").toLowerCase() === "true",
+      parents: get("parentIds").split(";").map(s=>s.trim()).filter(Boolean),
+      icon: get("icon").trim(),
+      cost: parseInt(get("cost")) || 0,
+      uiX: parseFloat(get("uiX")) || 0,
+      uiY: parseFloat(get("uiY")) || 0,
+      displayNameKey: get("displayNameKey"),
+      descriptionKey: get("descriptionKey"),
+      locked: get("locked").toLowerCase() === "true",
+      targetMineral: get("targetMineral"),
+      lineBends: parseBends(get("lineBends")),
+    });
+  }
+  return out;
+}
+
+/* =============================== 상태 =================================== */
+
+const S = {
+  nodes: [],
+  selNode: null,      // nodeId
+  selEdge: null,      // {parent, child}
+  view: {x:0, y:0, k:0.5},
+  linkMode: false,    // '선 추가' 모드 — 클릭 두 번으로 잇는다
+  linkFrom: null,     // 그 모드에서 먼저 고른 노드
+  undo: [],
+  handle: null,       // FileSystemFileHandle (있으면 덮어쓰기)
+  server: null,       // {csv, json} — 편집기 서버로 열었으면 저장이 파일에 바로 간다
+  bands: {},          // 지층 -> 띠 윗변 uiY. 없거나 null이면 자동(두 지층 중간)
+  series: [],         // 계열 규칙 (UpgradeSeries.csv). 아래 '계열' 절 참고
+  seriesLoaded: false,// 서버가 계열 파일을 실어 줬나 — 아니면 저장에서 뺀다(빈 목록으로 덮지 않게)
+  seriesSel: null,    // 계열 패널에서 펼쳐 둔 seriesKey
+  seriesAuto: true,   // 노드를 건드릴 때마다 계열을 자동으로 다시 굽나
+  images: [],         // 서버가 알려 준 Assets/ 아래 그림 목록 (아이콘 고르기용)
+  fileName: "",
+  problems: [],
+  layout: null,       // 파생: 매핑 좌표·링크·경로
+};
+
+const $ = s => document.querySelector(s);
+const svg = $("#svg"), gView = $("#view"), gWires = $("#wires"), gNodes = $("#nodes");
+const gGrid = $("#gridLayer"), gBands = $("#bands");
+
+function snapshot(){
+  // 격자 모드에서는 눈금도 같이 담는다 — 노드만 되감으면 선이 어긋난다.
+  S.undo.push(JSON.stringify({
+    nodes: S.nodes,
+    segs: S.grid ? Array.from(S.grid.segs) : [],
+    base: S.grid ? S.grid.base : 0,
+    bands: S.bands,
+    series: S.series,
+  }));
+  if (S.undo.length > 100) S.undo.shift();
+  $("#undo").disabled = false;
+}
+function undo(){
+  if (!S.undo.length) return;
+  const st = JSON.parse(S.undo.pop());
+  S.nodes = st.nodes || st;                       // 옛 형태(배열)도 읽어 준다
+  if (st.bands) S.bands = st.bands;
+  if (st.series) S.series = st.series;
+  if (S.grid){
+    S.grid.segs = new Set(st.segs || []);
+    S.grid.base = st.base || S.grid.base;
+  }
+  S.selNode = S.selEdge = null;
+  $("#undo").disabled = !S.undo.length;
+  // 되감는 동안은 계열을 굽지 않는다 — 방금 되돌린 값을 그 자리에서 덮어쓴다.
+  bakeSuspended = true;
+  try { if (S.grid && S.grid.on) gridApply(); else refresh(); }
+  finally { bakeSuspended = false; }
+}
+
+/* ============================ 파생 · 경로 =============================== */
+
+function computeLayout(){
+  const nodes = S.nodes;
+  if (!nodes.length) return null;
+
+  let minY = Infinity, maxY = -Infinity, maxAbsX = 1;
+  for (const n of nodes){
+    minY = Math.min(minY, n.uiY); maxY = Math.max(maxY, n.uiY);
+    maxAbsX = Math.max(maxAbsX, Math.abs(n.uiX));
+  }
+  const centerY = (minY + maxY) * 0.5;
+  const pos = new Map();
+  for (const n of nodes) pos.set(n.nodeId, {x: n.uiX*GS, y: (n.uiY-centerY)*GS});
+
+  const hw = NODE_W*0.5 + OBSTACLE_PAD, hh = NODE_H*0.5 + OBSTACLE_PAD;
+  const obstacles = nodes.map(n => {
+    const p = pos.get(n.nodeId);
+    return {x0:p.x-hw, y0:p.y-hh, x1:p.x+hw, y1:p.y+hh};
+  });
+
+  const childCount = new Map();
+  for (const n of nodes)
+    for (const p of n.parents)
+      childCount.set(p, (childCount.get(p)||0) + 1);
+
+  const links = [];
+  for (const n of nodes){
+    const merges = n.parents.length > 1;
+    for (const pid of n.parents){
+      if (!pos.has(pid)) continue;             // 미해결 부모는 검사에서 따로 잡는다
+      // 지정 높이는 uiY로 저장돼 있다(트리 중앙이 움직여도 안 흔들리게) — 매핑으로 바꿔 넘긴다.
+      // 그린 꺾임점은 ui 좌표로 저장돼 있다(트리 중앙이 움직여도 안 흔들리게) — 매핑으로 바꾼다.
+      const ui = n.lineBends ? n.lineBends[pid] : null;
+      links.push({
+        parentId: pid, childId: n.nodeId,
+        start: pos.get(pid), end: pos.get(n.nodeId),
+        parentForks: (childCount.get(pid)||0) > 1, childMerges: merges,
+        bends: (ui && ui.length) ? ui.map(b => ({x: b.x*GS, y: (b.y-centerY)*GS})) : null,
+      });
+    }
+  }
+
+  const router = makeRouter(Array.from(pos.values()), links, CLEARANCE);
+  for (const l of links){
+    l.jogY = router.jogY(l);
+    const r = buildPath(l.start, l.end, obstacles, DETOUR_LANE, l.jogY, l.bends);
+    l.path = r.path; l.kind = r.kind;
+  }
+
+  const halfContent = maxAbsX*GS + NODE_W*0.5 + TREE_PAD_H;
+  return {pos, obstacles, links, centerY, halfContent, childCount};
+}
+
+// 매핑 좌표 -> 화면. SVG는 y가 아래로 자라고 게임은 위로 자라므로 뒤집는다.
+const sx = p => p.x, sy = p => -p.y;
+
+/* =============================== 검사 =================================== */
+
+function validate(){
+  const L = S.layout, out = [];
+  if (!L) { S.problems = out; return; }
+  const byId = new Map(S.nodes.map(n => [n.nodeId, n]));
+  const err = (ids, msg) => out.push({level:"err", ids, msg});
+  const warn = (ids, msg) => out.push({level:"warn", ids, msg});
+
+  // 1) id 중복 · 부모 참조
+  const seen = new Set();
+  for (const n of S.nodes){
+    if (seen.has(n.nodeId)) err([n.nodeId], "nodeId 중복: " + n.nodeId);
+    seen.add(n.nodeId);
+    for (const p of n.parents)
+      if (!byId.has(p)) err([n.nodeId], label(n) + "의 부모 '" + p + "'가 트리에 없다");
+  }
+
+  // 2) 순환 · 고아
+  const roots = S.nodes.filter(n => n.parents.length === 0);
+  if (!roots.length) err([], "루트 노드가 없다 (부모 없는 노드가 하나는 있어야 한다)");
+  const kidsOf = new Map();
+  for (const n of S.nodes)
+    for (const p of n.parents){
+      if (!kidsOf.has(p)) kidsOf.set(p, []);
+      kidsOf.get(p).push(n.nodeId);
+    }
+  const reach = new Set(); const stack = roots.map(r => r.nodeId);
+  while (stack.length){
+    const id = stack.pop();
+    if (reach.has(id)) continue;
+    reach.add(id);
+    for (const k of kidsOf.get(id) || []) stack.push(k);
+  }
+  const orphans = S.nodes.filter(n => !reach.has(n.nodeId)).map(n => n.nodeId);
+  if (orphans.length)
+    err(orphans, "루트에서 닿지 않는 노드 " + orphans.length + "개 (순환이거나 끊긴 가지) — " +
+        orphans.slice(0,4).map(i => label(byId.get(i))).join(", "));
+
+  // 3) 부모가 자식보다 위 (계단은 아래에서 위로 자란다)
+  for (const n of S.nodes)
+    for (const p of n.parents){
+      const pn = byId.get(p);
+      if (pn && pn.uiY >= n.uiY)
+        err([n.nodeId, p], label(pn) + "(y=" + pn.uiY + ")가 자식 " + label(n) +
+            "(y=" + n.uiY + ")보다 위/같은 높이다 — 선이 되짚어 내려간다");
+    }
+
+  // 4) 선이 관계없는 노드를 관통 (선행 오인 — 문서화된 버그)
+  for (const l of L.links)
+    if (l.kind === "blocked")
+      err([l.parentId, l.childId], label(byId.get(l.parentId)) + " → " +
+          label(byId.get(l.childId)) + " 선이 다른 노드를 관통한다");
+
+  // 4-b) 지정한 높이로는 못 그려서 자동 경로로 돌아간 선.
+  //      알려주지 않으면 "끌었는데 아무 일도 안 일어난다"로 보인다.
+  for (const l of L.links)
+    if (l.bends && l.bends.length && l.kind !== "drawn")
+      warn([l.parentId, l.childId], label(byId.get(l.parentId)) + " → " +
+           label(byId.get(l.childId)) + " 그린 선 모양이 노드를 관통해서 자동 경로로 돌아갔다 " +
+           "— 꺾임점을 옮기거나 선 모양을 초기화할 것");
+
+  // 5) 콘텐츠 폭 초과 (스크롤 영역 밖으로 잘린다)
+  for (const l of L.links)
+    if (l.path.some(p => Math.abs(p.x) > L.halfContent + 0.5))
+      warn([l.parentId, l.childId], label(byId.get(l.childId)) +
+           "로 가는 선이 콘텐츠 폭(±" + Math.round(L.halfContent) + ")을 벗어난다");
+
+  // 6) 같은 층 다른 가격
+  const rows = new Map();
+  for (const n of S.nodes){
+    if (!rows.has(n.uiY)) rows.set(n.uiY, []);
+    rows.get(n.uiY).push(n);
+  }
+  rows.forEach((rs, y) => {
+    const costs = new Set(rs.map(r => r.cost));
+    if (rs.length > 1 && costs.size > 1)
+      warn(rs.map(r=>r.nodeId), "y=" + y + "에 가격이 다른 노드가 섞였다 (" +
+           rs.map(r => label(r) + " " + r.cost + "G").join(", ") + ")");
+  });
+
+  // 7) 가격 단위
+  for (const n of S.nodes){
+    const step = PRICE_STEP[n.tier];
+    if (step && n.cost % step !== 0)
+      warn([n.nodeId], label(n) + " " + n.cost + "G — " + n.tier + "지층은 " +
+           step + "원 단위여야 읽기 쉽다");
+  }
+
+  // 8) 관문 하한 — 합류점(부모 여럿)을 지난 노드는 그 관문보다 싸질 수 없다
+  const gate = new Map();
+  for (const n of topo(S.nodes, byId)){
+    let g = 0;
+    for (const p of n.parents){
+      const pn = byId.get(p); if (!pn) continue;
+      g = Math.max(g, gate.get(p) || 0);
+      if (pn.parents.length > 1) g = Math.max(g, pn.cost);
+    }
+    gate.set(n.nodeId, g);
+    const floor = Math.floor(g * GATE_FLOOR_RATIO);
+    if (g > 0 && n.cost < floor)
+      warn([n.nodeId], label(n) + " " + n.cost + "G — 관문(" + g +
+           "G)보다 싸다. 관문을 넘은 느낌이 사라진다 (하한 " + floor + "G)");
+  }
+
+  // 9) 아이콘 경로 꼴 — 유니티가 못 찾는 건 여기서 먼저 걸린다
+  for (const n of S.nodes){
+    const p = (n.icon || "").trim();
+    if (!p) continue;                                  // 빈 칸 = 인스펙터 값 유지
+    if (!/^Assets\//.test(p))
+      warn([n.nodeId], label(n) + " 아이콘 '" + p + "' — 경로는 Assets/ 로 시작해야 한다");
+    else if (iconKnown(p) === false)
+      warn([n.nodeId], label(n) + " 아이콘 '" + p + "' — Assets에 그런 그림이 없다");
+    else if (iconKnown(p) === null && !/\.(png|jpg|jpeg|psd|tga)$/i.test(p))
+      warn([n.nodeId], label(n) + " 아이콘 '" + p + "' — 그림 파일 확장자가 아니다");
+  }
+
+  // 10) 면허가 그 지층에서 가장 비싼가
+  for (const lic of S.nodes.filter(n => n.effectType === "MiningLevel")){
+    let top = 0;
+    for (const n of S.nodes)
+      if (n.tier === lic.tier && n.nodeId !== lic.nodeId) top = Math.max(top, n.cost);
+    if (lic.cost <= top)
+      warn([lic.nodeId], label(lic) + " " + lic.cost + "G — 같은 지층 최고가(" + top +
+           "G)보다 싸다. 면허가 관문으로 안 느껴진다");
+  }
+
+  // 11) 계열 — 규칙과 어긋난 노드 ('자동'을 꺼 뒀거나 파일을 손으로 고쳤을 때)
+  if (S.series.length){
+    const plan = seriesPlan();
+    const perKey = new Map();
+    for (const it of plan.items){
+      if (!perKey.has(it.key)) perKey.set(it.key, []);
+      perKey.get(it.key).push(it);
+    }
+    for (const [key, list] of perKey)
+      warn(list.map(it => it.node.nodeId),
+           "계열 '" + key + "' — 노드 " + list.length +
+           "개가 규칙과 다르다 (계열 칸의 '다시 굽기')");
+    for (const key of plan.blocked)
+      err(seriesMembers(seriesDef(key)).map(n => n.nodeId),
+          "계열 '" + key + "' — 번호 자리가 계열 밖 노드와 부딪혀 재번호를 못 한다");
+    for (const def of S.series)
+      if (!seriesMembers(def).length)
+        warn([], "계열 '" + def.seriesKey + "' (" + def.nameBase +
+             ") — 그 앞머리를 쓰는 노드가 하나도 없다");
+  }
+
+  // 10) 격자 — 그린 대로 안 나온 것들
+  if (S.grid.on){
+    if (S.grid.orphans.length)
+      warn([], "떠 있는 눈금 " + S.grid.orphans.length +
+           "칸 — 노드에 닿지 않아 아무 연결도 안 된다(노란 점선)");
+    for (const l of L.links)
+      if (l.bends && l.bends.length && l.kind !== "drawn")
+        err([l.childId, l.parentId],
+            "그린 모양이 노드를 뚫는다 — " + l.parentId + " → " + l.childId +
+            " (게임은 '" + l.kind + "' 경로로 비켜 그린다)");
+  }
+
+  S.problems = out;
+}
+
+function topo(nodes, byId){
+  const seen = new Set(), out = [], busy = new Set();
+  const visit = n => {
+    if (!n || seen.has(n.nodeId) || busy.has(n.nodeId)) return;   // busy = 순환 방어
+    busy.add(n.nodeId);
+    for (const p of n.parents) visit(byId.get(p));
+    busy.delete(n.nodeId);
+    seen.add(n.nodeId);
+    out.push(n);
+  };
+  for (const n of nodes) visit(n);
+  return out;
+}
+
+const label = n => n ? (n.displayNameKey || n.nodeId) : "?";
+
+/* =============================== 계열 ===================================
+   "넓은 삽날 I · II · III …" 처럼 한 줄로 이어지는 노드 묶음을 **계열**이라 한다.
+   중간에 하나를 끼워 넣으면 그 위가 전부 한 칸씩 밀려야 한다 — 이름의 로마숫자도,
+   단계별 효과값도, 설명에 박힌 숫자도, nodeId 꼬리번호도. 손으로 하면 반드시
+   빠뜨린다(지금 CSV에도 '지구력 강화 II'가 두 개 있었다). 그걸 여기서 굽는다.
+
+   규칙은 Assets/GameData/UpgradeData/UpgradeSeries.csv에 있고 **게임은 안 읽는다** —
+   구운 결과가 UpgradeTree.csv에 실려 나가므로 편집 전용 파일이다.
+
+   · 계열 = nodeId 앞머리 하나. `MiningRange_T0_03`의 `MiningRange`가 seriesKey다.
+     이름을 따로 가고 싶으면 앞머리를 나눈다(예: 삽질 효율은 ShovelEfficiency로).
+   · 순서 = uiY 오름차순. 이 트리는 위로 자라므로 화면 아래가 I, 위가 마지막이다.
+   · 번호는 **지층을 넘어 이어진다** — `MiningRange_T1_05`가 '넓은 삽날 V'다.
+     지층마다 1로 되돌리면 번호와 로마숫자가 어긋나고, 노드를 지층 띠 너머로
+     옮길 때마다 두 지층이 한꺼번에 재번호된다.
+   · **cost는 건드리지 않는다.** 트리 가격은 사람이 플레이하며 맞춘 정본이다.
+   ========================================================================= */
+
+// ===== SERIES-START — check_series.mjs가 이 블록을 그대로 떼어 검사한다 =====
+// 바깥에서 주는 것은 S(상태)와 fmtNum(숫자 서식)뿐이다. DOM을 건드리지 않는다.
+
+// `MiningRange_T0_03` -> ["MiningRange", "0", "03"]. 이 꼴이 아닌 id는 계열이 아니다
+// (`MiningLevel_T0_Final`처럼 테스트가 리터럴로 붙잡고 있는 id가 그래서 안전하다).
+const SERIES_ID = /^(.+)_T(\d+)_(\d+)$/;
+
+const ROMAN_MAP = [[1000,"M"],[900,"CM"],[500,"D"],[400,"CD"],[100,"C"],[90,"XC"],
+                   [50,"L"],[40,"XL"],[10,"X"],[9,"IX"],[5,"V"],[4,"IV"],[1,"I"]];
+
+function roman(n){
+  let out = "";
+  for (const [v, c] of ROMAN_MAP){ while (n >= v){ out += c; n -= v; } }
+  return out || "I";
+}
+
+const seriesSteps = def =>
+  String(def.steps || "").split(";").map(t => parseFloat(t)).filter(v => isFinite(v));
+
+const seriesExcluded = def =>
+  new Set(String(def.exclude || "").split(";").map(t => t.trim()).filter(Boolean));
+
+const seriesRenum = def => String(def.renumberId).toLowerCase() !== "false";
+
+const seriesDef = key => S.series.find(d => d.seriesKey === key) || null;
+
+/** 목록에 적힌 단계는 그 값, 그 뒤는 마지막 값에 stepTail을 계속 더한다. */
+function seriesValueAt(steps, tail, i){
+  if (!steps.length) return 0;
+  if (i < steps.length) return steps[i];
+  const v = steps[steps.length - 1] + (tail || 0) * (i - steps.length + 1);
+  return parseFloat(v.toPrecision(12));
+}
+
+/**
+ * 설명 템플릿에 값을 넣는다. 빈 템플릿은 null — **설명을 안 건드린다**는 뜻이다.
+ *
+ *   {v}      값 그대로            {pct}      값 x 100
+ *   {abs}    부호 뗀 값           {abspct}   부호 뗀 값 x 100
+ *   뒤에 `*수`를 붙이면 그만큼 곱한다: {abs*0.5}
+ *
+ * {abs}가 필요한 이유: 효과값이 음수인 항목(스태미나 감소 등)의 문구는
+ * "0.1 줄어듭니다"처럼 부호를 빼고 쓴다.
+ * 배수가 필요한 이유: ShovelStaminaReduce는 **기준 1의 배율** 스탯이라
+ * effectValue -0.1이 문구에서는 삽질 비용 기준 0.5에 곱해진 0.05로 적힌다.
+ * 그런 자리는 {abs*0.5}로 쓴다 — 안 그러면 값과 문구가 영영 따로 논다.
+ */
+function seriesDesc(tpl, v){
+  if (!String(tpl || "").trim()) return null;
+  return String(tpl).replace(/\{(v|abs|pct|abspct)(?:\*(-?[\d.]+))?\}/g, (_, k, mul) => {
+    const base = k === "v" ? v : k === "abs" ? Math.abs(v)
+               : k === "pct" ? v * 100 : Math.abs(v) * 100;
+    const m = mul === undefined ? 1 : parseFloat(mul);
+    return fmtNum(base * (isFinite(m) ? m : 1));
+  });
+}
+
+/** 그 계열의 노드들. 화면 아래(uiY 작은 쪽)가 1단계다. */
+function seriesMembers(def){
+  const ex = seriesExcluded(def);
+  const out = [];
+  for (const n of S.nodes){
+    const m = SERIES_ID.exec(n.nodeId);
+    if (m && m[1] === def.seriesKey && !ex.has(n.nodeId)) out.push(n);
+  }
+  out.sort((a, b) => (a.uiY - b.uiY) || (a.cost - b.cost) ||
+                     (a.nodeId < b.nodeId ? -1 : a.nodeId > b.nodeId ? 1 : 0));
+  return out;
+}
+
+/** 이 노드가 속한 계열 규칙 (없으면 null). */
+function seriesOf(node){
+  const m = SERIES_ID.exec(node.nodeId);
+  if (!m) return null;
+  const def = seriesDef(m[1]);
+  return def && !seriesExcluded(def).has(node.nodeId) ? def : null;
+}
+
+/**
+ * 무엇을 어떻게 고칠지만 뽑는다 — 여기서는 아무것도 안 바꾼다.
+ * {items:[{node, key, step, changes}], blocked:[seriesKey]}
+ *
+ * blocked = id 재번호가 남의 자리와 부딪혀 **그 계열만 번호를 포기**한 것.
+ * 반쯤 재번호하면 계열 안에서 번호가 어긋나므로 통째로 성사되거나 통째로 만다.
+ */
+function seriesPlan(only){
+  const items = [], blocked = [];
+  const byId = new Map(S.nodes.map(n => [n.nodeId, n]));
+  for (const def of S.series){
+    if (only && def.seriesKey !== only) continue;
+    const ms = seriesMembers(def);
+    if (!ms.length) continue;
+    const steps = seriesSteps(def), tail = parseFloat(def.stepTail) || 0;
+
+    let renum = seriesRenum(def);
+    const wantId = new Map();
+    if (renum){
+      const mine = new Set(ms.map(m => m.nodeId));
+      for (let i = 0; i < ms.length; i++){
+        const want = def.seriesKey + "_T" + ms[i].tier + "_" +
+                     String(i + 1).padStart(2, "0");
+        if (want !== ms[i].nodeId && byId.has(want) && !mine.has(want)){
+          renum = false; blocked.push(def.seriesKey); break;
+        }
+        wantId.set(ms[i].nodeId, want);
+      }
+    }
+
+    for (let i = 0; i < ms.length; i++){
+      const n = ms[i], ch = {};
+      const name = def.nameBase + " " + roman(i + 1);
+      if (n.displayNameKey !== name) ch.displayNameKey = name;
+      const v = seriesValueAt(steps, tail, i);
+      if (Number(n.effectValue) !== v) ch.effectValue = v;
+      const d = seriesDesc(def.descTemplate, v);
+      if (d !== null && n.descriptionKey !== d) ch.descriptionKey = d;
+      if (renum && wantId.get(n.nodeId) !== n.nodeId) ch.nodeId = wantId.get(n.nodeId);
+      if (Object.keys(ch).length)
+        items.push({node: n, key: def.seriesKey, step: i + 1, changes: ch});
+    }
+  }
+  return {items: items, blocked: blocked};
+}
+
+/**
+ * nodeId를 통째로 갈아 끼운다. 부모 참조와 선 모양 키도 같이 따라간다.
+ *
+ * 두 번에 나눠 바꾸는 이유: 계열 안에서 번호가 **서로 자리를 맞바꾸는** 일이
+ * 흔하다(_02 -> _03, _03 -> _04). 한 번에 쓰면 먼저 쓴 이름이 아직 안 바뀐
+ * 노드와 부딪혀 둘이 같은 id가 된다.
+ */
+function renameNodes(map){
+  const tmp = new Map();
+  let i = 0;
+  for (const old of map.keys()) tmp.set(old, "__bake" + (i++) + "__");
+  applyRename(tmp);
+  const fin = new Map();
+  for (const [old, next] of map) fin.set(tmp.get(old), next);
+  applyRename(fin);
+}
+
+function applyRename(m){
+  const at = id => m.has(id) ? m.get(id) : id;
+  for (const n of S.nodes){
+    n.nodeId = at(n.nodeId);
+    n.parents = n.parents.map(at);
+    if (n.lineBends){
+      const nb = {};
+      for (const k in n.lineBends) nb[at(k)] = n.lineBends[k];
+      n.lineBends = nb;
+    }
+  }
+  if (S.selNode) S.selNode = at(S.selNode);
+  if (S.selEdge) S.selEdge = {parent: at(S.selEdge.parent), child: at(S.selEdge.child)};
+}
+
+function seriesApply(plan){
+  const ren = new Map();
+  for (const it of plan.items){
+    const c = it.changes;
+    if ("displayNameKey" in c) it.node.displayNameKey = c.displayNameKey;
+    if ("effectValue" in c) it.node.effectValue = c.effectValue;
+    if ("descriptionKey" in c) it.node.descriptionKey = c.descriptionKey;
+    if ("nodeId" in c) ren.set(it.node.nodeId, c.nodeId);
+  }
+  if (ren.size) renameNodes(ren);
+}
+
+/**
+ * 되감는 중에는 굽지 않는다.
+ * undo()는 노드를 되돌린 뒤 refresh/gridApply를 부르는데, 거기서 다시 구우면
+ * 방금 되돌린 값을 그 자리에서 도로 덮어써 실행취소가 먹히지 않는다.
+ */
+let bakeSuspended = false;
+
+/** 계열을 다시 굽는다. 바꾼 게 없으면 null. force면 '자동' 꺼짐도 무시한다. */
+function bakeSeries(opts){
+  opts = opts || {};
+  if (bakeSuspended) return null;
+  if (!opts.force && !S.seriesAuto) return null;
+  if (!S.series.length) return null;
+  const plan = seriesPlan(opts.only);
+  if (!plan.items.length) return null;
+  seriesApply(plan);
+  return plan;
+}
+
+/** 무엇이 바뀌(었)는지 사람이 읽을 몇 줄로. */
+function bakeSummary(plan, limit){
+  const lines = [];
+  for (const it of plan.items.slice(0, limit || 10)){
+    const c = it.changes, bits = [];
+    if ("nodeId" in c) bits.push(it.node.nodeId + " → " + c.nodeId);
+    if ("displayNameKey" in c) bits.push("이름 " + c.displayNameKey);
+    if ("effectValue" in c) bits.push("값 " + fmtNum(it.node.effectValue) + " → " + fmtNum(c.effectValue));
+    if ("descriptionKey" in c) bits.push("설명");
+    lines.push("  " + it.key + " " + roman(it.step) + " — " + bits.join(" · "));
+  }
+  if (plan.items.length > (limit || 10))
+    lines.push("  … 외 " + (plan.items.length - (limit || 10)) + "개");
+  for (const k of plan.blocked)
+    lines.push("  ⚠ " + k + " — 번호 자리가 다른 노드와 부딪혀 id는 그대로 뒀습니다");
+  return lines.join("\n");
+}
+
+/** 설명에서 효과값에 해당하는 숫자를 찾아 자리표로 바꿔 본다. 못 찾으면 빈 칸. */
+function guessTemplate(desc, v){
+  const t = String(desc || "");
+  const cands = [["{v}", fmtNum(v)], ["{abs}", fmtNum(Math.abs(v))],
+                 ["{pct}", fmtNum(v * 100)], ["{abspct}", fmtNum(Math.abs(v) * 100)]];
+  for (const [tag, num] of cands){
+    // 앞뒤가 숫자·점이면 안 잡는다 — 0.1이 0.15 안에 걸리지 않게.
+    const re = new RegExp("(?<![\\d.])" + num.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") +
+                          "(?![\\d.])");
+    const m = re.exec(t);
+    if (m) return t.slice(0, m.index) + tag + t.slice(m.index + m[0].length);
+  }
+  return "";
+}
+
+/** 그 계열에서 아직 아무도 안 쓰는 nodeId. 넣자마자 다시 구우므로 번호는 임시다. */
+function freeSeriesId(key, tier){
+  for (let i = 1; i < 999; i++){
+    const id = key + "_T" + tier + "_" + String(i).padStart(2, "0");
+    if (!S.nodes.some(n => n.nodeId === id)) return id;
+  }
+  return key + "_T" + tier + "_" + Date.now();
+}
+
+// ===== SERIES-END =====
+
+/** 자동으로 구웠을 때의 알림. 막지 않고 흘려 보낸다 — 되돌리기는 Ctrl+Z 한 번. */
+function bakeFlash(plan){
+  if (!plan) return;
+  flash("계열 " + plan.items.length + "개 갱신 (Ctrl+Z로 되돌리기)\n" + bakeSummary(plan, 4));
+}
+
+/* ─────────────────────────── 계열 CSV ─────────────────────────── */
+
+const SERIES_FIELDS = ["seriesKey","nameBase","renumberId","steps",
+                       "stepTail","descTemplate","exclude"];
+
+function seriesToRows(){
+  return S.series.map(d => {
+    const o = {};
+    for (const f of SERIES_FIELDS) o[f] = d[f] === undefined ? "" : String(d[f]);
+    return o;
+  });
+}
+
+/* ============================== 격자 편집 ================================
+   격자식 편집 — 자리와 선을 눈금 위에서만 만든다.
+
+   · 세로 눈금(레인)  : uiX = 열 × 87.5      — 지금 CSV의 x가 전부 이 배수다
+   · 가로 눈금(층)    : uiY = 층 × 120        — 노드가 앉는 **모서리**
+   · 그 사이 반 칸    : 선이 옆으로 건너가는 자리(자동 배선이 쓰던 높이와 같다)
+
+   **모이는 노드**(부모가 둘 이상)가 있는 층은 모서리보다 MERGE_LIFT만큼 위에
+   앉는다. 그래야 바로 아래에서 여러 선이 모여드는 가로 구간이 노드 카드에
+   깔리지 않고, 그 위 다음 노드로 가는 선도 제 간격을 지킨다. 그 층부터 위는
+   통째로 같이 밀린다 — UpgradeTree.csv의 지금 좌표가 정확히 이 규칙이다
+   (150 간격이 나는 층 6개가 전부 부모 둘 이상인 노드의 층이다).
+
+   **층 삽입(R)** 은 짚은 층부터 위를 통째로 밀어 올려 빈 층을 만든다. 노드와
+   눈금을 같이 밀고 경계를 넘던 세로 눈금은 늘려 이으므로, 자리만 벌어지고
+   선행·선 모양은 그대로 남는다.
+
+   눈금을 누르면 선이 생기고 한 번 더 누르면 없어진다. 부모–자식 관계는
+   **그려진 눈금에서 되읽는다** — 노드에서 눈금을 따라가다 다른 노드에 닿으면
+   그게 한 연결이고, 아래쪽(층이 낮은) 노드가 부모다. 그린 모양은 lineBends로
+   굳어 게임이 그대로 그린다.
+   ========================================================================= */
+
+const GRID_COL = 87.5;              // uiX 한 칸
+const GRID_ROW = 120;               // uiY 한 층
+let   MERGE_LIFT = 30;              // 모이는 층을 모서리보다 올리는 양
+
+S.grid = {
+  on:false,
+  segs: new Set(),      // "H:c,h" = (c,h)-(c+1,h) · "V:c,h" = (c,h)-(c,h+1)
+  base: 0,              // 0층의 uiY
+  tool: "line",         // "line" | "node" | "row"
+  geo: null,            // 파생: 층 높이표·범위
+  paths: new Map(),     // "부모>자식" -> 꼭짓점 줄
+  orphans: [],          // 어느 연결에도 안 쓰인 눈금
+  hot: null,            // 커서가 짚은 자리
+  paint: null,          // 끌어 칠하는 중: true=켜기 false=끄기
+};
+
+const segKey = (o,c,h) => o + ":" + c + "," + h;
+const vtxKey = (c,h) => c + "," + h;
+function unseg(k){ const p = k.slice(2).split(","); return {o:k[0], c:+p[0], h:+p[1]}; }
+function unvtx(k){ const p = k.split(","); return {c:+p[0], h:+p[1]}; }
+
+/** 반 칸 번호 h -> 층 번호. 짝수 h가 노드가 앉는 모서리다. */
+const rowOfH = h => Math.floor(h/2);
+const isNodeH = h => (((h % 2) + 2) % 2) === 0;
+
+/* ─────────────────────────── 격자 자체 ─────────────────────────── */
+
+/**
+ * 층 높이표를 다시 잰다.
+ * rowY(층) = base + 120×층 + MERGE_LIFT×(그 층까지의 모이는 층 수)
+ * 반 칸은 이웃한 두 층의 한가운데 — 모이는 층이 올라가면 그 아래 반 칸도
+ * 같이 올라가서, 모여드는 가로 구간이 노드 카드에서 멀어진다.
+ */
+function gridGeo(){
+  const g = S.grid;
+  const mergeRow = new Set();
+  for (const n of S.nodes) if (n.parents.length > 1) mergeRow.add(n.gr);
+
+  let minC = 0, maxC = 0, minR = 0, maxR = 0, first = true;
+  const seeC = c => { if (c < minC) minC = c; if (c > maxC) maxC = c; };
+  const seeR = r => { if (r < minR) minR = r; if (r > maxR) maxR = r; };
+  for (const n of S.nodes){
+    if (first){ minC = maxC = n.gc; minR = maxR = n.gr; first = false; }
+    seeC(n.gc); seeR(n.gr);
+  }
+  for (const k of g.segs){
+    const s = unseg(k);
+    if (first){ minC = maxC = s.c; minR = maxR = rowOfH(s.h); first = false; }
+    seeC(s.c); if (s.o === "H") seeC(s.c + 1);
+    seeR(rowOfH(s.h)); seeR(rowOfH(s.h + (s.o === "V" ? 1 : 0)) + 1);
+  }
+  if (first){ minC = -3; maxC = 3; minR = 0; maxR = 4; }
+  minC -= 2; maxC += 2; minR -= 1; maxR += 2;
+
+  const mr = Array.from(mergeRow).sort((a,b) => a-b);
+  const liftAt = r => { let k = 0; while (k < mr.length && mr[k] <= r) k++; return k * MERGE_LIFT; };
+  const rowY = new Map();
+  for (let r = minR; r <= maxR; r++) rowY.set(r, g.base + GRID_ROW*r + liftAt(r));
+
+  const hy = h => {
+    const r = rowOfH(h);
+    if (isNodeH(h)) return rowY.get(r);
+    return (rowY.get(r) + rowY.get(r+1)) * 0.5;
+  };
+  return {mergeRow, rowY, hy, minC, maxC, minR, maxR, minH:minR*2, maxH:maxR*2};
+}
+
+/** 꼭짓점 -> ui 좌표. */
+function gridUI(c, h){ return {x: c * GRID_COL, y: S.grid.geo.hy(h)}; }
+
+/** uiY -> 실수 반 칸 번호(짚은 자리 계산용). hy는 단조증가라 훑으면 된다. */
+function gridHFloat(uiY){
+  const geo = S.grid.geo;
+  for (let h = geo.minH; h < geo.maxH; h++){
+    const a = geo.hy(h), b = geo.hy(h+1);
+    if (uiY < b) return h + (uiY - a) / (b - a);
+  }
+  return geo.maxH + (uiY - geo.hy(geo.maxH)) / (GRID_ROW * 0.5);
+}
+
+/* ───────────────────── 눈금 -> 부모·자식 되읽기 ───────────────────── */
+
+/** 두 꼭짓점 사이 눈금 하나의 키. */
+function edgeKeyOf(v1, v2){
+  const a = unvtx(v1), b = unvtx(v2);
+  return a.h === b.h ? segKey("H", Math.min(a.c, b.c), a.h)
+                     : segKey("V", a.c, Math.min(a.h, b.h));
+}
+
+/**
+ * 그려진 눈금을 따라가 연결을 찾는다.
+ * 노드에서 출발해 **중간 노드를 통과하지 않고** 다른 노드에 닿으면 한 연결.
+ * 갈림길은 그대로 갈라진다 — 한 줄기를 여럿이 나눠 타는 모양(분기·합류)이 된다.
+ *
+ * **한 방향으로만 간다.** 올라가다 도로 내려가는 길(V자)은 연결이 아니라,
+ * 형제 둘이 부모의 줄기에서 만난 것뿐이다. 이걸 안 막으면 줄기를 나눠 탄
+ * 형제끼리 서로의 부모가 돼 버린다.
+ */
+function gridDerive(){
+  const g = S.grid;
+  const nodeAtV = new Map();
+  for (const n of S.nodes) nodeAtV.set(vtxKey(n.gc, n.gr*2), n.nodeId);
+
+  const adj = new Map();
+  const join = (a,b) => { if (!adj.has(a)) adj.set(a, []); adj.get(a).push(b); };
+  for (const k of g.segs){
+    const s = unseg(k);
+    const a = vtxKey(s.c, s.h);
+    const b = s.o === "H" ? vtxKey(s.c+1, s.h) : vtxKey(s.c, s.h+1);
+    join(a,b); join(b,a);
+  }
+
+  const best = new Map();                     // "a|b" -> 가장 짧은 꼭짓점 줄
+  nodeAtV.forEach((id, start) => {
+    const walk = (cur, path, dir) => {         // dir: 0=아직 · 1=위로 · -1=아래로
+      if (path.length > 96) return;           // 엉킨 그림에서 폭주하지 않게
+      const here = unvtx(cur).h;
+      const nbrs = adj.get(cur) || [];
+      for (const nx of nbrs){
+        if (path.indexOf(nx) >= 0) continue;
+        const dh = unvtx(nx).h - here;
+        let nd = dir;
+        if (dh !== 0){
+          const step = dh > 0 ? 1 : -1;
+          if (dir !== 0 && step !== dir) continue;   // 되돌아가는 길은 연결이 아니다
+          nd = step;
+        }
+        const other = nodeAtV.get(nx);
+        const p2 = path.concat([nx]);
+        if (other !== undefined){
+          if (other === id) continue;
+          const key = id < other ? id + "|" + other : other + "|" + id;
+          const prev = best.get(key);
+          if (!prev || p2.length < prev.length) best.set(key, p2);
+          continue;                           // 노드에 닿으면 멈춘다
+        }
+        walk(nx, p2, nd);
+      }
+    };
+    walk(start, [start], 0);
+  });
+
+  const byId = new Map(S.nodes.map(n => [n.nodeId, n]));
+  const want = new Map(S.nodes.map(n => [n.nodeId, []]));
+  const used = new Set();
+  g.paths = new Map();
+  best.forEach(path => {
+    const a = byId.get(nodeAtV.get(path[0])), b = byId.get(nodeAtV.get(path[path.length-1]));
+    if (!a || !b) return;
+    // 아래(층이 낮은) 쪽이 부모. 같은 층이면 왼쪽이 부모.
+    const parentIsA = a.gr !== b.gr ? a.gr < b.gr : a.gc <= b.gc;
+    const parent = parentIsA ? a : b, child = parentIsA ? b : a;
+    const vs = parentIsA ? path : path.slice().reverse();
+    want.get(child.nodeId).push(parent.nodeId);
+    g.paths.set(parent.nodeId + ">" + child.nodeId, vs);
+    for (let i = 1; i < vs.length; i++) used.add(edgeKeyOf(vs[i-1], vs[i]));
+  });
+
+  // 부모 순서는 되도록 그대로 둔다 — CSV diff가 조용하게.
+  for (const n of S.nodes){
+    const list = want.get(n.nodeId) || [];
+    const have = new Set(list);
+    const kept = n.parents.filter(p => have.has(p));
+    for (const p of list) if (kept.indexOf(p) < 0) kept.push(p);
+    n.parents = kept;
+  }
+  g.orphans = Array.from(g.segs).filter(k => !used.has(k));
+}
+
+/* ───────────────────── 격자 -> uiX/uiY · lineBends ───────────────────── */
+
+/**
+ * 꼭짓점 줄을 bendPath가 먹는 꺾임점으로 바꾼다.
+ * 꺾임점 하나 = "이 높이에서 가로로 건너가 이 레인을 탄다".
+ * bendPath는 **마지막 꺾임점의 x를 자식 레인으로 강제**하고 끝점을 스스로
+ * 붙이므로, 자식으로 곧장 올라가는 마지막 세로 구간은 빼고 넘긴다.
+ */
+function bendsFromPath(vs){
+  const pts = vs.map(v => { const a = unvtx(v); return gridUI(a.c, a.h); });
+  if (pts.length < 2) return [];
+  const runs = [];
+  for (const p of pts){
+    const last = runs[runs.length-1];
+    if (last && Math.abs(last.y - p.y) < 0.01) last.x = p.x;
+    else runs.push({x:p.x, y:p.y});
+  }
+  if (runs.every(r => Math.abs(r.x - runs[0].x) < 0.01)) return [];   // 곧은 세로선
+  const startsFlat = Math.abs(pts[1].y - pts[0].y) < 0.01;
+  const endsFlat = Math.abs(pts[pts.length-1].y - pts[pts.length-2].y) < 0.01;
+  const from = startsFlat ? 0 : 1;
+  return endsFlat ? runs.slice(from) : runs.slice(from, -1);
+}
+
+/** 격자 좌표를 uiX/uiY와 lineBends에 받아 적는다. */
+function gridPlace(){
+  const g = S.grid;
+  g.geo = gridGeo();
+  for (const n of S.nodes){
+    n.uiX = n.gc * GRID_COL;
+    n.uiY = g.geo.rowY.get(n.gr);
+    n.lineBends = {};
+  }
+  g.paths.forEach((vs, key) => {
+    const cut = key.indexOf(">");
+    const child = S.nodes.find(n => n.nodeId === key.slice(cut+1));
+    if (!child) return;
+    const bends = bendsFromPath(vs);
+    if (bends.length) child.lineBends[key.slice(0, cut)] = bends;
+  });
+}
+
+/** 눈금이 바뀔 때마다 도는 한 바퀴. */
+function gridApply(){
+  bakeSeries();
+  gridDerive();
+  gridPlace();
+  refresh();
+}
+
+/* ──────────────────────── 들어가기 · 나오기 ──────────────────────── */
+
+/** 같은 칸에 겹쳐 앉은 노드를 옆 빈 칸으로 민다. */
+function gridSpread(){
+  const taken = new Set();
+  for (const n of S.nodes){
+    let c = n.gc, step = 0;
+    while (taken.has(vtxKey(c, n.gr))){ step++; c = n.gc + (step % 2 ? step : -step); }
+    n.gc = c;
+    taken.add(vtxKey(c, n.gr));
+  }
+}
+
+/** 지금 그려지는 선을 눈금 위로 옮겨 찍는다. */
+function gridRasterize(){
+  const g = S.grid, L = S.layout;
+  g.segs = new Set();
+  if (!L) return;
+  const geo = g.geo;
+  const toVtx = (uiX, uiY) => {
+    let bh = geo.minH, bd = Infinity;
+    for (let h = geo.minH; h <= geo.maxH; h++){
+      const d = Math.abs(geo.hy(h) - uiY);
+      if (d < bd){ bd = d; bh = h; }
+    }
+    return {c: Math.round(uiX / GRID_COL), h: bh};
+  };
+  const paint = (a, b) => {                    // 세로 먼저, 그 다음 가로
+    let c = a.c, h = a.h;
+    while (h !== b.h){
+      const up = b.h > h;
+      g.segs.add(segKey("V", c, up ? h : h-1));
+      h += up ? 1 : -1;
+    }
+    while (c !== b.c){
+      const right = b.c > c;
+      g.segs.add(segKey("H", right ? c : c-1, h));
+      c += right ? 1 : -1;
+    }
+  };
+  for (const l of L.links){
+    const vs = l.path.map(p => toVtx(p.x / GS, p.y / GS + L.centerY));
+    for (let i = 1; i < vs.length; i++) paint(vs[i-1], vs[i]);
+  }
+}
+
+function gridEnter(){
+  if (!S.nodes.length) return;
+  if (!confirm("격자 모드로 들어갑니다.\n\n" +
+      "· 모든 노드가 가로 87.5 · 세로 120 격자의 모서리에 맞춰집니다.\n" +
+      "· 지금 자동으로 그려지던 선이 눈금 위로 옮겨져 lineBends에 굳습니다.\n" +
+      "· 모이는 노드가 있는 층은 모서리보다 " + MERGE_LIFT + "만큼 위로 올라갑니다.\n\n" +
+      "Ctrl+Z로 되돌릴 수 있습니다. 계속할까요?")) return;
+  snapshot();
+  S.grid.base = Math.min.apply(null, S.nodes.map(n => n.uiY));
+  // 층 번호 — 아래에서부터 훑는다. 150짜리 간격(모이는 층)도 한 칸으로 센다.
+  const ys = Array.from(new Set(S.nodes.map(n => n.uiY))).sort((a,b) => a-b);
+  const rowOf = new Map();
+  let r = 0;
+  ys.forEach((y, i) => {
+    if (i) r += Math.max(1, Math.round((y - ys[i-1]) / GRID_ROW));
+    rowOf.set(y, r);
+  });
+  for (const n of S.nodes){
+    n.gc = Math.round(n.uiX / GRID_COL);
+    n.gr = rowOf.get(n.uiY);
+  }
+  gridSpread();
+  S.grid.geo = gridGeo();
+  gridRasterize();
+  S.grid.on = true;
+  setLinkMode(false);
+  syncGridUI();
+  gridApply();
+  fitView();
+  flash("격자 모드 — 눈금을 눌러 선을 켜고 끕니다. 있는 선을 눌러도 지워집니다 " +
+        "(Alt+클릭 = 연결 고르기 · 휠 = 세로 · Shift+휠 = 가로 · Ctrl+휠 = 확대)");
+}
+
+function gridExit(){
+  S.grid.on = false;
+  S.grid.hot = null;
+  syncGridUI();
+  refresh();
+}
+
+function syncGridUI(){
+  const on = S.grid.on;
+  $("#gridBtn").classList.toggle("on", on);
+  $("#gridTools").hidden = !on;
+  svg.classList.toggle("gridding", on);
+  $("#toolLine").classList.toggle("on", S.grid.tool === "line");
+  $("#toolNode").classList.toggle("on", S.grid.tool === "node");
+  $("#toolRow").classList.toggle("on", S.grid.tool === "row");
+  ["link","restair"].forEach(b => { $("#"+b).disabled = on || !S.nodes.length; });
+}
+
+/* ───────────────────────── 짚기 · 칠하기 ───────────────────────── */
+
+/** 화면 좌표 -> 짚은 눈금/모서리. 너무 멀면 null. */
+function gridPick(w){
+  if (!S.grid.geo || !S.layout) return null;
+  const ui = {x: w.x / GS, y: -w.y / GS + S.layout.centerY};
+  const cf = ui.x / GRID_COL, ci = Math.round(cf);
+  const hf = gridHFloat(ui.y), hi = Math.round(hf);
+  const dx = Math.abs(cf - ci), dy = Math.abs(hf - hi);
+
+  if (S.grid.tool === "row") return {kind:"row", r: Math.round(hf / 2)};
+  if (S.grid.tool === "node"){
+    const r = Math.round(hf / 2);
+    const d = Math.max(dx, Math.abs(hf/2 - r));
+    return d > 0.4 ? null : {kind:"vtx", c:ci, r:r};
+  }
+  if (dy <= dx) return dy > 0.42 ? null : {kind:"seg", o:"H", c:Math.floor(cf), h:hi};
+  return dx > 0.42 ? null : {kind:"seg", o:"V", c:ci, h:Math.floor(hf)};
+}
+
+const sameHot = (a, b) =>
+  a === b || (!!a && !!b && a.kind === b.kind && a.o === b.o &&
+              a.c === b.c && a.h === b.h && a.r === b.r);
+
+/** 눈금 하나를 켜거나 끈다. force가 있으면 그 상태로 맞춘다(끌어 칠하기). */
+function gridToggleSeg(key, force){
+  const has = S.grid.segs.has(key);
+  const want = force === undefined ? !has : force;
+  if (want === has) return false;
+  if (want) S.grid.segs.add(key); else S.grid.segs.delete(key);
+  return true;
+}
+
+/** 도구를 가리지 않고 가장 가까운 격자 모서리(노드가 앉는 자리). */
+function gridVertexAt(w){
+  if (!S.grid.geo || !S.layout) return null;
+  const ui = {x: w.x / GS, y: -w.y / GS + S.layout.centerY};
+  return {c: Math.round(ui.x / GRID_COL), r: Math.round(gridHFloat(ui.y) / 2)};
+}
+
+function setGridTool(t){
+  S.grid.tool = t;
+  S.grid.hot = null;
+  syncGridUI();
+  if (S.grid.on) renderGrid();
+}
+
+/**
+ * 연결 하나를 끊는다 — 그 연결만 쓰던 눈금만 지운다.
+ * 형제와 나눠 타던 줄기는 남겨 둬야 다른 선이 끊기지 않는다.
+ */
+function gridDropLink(parentId, childId){
+  const vs = S.grid.paths.get(parentId + ">" + childId);
+  if (!vs) return;
+  const mine = new Set();
+  for (let i = 1; i < vs.length; i++) mine.add(edgeKeyOf(vs[i-1], vs[i]));
+  S.grid.paths.forEach((other, key) => {
+    if (key === parentId + ">" + childId) return;
+    for (let i = 1; i < other.length; i++) mine.delete(edgeKeyOf(other[i-1], other[i]));
+  });
+  mine.forEach(k => S.grid.segs.delete(k));
+}
+
+/** 격자 모서리에 놓인 노드. */
+function gridNodeAt(c, r){
+  return S.nodes.find(n => n.gc === c && n.gr === r) || null;
+}
+
+/** 한 번에 밀어 올릴 칸 수. */
+function insertCount(){
+  const v = Math.round(+($("#rowN").value || 1));
+  return Math.min(20, Math.max(1, v || 1));
+}
+
+/**
+ * 짚은 층 r부터 **위를 통째로** rows칸 밀어 올려 빈 층을 만든다.
+ *
+ * 노드(gr)와 눈금(h)을 같은 손짓으로 민다 — 노드만 옮기면 눈금이 안 따라와
+ * 선행이 통째로 날아간다(격자에서 부모·자식은 그려진 눈금에서 되읽으므로).
+ *
+ * **경계를 가로지르던 세로 눈금은 늘려서 잇는다.** 아래 층에서 r로 올라오던
+ * 선(V:c,r*2-1)은 위 끝이 rows칸 위로 달아나므로 그 사이를 채워 주지 않으면
+ * 그 연결만 조용히 끊긴다 — 밀어 올린 자리 바로 밑을 지나는 선이 전부 이 경우다.
+ *
+ * 반 칸(h 홀수)은 두 층의 한가운데라 층 높이표가 다시 잴 때 알아서 따라온다.
+ * base는 건드리지 않아서 r보다 아래는 uiY가 한 픽셀도 안 움직인다.
+ */
+function gridInsertRows(r, rows){
+  const g = S.grid;
+  const n = Math.max(1, Math.round(rows || 1)), H0 = r * 2, dh = n * 2;
+  for (const nd of S.nodes) if (nd.gr >= r) nd.gr += n;
+  const next = new Set(), cross = [];
+  for (const k of g.segs){
+    const s = unseg(k);
+    if (s.h >= H0){ next.add(segKey(s.o, s.c, s.h + dh)); continue; }
+    next.add(k);
+    if (s.o === "V" && s.h === H0 - 1) cross.push(s.c);   // 경계를 넘던 세로 눈금
+  }
+  for (const c of cross)
+    for (let h = H0; h < H0 + dh; h++) next.add(segKey("V", c, h));
+  g.segs = next;
+  return n;
+}
+
+function gridAddNode(c, r){
+  snapshot();
+  let i = 1, id;
+  do { id = "NewNode_" + (i++); } while (S.nodes.some(n => n.nodeId === id));
+  S.nodes.push({
+    nodeId:id, tier:0, effectType:"None", effectValue:0, isPercentage:false,
+    parents:[], cost:0, gc:c, gr:r, icon:"",
+    uiX: c*GRID_COL, uiY: S.grid.geo.rowY.get(r) || 0,
+    displayNameKey:"새 노드", descriptionKey:"", locked:false, targetMineral:"",
+    lineBends:{},
+  });
+  S.selNode = id; S.selEdge = null;
+  gridApply();
+}
+
+/* ───────────────────────────── 그리기 ───────────────────────────── */
+
+function renderGrid(){
+  gGrid.textContent = "";
+  const L = S.layout, geo = S.grid.geo;
+  if (!L || !geo) return;
+  const r1 = v => Math.round(v * 10) / 10;
+  const Q = (uiX, uiY) => r1(uiX * GS) + " " + r1(-(uiY - L.centerY) * GS);
+  const P = (c, h) => Q(c * GRID_COL, geo.hy(h));
+  const seg = (a, b) => "M" + a + "L" + b;
+
+  // 1) 눈금 — 노드가 앉는 층은 실선, 선이 건너가는 반 칸은 점선.
+  let full = "", half = "";
+  for (let c = geo.minC; c <= geo.maxC; c++)
+    full += seg(P(c, geo.minH), P(c, geo.maxH));
+  for (let h = geo.minH; h <= geo.maxH; h++){
+    const line = seg(P(geo.minC, h), P(geo.maxC, h));
+    if (isNodeH(h)) full += line; else half += line;
+  }
+  gGrid.append(el("path", {class:"ghalf", d: half}));
+  gGrid.append(el("path", {class:"gline", d: full}));
+
+  // 2) 모이는 층 — 평평한 격자였다면 모서리가 있었을 자리를 남겨 둔다.
+  //    노드가 그보다 살짝 위에 앉은 게 눈에 보이도록.
+  let ghost = "";
+  geo.mergeRow.forEach(r => {
+    const y = geo.rowY.get(r);
+    if (y === undefined) return;
+    ghost += seg(Q(geo.minC*GRID_COL, y - MERGE_LIFT), Q(geo.maxC*GRID_COL, y - MERGE_LIFT));
+  });
+  if (ghost) gGrid.append(el("path", {class:"gghost", d: ghost}));
+
+  // 3) 켜 둔 눈금. 어느 연결에도 안 쓰인 건 노란 점선으로 따로 보인다.
+  const orphan = new Set(S.grid.orphans);
+  let on = "", loose = "";
+  for (const k of S.grid.segs){
+    const s = unseg(k);
+    const line = seg(P(s.c, s.h), s.o === "H" ? P(s.c+1, s.h) : P(s.c, s.h+1));
+    if (orphan.has(k)) loose += line; else on += line;
+  }
+  if (on) gGrid.append(el("path", {class:"gon", d: on}));
+  if (loose) gGrid.append(el("path", {class:"gorphan", d: loose}));
+
+  // 4) 커서가 짚은 자리
+  const hot = S.grid.hot;
+  if (hot && hot.kind === "seg"){
+    const k = segKey(hot.o, hot.c, hot.h);
+    gGrid.append(el("path", {
+      class: "ghot" + (S.grid.segs.has(k) ? " rm" : ""),
+      d: seg(P(hot.c, hot.h), hot.o === "H" ? P(hot.c+1, hot.h) : P(hot.c, hot.h+1))}));
+  } else if (hot && hot.kind === "row"){
+    const y = geo.rowY.get(hot.r);
+    if (y !== undefined){
+      const x0 = geo.minC * GRID_COL, x1 = geo.maxC * GRID_COL;
+      gGrid.append(el("path", {class:"growins", d: seg(Q(x0, y), Q(x1, y))}));
+      const p = Q((x0 + x1) * 0.5, y).split(" ");
+      gGrid.append(txt("↑ 여기부터 위로 " + insertCount() + "칸",
+                       +p[0], +p[1] - 14, "growlab"));
+    }
+  } else if (hot && hot.kind === "vtx" && !gridNodeAt(hot.c, hot.r)){
+    const y = geo.rowY.get(hot.r);
+    if (y !== undefined){
+      const p = Q(hot.c * GRID_COL, y).split(" ");
+      gGrid.append(el("rect", {class:"gslot", x: +p[0] - NODE_W/2, y: +p[1] - NODE_H/2,
+                               width: NODE_W, height: NODE_H, rx: 10}));
+    }
+  }
+}
+
+/* =============================== 렌더 =================================== */
+
+function refresh(){
+  S.layout = computeLayout();
+  validate();
+  render();
+  renderInspector();
+  renderSeries();
+  renderProblems();
+}
+
+function render(){
+  const L = S.layout;
+  gWires.textContent = ""; gNodes.textContent = ""; gBands.textContent = "";
+  if (S.grid.on) renderGrid(); else gGrid.textContent = "";
+  renderBands();
+  if (!L) { applyView(); return; }
+
+  const badIds = new Set();
+  for (const p of S.problems) if (p.level === "err") p.ids.forEach(i => badIds.add(i));
+
+  for (const l of L.links){
+    const pts = l.path.map(p => sx(p) + "," + sy(p)).join(" ");
+    const isSel = S.selEdge && S.selEdge.parent === l.parentId && S.selEdge.child === l.childId;
+    gWires.append(el("polyline", {points: pts,
+      class: "wire" + (isSel ? " sel" : "") + (l.kind === "blocked" ? " bad" : "")}));
+    const hit = el("polyline", {points: pts, class: "wireHit"});
+    hit.addEventListener("pointerdown", ev => {
+      // 격자에서는 눈금이 임자다. 선 위에 깔린 이 판정 띠가 클릭을 삼키면
+      // **이미 있는 선을 눌러 지울 수가 없다** — 그냥 흘려보내 svg가 받게 둔다.
+      // Alt+클릭이면 예전대로 연결을 골라 준다(Delete로 통째 지우기).
+      if (S.grid.on && !ev.altKey) return;
+      ev.stopPropagation();
+      S.selEdge = {parent: l.parentId, child: l.childId}; S.selNode = null;
+      refresh();
+    });
+    gWires.append(hit);
+
+    // 꺾임점 손잡이 — 가로 구간은 위아래(높이), 세로 구간은 좌우(레인)로 끈다.
+    // 아무 구간이나 더블클릭하면 그 자리에 꺾임점이 하나 늘어난다.
+    if (S.grid.on) continue;         // 격자에서는 눈금이 곧 선의 모양이다
+    const drawn = l.kind === "drawn";
+    let cross = 0;                       // 지금까지 지나온 가로 건너감 수 = 꺾임점 index
+    const nCross = countCrossings(l.path);
+    for (let i = 1; i < l.path.length; i++){
+      const a = l.path[i-1], b = l.path[i];
+      const horizontal = Math.abs(a.y - b.y) < 0.1;
+      const len = horizontal ? Math.abs(a.x - b.x) : Math.abs(a.y - b.y);
+
+      if (horizontal){
+        const k = cross++;
+        if (len < 1) continue;           // 길이 0인 건너감은 잡을 게 없다
+        addSegHandle(l, a, b, "jogHandle", drawn, ev => startBendDrag(ev, l, k, "y"));
+      } else {
+        // 이 세로 구간은 꺾임점 (cross-1)이 정한 레인을 탄다.
+        // 첫 구간(부모 스텁)과 마지막 꺾임점의 구간(자식 레인)은 옮길 수 없다.
+        const k = cross - 1;
+        if (len < 24 || k < 0 || k >= nCross - 1) continue;
+        addSegHandle(l, a, b, "laneHandle", drawn, ev => startBendDrag(ev, l, k, "x"));
+      }
+    }
+  }
+
+  for (const n of S.nodes){
+    const p = L.pos.get(n.nodeId);
+    const g = el("g", {class: "nodeBox" + (S.selNode === n.nodeId ? " sel" : "")
+                              + (S.linkFrom === n.nodeId ? " from" : "")
+                              + (badIds.has(n.nodeId) ? " bad" : ""),
+                       transform: "translate(" + sx(p) + "," + sy(p) + ")"});
+    g.append(el("rect", {class:"body", x:-NODE_W/2, y:-NODE_H/2, width:NODE_W, height:NODE_H}));
+    if (S.server && (n.icon || "").trim()){
+      g.append(el("image", {href: iconURL(n.icon.trim()), x: -21, y: -NODE_H/2 + 26,
+                            width: 42, height: 42, preserveAspectRatio: "xMidYMid meet"}));
+    }
+    g.append(txt(label(n), 0, 8, ""));
+    g.append(txt(n.cost + " G", 0, 32, "cost"));
+    g.append(txt(n.nodeId.length > 22 ? n.nodeId.slice(0,21) + "…" : n.nodeId,
+                 0, -NODE_H/2 + 18, "nid"));
+    // 연결 손잡이 — 자식 쪽(위)에서 끌어다 다른 노드에 놓는다
+    if (!S.grid.on){          // 격자에서는 눈금을 그어 잇는다 — 손잡이가 없다
+      const port = el("circle", {class:"port", cx:0, cy:-NODE_H/2, r:11});
+      port.addEventListener("pointerdown", ev => startWire(ev, n));
+      g.append(port);
+    }
+    g.addEventListener("pointerdown", ev => startNodeDrag(ev, n));
+    gNodes.append(g);
+  }
+  applyView();
+}
+
+function el(tag, attrs){
+  const e = document.createElementNS("http://www.w3.org/2000/svg", tag);
+  for (const k in attrs) e.setAttribute(k, attrs[k]);
+  return e;
+}
+function txt(s, x, y, cls){
+  const t = el("text", {x: x, y: y, class: cls}); t.textContent = s; return t;
+}
+
+function applyView(){
+  syncScrollbars();
+  gView.setAttribute("transform",
+    "translate(" + S.view.x + "," + S.view.y + ") scale(" + S.view.k + ")");
+  const e = S.layout ? S.layout.links.length : 0;
+  let line3 = "";
+  if (S.linkMode){
+    const from = S.nodes.find(n => n.nodeId === S.linkFrom);
+    line3 = "\n선 추가 — " + (from
+      ? "부모 [" + label(from) + "] → 이을 자식을 클릭 (Esc 취소)"
+      : "부모로 삼을 노드를 클릭");
+  }
+  $("#hud").textContent = "노드 " + S.nodes.length + " · 연결 " + e +
+    " · 확대 " + Math.round(S.view.k*100) + "%" +
+    (S.fileName ? "\n" + S.fileName : "") + line3;
+}
+
+function renderInspector(){
+  const box = $("#inspector");
+  const n = S.nodes.find(x => x.nodeId === S.selNode);
+  if (!n){
+    if (!S.selEdge){
+      box.innerHTML = "<h3>선택 노드</h3><div class=\"empty\">노드를 고르면 여기서 편집합니다.</div>";
+      return;
+    }
+    const child = S.nodes.find(x => x.nodeId === S.selEdge.child);
+    const pts = child && child.lineBends ? child.lineBends[S.selEdge.parent] : undefined;
+    box.innerHTML = "<h3>선택 연결</h3>" +
+      '<div class="empty"><b>' + esc(S.selEdge.parent) + "</b> → <b>" + esc(S.selEdge.child) +
+      "</b><br>Del 키로 끊습니다.<br><br>선 모양: " +
+      (pts && pts.length
+        ? "<b>직접 그림 (꺾임점 " + pts.length + "개)</b><br>" +
+          pts.map(b => "&nbsp;&nbsp;x=" + b.x + ", y=" + b.y).join("<br>")
+        : "자동") +
+      "<br><br>구간을 더블클릭하면 꺾임점이 늘어납니다.</div>" +
+      (pts && pts.length ? '<button id="f_clearBends">선 모양 초기화</button>' : "");
+
+    const bb = box.querySelector("#f_clearBends");
+    if (bb) bb.addEventListener("click", () => {
+      const l = S.layout.links.find(x =>
+        x.parentId === S.selEdge.parent && x.childId === S.selEdge.child);
+      if (l) clearBends(l);
+    });
+    return;
+  }
+  const opt = (list, cur) => list.map(v =>
+    '<option value="' + esc(v) + '"' + (v === cur ? " selected" : "") + ">" +
+    esc(v === "" ? "(없음)" : v) + "</option>").join("");
+
+  box.innerHTML = "<h3>선택 노드</h3>" +
+    '<div class="row"><label>nodeId</label><input id="f_nodeId" value="' + esc(n.nodeId) + '"></div>' +
+    '<div class="row"><label>이름</label><input id="f_displayNameKey" value="' + esc(n.displayNameKey) + '"></div>' +
+    '<div class="row"><label>가격 (G)</label><input id="f_cost" type="number" step="10" value="' + n.cost + '"></div>' +
+    '<div class="row"><label>지층 tier</label><input id="f_tier" type="number" value="' + n.tier + '"></div>' +
+    '<div class="row"><label>효과</label><select id="f_effectType">' + opt(EFFECT_TYPES, n.effectType) + "</select></div>" +
+    '<div class="row"><label>효과값</label><input id="f_effectValue" type="number" step="any" value="' + n.effectValue + '"></div>' +
+    '<div class="row"><label>퍼센트</label><input id="f_isPercentage" type="checkbox" ' + (n.isPercentage ? "checked" : "") + "></div>" +
+    mineralRow(n) +
+    '<div class="row"><label>uiX</label><input id="f_uiX" type="number" step="0.5" value="' + n.uiX + '"></div>' +
+    '<div class="row"><label>uiY</label><input id="f_uiY" type="number" step="30" value="' + n.uiY + '"></div>' +
+    '<div class="row"><label>설명</label><input id="f_descriptionKey" value="' + esc(n.descriptionKey) + '"></div>' +
+    iconRow(n) +
+    '<div class="row"><label>부모</label><span style="flex:1;color:var(--dim);font-size:12px">' +
+      (n.parents.length ? n.parents.map(esc).join("<br>") : "(루트)") + "</span></div>";
+
+  const num = {cost:1, tier:1, effectValue:1, uiX:1, uiY:1};
+  ["nodeId","displayNameKey","cost","tier","effectType","effectValue",
+   "isPercentage","uiX","uiY","descriptionKey","icon"].forEach(f => {
+    const inp = box.querySelector("#f_" + f);
+    if (!inp) return;
+    inp.addEventListener("change", () => {
+      snapshot();
+      if (f === "isPercentage") n[f] = inp.checked;
+      else if (f === "nodeId"){
+        const old = n.nodeId, next = inp.value.trim();
+        if (next && next !== old){
+          for (const m of S.nodes){
+            m.parents = m.parents.map(p => p === old ? next : p);
+            if (m.lineBends && m.lineBends[old] !== undefined){
+              m.lineBends[next] = m.lineBends[old];
+              delete m.lineBends[old];
+            }
+          }
+          n.nodeId = next; S.selNode = next;
+        }
+      }
+      else if (num[f]) n[f] = Number(inp.value) || 0;
+      else n[f] = inp.value;
+      bakeFlash(bakeSeries());
+      refresh();
+    });
+  });
+
+  box.querySelectorAll(".mineralPick input[type=checkbox]").forEach(cb => {
+    cb.addEventListener("change", () => {
+      snapshot();
+      const list = mineralList(n.targetMineral);
+      const m = cb.dataset.mineral;
+      const i = list.indexOf(m);
+      if (cb.checked){ if (i < 0) list.push(m); }   // 고른 순서를 유지한다 (첫 개 = SO의 targetMineral)
+      else if (i >= 0) list.splice(i, 1);
+      n.targetMineral = list.join(";");
+      refresh();
+    });
+  });
+}
+
+/** `GarbageBag;PETBottle` 칸을 배열로. 빈 칸·공백·중복을 턴다. */
+function mineralList(text){
+  const out = [];
+  for (const raw of String(text || "").split(";")){
+    const v = raw.trim();
+    if (v && out.indexOf(v) < 0) out.push(v);
+  }
+  return out;
+}
+
+/**
+ * 대상 광물 칸. 한 노드가 여러 광물의 판매가를 함께 올릴 수 있어(CSV는 ';' 나열)
+ * 단일 select가 아니라 체크박스 묶음이다. 고른 순서가 곧 CSV 순서이고,
+ * 첫 개가 UpgradeEffectSO.targetMineral, 나머지가 extraTargetMinerals가 된다.
+ * MINERALS에 없는 값이 CSV에 있어도 목록 끝에 살려 둔다 — 토글 한 번에 지워지면 안 된다.
+ */
+function mineralRow(n){
+  const sel = mineralList(n.targetMineral);
+  const all = MINERALS.concat(sel.filter(m => MINERALS.indexOf(m) < 0));
+  const cells = all.map(m => {
+    const on = sel.indexOf(m) >= 0;
+    return '<label class="mchk' + (on ? " on" : "") + '">' +
+      '<input type="checkbox" data-mineral="' + esc(m) + '"' + (on ? " checked" : "") + ">" +
+      esc(m) + "</label>";
+  }).join("");
+  return '<div class="row iconRow"><label>대상 광물</label>' +
+    '<div style="flex:1;min-width:0">' +
+      '<div class="mineralPick">' + cells + "</div>" +
+      '<div class="iconHint">' +
+        (sel.length ? esc(sel.join(";")) : "선택 없음 — MineralPriceUp이면 아무 일도 하지 않습니다") +
+      "</div>" +
+    "</div></div>";
+}
+
+/* ─────────────────────────── 계열 칸 ─────────────────────────── */
+
+/** 미리 보여 주고 확인을 받은 뒤 굽는다. only를 주면 그 계열만. */
+function bakeConfirm(only){
+  const plan = seriesPlan(only);
+  if (!plan.items.length){
+    flash(plan.blocked.length ? bakeSummary(plan, 20) : "계열 규칙과 이미 같습니다");
+    return;
+  }
+  if (!confirm("계열을 다시 굽습니다 — 노드 " + plan.items.length + "개\n" +
+               "(cost는 건드리지 않습니다)\n\n" + bakeSummary(plan, 20) +
+               "\n\n계속할까요?")) return;
+  snapshot();
+  seriesApply(plan);
+  refresh();
+  flash("다시 구웠습니다 — 노드 " + plan.items.length + "개 (Ctrl+Z로 되돌리기)");
+}
+
+function renderSeries(){
+  const box = $("#seriesBody"), cnt = $("#seriesCount");
+  const sel = S.selNode ? S.nodes.find(n => n.nodeId === S.selNode) : null;
+
+  // 고른 노드가 속한 계열을 따라간다 — 노드를 짚으면 그 계열이 펼쳐져 있게.
+  const own = sel ? seriesOf(sel) : null;
+  if (own) S.seriesSel = own.seriesKey;
+  if (!seriesDef(S.seriesSel)) S.seriesSel = S.series.length ? S.series[0].seriesKey : null;
+  const def = seriesDef(S.seriesSel);
+
+  cnt.innerHTML = S.series.length
+    ? '<span style="color:var(--dim)">' + S.series.length + "개</span>" : "";
+
+  if (!S.series.length){
+    box.innerHTML = '<div class="empty">' +
+      (S.seriesLoaded
+        ? "계열 규칙이 없습니다. 노드를 고르고 아래 단추를 누르세요."
+        : "편집기 서버로 열어야 계열을 씁니다 (Tools/upgrade_editor.bat).") +
+      "</div>" +
+      (S.seriesLoaded
+        ? '<div class="sBtns"><button id="s_new"' + (sel ? "" : " disabled") +
+          ">이 노드로 새 계열</button></div>" : "");
+    wireSeries(box, null, sel);
+    return;
+  }
+
+  const ms = def ? seriesMembers(def) : [];
+  const steps = def ? seriesSteps(def) : [];
+  const tail = def ? (parseFloat(def.stepTail) || 0) : 0;
+
+  const opts = S.series.map(d =>
+    '<option value="' + esc(d.seriesKey) + '"' +
+    (d.seriesKey === S.seriesSel ? " selected" : "") + ">" +
+    esc(d.nameBase + "  (" + d.seriesKey + ")") + "</option>").join("");
+
+  let html =
+    '<div class="sRow"><label>자동</label>' +
+      '<input type="checkbox" id="s_auto"' + (S.seriesAuto ? " checked" : "") + ">" +
+      '<span style="flex:1;color:var(--dim);font-size:11px">노드를 건드리면 바로 다시 굽습니다</span>' +
+    "</div>" +
+    '<div class="sRow"><label>계열</label><select id="s_pick">' + opts + "</select></div>";
+
+  if (def){
+    html +=
+      '<div class="sRow"><label>이름 베이스</label><input id="s_nameBase" value="' +
+        esc(def.nameBase) + '"></div>' +
+      '<div class="sRow"><label>단계값</label><input id="s_steps" value="' +
+        esc(def.steps) + '" title="단계별 effectValue. 세미콜론으로 나눈다."></div>' +
+      '<div class="sRow"><label>이후 증가폭</label><input id="s_stepTail" value="' +
+        esc(def.stepTail) + '" title="단계값 목록을 넘어선 단계는 마지막 값에 이만큼씩 더한다."></div>' +
+      '<div class="sRow"><label>설명 틀</label><input id="s_descTemplate" value="' +
+        esc(def.descTemplate) +
+        '" title="{v} 값 · {abs} 절대값 · {pct} 값x100 · {abspct} 절대값x100 · 배수는 {abs*0.5}. 비우면 설명을 안 건드린다."></div>' +
+      '<div class="sRow"><label>id 재번호</label>' +
+        '<input type="checkbox" id="s_renumberId"' + (seriesRenum(def) ? " checked" : "") +
+        '><span style="flex:1;color:var(--dim);font-size:11px">' +
+        esc(def.seriesKey) + "_T{지층}_{번호}</span></div>" +
+      '<div class="sRow"><label>제외</label><input id="s_exclude" value="' +
+        esc(def.exclude) + '" title="이 계열에서 뺄 nodeId. 세미콜론으로 나눈다."></div>';
+
+    // 멤버 목록 — 중간에 끼우면 위가 어떻게 밀리는지 눈으로 보는 자리
+    const rows = ms.map((n, i) => {
+      const want = def.nameBase + " " + roman(i + 1);
+      const v = seriesValueAt(steps, tail, i);
+      const stale = n.displayNameKey !== want || Number(n.effectValue) !== v;
+      return '<div class="sNote' + (stale ? " sStale" : "") + '"' +
+        ' style="margin:0;cursor:pointer' +
+        (n.nodeId === S.selNode ? ";color:var(--gold)" : "") + '"' +
+        ' data-focus="' + esc(n.nodeId) + '">' +
+        (stale ? "· " : "&nbsp;&nbsp;") + roman(i + 1) + "  " + esc(fmtNum(v)) +
+        "  <span style=\"opacity:.7\">" + esc(n.nodeId) + "</span></div>";
+    }).join("");
+
+    html += '<div class="sNote">멤버 ' + ms.length +
+      "개 · 화면 아래가 I, 위가 마지막 · 어긋난 줄은 주황</div>" + rows;
+  }
+
+  html += '<div class="sBtns">' +
+    '<button id="s_bake"' + (def ? "" : " disabled") + ">이 계열 다시 굽기</button>" +
+    '<button id="s_bakeAll">전체</button>' +
+    '<button id="s_join"' + (sel && def && !own ? "" : " disabled") +
+      ' title="고른 노드를 이 계열에 넣습니다. 자리(uiY)에 맞는 번호가 붙고 위가 밀립니다.">선택 노드 넣기</button>' +
+    '<button id="s_leave"' + (own ? "" : " disabled") + ">빼기</button>" +
+    '<button id="s_new"' + (sel ? "" : " disabled") + ">이 노드로 새 계열</button>" +
+    '<button id="s_del"' + (def ? "" : " disabled") + ">계열 삭제</button>" +
+    "</div>";
+
+  box.innerHTML = html;
+  wireSeries(box, def, sel);
+}
+
+function wireSeries(box, def, sel){
+  const on = (id, ev, fn) => {
+    const el = box.querySelector("#" + id);
+    if (el) el.addEventListener(ev, fn);
+  };
+
+  on("s_auto", "change", ev => { S.seriesAuto = ev.target.checked; refresh(); });
+  on("s_pick", "change", ev => { S.seriesSel = ev.target.value; renderSeries(); });
+
+  // 규칙 칸 — 고치면 바로 다시 굽는다(자동이 켜져 있을 때)
+  for (const f of ["nameBase","steps","stepTail","descTemplate","exclude"])
+    on("s_" + f, "change", ev => {
+      snapshot();
+      def[f] = ev.target.value;
+      bakeSeries({only: def.seriesKey});
+      refresh();
+    });
+  on("s_renumberId", "change", ev => {
+    snapshot();
+    def.renumberId = ev.target.checked ? "true" : "false";
+    bakeSeries({only: def.seriesKey});
+    refresh();
+  });
+
+  on("s_bake", "click", () => bakeConfirm(def.seriesKey));
+  on("s_bakeAll", "click", () => bakeConfirm(null));
+
+  on("s_join", "click", () => {
+    snapshot();
+    renameNodes(new Map([[sel.nodeId, freeSeriesId(def.seriesKey, sel.tier)]]));
+    const plan = bakeSeries({only: def.seriesKey, force: true});
+    refresh();
+    flash("'" + def.nameBase + "' 계열에 넣었습니다" +
+          (plan ? " — 노드 " + plan.items.length + "개 갱신" : "") + " (Ctrl+Z로 되돌리기)");
+  });
+
+  on("s_leave", "click", () => {
+    const d = seriesOf(sel);
+    if (!d) return;
+    snapshot();
+    const ex = seriesExcluded(d);
+    ex.add(sel.nodeId);
+    d.exclude = Array.from(ex).join(";");
+    bakeSeries({only: d.seriesKey});
+    refresh();
+    flash("'" + sel.nodeId + "' 을(를) 계열에서 뺐습니다 — 이제 손으로 고칩니다");
+  });
+
+  on("s_new", "click", () => {
+    const m = SERIES_ID.exec(sel.nodeId);
+    const key = m ? m[1] : sel.nodeId.replace(/[^A-Za-z0-9_]/g, "");
+    if (!key){ alert("nodeId에서 계열 앞머리를 못 뽑았습니다. nodeId를 먼저 고치세요."); return; }
+    if (seriesDef(key)){ S.seriesSel = key; renderSeries(); return; }
+    snapshot();
+    if (!m) renameNodes(new Map([[sel.nodeId, freeSeriesId(key, sel.tier)]]));
+    const v = Number(sel.effectValue) || 0;
+    S.series.push({
+      seriesKey: key,
+      nameBase: String(sel.displayNameKey || key).replace(
+        /\s+(?:M{0,3})(?:CM|CD|D?C{0,3})(?:XC|XL|L?X{0,3})(?:IX|IV|V?I{0,3})$/, ""),
+      renumberId: "true",
+      steps: fmtNum(v),
+      stepTail: "0",
+      descTemplate: guessTemplate(sel.descriptionKey, v),
+      exclude: "",
+    });
+    S.seriesSel = key;
+    bakeSeries({only: key});
+    refresh();
+    flash("계열 '" + key + "' 을(를) 만들었습니다 — 단계값·설명 틀을 채우세요");
+  });
+
+  on("s_del", "click", () => {
+    if (!confirm("계열 '" + def.seriesKey + "' (" + def.nameBase +
+                 ") 규칙을 지웁니다.\n노드는 그대로 남고 자동 갱신만 멈춥니다.")) return;
+    snapshot();
+    S.series = S.series.filter(d => d.seriesKey !== def.seriesKey);
+    S.seriesSel = null;
+    refresh();
+  });
+
+  box.querySelectorAll("[data-focus]").forEach(el =>
+    el.addEventListener("click", () => focusNode(el.dataset.focus)));
+}
+
+function renderProblems(){
+  const box = $("#problems");
+  let errs = 0;
+  for (const p of S.problems) if (p.level === "err") errs++;
+  $("#probCount").innerHTML = S.problems.length
+    ? '<span style="color:' + (errs ? "var(--err)" : "var(--warn)") + '">오류 ' + errs +
+      " · 경고 " + (S.problems.length - errs) + "</span>"
+    : '<span style="color:var(--ok)">이상 없음</span>';
+  if (!S.problems.length){ box.innerHTML = '<div class="empty">이상 없음</div>'; return; }
+  box.innerHTML = "";
+  for (const p of S.problems){
+    const d = document.createElement("div");
+    d.className = "prob" + (p.level === "err" ? " err" : "");
+    d.innerHTML = "<b>" + (p.level === "err" ? "오류" : "경고") + "</b> <span>" + esc(p.msg) + "</span>";
+    d.addEventListener("click", () => { if (p.ids[0]) focusNode(p.ids[0]); });
+    box.append(d);
+  }
+}
+
+const esc = s => String(s === null || s === undefined ? "" : s)
+  .replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+
+/* ============================ 상호작용 ================================== */
+
+function screenToWorld(ev){
+  const r = svg.getBoundingClientRect();
+  return {x: (ev.clientX - r.left - S.view.x) / S.view.k,
+          y: (ev.clientY - r.top  - S.view.y) / S.view.k};
+}
+
+let drag = null;
+
+function startNodeDrag(ev, n){
+  if (ev.button !== 0) return;
+  // 층 삽입은 층 전체를 짚는 손짓이다 — 노드 카드가 클릭을 삼키면 그 줄만 못 짚는다.
+  if (S.grid.on && S.grid.tool === "row") return;
+  ev.stopPropagation();
+  if (S.linkMode){ pickForLink(n); return; }
+  if (S.grid.on){
+    S.selNode = n.nodeId; S.selEdge = null;
+    drag = {type:"gnode", node:n, moved:false};
+    svg.setPointerCapture(ev.pointerId);
+    refresh();
+    return;
+  }
+  S.selNode = n.nodeId; S.selEdge = null;
+  const w = screenToWorld(ev), p = S.layout.pos.get(n.nodeId);
+  drag = {type:"node", node:n, dx: w.x - sx(p), dy: w.y - sy(p), moved:false};
+  svg.setPointerCapture(ev.pointerId);
+  refresh();
+}
+
+function startWire(ev, n){
+  ev.stopPropagation();
+  if (S.linkMode){ pickForLink(n); return; }   // 모드가 켜져 있으면 손잡이도 클릭으로 동작
+  drag = {type:"wire", from:n};
+  svg.setPointerCapture(ev.pointerId);
+}
+
+svg.addEventListener("contextmenu", ev => { if (S.grid.on) ev.preventDefault(); });
+
+svg.addEventListener("pointerdown", ev => {
+  if (drag) return;
+  const panBtn = ev.button === 1 || ev.button === 2;   // 격자에서 화면을 옮기는 손
+  if (S.grid.on && ev.button === 0 && !ev.altKey){
+    const hit = gridPick(screenToWorld(ev));
+    if (hit && hit.kind === "seg"){
+      snapshot();
+      const key = segKey(hit.o, hit.c, hit.h);
+      const want = !S.grid.segs.has(key);
+      gridToggleSeg(key, want);
+      drag = {type:"paint", want:want, last:key};      // 끌면 같은 손짓으로 이어 칠한다
+      svg.setPointerCapture(ev.pointerId);
+      gridApply();
+      return;
+    }
+    if (hit && hit.kind === "vtx"){
+      const hitNode = gridNodeAt(hit.c, hit.r);
+      if (hitNode){ S.selNode = hitNode.nodeId; S.selEdge = null; refresh(); }
+      else gridAddNode(hit.c, hit.r);
+      return;
+    }
+    if (hit && hit.kind === "row"){
+      snapshot();
+      const n = gridInsertRows(hit.r, insertCount());
+      gridApply();
+      flash(hit.r + "층부터 위를 " + n + "칸 밀어 올렸습니다 — 빈 층이 생겼습니다 (Ctrl+Z로 되돌리기)");
+      return;
+    }
+  }
+  if (ev.button !== 0 && !panBtn) return;
+  S.selNode = null; S.selEdge = null;
+  drag = {type:"pan", x:ev.clientX, y:ev.clientY, vx:S.view.x, vy:S.view.y};
+  svg.classList.add("panning");
+  svg.setPointerCapture(ev.pointerId);
+  refresh();
+});
+
+svg.addEventListener("pointermove", ev => {
+  if (S.grid.on && (!drag || drag.type === "paint")){
+    const hit = gridPick(screenToWorld(ev));
+    if (drag){                                        // 누른 채 끌며 이어 칠한다
+      if (hit && hit.kind === "seg"){
+        const key = segKey(hit.o, hit.c, hit.h);
+        if (key !== drag.last){
+          drag.last = key;
+          // 칠하는 동안은 눈금만 다시 그린다 — 층 높이가 손 밑에서 흔들리지 않게.
+          if (gridToggleSeg(key, drag.want)) renderGrid();
+        }
+      }
+      return;
+    }
+    if (!sameHot(hit, S.grid.hot)){ S.grid.hot = hit; renderGrid(); }
+    return;
+  }
+  // '선 추가'로 부모를 잡아 둔 동안은 커서까지 고무줄을 그린다.
+  // 화면을 옮기는 중에도 유지된다 — 멀리 있는 자식으로 가려면 끌어서 이동해야 한다.
+  if (!drag && S.linkMode && S.linkFrom){
+    const p = S.layout && S.layout.pos.get(S.linkFrom);
+    if (p){
+      const to = screenToWorld(ev);
+      $("#dragWire").setAttribute("d",
+        "M " + sx(p) + " " + (sy(p) - NODE_H/2) + " L " + to.x + " " + to.y);
+    }
+  }
+  if (!drag) return;
+  if (drag.type === "seam"){
+    const w = screenToWorld(ev);
+    const v = snapSeam(-(w.y - drag.dy) / GS + S.layout.centerY);
+    if (S.bands[drag.tier] === v) return;         // 안 움직였으면 손대지 않는다
+    if (!drag.moved){
+      snapshot();
+      drag.moved = true;
+      try { svg.setPointerCapture(ev.pointerId); } catch(e){ /* 이미 놓친 포인터 */ }
+    }
+    S.bands[drag.tier] = v;
+    refresh();
+    return;
+  }
+  if (drag.type === "pan"){
+    S.view.x = drag.vx + (ev.clientX - drag.x);
+    S.view.y = drag.vy + (ev.clientY - drag.y);
+    clampView();
+    applyView();
+  } else if (drag.type === "node"){
+    if (!drag.moved){ snapshot(); drag.moved = true; }
+    const w = screenToWorld(ev);
+    drag.node.uiX = snapX((w.x - drag.dx) / GS, drag.node);
+    drag.node.uiY = snapY(-(w.y - drag.dy) / GS + S.layout.centerY, drag.node);
+    S.layout = computeLayout();
+    render();
+  } else if (drag.type === "bend"){
+    if (!drag.moved){ snapshot(); drag.moved = true; }
+    const pts = ensureBends(drag.link);
+    if (pts && pts[drag.index]){
+      const w = screenToWorld(ev);
+      if (drag.axis === "y")
+        // 화면 y -> uiY. 눈금에 맞춰야 여러 선을 같은 높이로 다시 맞출 수 있다.
+        pts[drag.index].y = Math.round((-w.y / GS + S.layout.centerY) / JOG_SNAP) * JOG_SNAP;
+      else
+        // x는 레인에만 붙는다 — 선은 노드가 서 있는 줄을 따라서만 흐른다.
+        pts[drag.index].x = snapLane(w.x / GS);
+      S.layout = computeLayout();
+      render();
+    }
+  } else if (drag.type === "gnode"){
+    const v = gridVertexAt(screenToWorld(ev));
+    if (v && (v.c !== drag.node.gc || v.r !== drag.node.gr) && !gridNodeAt(v.c, v.r)){
+      if (!drag.moved){ snapshot(); drag.moved = true; }
+      drag.node.gc = v.c; drag.node.gr = v.r;
+      gridDerive(); gridPlace(); render();
+    }
+  } else if (drag.type === "wire"){
+    const to = screenToWorld(ev), p = S.layout.pos.get(drag.from.nodeId);
+    $("#dragWire").setAttribute("d",
+      "M " + sx(p) + " " + (sy(p) - NODE_H/2) + " L " + to.x + " " + to.y);
+  }
+});
+
+svg.addEventListener("pointerup", ev => {
+  if (!drag) return;
+  if (drag.type === "paint" || drag.type === "gnode"){
+    drag = null;
+    svg.classList.remove("panning");
+    gridApply();
+    return;
+  }
+  if (drag.type === "wire"){
+    $("#dragWire").removeAttribute("d");
+    const target = nodeAt(screenToWorld(ev));
+    if (target && target.nodeId !== drag.from.nodeId) connect(drag.from, target);
+  } else if (["node","bend"].indexOf(drag.type) >= 0 && drag.moved){
+    if (drag.type === "node") bakeFlash(bakeSeries());
+    refresh();
+  }
+  svg.classList.remove("panning");
+  drag = null;
+});
+
+/** 드래그한 좌표를 가장 가까운 기존 레인/행으로 끌어당긴다 — "같은 줄"을 맞추기 쉽게. */
+function snapX(v, self){ return magnet(v, others(self, "uiX"), 45, 2.5); }
+function snapY(v, self){ return magnet(v, others(self, "uiY"), 45, 30); }
+
+function others(self, key){
+  const set = new Set();
+  for (const n of S.nodes) if (n !== self) set.add(n[key]);
+  return Array.from(set);
+}
+function magnet(v, cands, radius, grid){
+  let best = null, bd = radius;
+  for (const c of cands){ const d = Math.abs(c - v); if (d < bd){ bd = d; best = c; } }
+  return best === null ? Math.round(v/grid)*grid : best;
+}
+
+/* ========================= 지층 띠 경계선 =============================
+   게임 창(UpgradeOverlayUI.BuildTierBands)은 지층 띠를 **자동으로** 가른다 —
+   "아래 지층 맨 위 노드와 위 지층 맨 아래 노드의 중간". 두 지층의 uiY가 안
+   겹칠 때는 맞는 규칙이지만, 한 노드만 엇갈려도 그 중간이 양쪽 노드를 가로지른다.
+
+   그래서 여기서 선을 끌어 자리를 정할 수 있게 한다. 정한 값은
+   UpgradeTierBands.csv로 가고, 생성기가 TierInfo.bandTop에 실어 준다.
+   손잡이를 더블클릭하면 다시 자동으로 돌아간다.
+
+   ⚠ 아래 autoSeam은 게임 C#과 **같은 식**이어야 한다. 어긋나면 편집기에서 본
+      자리와 게임에서 나오는 자리가 달라진다.
+   ==================================================================== */
+
+const TIER_NAMES = ["첫 번째 땅", "두 번째 땅", "세 번째 땅"];
+const tierName = t => TIER_NAMES[t] || ((t + 1) + "단계");
+
+/** 지층별 노드 uiY 범위. 노드가 있는 지층만 담는다. */
+function tierSpans(){
+  const lo = new Map(), hi = new Map();
+  for (const n of S.nodes){
+    const t = n.tier;
+    if (!lo.has(t)){ lo.set(t, n.uiY); hi.set(t, n.uiY); }
+    else { lo.set(t, Math.min(lo.get(t), n.uiY)); hi.set(t, Math.max(hi.get(t), n.uiY)); }
+  }
+  // C#과 같은 순서 — 맨 아래 노드의 uiY 오름차순.
+  const tiers = Array.from(lo.keys()).sort((a,b) => lo.get(a) - lo.get(b));
+  return {tiers, lo, hi};
+}
+
+/** 이웃한 두 지층 사이의 경계들. [{tier, auto, y, set}] — tier는 아래쪽 지층. */
+function tierSeams(){
+  const {tiers, lo, hi} = tierSpans();
+  const out = [];
+  for (let i = 0; i + 1 < tiers.length; i++){
+    const t = tiers[i];
+    const auto = (hi.get(t) + lo.get(tiers[i+1])) * 0.5;
+    const own = S.bands ? S.bands[t] : null;
+    const set = own !== null && own !== undefined && own !== "";
+    out.push({tier: t, above: tiers[i+1], auto: auto, y: set ? +own : auto, set: set});
+  }
+  return out;
+}
+
+/** 경계선을 옮길 때 붙는 눈금. 격자에서는 반 칸 자리에, 아니면 10에 붙는다. */
+function snapSeam(uiY){
+  if (S.grid.on && S.grid.geo){
+    const geo = S.grid.geo;
+    let best = null, bd = Infinity;
+    for (let h = geo.minH; h <= geo.maxH; h++){
+      const d = Math.abs(geo.hy(h) - uiY);
+      if (d < bd){ bd = d; best = geo.hy(h); }
+    }
+    if (best !== null) return best;
+  }
+  return Math.round(uiY / 10) * 10;
+}
+
+/** 자동으로 되돌린다. */
+function clearSeam(seam){
+  snapshot();
+  delete S.bands[seam.tier];
+  refresh();
+  flash(tierName(seam.tier) + " / " + tierName(seam.above) +
+        " 경계 — 자동으로 되돌렸습니다 (" + Math.round(seam.auto) + ")");
+}
+
+/**
+ * 저장에 실어 보낼 {지층: 값|null}. 트리에 있는 지층은 **빠짐없이** 담는다 —
+ * 안 담으면 CSV에서 그 줄이 아예 사라져서, 파일만 봐서는 자동인지 빠뜨린 건지
+ * 구분이 안 된다.
+ */
+function bandsPayload(){
+  const out = {};
+  for (const t of tierSpans().tiers) out[t] = null;
+  for (const k in S.bands) out[k] = null;
+  for (const k in out){
+    const v = S.bands[k];
+    out[k] = (v === null || v === undefined || v === "") ? null : +v;
+  }
+  return out;
+}
+
+function renderBands(){
+  gBands.textContent = "";
+  const L = S.layout;
+  if (!L || !S.nodes.length) return;
+
+  let x0 = Infinity, x1 = -Infinity;
+  L.pos.forEach(p => { x0 = Math.min(x0, sx(p)); x1 = Math.max(x1, sx(p)); });
+  if (!isFinite(x0)) return;
+  x0 -= NODE_W * 0.5 + 40; x1 += NODE_W * 0.5 + 40;
+
+  for (const seam of tierSeams()){
+    const y = -(seam.y - L.centerY) * GS;
+    const cls = seam.set ? " set" : "";
+    gBands.append(el("line", {class: "bandLine" + cls, x1: x0, y1: y, x2: x1, y2: y}));
+
+    // 손잡이는 트리 **왼쪽 바깥**에 둔다 — 격자 눈금을 누르는 손과 안 겹치게.
+    const label = tierName(seam.tier) + " / " + tierName(seam.above) +
+                  "   " + Math.round(seam.y) + (seam.set ? "" : " (자동)");
+    const w = Math.max(220, label.length * 9 + 34), h = 34;
+    const g = el("g", {class: "bandGrab" + cls, transform: "translate(" + (x0 - w - 14) + "," + y + ")"});
+    g.append(el("rect", {x: 0, y: -h/2, width: w, height: h}));
+    g.append(txt(label, w/2, 0, ""));
+    g.addEventListener("pointerdown", ev => startSeamDrag(ev, seam));
+    g.addEventListener("dblclick", ev => { ev.stopPropagation(); clearSeam(seam); });
+    gBands.append(g);
+  }
+}
+
+/**
+ * 손잡이 잡기. **여기서는 아무것도 안 바꾸고, 다시 그리지도, 포인터를 잡지도 않는다.**
+ *
+ * 둘 다 dblclick(= 자동으로 되돌리기)을 죽이기 때문이다:
+ *  · 여기서 refresh를 부르면 손잡이 <g>가 통째로 새로 만들어져 둘째 클릭이
+ *    다른 원소 위에 떨어진다.
+ *  · setPointerCapture를 걸면 뒤따르는 click/dblclick까지 svg로 끌려가서
+ *    손잡이에는 영영 안 떨어진다.
+ *
+ * 그래서 되돌리기 자리 파기·다시 그리기·포인터 잡기를 전부 **값이 실제로 움직인
+ * 첫 순간**으로 미룬다. 누르고 그냥 떼면 아무 일도 없었던 셈이 된다.
+ */
+function startSeamDrag(ev, seam){
+  if (ev.button !== 0) return;
+  ev.stopPropagation();
+  const w = screenToWorld(ev);
+  drag = {type: "seam", tier: seam.tier, moved: false,
+          dy: w.y - (-(seam.y - S.layout.centerY) * GS)};
+}
+
+/* ─────────────────────── 아이콘 경로 ────────────────────────────
+   편집기 서버가 저장소를 그대로 서빙하므로 `Assets/...` 를 그대로 주소로 쓸 수
+   있다 — 그림이 화면에 뜨면 경로가 맞는 것이다. file://로 연 탭에서는 브라우저가
+   로컬 파일을 안 내주므로 미리보기가 없다(경로 타이핑은 그대로 된다).
+   ---------------------------------------------------------------- */
+
+/** `Assets/a b/c.png` -> `/Assets/a%20b/c.png`. 공백 든 폴더가 실제로 있다. */
+function iconURL(p){
+  return "/" + String(p).split("/").map(encodeURIComponent).join("/");
+}
+
+/** 서버가 준 목록에 있는 경로인가. 목록을 못 받았으면 판단을 미룬다(null). */
+function iconKnown(p){
+  if (!S.images.length) return null;
+  return S.images.indexOf(p) >= 0;
+}
+
+/** 고르기 목록은 몸통에 딱 한 번만 붓는다 — 인스펙터는 매번 새로 그려진다. */
+function buildIconList(){
+  let dl = $("#iconList");
+  if (!dl){
+    dl = document.createElement("datalist");
+    dl.id = "iconList";
+    document.body.appendChild(dl);
+  }
+  dl.textContent = "";
+  for (const p of S.images){
+    const o = document.createElement("option");
+    o.value = p;
+    dl.appendChild(o);
+  }
+}
+
+/** 인스펙터의 아이콘 줄 — 목록에서 고르고, 고른 것을 바로 본다. */
+function iconRow(n){
+  const p = (n.icon || "").trim();
+  const known = iconKnown(p);
+  const hint = !p
+    ? "비우면 유니티 인스펙터에 물린 값을 그대로 둡니다"
+    : !S.server ? "미리보기는 편집기 서버로 열었을 때만 뜹니다"
+    : known === false ? "Assets에 그런 그림이 없습니다"
+    : known === true ? "찾았습니다" : "";
+  const miss = (p && known === false) ? " miss" : "";
+  return '<div class="row iconRow"><label>아이콘</label>' +
+    '<div style="flex:1;min-width:0">' +
+      '<input id="f_icon" list="iconList" placeholder="비우면 인스펙터 값 유지" ' +
+        'title="노드 카드 아이콘의 에셋 경로. 칸을 누르면 Assets/ 아래 그림 목록이 뜹니다." ' +
+        'style="width:100%" value="' + esc(p) + '">' +
+      '<div class="iconHint' + miss + '">' + esc(hint) +
+        (S.images.length ? " (그림 " + S.images.length + "개)" : "") + "</div>" +
+    "</div>" +
+    (p && S.server
+      ? '<img class="iconPrev' + miss + '" src="' + esc(iconURL(p)) + '" alt="">'
+      : '<div class="iconPrev"></div>') +
+    "</div>";
+}
+
+function nodeAt(w){
+  for (const n of S.nodes){
+    const p = S.layout.pos.get(n.nodeId);
+    if (Math.abs(w.x - sx(p)) <= NODE_W/2 && Math.abs(w.y - sy(p)) <= NODE_H/2) return n;
+  }
+  return null;
+}
+
+/* ─────────────────── 선 모양(꺾임점) 편집 ───────────────────
+
+   꺾임점 하나 = "이 높이에서 가로로 건너가 이 레인을 탄다".
+   저장은 ui 좌표(uiX/uiY)로 한다 — 매핑은 트리 중앙 기준이라 노드를 하나만
+   옮겨도 모든 지정값이 통째로 어긋난다.
+   ------------------------------------------------------------------- */
+
+/** 선이 탈 수 있는 레인 = 노드가 실제로 서 있는 x들. 그 밖으로는 못 간다. */
+function laneList(){
+  const set = new Set();
+  for (const n of S.nodes) set.add(n.uiX);
+  return Array.from(set).sort((a,b) => a-b);
+}
+function snapLane(uiX){
+  const lanes = laneList();
+  let best = lanes[0], bd = Infinity;
+  for (const c of lanes){ const d = Math.abs(c - uiX); if (d < bd){ bd = d; best = c; } }
+  return best;
+}
+
+function countCrossings(path){
+  let n = 0;
+  for (let i = 1; i < path.length; i++)
+    if (Math.abs(path[i-1].y - path[i].y) < 0.1 && Math.abs(path[i-1].x - path[i].x) > 0.1) n++;
+  return n;
+}
+
+/** 잡을 수 있는 구간 하나. 지정된 선이면 금색 표시를 덧그린다. */
+function addSegHandle(l, a, b, cls, marked, onDown){
+  const bar = el("line", {class: cls, x1: sx(a), y1: sy(a), x2: sx(b), y2: sy(b)});
+  bar.addEventListener("pointerdown", onDown);
+  bar.addEventListener("dblclick", ev => {
+    ev.stopPropagation();
+    insertBend(l, screenToWorld(ev));
+  });
+  gWires.append(bar);
+  if (marked)
+    gWires.append(el("line", {class: cls === "jogHandle" ? "jogMark" : "laneMark",
+      x1: sx(a), y1: sy(a), x2: sx(b), y2: sy(b)}));
+}
+
+function bendsOf(l){
+  const c = S.nodes.find(n => n.nodeId === l.childId);
+  return (c && c.lineBends) ? c.lineBends[l.parentId] : undefined;
+}
+
+/**
+ * 그린 꺾임점이 없으면 **지금 자동으로 그려진 모양 그대로** 만들어 준다.
+ * 그래야 처음 잡아 끄는 순간 선이 튀지 않는다.
+ */
+function ensureBends(l){
+  const c = S.nodes.find(n => n.nodeId === l.childId);
+  if (!c) return null;
+  if (!c.lineBends) c.lineBends = {};
+  if (c.lineBends[l.parentId]) return c.lineBends[l.parentId];
+
+  const pts = [];
+  for (let i = 1; i < l.path.length; i++){
+    const a = l.path[i-1], b = l.path[i];
+    if (Math.abs(a.y - b.y) > 0.1) continue;          // 세로 구간
+    if (Math.abs(a.x - b.x) < 0.1) continue;          // 길이 0
+    pts.push({x: b.x / GS, y: a.y / GS + S.layout.centerY});
+  }
+  if (!pts.length) return null;                        // 같은 레인 = 꺾을 데가 없다
+  c.lineBends[l.parentId] = pts;
+  return pts;
+}
+
+function clearBends(l){
+  snapshot();
+  const c = S.nodes.find(n => n.nodeId === l.childId);
+  if (c && c.lineBends) delete c.lineBends[l.parentId];
+  refresh();
+}
+
+/** 더블클릭한 자리에 꺾임점을 하나 끼워 넣는다. 진행 방향(부모 → 자식) 순서를 지킨다. */
+function insertBend(l, world){
+  const parent = S.nodes.find(n => n.nodeId === l.parentId);
+  const child = S.nodes.find(n => n.nodeId === l.childId);
+  if (!parent || !child) return;
+
+  snapshot();
+  const pts = ensureBends(l);
+  if (!pts) return;
+
+  const dir = Math.sign(child.uiY - parent.uiY) || 1;
+  const uiY = Math.round((-world.y / GS + S.layout.centerY) / JOG_SNAP) * JOG_SNAP;
+  const uiX = snapLane(world.x / GS);
+
+  let at = pts.length;
+  for (let i = 0; i < pts.length; i++)
+    if (dir * (pts[i].y - uiY) > 0){ at = i; break; }
+  pts.splice(at, 0, {x: uiX, y: uiY});
+
+  S.selEdge = {parent: l.parentId, child: l.childId}; S.selNode = null;
+  refresh();
+}
+
+function startBendDrag(ev, l, index, axis){
+  if (ev.button !== 0) return;
+  ev.stopPropagation();
+  if (S.linkMode) return;
+  S.selEdge = {parent: l.parentId, child: l.childId}; S.selNode = null;
+  drag = {type:"bend", link:l, index:index, axis:axis, moved:false};
+  svg.setPointerCapture(ev.pointerId);
+  refresh();
+}
+
+/**
+ * '선 추가' 모드의 클릭. 첫 클릭은 부모를 잡고, 둘째 클릭이 이어 붙인다.
+ *
+ * 드래그로만 이으면 **먼 노드끼리는 못 잇는다** — 트리가 세로로 9000단위가 넘어
+ * 드래그 중에 화면을 옮길 수가 없다. 그래서 클릭 두 번으로 나눴다.
+ *
+ * 이은 뒤에는 방금 이은 자식이 다음 부모가 된다 — 한 줄을 죽 그릴 때
+ * (가벼운 삽질 I → 빠른 차징 I → 지구력 강화 I) 클릭만 이어 가면 된다.
+ */
+function pickForLink(n){
+  if (!S.linkFrom){ S.linkFrom = n.nodeId; refresh(); return; }
+  if (S.linkFrom === n.nodeId){ S.linkFrom = null; refresh(); return; }
+  const from = S.nodes.find(x => x.nodeId === S.linkFrom);
+  if (from) connect(from, n);
+  S.linkFrom = n.nodeId;          // 방금 이은 쪽에서 계속 이어 그린다
+  $("#dragWire").removeAttribute("d");
+  refresh();
+}
+
+function setLinkMode(on){
+  S.linkMode = on;
+  S.linkFrom = null;
+  $("#link").classList.toggle("on", on);
+  svg.classList.toggle("linking", on);
+  $("#dragWire").removeAttribute("d");
+  refresh();
+}
+
+/** from을 to의 부모로 만든다. 방향이 거꾸로면(부모가 더 위면) 뒤집어 준다. */
+function connect(from, to){
+  let parent = from, child = to;
+  if (parent.uiY > child.uiY){ parent = to; child = from; }
+  if (child.parents.indexOf(parent.nodeId) >= 0) return;
+  snapshot();
+  child.parents.push(parent.nodeId);
+  S.selEdge = {parent: parent.nodeId, child: child.nodeId}; S.selNode = null;
+  refresh();
+}
+
+svg.addEventListener("wheel", ev => {
+  ev.preventDefault();
+  const r = svg.getBoundingClientRect();
+
+  // 격자에서는 휠이 스크롤이다 — 세로, Shift면 가로. 확대는 Ctrl(또는 Alt)+휠.
+  if (S.grid.on && !ev.ctrlKey && !ev.altKey && !ev.metaKey){
+    const f = ev.deltaMode === 1 ? 16 : ev.deltaMode === 2 ? r.height : 1;
+    let dx = ev.deltaX * f, dy = ev.deltaY * f;
+    if (ev.shiftKey && !dx){ dx = dy; dy = 0; }   // Shift+세로휠 = 가로
+    sbNudge(-dx, -dy);
+    return;
+  }
+
+  const mx = ev.clientX - r.left, my = ev.clientY - r.top;
+  const k = Math.min(3, Math.max(0.06, S.view.k * (ev.deltaY < 0 ? 1.12 : 1/1.12)));
+  S.view.x = mx - (mx - S.view.x) * (k / S.view.k);
+  S.view.y = my - (my - S.view.y) * (k / S.view.k);
+  S.view.k = k;
+  clampView();
+  applyView();
+}, {passive:false});
+
+window.addEventListener("keydown", ev => {
+  const typing = /^(INPUT|SELECT|TEXTAREA)$/.test(ev.target.tagName);
+  if (ev.ctrlKey && ev.key.toLowerCase() === "z" && !typing){ ev.preventDefault(); undo(); return; }
+  if (typing) return;
+  if (ev.key === "Escape"){
+    if (S.linkFrom) { S.linkFrom = null; $("#dragWire").removeAttribute("d"); refresh(); }
+    else if (S.linkMode) setLinkMode(false);
+    else if (S.grid.on) gridExit();
+    return;
+  }
+  const k = ev.key.toLowerCase();
+  if (k === "g" && !$("#gridBtn").disabled){ $("#gridBtn").click(); return; }
+  if (S.grid.on && (k === "l" || k === "n" || k === "r")){
+    setGridTool(k === "l" ? "line" : k === "n" ? "node" : "row");
+    return;
+  }
+  if (ev.key === "Delete" || ev.key === "Backspace"){
+    if (S.selEdge){
+      snapshot();
+      if (S.grid.on){                       // 그 연결만 쓰던 눈금을 지운다
+        gridDropLink(S.selEdge.parent, S.selEdge.child);
+        S.selEdge = null; gridApply(); return;
+      }
+      const c = S.nodes.find(n => n.nodeId === S.selEdge.child);
+      if (c){
+        c.parents = c.parents.filter(p => p !== S.selEdge.parent);
+        if (c.lineBends) delete c.lineBends[S.selEdge.parent];
+      }
+      S.selEdge = null; refresh();
+    } else if (S.selNode) deleteNode();
+  }
+});
+
+function deleteNode(){
+  if (!S.selNode) return;
+  snapshot();
+  const id = S.selNode;
+  S.nodes = S.nodes.filter(n => n.nodeId !== id);
+  for (const n of S.nodes){
+    n.parents = n.parents.filter(p => p !== id);
+    if (n.lineBends) delete n.lineBends[id];
+  }
+  S.selNode = null;
+  if (S.grid.on){ gridApply(); return; }     // gridApply가 안에서 굽는다
+  bakeFlash(bakeSeries());
+  refresh();
+}
+
+function focusNode(id){
+  const p = S.layout && S.layout.pos.get(id);
+  if (!p) return;
+  const r = svg.getBoundingClientRect();
+  S.view.x = r.width/2 - sx(p)*S.view.k;
+  S.view.y = r.height/2 - sy(p)*S.view.k;
+  S.selNode = id; S.selEdge = null;
+  refresh();
+}
+
+function fitView(){
+  if (!S.layout) return;
+  const r = svg.getBoundingClientRect();
+  let x0=Infinity, y0=Infinity, x1=-Infinity, y1=-Infinity;
+  S.layout.pos.forEach(p => {
+    x0 = Math.min(x0, sx(p)-NODE_W); x1 = Math.max(x1, sx(p)+NODE_W);
+    y0 = Math.min(y0, sy(p)-NODE_H); y1 = Math.max(y1, sy(p)+NODE_H);
+  });
+  const k = Math.min(r.width/(x1-x0), r.height/(y1-y0), 1.5);
+  S.view.k = Math.max(0.06, k);
+  S.view.x = r.width/2 - (x0+x1)/2*S.view.k;
+  S.view.y = r.height/2 - (y0+y1)/2*S.view.k;
+  applyView();
+}
+
+/* ========================== 스크롤 막대 ==================================
+   격자는 화면보다 한참 넓다. 끌기로만 옮기면 지금 어디쯤인지 가늠이 안 되므로
+   격자 모드에서는 내용 상자를 재고 그 위를 훑는 막대를 덧붙인다.
+
+   진짜 상태는 여전히 S.view 하나뿐이다 — 막대를 끌면 S.view를 옮기고,
+   S.view가 어떤 이유로든 바뀌면 applyView가 막대를 다시 그린다.
+   ======================================================================== */
+
+const sbV = $("#scrollV"), sbH = $("#scrollH");
+const sbVT = sbV.querySelector(".thumb"), sbHT = sbH.querySelector(".thumb");
+const SB_PAD = 260;      // 내용 둘레 여백 — 가장자리 눈금도 화면 가운데로 끌어올 수 있게
+const SB_MIN = 30;       // 손잡이 최소 길이(px)
+
+/** 훑을 수 있는 범위 = 노드·격자를 다 담은 상자에 여백을 두른 것. (변환 전 좌표) */
+function contentBox(){
+  const L = S.layout;
+  if (!L) return null;
+  let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
+  const see = (x, y) => {
+    if (x < x0) x0 = x; if (x > x1) x1 = x;
+    if (y < y0) y0 = y; if (y > y1) y1 = y;
+  };
+  if (S.grid.on && S.grid.geo){
+    const g = S.grid.geo;
+    see(g.minC * GRID_COL * GS, -(g.hy(g.minH) - L.centerY) * GS);
+    see(g.maxC * GRID_COL * GS, -(g.hy(g.maxH) - L.centerY) * GS);
+  }
+  L.pos.forEach(p => {
+    see(sx(p) - NODE_W/2, sy(p) - NODE_H/2);
+    see(sx(p) + NODE_W/2, sy(p) + NODE_H/2);
+  });
+  if (!isFinite(x0)) return null;
+  return {x0: x0 - SB_PAD, y0: y0 - SB_PAD, x1: x1 + SB_PAD, y1: y1 + SB_PAD};
+}
+
+/**
+ * 한 축의 형편. 전부 변환 전 단위.
+ *   gap  = 상자 - 창. 양수면 훑을 거리가 남은 것, 음수면 상자가 창보다 작은 것.
+ *   room = 훑을 거리(손잡이 계산용) — 다 들어오면 0.
+ * gap이 음수여도 clampView는 여전히 붙들 데가 있다: 상자가 창 안에 머무는
+ * 자리가 [lo+gap, lo]로 뒤집힐 뿐이다. 안 그러면 다 들어오는 축으로 화면을
+ * 밀어 버렸을 때 돌아올 길이 없어진다.
+ */
+function sbAxis(box, axis){
+  const r = svg.getBoundingClientRect();
+  const k = S.view.k || 1;
+  const lo = axis === "x" ? box.x0 : box.y0;
+  const len = (axis === "x" ? box.x1 - box.x0 : box.y1 - box.y0);
+  const view = (axis === "x" ? r.width : r.height) / k;
+  const start = -(axis === "x" ? S.view.x : S.view.y) / k;
+  const gap = len - view;
+  return {lo, len, view, start, gap, room: Math.max(0, gap), k};
+}
+
+/** 막대 위 자리(0~1)로 화면을 옮긴다. */
+function sbSeek(axis, t){
+  const box = contentBox();
+  if (!box) return;
+  const a = sbAxis(box, axis);
+  if (a.room <= 0) return;
+  const start = a.lo + Math.max(0, Math.min(1, t)) * a.room;
+  if (axis === "x") S.view.x = -start * a.k; else S.view.y = -start * a.k;
+}
+
+/** 화면을 상자 밖으로 새지 않게 붙든다. */
+function clampView(){
+  if (!S.grid.on) return;
+  const box = contentBox();
+  if (!box) return;
+  ["x","y"].forEach(axis => {
+    const a = sbAxis(box, axis);
+    const far = a.lo + a.gap;
+    const s = Math.max(Math.min(a.lo, far), Math.min(Math.max(a.lo, far), a.start));
+    if (Math.abs(s - a.start) < 1e-9) return;
+    if (axis === "x") S.view.x = -s * a.k; else S.view.y = -s * a.k;
+  });
+}
+
+/** 휠로 화면을 픽셀만큼 민다. */
+function sbNudge(dx, dy){
+  S.view.x += dx;
+  S.view.y += dy;
+  clampView();
+  applyView();
+}
+
+function syncScrollbars(){
+  const box = S.grid.on ? contentBox() : null;
+  sbV.hidden = sbH.hidden = !box;
+  $("#canvasWrap").classList.toggle("hasbars", !!box);
+  if (!box) return;
+  const put = (bar, thumb, axis) => {
+    const a = sbAxis(box, axis);
+    const track = (axis === "x" ? bar.clientWidth : bar.clientHeight) - 2;
+    if (!(track > 0)) return;
+    const size = Math.max(SB_MIN, Math.min(track, track * a.view / a.len));
+    const t = a.room > 0 ? Math.max(0, Math.min(1, (a.start - a.lo) / a.room)) : 0;
+    const at = 1 + (track - size) * t;
+    if (axis === "x"){ thumb.style.width = size + "px"; thumb.style.left = at + "px"; }
+    else { thumb.style.height = size + "px"; thumb.style.top = at + "px"; }
+    bar.classList.toggle("full", a.room <= 0);
+  };
+  put(sbH, sbHT, "x");
+  put(sbV, sbVT, "y");
+}
+
+function wireScrollbar(bar, thumb, axis){
+  const at = ev => axis === "x" ? ev.clientX : ev.clientY;
+
+  thumb.addEventListener("pointerdown", ev => {
+    if (ev.button !== 0) return;
+    ev.preventDefault(); ev.stopPropagation();
+    const box = contentBox();
+    if (!box) return;
+    const a = sbAxis(box, axis);
+    if (a.room <= 0) return;
+    const track = (axis === "x" ? bar.clientWidth : bar.clientHeight) - 2;
+    const size = Math.max(SB_MIN, Math.min(track, track * a.view / a.len));
+    const span = Math.max(1, track - size);
+    const from = at(ev), t0 = (a.start - a.lo) / a.room;
+    bar.classList.add("drag");
+    thumb.setPointerCapture(ev.pointerId);
+    const move = e => { sbSeek(axis, t0 + (at(e) - from) / span); applyView(); };
+    const up = () => {
+      bar.classList.remove("drag");
+      thumb.removeEventListener("pointermove", move);
+      thumb.removeEventListener("pointerup", up);
+      thumb.removeEventListener("pointercancel", up);
+    };
+    thumb.addEventListener("pointermove", move);
+    thumb.addEventListener("pointerup", up);
+    thumb.addEventListener("pointercancel", up);
+  });
+
+  bar.addEventListener("pointerdown", ev => {          // 빈 곳을 누르면 한 화면씩
+    if (ev.target !== bar || ev.button !== 0) return;
+    ev.preventDefault();
+    const box = contentBox();
+    if (!box) return;
+    const a = sbAxis(box, axis);
+    if (a.room <= 0) return;
+    const tr = thumb.getBoundingClientRect();
+    const before = axis === "x" ? ev.clientX < tr.left : ev.clientY < tr.top;
+    sbSeek(axis, (a.start - a.lo) / a.room + (before ? -1 : 1) * a.view / a.room);
+    applyView();
+  });
+}
+wireScrollbar(sbH, sbHT, "x");
+wireScrollbar(sbV, sbVT, "y");
+
+window.addEventListener("resize", () => { clampView(); applyView(); });
+
+/* ============================== 명령 ==================================== */
+
+$("#add").addEventListener("click", () => {
+  if (S.grid.on){
+    const r = svg.getBoundingClientRect();
+    const v = gridVertexAt({x:(r.width/2 - S.view.x)/S.view.k, y:(r.height/2 - S.view.y)/S.view.k});
+    let c = v.c, step = 0;
+    while (gridNodeAt(c, v.r)){ step++; c = v.c + (step % 2 ? step : -step); }
+    gridAddNode(c, v.r);
+    return;
+  }
+  snapshot();
+  let i = 1, id;
+  do { id = "NewNode_" + (i++); } while (S.nodes.some(n => n.nodeId === id));
+  const r = svg.getBoundingClientRect();
+  const wx = (r.width/2 - S.view.x)/S.view.k, wy = (r.height/2 - S.view.y)/S.view.k;
+  const centerY = S.layout ? S.layout.centerY : 0;
+  S.nodes.push({
+    nodeId:id, tier:0, effectType:"None", effectValue:0, isPercentage:false,
+    parents:[], cost:0,
+    uiX: Math.round(wx/GS/2.5)*2.5, uiY: Math.round((-wy/GS + centerY)/30)*30, icon:"",
+    displayNameKey:"새 노드", descriptionKey:"", locked:false, targetMineral:"",
+    lineBends:{},
+  });
+  S.selNode = id; S.selEdge = null;
+  refresh();
+});
+
+$("#gridBtn").addEventListener("click", () => { if (S.grid.on) gridExit(); else gridEnter(); });
+$("#toolLine").addEventListener("click", () => setGridTool("line"));
+$("#toolNode").addEventListener("click", () => setGridTool("node"));
+$("#toolRow").addEventListener("click", () => setGridTool("row"));
+$("#rowN").addEventListener("change", () => { if (S.grid.on) renderGrid(); });
+$("#lift").addEventListener("change", ev => {
+  const v = Math.max(0, Math.min(90, Math.round(parseFloat(ev.target.value) || 0)));
+  ev.target.value = v;
+  MERGE_LIFT = v;
+  if (S.grid.on){ snapshot(); gridApply(); }
+});
+
+$("#link").addEventListener("click", () => setLinkMode(!S.linkMode));
+$("#del").addEventListener("click", deleteNode);
+$("#undo").addEventListener("click", undo);
+$("#fit").addEventListener("click", fitView);
+
+/** 가격 오름차순으로 y를 다시 쌓는다. 같은 가격은 같은 층. 가장 싼 노드가 맨 아래. */
+$("#restair").addEventListener("click", () => {
+  if (!S.nodes.length) return;
+  if (!confirm("가격 오름차순으로 모든 노드의 y를 다시 쌓습니다.\n손으로 맞춘 높이는 사라집니다. 계속할까요?")) return;
+  snapshot();
+  let base = Infinity;
+  for (const n of S.nodes) base = Math.min(base, n.uiY);
+  const groups = new Map();
+  for (const n of S.nodes){
+    if (!groups.has(n.cost)) groups.set(n.cost, []);
+    groups.get(n.cost).push(n);
+  }
+  let row = 0;
+  Array.from(groups.keys()).sort((a,b) => a-b).forEach(cost => {
+    for (const n of groups.get(cost)) n.uiY = base + row * STAIR_DY;
+    row++;
+  });
+  bakeFlash(bakeSeries());
+  refresh();
+});
+
+/* ============================= 파일 I/O ================================= */
+
+async function openViaPicker(){
+  if (!window.showOpenFilePicker){ $("#file").click(); return; }
+  try {
+    const picked = await window.showOpenFilePicker({
+      types:[{description:"UpgradeTree CSV", accept:{"text/csv":[".csv"]}}]});
+    const h = picked[0];
+    S.handle = h;
+    const f = await h.getFile();
+    loadText(await f.text(), h.name);
+  } catch(e){
+    if (e && e.name !== "AbortError") $("#file").click();
+  }
+}
+
+$("#open").addEventListener("click", openViaPicker);
+$("#file").addEventListener("change", async ev => {
+  const f = ev.target.files[0];
+  if (f){ S.handle = null; loadText(await f.text(), f.name); }
+});
+
+document.addEventListener("dragover", ev => ev.preventDefault());
+document.addEventListener("drop", async ev => {
+  ev.preventDefault();
+  const f = ev.dataTransfer.files[0];
+  if (f){ S.handle = null; loadText(await f.text(), f.name); }
+});
+
+function loadText(text, name){
+  try {
+    S.nodes = fromCSV(text);
+    S.fileName = name || "UpgradeTree.csv";
+    S.undo = []; S.selNode = null; S.selEdge = null;
+    ["save","add","link","del","restair","fit","gridBtn"].forEach(b => { $("#"+b).disabled = false; });
+    $("#undo").disabled = true;
+    S.grid.on = false; S.grid.segs = new Set(); S.grid.geo = null;
+    S.grid.paths = new Map(); S.grid.orphans = []; S.grid.hot = null;
+    syncGridUI();
+    setLinkMode(false);
+    refresh();
+    fitView();
+  } catch(e){
+    alert("CSV를 읽지 못했습니다: " + e.message);
+  }
+}
+
+$("#save").addEventListener("click", async () => {
+  const text = toCSV(S.nodes);
+
+  // 편집기 서버로 열었으면 원본 파일에 바로 쓴다 — 내려받아 옮기는 걸음이 없다.
+  // 쓰는 자리는 서버가 정한다(Tools/upgrade_editor_server.py). 여기서는 본문만 보낸다.
+  if (S.server){
+    const btn = $("#save");
+    btn.disabled = true;
+    try {
+      const res = await fetch("/api/save", {
+        method:"POST", headers:{"Content-Type":"application/json"},
+        // 계열은 서버가 실어 준 적이 있을 때만 보낸다 —
+        // 안 그러면 빈 목록이 UpgradeSeries.csv를 지운다.
+        body: JSON.stringify({csv:text, bands:bandsPayload(),
+                              series: S.seriesLoaded ? seriesToRows() : undefined})});
+      const d = await res.json().catch(() => null);
+      if (!res.ok || !d || !d.ok){
+        alert("저장하지 못했습니다. 파일은 그대로입니다.\n\n" +
+              ((d && d.error) || ("HTTP " + res.status)));
+        return;
+      }
+      flash(saveReport(d));
+    } catch(e){
+      alert("편집기 서버에 닿지 못했습니다: " + e.message +
+            "\n\n창을 닫았다면 Tools/upgrade_editor.bat 을 다시 실행하세요.");
+    } finally { btn.disabled = false; }
+    return;
+  }
+
+  if (S.handle){
+    try {
+      const w = await S.handle.createWritable();
+      await w.write(new Blob([text], {type:"text/csv"}));
+      await w.close();
+      flash("저장했습니다 → " + S.handle.name);
+      return;
+    } catch(e){ /* 권한 거부 등 — 아래 내려받기로 떨어진다 */ }
+  }
+  const url = URL.createObjectURL(new Blob([text], {type:"text/csv"}));
+  const a = document.createElement("a");
+  a.href = url; a.download = "UpgradeTree.csv"; a.click();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+  flash("내려받았습니다 — Assets/GameData/UpgradeData/ 에 덮어쓰세요");
+});
+
+/** 서버가 돌려준 저장 결과를 사람이 읽을 몇 줄로 만든다. */
+function saveReport(d){
+  const lines = ["저장했습니다 — 노드 " + d.csv.nodes,
+                 d.csv.path + "  (" + d.csv.bytes.toLocaleString() + " B)"];
+  const j = d.json || {};
+  if (!j.ok) lines.push(j.note || "가격 JSON은 건너뛰었습니다");
+  else if (!j.touched) lines.push(j.path + "  가격 그대로");
+  else {
+    const bits = [];
+    if (j.changed.length) bits.push("가격 " + j.changed.length + "곳 바뀜");
+    if (j.added.length) bits.push(j.added.length + "개 추가");
+    if (j.removed.length) bits.push(j.removed.length + "개 빠짐");
+    lines.push(j.path + "  " + (bits.join(" · ") || "정렬만 바뀜"));
+    for (const c of j.changed.slice(0, 3))
+      lines.push("   " + c.id + "  " + c.from + " → " + c.to + " G");
+    if (j.changed.length > 3) lines.push("   … 외 " + (j.changed.length - 3) + "곳");
+  }
+  const sr = d.series || {};
+  if (sr.touched)
+    lines.push(sr.path + "  계열 " + sr.count + "개" +
+               (sr.added && sr.added.length ? " (+" + sr.added.join(",") + ")" : "") +
+               (sr.removed && sr.removed.length ? " (-" + sr.removed.join(",") + ")" : ""));
+  const b = d.bands || {};
+  if (b.touched && b.changed && b.changed.length)
+    for (const c of b.changed)
+      lines.push(b.path + "  " + tierName(c.tier) + " 경계 " +
+                 (c.from === null ? "자동" : c.from) + " → " + (c.to === null ? "자동" : c.to));
+  return lines.join("\n");
+}
+
+/**
+ * 편집기 서버로 열렸는지 물어본다. 그렇다면 원본 CSV를 바로 띄우고,
+ * 저장은 내려받기가 아니라 그 파일에 쓴다. 그냥 file://로 연 거라면
+ * 이 요청이 실패하고 예전 동작(고르기 → 내려받기)으로 남는다.
+ */
+(async function connectServer(){
+  let d = null;
+  try {
+    const res = await fetch("/api/tree", {cache:"no-store"});
+    if (!res.ok) return;
+    d = await res.json();
+  } catch(e){ return; }
+  if (!d || !d.ok) return;
+
+  S.server = {csv: d.path, json: d.json, bands: d.bandsPath, series: d.seriesPath};
+  if (Array.isArray(d.series)){ S.series = d.series; S.seriesLoaded = true; }
+  S.bands = {};
+  for (const k in (d.bands || {})) if (d.bands[k] !== null) S.bands[k] = d.bands[k];
+  loadText(d.csv, d.path.replace(/^.*\//, ""));
+  S.handle = null;
+  const btn = $("#save");
+  btn.classList.add("primary");
+  btn.title = d.path + " 에 바로 씁니다. " + d.json + " 의 노드 가격도 함께 맞춥니다.";
+  $("#open").title = "다른 CSV를 열어 봅니다 — 저장은 언제나 " + d.path + " 로 갑니다.";
+  try {
+    const r = await fetch("/api/images", {cache:"no-store"});
+    if (r.ok){
+      const im = await r.json();
+      if (im && im.ok){ S.images = im.images || []; buildIconList(); refresh(); }
+    }
+  } catch(e){ /* 목록이 없어도 경로 타이핑은 된다 */ }
+
+  flash("서버로 열었습니다 — " + d.path + "\n" +
+        "저장하면 이 파일과 " + d.json + " 의 가격이 함께 바뀝니다");
+})();
+
+function flash(msg){
+  const hud = $("#hud");
+  hud.textContent = msg;
+  setTimeout(() => { if (hud.textContent === msg) applyView(); }, 2600);
+}
+</script>
+</body>
+</html>

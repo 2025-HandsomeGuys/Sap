@@ -1,0 +1,424 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd66815b1aceca34e9a29560b34383b3, type: 3}
+  m_Name: ShopItemDatabase
+  m_EditorClassIdentifier: 
+  shopItems:
+  - itemType: 0
+    itemID: 1001
+    equipmentID: 0
+    price: 200
+    isAvailable: 1
+    stock: -1
+  - itemType: 0
+    itemID: 1002
+    equipmentID: 0
+    price: 15
+    isAvailable: 1
+    stock: -1
+  - itemType: 0
+    itemID: 1003
+    equipmentID: 0
+    price: 150
+    isAvailable: 1
+    stock: -1
+  - itemType: 1
+    itemID: 0
+    equipmentID: 3001
+    price: 15
+    isAvailable: 1
+    stock: -1
+  - itemType: 1
+    itemID: 0
+    equipmentID: 3003
+    price: 11000
+    isAvailable: 1
+    stock: -1
+    unlockNodeId: Facility_Computer_T0
+  - itemType: 1
+    itemID: 0
+    equipmentID: 3103
+    price: 15000
+    isAvailable: 1
+    stock: -1
+    unlockNodeId: Facility_Computer_T0
+  - itemType: 1
+    itemID: 0
+    equipmentID: 3203
+    price: 13000
+    isAvailable: 1
+    stock: -1
+    unlockNodeId: Facility_Computer_T0
+  - itemType: 1
+    itemID: 0
+    equipmentID: 3004
+    price: 1700
+    isAvailable: 1
+    stock: -1
+    unlockNodeId: PickaxeUnlock_T0_01
+  - itemType: 1
+    itemID: 0
+    equipmentID: 3104
+    price: 2300
+    isAvailable: 1
+    stock: -1
+    unlockNodeId: PickaxeUnlock_T0_01
+  - itemType: 1
+    itemID: 0
+    equipmentID: 3204
+    price: 2000
+    isAvailable: 1
+    stock: -1
+    unlockNodeId: PickaxeUnlock_T0_01
+  - itemType: 1
+    itemID: 0
+    equipmentID: 3005
+    price: 9000
+    isAvailable: 1
+    stock: -1
+    unlockNodeId: Facility_Computer_T0
+  - itemType: 1
+    itemID: 0
+    equipmentID: 3105
+    price: 13000
+    isAvailable: 1
+    stock: -1
+    unlockNodeId: Facility_Computer_T0
+  - itemType: 1
+    itemID: 0
+    equipmentID: 3205
+    price: 11000
+    isAvailable: 1
+    stock: -1
+    unlockNodeId: Facility_Computer_T0
+  - itemType: 1
+    itemID: 0
+    equipmentID: 3006
+    price: 10000
+    isAvailable: 1
+    stock: -1
+    unlockNodeId: MiningLevel_T0_Final
+  - itemType: 1
+    itemID: 0
+    equipmentID: 3106
+    price: 14000
+    isAvailable: 1
+    stock: -1
+    unlockNodeId: MiningLevel_T0_Final
+  - itemType: 1
+    itemID: 0
+    equipmentID: 3206
+    price: 12000
+    isAvailable: 1
+    stock: -1
+    unlockNodeId: MiningLevel_T0_Final
+  - itemType: 1
+    itemID: 0
+    equipmentID: 3007
+    price: 42000
+    isAvailable: 1
+    stock: -1
+    unlockNodeId: MiningLevel_T1_Final
+  - itemType: 1
+    itemID: 0
+    equipmentID: 3107
+    price: 58000
+    isAvailable: 1
+    stock: -1
+    unlockNodeId: MiningLevel_T1_Final
+  - itemType: 1
+    itemID: 0
+    equipmentID: 3207
+    price: 50000
+    isAvailable: 1
+    stock: -1
+    unlockNodeId: MiningLevel_T1_Final
+  - itemType: 1
+    itemID: 0
+    equipmentID: 3008
+    price: 36000
+    isAvailable: 1
+    stock: -1
+    unlockNodeId: DrillCapacity_T1_01
+  - itemType: 1
+    itemID: 0
+    equipmentID: 3108
+    price: 48000
+    isAvailable: 1
+    stock: -1
+    unlockNodeId: DrillCapacity_T1_01
+  - itemType: 1
+    itemID: 0
+    equipmentID: 3208
+    price: 42000
+    isAvailable: 1
+    stock: -1
+    unlockNodeId: DrillCapacity_T1_01
+  - itemType: 1
+    itemID: 0
+    equipmentID: 3009
+    price: 150000
+    isAvailable: 1
+    stock: -1
+    unlockNodeId: MiningLevel_T1_Final
+  - itemType: 1
+    itemID: 0
+    equipmentID: 3109
+    price: 210000
+    isAvailable: 1
+    stock: -1
+    unlockNodeId: MiningLevel_T1_Final
+  - itemType: 1
+    itemID: 0
+    equipmentID: 3209
+    price: 180000
+    isAvailable: 1
+    stock: -1
+    unlockNodeId: MiningLevel_T1_Final
+  - itemType: 1
+    itemID: 0
+    equipmentID: 3010
+    price: 38000
+    isAvailable: 1
+    stock: -1
+    unlockNodeId: Facility_Coin_T1
+  - itemType: 1
+    itemID: 0
+    equipmentID: 3110
+    price: 54000
+    isAvailable: 1
+    stock: -1
+    unlockNodeId: Facility_Coin_T1
+  - itemType: 1
+    itemID: 0
+    equipmentID: 3210
+    price: 46000
+    isAvailable: 1
+    stock: -1
+    unlockNodeId: Facility_Coin_T1
+  - itemType: 1
+    itemID: 0
+    equipmentID: 3011
+    price: 190000
+    isAvailable: 1
+    stock: -1
+    unlockNodeId: MiningLevel_T1_Final
+  - itemType: 1
+    itemID: 0
+    equipmentID: 3111
+    price: 250000
+    isAvailable: 1
+    stock: -1
+    unlockNodeId: MiningLevel_T1_Final
+  - itemType: 1
+    itemID: 0
+    equipmentID: 3211
+    price: 220000
+    isAvailable: 1
+    stock: -1
+    unlockNodeId: MiningLevel_T1_Final
+  - itemType: 2
+    itemID: 0
+    equipmentID: 0
+    relicID: 4001
+    price: 100
+    isAvailable: 0
+    stock: -1
+  - itemType: 2
+    itemID: 0
+    equipmentID: 0
+    relicID: 4002
+    price: 12000
+    isAvailable: 0
+    stock: -1
+  - itemType: 2
+    itemID: 0
+    equipmentID: 0
+    relicID: 4003
+    price: 12000
+    isAvailable: 0
+    stock: -1
+  - itemType: 2
+    itemID: 0
+    equipmentID: 0
+    relicID: 4004
+    price: 200000
+    isAvailable: 0
+    stock: -1
+  - itemType: 2
+    itemID: 0
+    equipmentID: 0
+    relicID: 4005
+    price: 12000
+    isAvailable: 0
+    stock: -1
+  - itemType: 2
+    itemID: 0
+    equipmentID: 0
+    relicID: 4006
+    price: 46000
+    isAvailable: 0
+    stock: -1
+  - itemType: 2
+    itemID: 0
+    equipmentID: 0
+    relicID: 4007
+    price: 46000
+    isAvailable: 0
+    stock: -1
+  - itemType: 2
+    itemID: 0
+    equipmentID: 0
+    relicID: 4008
+    price: 46000
+    isAvailable: 0
+    stock: -1
+  - itemType: 2
+    itemID: 0
+    equipmentID: 0
+    relicID: 4009
+    price: 46000
+    isAvailable: 0
+    stock: -1
+  - itemType: 2
+    itemID: 0
+    equipmentID: 0
+    relicID: 4010
+    price: 200000
+    isAvailable: 0
+    stock: -1
+  - itemType: 2
+    itemID: 0
+    equipmentID: 0
+    relicID: 4011
+    price: 200000
+    isAvailable: 0
+    stock: -1
+  - itemType: 2
+    itemID: 0
+    equipmentID: 0
+    relicID: 4012
+    price: 12000
+    isAvailable: 0
+    stock: -1
+  - itemType: 2
+    itemID: 0
+    equipmentID: 0
+    relicID: 4013
+    price: 46000
+    isAvailable: 0
+    stock: -1
+  - itemType: 2
+    itemID: 0
+    equipmentID: 0
+    relicID: 4014
+    price: 46000
+    isAvailable: 0
+    stock: -1
+  - itemType: 2
+    itemID: 0
+    equipmentID: 0
+    relicID: 4015
+    price: 46000
+    isAvailable: 0
+    stock: -1
+  - itemType: 2
+    itemID: 0
+    equipmentID: 0
+    relicID: 4016
+    price: 200000
+    isAvailable: 0
+    stock: -1
+  - itemType: 2
+    itemID: 0
+    equipmentID: 0
+    relicID: 4017
+    price: 12000
+    isAvailable: 0
+    stock: -1
+  - itemType: 2
+    itemID: 0
+    equipmentID: 0
+    relicID: 4018
+    price: 46000
+    isAvailable: 0
+    stock: -1
+  - itemType: 2
+    itemID: 0
+    equipmentID: 0
+    relicID: 4019
+    price: 200000
+    isAvailable: 0
+    stock: -1
+  - itemType: 2
+    itemID: 0
+    equipmentID: 0
+    relicID: 4020
+    price: 200000
+    isAvailable: 0
+    stock: -1
+  - itemType: 2
+    itemID: 0
+    equipmentID: 0
+    relicID: 4021
+    price: 46000
+    isAvailable: 0
+    stock: -1
+  - itemType: 2
+    itemID: 0
+    equipmentID: 0
+    relicID: 4022
+    price: 46000
+    isAvailable: 0
+    stock: -1
+  - itemType: 2
+    itemID: 0
+    equipmentID: 0
+    relicID: 4023
+    price: 12000
+    isAvailable: 0
+    stock: -1
+  - itemType: 2
+    itemID: 0
+    equipmentID: 0
+    relicID: 4024
+    price: 12000
+    isAvailable: 0
+    stock: -1
+  - itemType: 2
+    itemID: 0
+    equipmentID: 0
+    relicID: 4025
+    price: 200000
+    isAvailable: 0
+    stock: -1
+  - itemType: 2
+    itemID: 0
+    equipmentID: 0
+    relicID: 4026
+    price: 200000
+    isAvailable: 0
+    stock: -1
+  - itemType: 2
+    itemID: 0
+    equipmentID: 0
+    relicID: 4027
+    price: 46000
+    isAvailable: 0
+    stock: -1
+  - itemType: 2
+    itemID: 0
+    equipmentID: 0
+    relicID: 4028
+    price: 46000
+    isAvailable: 0
+    stock: -1

@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ccf05c1a207592c4dacf9fb73ddab62e, type: 3}
+  m_Name: OverloadBattery
+  m_EditorClassIdentifier: GameScripts::Relic.Data.RelicSO
+  id: 4022
+  displayNameKey: relic_overload_battery_name
+  descriptionKey: relic_overload_battery_desc
+  icon: {fileID: 4637840488651016079, guid: f3c178333a446c64fa8e1da0facf3b1a, type: 3}
+  type: 0
+  maxLevel: 3
+  unlockNodeId: 
+  upgradeCosts:
+  - gold: 100
+    material: 0
+    materialCount: 0
+  - gold: 250
+    material: 0
+    materialCount: 0
+  behaviour:
+    rid: 4010175549867032681
+  references:
+    version: 2
+    RefIds:
+    - rid: 4010175549867032681
+      type: {class: OverloadBatteryRelic, ns: Relic, asm: GameScripts}
+      data:
+        drainMultPerLevel:
+        - 0.5
+        - 0.42
+        - 0.33
+        randomIntervalPerLevel:
+        - 0.35
+        - 0.5
+        - 0.7
+        randomMinDeltaPerLevel:
+        - 120
+        - 100
+        - 80

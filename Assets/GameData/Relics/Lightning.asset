@@ -1,0 +1,44 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ccf05c1a207592c4dacf9fb73ddab62e, type: 3}
+  m_Name: Lightning
+  m_EditorClassIdentifier: GameScripts::Relic.Data.RelicSO
+  id: 4016
+  displayNameKey: relic_lightning_name
+  descriptionKey: relic_lightning_desc
+  icon: {fileID: 0}
+  type: 1
+  maxLevel: 3
+  unlockNodeId: 
+  upgradeCosts:
+  - gold: 100
+    material: 0
+    materialCount: 0
+  - gold: 250
+    material: 0
+    materialCount: 0
+  behaviour:
+    rid: 4010175549867032670
+  references:
+    version: 2
+    RefIds:
+    - rid: 4010175549867032670
+      type: {class: LightningRelic, ns: Relic, asm: GameScripts}
+      data:
+        rangePerLevel:
+        - 6
+        - 8
+        - 10
+        cooldown: 180
+        sweepSpeed: 60
+        boltColor: {r: 0.6, g: 0.85, b: 1, a: 0.95}
+        boltDuration: 0.4

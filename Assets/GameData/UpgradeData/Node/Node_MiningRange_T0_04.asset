@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 581f7dfb478769e4bba78e5ee790d6fd, type: 3}
+  m_Name: Node_MiningRange_T0_04
+  m_EditorClassIdentifier: GameScripts::UpgradeNodeSO
+  nodeId: MiningRange_T0_04
+  displayNameKey: "\uB113\uC740 \uC0BD\uB0A0 IV"
+  descriptionKey: "\uD55C \uBC88\uC5D0 \uD30C\uB0B4\uB294 \uBC94\uC704\uAC00 +0.25
+    \uB113\uC5B4\uC9D1\uB2C8\uB2E4."
+  icon: {fileID: 0}
+  tier: 0
+  parentNodes:
+  - {fileID: 11400000, guid: 9fd282dfe11684b42b6d569a5628960d, type: 2}
+  cost: 190
+  maxLevel: 1
+  costGrowth: 1.6
+  levelCosts: 
+  effect: {fileID: 11400000, guid: a82047bdfd73cfd44bee0b38468ee632, type: 2}
+  uiPosition: {x: -87.5, y: 1770}
+  lineBends: []

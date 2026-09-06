@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c1657dea0a896944b69b7e73c714cf9, type: 3}
+  m_Name: ClimbPotion
+  m_EditorClassIdentifier: 
+  itemID: 1003
+  itemNameKey: item_climb_potion_name
+  descriptionKey: item_climb_potion_desc
+  icon: {fileID: -8335842884539223842, guid: e19832eca22dc59479083806d523ced2, type: 3}
+  weight: 1
+  staminaReduction: 0
+  activeType: 2
+  effects:
+  - effect: 12
+    value: 0.5
+    duration: 120
+    modifierType: 1
+  castTime: 0
+  stackable: 1
+  poolType: 1003
+  itemPrefab: {fileID: 0}

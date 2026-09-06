@@ -1,0 +1,59 @@
+key,kr,en,cn
+relic_test_stat_name,테스트 스탯 유물,Test Stat Relic,测试属性遗物
+relic_test_stat_desc,개발 테스트용 유물. 채굴 범위를 증가시킨다.,A relic for development testing. Increases mining range.,用于开发测试的遗物，可提升采掘范围。
+relic_pigeon_feather_name,비둘기 깃털,Pigeon Feather,鸽子羽毛
+relic_pigeon_feather_desc,공중에서 추가로 점프할 수 있다. 레벨이 오르면 점프 횟수가 늘어난다.,"Grants extra mid-air jumps, with more jumps at higher levels.",可在空中额外跳跃，等级提升可增加跳跃次数。
+relic_invincibility_name,무적,Invincibility,无敌
+relic_invincibility_desc,발동하면 일정 시간 동안 모든 피해를 무시하는 무적 상태가 된다.,"When activated, become immune to all damage for a short time.",发动后短时间内免疫一切伤害。
+relic_spider_glove_name,거미줄 장갑,Spider Glove,蛛丝手套
+relic_spider_glove_desc,벽을 타고 오르는 속도가 빨라진다.,Increases your wall-climbing speed.,提升攀爬墙壁的速度。
+relic_gambler_glasses_name,도박꾼의 안경,Gambler's Glasses,赌徒眼镜
+relic_gambler_glasses_desc,파기할 때마다 채굴 범위가 절반 또는 두 배로 무작위 결정된다. 낮은 확률로 잭팟이 터진다.,"Each dig randomly halves or doubles your mining range, with a small chance to hit the jackpot.",每次挖掘时采掘范围随机减半或翻倍，并有小概率触发大奖。
+relic_anvil_name,모루,Anvil,铁砧
+relic_anvil_desc,높은 곳에서 착지하는 순간 발밑 지형을 원형으로 파괴한다. 낙하가 높을수록 파괴 범위가 커진다.,"On landing from a height, smashes the ground below into a crater — the higher the fall, the wider the blast.",从高处落地的瞬间将脚下地形砸成圆坑，落得越高破坏范围越大。
+relic_drill_drone_name,굴착 드론,Drilling Drone,钻探无人机
+relic_drill_drone_desc,플레이어 주위를 공전하며 주변 지형을 조금씩 자동으로 파괴하는 소형 드론.,"A small drone that orbits you, chipping away at nearby terrain on its own.",环绕玩家飞行、自动一点点破坏周围地形的小型无人机。
+relic_furnace_name,용광로,Furnace,熔炉
+relic_furnace_desc,상태이상이 심할수록 채굴 속도와 범위가 상승한다. 위험을 감수할수록 강해진다.,"The worse your status ailments, the faster and wider you mine — risk fuels power.",身上的异常状态越严重，采掘速度与范围越高，越冒险越强大。
+relic_lightning_name,번개,Lightning,闪电
+relic_lightning_desc,주변 광물을 최근접 순으로 잇는 경로를 따라 번개가 지형을 관통해 파괴한다.,A bolt arcs between nearby minerals and blasts the terrain along its path.,闪电沿着连接周围矿物的路径贯穿并破坏地形。
+relic_tool_swap_name,도구 역할 스왑,Tool Swap,工具互换
+relic_tool_swap_desc,"장착 중 삽과 곡괭이의 채굴 대상이 뒤바뀐다. 삽으로 돌을, 곡괭이로 흙을 판다.","While equipped, the shovel and pickaxe swap targets — dig rock with the shovel, soil with the pickaxe.",装备时铲子与镐的采掘对象互换：用铲挖石，用镐挖土。
+relic_black_market_name,암시장,Black Market,黑市
+relic_black_market_desc,지하에서 인벤토리의 광물을 전량 그 자리에서 현금으로 판매한다. 하강마다 한 번 사용.,"Sell all minerals in your inventory for cash on the spot while underground — once per descent.",在地下将背包中的矿物就地全部变现，每次下潜可用一次。
+relic_miner_drone_name,채굴 드론,Miner Drone,采矿无人机
+relic_miner_drone_desc,플레이어 주변을 돌아다니며 팔 만한 벽면을 찾아 함께 파주는 동행 드론.,"A companion drone that roams around you, seeking out walls to dig alongside you.",在玩家周围游走、主动寻找可挖墙面一同挖掘的随行无人机。
+relic_jetpack_name,제트팩,Jetpack,喷气背包
+relic_jetpack_desc,드릴을 든 채 위로 입력하면 이륙해 자유롭게 호버 비행한다. 비행 중 드릴 배터리를 소모한다.,"With the drill out, press up to lift off and hover freely — flying drains the drill's battery.",手持钻头时按上方向起飞并自由悬浮飞行，飞行会消耗钻头电量。
+relic_detection_pulse_name,탐지파동,Detection Pulse,探测脉冲
+relic_detection_pulse_desc,발동하면 파동이 퍼지며 반경 내 특수 지형을 지도에 표시한다.,Emits a pulse that reveals nearby special terrain on your map.,发动后释放脉冲，将范围内的特殊地形标记在地图上。
+relic_xray_name,엑스레이,X-Ray,透视
+relic_xray_desc,"발동하면 일정 시간 흙 너머에 숨은 광물과 함정, 특수 지형을 투시해 보여준다.","When activated, see through soil to reveal hidden minerals, traps, and special terrain for a time.",发动后一段时间内可透视泥土，显现隐藏的矿物、陷阱与特殊地形。
+relic_hourglass_name,모래시계,Hourglass,沙漏
+relic_hourglass_desc,함께 장착한 다른 유물들의 쿨타임을 레벨에 따라 줄여준다.,"Reduces the cooldown of your other equipped relics, scaling with level.",按等级降低同时装备的其他遗物的冷却时间。
+relic_one_way_portal_name,일회용 포탈,One-Way Portal,单向传送门
+relic_one_way_portal_desc,"발동한 자리에 포탈을 설치하고, 다시 발동하면 그 지점으로 귀환한다.","Place a portal where you activate it, then activate again to warp back to that spot.",在发动处放置传送门，再次发动即可返回该地点。
+relic_trident_name,삼지창,Trident,三叉戟
+relic_trident_desc,삽으로 파기를 세 갈래 창날의 3연타로 대체해 넓고 깊게 파낸다.,Replaces shovel digs with a three-pronged triple stab that carves wide and deep.,将铲子挖掘替换为三股叉尖的三连击，挖得更宽更深。
+relic_magnet_name,자석,Magnet,磁铁
+relic_magnet_desc,주변에 떨어진 광물과 아이템을 플레이어 쪽으로 끌어당긴다.,Pulls nearby dropped minerals and items toward you.,将周围掉落的矿物与物品吸向玩家。
+relic_generator_name,발전기,Generator,发电机
+relic_generator_desc,발동하면 드릴 배터리를 즉시 회복하고 잠시 재생 속도를 높인다.,Instantly restores drill battery and briefly boosts its recharge rate.,发动后立即恢复钻头电量，并短暂提升充电速度。
+relic_mp3_name,mp3,MP3,MP3
+relic_mp3_desc,머리 위 비트에 맞춰 삽을 휘두르면 타이밍 판정(퍼펙트/굿/배드)에 따라 파기 범위가 달라진다.,Swing your shovel on the beat — Perfect/Good/Bad timing changes your dig range.,跟随头顶节拍挥铲，命中判定（完美/良好/失误）会改变挖掘范围。
+relic_overload_battery_name,과부하 배터리,Overload Battery,过载电池
+relic_overload_battery_desc,드릴 대시의 배터리 소모가 크게 줄지만 대시 방향이 무작위로 흔들린다.,"Greatly cuts drill-dash battery drain, but the dash direction jitters randomly.",大幅降低钻头冲刺的耗电，但冲刺方向会随机抖动。
+relic_plasma_cutter_name,플라즈마 커터,Plasma Cutter,等离子切割器
+relic_plasma_cutter_desc,발동하면 조준 방향으로 플라즈마 빔을 뿜어 지형을 절단하고 암석에 피해를 준다.,"Fires a plasma beam in your aim direction, slicing terrain and burning through rock.",发动后朝瞄准方向喷射等离子光束，切开地形并灼烧岩石。
+relic_steroid_name,스테로이드,Steroid,类固醇
+relic_steroid_desc,발동하면 주변 지형을 원형으로 단번에 파낸다.,"When activated, carves the surrounding terrain in a single burst.",发动后一次性将周围地形挖成圆形。
+relic_junk_spring_name,고물 스프링,Junk Spring,破旧弹簧
+relic_junk_spring_desc,점프 키를 길게 눌러 힘을 모았다가 튀어 오르는 슈퍼 점프를 한다.,"Hold the jump key to charge up, then launch into a super jump.",长按跳跃键蓄力，随后弹射出超级跳跃。
+relic_blind_name,맹인,Blind,盲眼
+relic_blind_desc,시야가 극도로 좁아지는 대신 삽·곡괭이 파동으로 순간 주변을 밝힌다. 스태미나 소모는 줄지만 채굴 범위가 좁아진다.,"Your vision shrinks drastically, but each shovel or pickaxe swing sends out a pulse that reveals your surroundings — less stamina used, but a narrower dig range.",视野极度收窄，但每次挥铲或挥镐都会发出脉冲短暂照亮周围。耗费体力更少，但挖掘范围变窄。
+relic_dash_bomb_name,폭발 드릴,Blast Drill,爆破钻头
+relic_dash_bomb_desc,드릴 대시가 끝나는 지점에서 폭발이 일어나 주변 지형을 파괴한다.,"An explosion erupts at the end of your drill dash, blasting the terrain around it.",钻头冲刺终点处发生爆炸，破坏周围地形。
+relic_gravity_flip_name,반중력 장치,Anti-Gravity Device,反重力装置
+relic_gravity_flip_desc,발동하면 일정 시간 중력이 반전되어 천장 쪽으로 떨어진다.,"When activated, gravity reverses for a time and you fall toward the ceiling.",发动后一段时间内重力反转，向天花板方向坠落。
+relic_elevator_tracker_name,엘리베이터 신호기,Elevator Beacon,电梯信标
+relic_elevator_tracker_desc,주변 엘리베이터를 직접 가보지 않아도 지도에 표시한다.,Marks nearby elevators on your map without visiting them.,无需亲自前往，即可在地图上标记附近的电梯。

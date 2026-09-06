@@ -1,0 +1,89 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &1000001
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: MineralIcon-Atlas
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings:
+    - serializedVersion: 4
+      m_BuildTarget: DefaultTexturePlatform
+      m_MaxTextureSize: 2048
+      m_ResizeAlgorithm: 0
+      m_TextureFormat: -1
+      m_TextureCompression: 0
+      m_CompressionQuality: 50
+      m_CrunchedCompression: 0
+      m_AllowsAlphaSplitting: 0
+      m_Overridden: 0
+      m_IgnorePlatformSupport: 0
+      m_AndroidETC2FallbackOverride: 0
+      m_ForceMaximumCompressionQuality_BC6H_BC7: 0
+    packingSettings:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 0
+      enableTightPacking: 0
+      enableAlphaDilation: 0
+    secondaryTextureSettings: {}
+    variantMultiplier: 1
+    packables:
+    - {fileID: 966897213931079895, guid: 7a11b54724d8fb145bbba50c0449757f, type: 3}
+    - {fileID: 21300000, guid: fc285731cff4d7d4387a87f3ad160bc5, type: 3}
+    - {fileID: 21300000, guid: 50aad09a21d98d94683d70d0ce95f1bd, type: 3}
+    - {fileID: -2439699522794326382, guid: 68c6a184f17e1bb41a8b256df0c0b1d1, type: 3}
+    - {fileID: 7262862185157205153, guid: f6b6c48c3e583d84f8ec5bd559b0f175, type: 3}
+    - {fileID: 21300000, guid: 8758fa73f048ead44935a60369d2da68, type: 3}
+    - {fileID: 21300000, guid: 15af44642ffdb254d94a13325d2d13bb, type: 3}
+    - {fileID: 21300000, guid: 3b14948526f767440a60f2f83c235feb, type: 3}
+    bindAsDefault: 1
+    isAtlasV2: 0
+    cachedData: {fileID: 0}
+    packedSpriteRenderDataKeys:
+    - fc285731cff4d7d4387a87f3ad160bc5: 21300000
+    - 8758fa73f048ead44935a60369d2da68: 21300000
+    - 15af44642ffdb254d94a13325d2d13bb: 21300000
+    - 68c6a184f17e1bb41a8b256df0c0b1d1: -2439699522794326382
+    - 3b14948526f767440a60f2f83c235feb: 21300000
+    - 7a11b54724d8fb145bbba50c0449757f: 966897213931079895
+    - 50aad09a21d98d94683d70d0ce95f1bd: 21300000
+    - f6b6c48c3e583d84f8ec5bd559b0f175: 7262862185157205153
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: fc285731cff4d7d4387a87f3ad160bc5, type: 3}
+  - {fileID: 21300000, guid: 8758fa73f048ead44935a60369d2da68, type: 3}
+  - {fileID: 21300000, guid: 15af44642ffdb254d94a13325d2d13bb, type: 3}
+  - {fileID: -2439699522794326382, guid: 68c6a184f17e1bb41a8b256df0c0b1d1, type: 3}
+  - {fileID: 21300000, guid: 3b14948526f767440a60f2f83c235feb, type: 3}
+  - {fileID: 966897213931079895, guid: 7a11b54724d8fb145bbba50c0449757f, type: 3}
+  - {fileID: 21300000, guid: 50aad09a21d98d94683d70d0ce95f1bd, type: 3}
+  - {fileID: 7262862185157205153, guid: f6b6c48c3e583d84f8ec5bd559b0f175, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - coal
+  - Obsidian
+  - Lead
+  - essenceOfLava_0
+  - Stardust
+  - 20coal
+  - BlueCrystal
+  - fossil_0
+  m_RenderDataMap: {}
+  m_Tag: MineralIcon-Atlas
+  m_IsVariant: 0

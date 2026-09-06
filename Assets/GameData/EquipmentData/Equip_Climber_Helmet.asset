@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba20e9d7d6c4d6e4a86867f93d4e679a, type: 3}
+  m_Name: Equip_Climber_Helmet
+  m_EditorClassIdentifier: Assembly-CSharp::EquipmentSO
+  equipmentID: 3003
+  equipmentNameKey: equip_climber_helmet_name
+  icon: {fileID: -8960420638097442169, guid: 389c2c2a220386c468fb4f667e07ed96, type: 3}
+  descriptionKey: equip_climber_helmet_desc
+  previewSprite: {fileID: -6329923300219262008, guid: 298e0c27864389644a90f62ff1a4a783, type: 3}
+  equipmentType: 1
+  level: 0
+  defense: 2
+  durability: 0
+  price: 1000
+  statModifiers:
+  - statType: 14
+    modifierType: 0
+    value: 0.08
+  weight: 1
+  stackable: 0
+  maxStackSize: 1

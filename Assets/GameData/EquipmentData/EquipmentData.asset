@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba20e9d7d6c4d6e4a86867f93d4e679a, type: 3}
+  m_Name: EquipmentData
+  m_EditorClassIdentifier: Assembly-CSharp::EquipmentSO
+  equipmentID: 3001
+  equipmentNameKey: equip_mining_hat_name
+  icon: {fileID: 6009638048897622531, guid: b2a3569328f0fa84a8c1487529ee2f10, type: 3}
+  descriptionKey: equip_mining_hat_desc
+  equipmentType: 1
+  level: 1
+  defense: 2
+  durability: 20
+  price: 100
+  statModifiers:
+  - statType: 2
+    modifierType: 0
+    value: 2
+  - statType: 31
+    modifierType: 0
+    value: 1
+  weight: 1
+  stackable: 0
+  maxStackSize: 1

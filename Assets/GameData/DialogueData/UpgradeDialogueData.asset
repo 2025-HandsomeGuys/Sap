@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 53ebe6861071d2849ac4935aa8e1aada, type: 3}
+  m_Name: UpgradeDialogueData
+  m_EditorClassIdentifier: Assembly-CSharp::DialogueData
+  dialogueLines:
+  - speakerName: TruckTest
+    text: "\uD2B8\uB7ED \uD14C\uC2A4\uD2B8\uC785\uB2C8\uB2E4\n\uC774\uAC8C \uAEBC\uC9C0\uBA74
+      \uC5C5\uADF8\uB808\uC774\uB4DC \uCC3D\uC73C\uB85C \uAC08 \uC608\uC815"
+    speakerSide: 0
+    leftSprite: {fileID: -7346612907530598944, guid: 86322754eb51fc84e85087056c316683, type: 3}
+    rightSprite: {fileID: -2474250949257483082, guid: 052b90bd3aa9d5e4cb12eb911815702e, type: 3}
+  openShopAfterDialogue: 0
+  openUpgradeAfterDialogue: 1

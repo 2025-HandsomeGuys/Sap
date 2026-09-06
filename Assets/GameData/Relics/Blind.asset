@@ -1,0 +1,72 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ccf05c1a207592c4dacf9fb73ddab62e, type: 3}
+  m_Name: Blind
+  m_EditorClassIdentifier: GameScripts::Relic.Data.RelicSO
+  id: 4024
+  displayNameKey: relic_blind_name
+  descriptionKey: relic_blind_desc
+  icon: {fileID: 3311438988217477767, guid: 9d235ca4ded37444fa968614d641fa55, type: 3}
+  type: 0
+  maxLevel: 3
+  unlockNodeId: 
+  upgradeCosts:
+  - gold: 100
+    material: 0
+    materialCount: 0
+  - gold: 250
+    material: 0
+    materialCount: 0
+  behaviour:
+    rid: 4010175549867032675
+  references:
+    version: 2
+    RefIds:
+    - rid: 4010175549867032675
+      type: {class: BlindRelic, ns: Relic, asm: GameScripts}
+      data:
+        visionRestPerLevel:
+        - 0.15
+        - 0.18
+        - 0.22
+        visionPeakPerLevel:
+        - 1.3
+        - 1.5
+        - 1.7
+        pulseDurationPerLevel:
+        - 1.1
+        - 1.3
+        - 1.5
+        darknessRestPerLevel:
+        - 1
+        - 1
+        - 1
+        darknessPeakPerLevel:
+        - 0.45
+        - 0.4
+        - 0.35
+        sonarFadeSpeed: 3
+        staminaCostMulPerLevel:
+        - 0.7
+        - 0.6
+        - 0.5
+        miningSpeedMulPerLevel:
+        - 1.25
+        - 1.4
+        - 1.55
+        digRangeMulPerLevel:
+        - 0.7
+        - 0.66
+        - 0.62
+        ringMaxRadius: 6
+        ringWidth: 0.16
+        ringColor: {r: 0.6, g: 0.85, b: 1, a: 0.7}

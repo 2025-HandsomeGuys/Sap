@@ -1,0 +1,26 @@
+nodeId,tier,effectType,effectValue,isPercentage,parentIds,cost,uiX,uiY,displayNameKey,descriptionKey,locked
+InventoryWeight_T0_01,0,InventoryWeightUp,3,false,,260,0,150,가방 확장 01,가방 확장,false
+Facility_Map_T0,0,None,0,false,InventoryWeight_T0_02,360,0,450,지도 장비 구입,휴대용 지도 장비를 들여,false
+InventoryWeight_T0_02,0,InventoryWeightUp,3,false,InventoryWeight_T0_01,360,0,300,가방 확장 02,가방 확장,false
+MoveSpeed_T0_01,0,MoveSpeedMultiplier,1.15,true,PickaxeUnlock_T0_01,450,-350,900,이동 속도 01,이동 속도,false
+InventoryWeight_T0_03,0,InventoryWeightUp,3,false,Facility_Map_T0,460,0,600,가방 확장 03,가방 확장,false
+RelicUnlock_ElevatorTracker_T0,0,None,0,false,MoveSpeed_T0_02,460,-350,1050,엘리베이터 신호기 입수,유물 '엘리베이터 신호기'를,false
+InventoryWeight_T0_04,0,InventoryWeightUp,3,false,InventoryWeight_T0_03,560,0,750,가방 확장 04,가방 확장,false
+PickaxeUnlock_T0_01,0,None,0,false,InventoryWeight_T0_04,560,0,900,곡괭이 입수,곡괭이를 쓸 수 있게 됩니다.,false
+MoveSpeed_T0_02,0,MoveSpeedMultiplier,1.15,true,PickaxeUnlock_T0_01,580,0,1050,이동 속도 02,이동 속도,false
+Facility_Computer_T0,0,None,0,false,MiningSpeed_T0_01,650,0,1350,단말기 개통,거래소 단말기가 켜져 주식과,false
+MiningSpeed_T0_01,0,MiningSpeedMultiplier,1.12,true,MoveSpeed_T0_02,650,0,1200,채굴 속도 01,채굴 속도,false
+MiningLevel_T0_Final,0,MiningLevel,1,false,Facility_Computer_T0,1720,0,1500,채광 면허 Final,채광 면허,false
+ShovelStamina_T1_01,1,ShovelStaminaReduce,0.64,true,MiningLevel_T0_Final,350,0,1650,삽질 효율 01,삽질 효율,false
+DrillCapacity_T1_01,1,DrillBatteryCapacity,50,false,ShovelStamina_T1_02,550,0,1950,드릴 입수,드릴을 쓸 수 있게 됩니다.,false
+ShovelStamina_T1_02,1,ShovelStaminaReduce,0.64,true,ShovelStamina_T1_01,550,0,1800,삽질 효율 02,삽질 효율,false
+ShovelStamina_T1_03,1,ShovelStaminaReduce,0.64,true,DrillCapacity_T1_01,870,0,2100,삽질 효율 03,삽질 효율,false
+InventoryWeight_T1_01,1,InventoryWeightUp,3,false,MaxStamina_T1_01,1080,-350,2250,가방 확장 01,가방 확장,false
+MaxStamina_T1_01,1,MaxStaminaUp,6,false,ShovelStamina_T1_03,1350,0,2250,최대 스태미나 01,최대 스태미나,false
+MoveSpeed_T1_01,1,MoveSpeedMultiplier,1.15,true,InventoryWeight_T1_03,1520,-350,2700,이동 속도 01,이동 속도,false
+InventoryWeight_T1_02,1,InventoryWeightUp,3,false,MaxStamina_T1_01,1650,0,2400,가방 확장 02,가방 확장,false
+MiningSpeed_T1_01,1,MiningSpeedMultiplier,1.12,true,InventoryWeight_T1_02,1830,0,2550,채굴 속도 01,채굴 속도,false
+InventoryWeight_T1_03,1,InventoryWeightUp,3,false,MiningSpeed_T1_01,1900,0,2700,가방 확장 03,가방 확장,false
+MoveSpeed_T1_02,1,MoveSpeedMultiplier,1.15,true,InventoryWeight_T1_03,1950,0,2850,이동 속도 02,이동 속도,false
+InventoryWeight_T1_04,1,InventoryWeightUp,3,false,MoveSpeed_T1_02,2150,0,3000,가방 확장 04,가방 확장,false
+MiningRange_T1_01,1,MiningRangeMultiplier,1.12,true,InventoryWeight_T1_04,2160,0,3150,채굴 범위 01,채굴 범위,false

@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba20e9d7d6c4d6e4a86867f93d4e679a, type: 3}
+  m_Name: Equip_Climber_Armor
+  m_EditorClassIdentifier: Assembly-CSharp::EquipmentSO
+  equipmentID: 3103
+  equipmentNameKey: equip_climber_armor_name
+  icon: {fileID: -7088676485230223751, guid: bc21e0b49a2c95846bb3c240865be34d, type: 3}
+  descriptionKey: equip_climber_armor_desc
+  previewSprite: {fileID: -4666441591800483831, guid: ea9b86d17fcbbd34aae9be8e24bf25ad, type: 3}
+  equipmentType: 2
+  level: 0
+  defense: 2
+  durability: 0
+  price: 1000
+  statModifiers:
+  - statType: 14
+    modifierType: 0
+    value: 0.12
+  upgradeLevels:
+  - bonusModifiers:
+    - statType: 14
+      modifierType: 0
+      value: 0.06
+    bonusDefense: 0
+    goldCost: 500
+    materialId: 101
+    materialCount: 2
+  weight: 1
+  stackable: 0
+  maxStackSize: 1

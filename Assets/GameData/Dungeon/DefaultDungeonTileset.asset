@@ -1,0 +1,90 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 833d75cffa3c1be489579ee9a669007f, type: 3}
+  m_Name: DefaultDungeonTileset
+  m_EditorClassIdentifier: GameScripts::Gameplay.Dungeon.Authoring.DungeonTilesetSO
+  tileMappings:
+  - symbol: W
+    tile: {fileID: 11400000, guid: 55e623ebf07a3e347abddbe582bbbbbc, type: 2}
+  objectMappings:
+  - symbol: E
+    prefab: {fileID: 7155200823349131554, guid: 12cdae916cf7f964fa4c15a1d0ab9d7e, type: 3}
+    zRotation: 0
+  - symbol: X
+    prefab: {fileID: 1152324729232536560, guid: c45baa336fe4c7f45adc68293b8debf4, type: 3}
+    zRotation: 0
+  - symbol: $
+    prefab: {fileID: 6277630070087051021, guid: 16f48a452950d39409e7821ec4262730, type: 3}
+    zRotation: 0
+  - symbol: r
+    prefab: {fileID: 8889825538113539325, guid: 3b82fe8b70134214ba11092979e30dfb, type: 3}
+    zRotation: 0
+  - symbol: '!'
+    prefab: {fileID: 7131147407974414299, guid: 922703504294e1742a071d35b8c7f6ef, type: 3}
+    zRotation: 0
+  - symbol: '>'
+    prefab: {fileID: 6478965229209616908, guid: 074a04a9e5e4ee040bd95f0628acce1b, type: 3}
+    zRotation: 0
+  - symbol: C
+    prefab: {fileID: 2851002897325359044, guid: 3e7f30faf12faa74f80b33b6b46ef544, type: 3}
+    zRotation: 0
+  - symbol: P
+    prefab: {fileID: 3644916429404211525, guid: c172701bffc0076429d1df85c06c7d37, type: 3}
+    zRotation: 0
+  - symbol: G
+    prefab: {fileID: 2274658276045451782, guid: f29a3aee179ecea41b36305973edd2e4, type: 3}
+    zRotation: 0
+  - symbol: _
+    prefab: {fileID: 9185101985777667649, guid: e4b4528545e11d543be361fb173cc522, type: 3}
+    zRotation: 0
+  - symbol: <
+    prefab: {fileID: 6478965229209616908, guid: 074a04a9e5e4ee040bd95f0628acce1b, type: 3}
+    zRotation: 180
+  - symbol: =
+    prefab: {fileID: 4738913164821566683, guid: e8e93e030d46d0a4199726ab90bee844, type: 3}
+    zRotation: 0
+  - symbol: '-'
+    prefab: {fileID: 659375994400463083, guid: 3eec44cfe30765f4cbf48d00dd88e8c8, type: 3}
+    zRotation: 0
+  - symbol: '|'
+    prefab: {fileID: 659375994400463083, guid: 3eec44cfe30765f4cbf48d00dd88e8c8, type: 3}
+    zRotation: 90
+  - symbol: F
+    prefab: {fileID: 659375994400463083, guid: 9529a62a8a39fe340aa1c9c0fe2cbd49, type: 3}
+    zRotation: 0
+  - symbol: L
+    prefab: {fileID: 659375994400463083, guid: 9529a62a8a39fe340aa1c9c0fe2cbd49, type: 3}
+    zRotation: 90
+  - symbol: J
+    prefab: {fileID: 659375994400463083, guid: 9529a62a8a39fe340aa1c9c0fe2cbd49, type: 3}
+    zRotation: 180
+  - symbol: 7
+    prefab: {fileID: 659375994400463083, guid: 9529a62a8a39fe340aa1c9c0fe2cbd49, type: 3}
+    zRotation: 270
+  - symbol: '@'
+    prefab: {fileID: 6577061478244059924, guid: 885730601dd52224a9b2ab196c1e7f8a, type: 3}
+    zRotation: 0
+  - symbol: '&'
+    prefab: {fileID: 5914560925660150056, guid: 95a4a82d1ccfde34ba40a45b5fc660c7, type: 3}
+    zRotation: 0
+  - symbol: '*'
+    prefab: {fileID: 3329263002208199832, guid: 67b6369b332082e498c8a119dcee8e21, type: 3}
+    zRotation: 0
+  - symbol: f
+    prefab: {fileID: 7790976838958136105, guid: 37f465e939253e84b83eda55ca1d8da3, type: 3}
+    zRotation: 0
+  - symbol: ^
+    prefab: {fileID: 4123333954561197650, guid: 6a07f9ae90cb48342be62e690c79f761, type: 3}
+    zRotation: 0
+  - symbol: w
+    prefab: {fileID: 8478435681351880233, guid: d12991a204a66b34581bab501bad3b7c, type: 3}
+    zRotation: 0

@@ -1,0 +1,54 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c9e4f2a3b1d8e6f4a2c5d9b0e3f1a7c, type: 3}
+  m_Name: Guide_Market
+  m_EditorClassIdentifier: GameScripts::GuideSO
+  guideId: market_basic
+  showOnce: 1
+  bannerTitleKey: ui_guide_market_title
+  bannerTitleFallback: "\uB9C8\uCF13"
+  pages:
+  - mediaType: 1
+    image: {fileID: -7893474828737485473, guid: c02701c494cd58049a9386fbac1f22b6, type: 3}
+    video: {fileID: 0}
+    frames: []
+    framesPerSecond: 8
+    titleKey: ui_guide_market_stock_title
+    titleFallback: "\uC8FC\uC2DD"
+    bodyKey: ui_guide_market_stock_body
+    bodyFallback: "\uB274\uC2A4\uC5D0 \uB530\uB77C \uC8FC\uAC00\uAC00 \uC6C0\uC9C1\uC785\uB2C8\uB2E4.
+      \uCC0C\uB77C\uC2DC\uAC00 \uBA3C\uC800 \uB3CC\uACE0 \uACF5\uC2DD \uBC1C\uD45C\uAC00
+      \uB4A4\uB530\uB974\uB294 \uC885\uBAA9\uB3C4 \uC788\uC2B5\uB2C8\uB2E4.\n\uCC44\uAD11
+      \uB808\uBCA8\uC744 \uC62C\uB9AC\uBA74 \uB354 \uB192\uC740 \uB4F1\uAE09\uC758
+      \uC885\uBAA9\uC774 \uC0C1\uC7A5\uB429\uB2C8\uB2E4."
+  - mediaType: 1
+    image: {fileID: 6830189840300276956, guid: 2d7f9e4c10cf5b44fbc42f02f66e5b02, type: 3}
+    video: {fileID: 0}
+    frames: []
+    framesPerSecond: 8
+    titleKey: ui_guide_market_coin_title
+    titleFallback: "\uCF54\uC778"
+    bodyKey: ui_guide_market_coin_body
+    bodyFallback: "\uD14C\uC2A4\uD2B812512"
+  - mediaType: 1
+    image: {fileID: -7723394892244704741, guid: 9d0facc38e3cddf429dca0ae87dab711, type: 3}
+    video: {fileID: 0}
+    frames: []
+    framesPerSecond: 8
+    titleKey: ui_guide_market_risk_title
+    titleFallback: "\uCCAD\uC0B0\uACFC \uC0C1\uC7A5\uD3D0\uC9C0"
+    bodyKey: ui_guide_market_risk_body
+    bodyFallback: "\uB808\uBC84\uB9AC\uC9C0\uB97C \uC62C\uB9AC\uBA74 \uBCF4\uC0C1\uB3C4
+      \uD06C\uC9C0\uB9CC \uB9C8\uC9C4\uC744 \uD1B5\uC9F8\uB85C \uB0A0\uB9B4 \uD655\uB960\uB3C4
+      \uD568\uAED8 \uC624\uB985\uB2C8\uB2E4.\n\uCF54\uC778\uC774 \u2212100%\uB97C
+      \uCC0D\uC73C\uBA74 \uC0C1\uC7A5\uD3D0\uC9C0\uB418\uACE0 \uC0C8 \uCF54\uC778\uC73C\uB85C
+      \uAD50\uCCB4\uB429\uB2C8\uB2E4."

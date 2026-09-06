@@ -1,0 +1,12 @@
+{
+	"mcpServers": {
+		"mcp-unity": {
+			"command": "cmd",
+			"args": [
+				"/c",
+				"node",
+				"C:/Users/Lenovo/mcp-unity/Server~/build/index.js"
+			]
+		}
+	}
+}

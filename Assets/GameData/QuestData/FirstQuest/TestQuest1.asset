@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 682ae6a06896061419f6bf06ef991709, type: 3}
+  m_Name: TestQuest1
+  m_EditorClassIdentifier: Assembly-CSharp::QuestSO
+  questID: 1
+  questNameKey: quest_main1_name
+  questDescriptionKey: quest_main1_desc
+  questType: 0
+  requiredPreviousQuestID: -1
+  requiredMiningLevel: 0
+  requirements:
+  - requiredMineral: {fileID: 11400000, guid: a10472a9eaa3382409cea905ea83bbe9, type: 2}
+    requiredAmount: 5
+  rewards:
+  - rewardType: 1
+    moneyAmount: 0
+    itemReward: {fileID: 11400000, guid: 5f4b5aaedb1bdcc4ab0c6699c5f9205f, type: 2}
+    equipmentReward: {fileID: 0}
+    mineralReward: {fileID: 0}
+    rewardAmount: 3
+  - rewardType: 1
+    moneyAmount: 0
+    itemReward: {fileID: 11400000, guid: c01ce504e99d3194bba2612a445f0898, type: 2}
+    equipmentReward: {fileID: 0}
+    mineralReward: {fileID: 0}
+    rewardAmount: 1
+  acceptDialogue: {fileID: 11400000, guid: 461a561d2001d1e4a8ed2605c9cca3b3, type: 2}
+  progressDialogue: {fileID: 11400000, guid: 86790d6f9afe902459783e5eeb4f3778, type: 2}
+  completeDialogue: {fileID: 11400000, guid: a312c9d7db1fc4740b6b615788de8eec, type: 2}

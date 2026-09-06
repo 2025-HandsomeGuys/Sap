@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 53ebe6861071d2849ac4935aa8e1aada, type: 3}
+  m_Name: Tutorial0
+  m_EditorClassIdentifier: Assembly-CSharp::DialogueData
+  dialogueLines:
+  - speakerNameKey: npc_player_name
+    textKey: tutorial0_1
+    speakerSide: 1
+    leftSprite: {fileID: 0}
+    rightSprite: {fileID: 6805771339265537109, guid: 1058c07b55bb60845a3f3ccc3416493c, type: 3}
+  - speakerNameKey: npc_player_name
+    textKey: tutorial0_2
+    speakerSide: 1
+    leftSprite: {fileID: 0}
+    rightSprite: {fileID: -4303287507681889004, guid: 1058c07b55bb60845a3f3ccc3416493c, type: 3}
+  targetCameraName: 
+  openShopAfterDialogue: 0
+  openUpgradeAfterDialogue: 0

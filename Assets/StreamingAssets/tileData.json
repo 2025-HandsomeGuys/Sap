@@ -1,0 +1,603 @@
+{
+  "terrainWidth": 50,
+  "terrainDepth": 108,
+  "globalMineralDensity": 0.7,
+  "logMineralSpawn": true,
+  "mineralScatterJitter": 0.9,
+  "tiles": [
+    {
+      "tileType": "Dirt",
+      "maxStaminaReduction": 0.1,
+      "startDepth": 0,
+      "tier": 0,
+      "digRadiusModifier": 1.0,
+      "zoneStatusType": "None",
+      "zoneStatusPerSecond": 0.0,
+      "blendingProfileName": "default",
+      "mineralDensity": 1.0,
+      "caveEnabled": true,
+      "caveScale": 0.0006,
+      "caveThreshold": 0.84,
+      "caveDetail": 0.45,
+      "caveRegionScale": 0.00015,
+      "caveRegionThreshold": 0.3,
+      "caveRegionBand": 0.15,
+      "caveRegionFalloff": 0.16,
+      "caveEdgeMarginPx": 20.0,
+      "caveKeepLargestOnly": true,
+      "caveRockCount": 3,
+      "caveUseBlob": true,
+      "caveBlobChance": 0.7,
+      "caveBlobLengthMinPx": 600.0,
+      "caveBlobLengthMaxPx": 1000.0,
+      "caveBlobRadiusMinPx": 78.0,
+      "caveBlobRadiusMaxPx": 112.0,
+      "caveLinkChance": 0.85,
+      "caveLinkRadiusFactor": 0.85,
+      "caveMaxLinkedChunks": 4,
+      "caveBlobWaveAmpMinPx": 20.0,
+      "caveBlobWaveAmpMaxPx": 120.0,
+      "caveBlobWaveLenMinPx": 450.0,
+      "caveBlobWaveLenMaxPx": 700.0,
+      "caveBlobMinAspect": 2.4,
+      "caveBlobWaveMaxSlope": 0.5,
+      "caveBlobTiltMaxDeg": 25.0,
+      "caveBlobBulgeAmp": 0.35,
+      "caveBlobBulgeLenPx": 520.0,
+      "caveBlobWallAmpPx": 16.0,
+      "caveBlobWallScale": 0.004,
+      "caveBlobEndRoomGain": 0.35,
+      "caveBlobEndRoomLenPx": 180.0,
+      "caveHiddenUntilExposed": true,
+      "caveAspect": 2.0,
+      "caveMinRadiusPx": 15.0,
+      "caveRoughness": 0.1,
+      "caveRoughFreq1": 4.3,
+      "caveRoughFreq2": 8.5,
+      "minerals": [
+        {
+          "mineralType": "ScrapMetal",
+          "minDepth": 0,
+          "maxDepth": 26,
+          "rarity": "Common",
+          "perChunk": [
+            22,
+            40
+          ],
+          "rockDropWeight": 0.9,
+          "rockDropCount": [
+            2,
+            4
+          ]
+        },
+        {
+          "mineralType": "GarbageBag",
+          "minDepth": 0,
+          "maxDepth": 26,
+          "rarity": "Common",
+          "perChunk": [
+            36,
+            59
+          ],
+          "rockDropWeight": 0.9,
+          "rockDropCount": [
+            2,
+            4
+          ]
+        },
+        {
+          "mineralType": "PETBottle",
+          "minDepth": 0,
+          "maxDepth": 26,
+          "rarity": "Common",
+          "perChunk": [
+            36,
+            59
+          ],
+          "rockDropWeight": 0.9,
+          "rockDropCount": [
+            2,
+            4
+          ]
+        },
+        {
+          "mineralType": "Coal",
+          "minDepth": 0,
+          "maxDepth": 26,
+          "rarity": "Common",
+          "perChunk": [
+            10,
+            16
+          ],
+          "rockDropWeight": 0.8,
+          "rockDropCount": [
+            2,
+            4
+          ]
+        },
+        {
+          "mineralType": "Coal",
+          "minDepth": 0,
+          "maxDepth": 26,
+          "rarity": "Rare",
+          "perChunk": [
+            45,
+            70
+          ],
+          "rockDropWeight": 0.3,
+          "rockDropCount": [
+            2,
+            6
+          ]
+        },
+        {
+          "mineralType": "Copper",
+          "minDepth": 0,
+          "maxDepth": 26,
+          "rarity": "Rare",
+          "perChunk": [
+            30,
+            65
+          ],
+          "rockDropWeight": 0.6,
+          "rockDropCount": [
+            1,
+            8
+          ]
+        },
+        {
+          "mineralType": "Iron",
+          "minDepth": 0,
+          "maxDepth": 26,
+          "rarity": "Rare",
+          "perChunk": [
+            22,
+            42
+          ],
+          "rockDropWeight": 0.4,
+          "rockDropCount": [
+            1,
+            8
+          ]
+        }
+      ]
+    },
+    {
+      "tileType": "Ice",
+      "maxStaminaReduction": 0.5,
+      "startDepth": -27,
+      "wallClimbSpeedRatio": 0.5,
+      "wallSlipForce": 2.0,
+      "tier": 1,
+      "digRadiusModifier": 0.48,
+      "zoneStatusType": "Frostbite",
+      "zoneStatusPerSecond": 0.5,
+      "blendingProfileName": "default",
+      "mineralDensity": 1.0,
+      "caveEnabled": true,
+      "caveScale": 0.0006,
+      "caveThreshold": 0.84,
+      "caveDetail": 0.45,
+      "caveRegionScale": 0.00015,
+      "caveRegionThreshold": 0.3,
+      "caveRegionBand": 0.15,
+      "caveRegionFalloff": 0.16,
+      "caveEdgeMarginPx": 20.0,
+      "caveKeepLargestOnly": true,
+      "caveRockCount": 3,
+      "caveUseBlob": true,
+      "caveBlobChance": 0.7,
+      "caveBlobLengthMinPx": 600.0,
+      "caveBlobLengthMaxPx": 1000.0,
+      "caveBlobRadiusMinPx": 78.0,
+      "caveBlobRadiusMaxPx": 112.0,
+      "caveLinkChance": 0.85,
+      "caveLinkRadiusFactor": 0.85,
+      "caveMaxLinkedChunks": 4,
+      "caveBlobWaveAmpMinPx": 20.0,
+      "caveBlobWaveAmpMaxPx": 120.0,
+      "caveBlobWaveLenMinPx": 450.0,
+      "caveBlobWaveLenMaxPx": 700.0,
+      "caveBlobMinAspect": 2.4,
+      "caveBlobWaveMaxSlope": 0.5,
+      "caveBlobTiltMaxDeg": 25.0,
+      "caveBlobBulgeAmp": 0.35,
+      "caveBlobBulgeLenPx": 520.0,
+      "caveBlobWallAmpPx": 16.0,
+      "caveBlobWallScale": 0.004,
+      "caveBlobEndRoomGain": 0.35,
+      "caveBlobEndRoomLenPx": 180.0,
+      "caveHiddenUntilExposed": true,
+      "caveAspect": 2.0,
+      "caveMinRadiusPx": 15.0,
+      "caveRoughness": 0.1,
+      "caveRoughFreq1": 4.3,
+      "caveRoughFreq2": 8.5,
+      "minerals": [
+        {
+          "mineralType": "Meteorite",
+          "minDepth": 27,
+          "maxDepth": 53,
+          "rarity": "Common",
+          "perChunk": [
+            22,
+            38
+          ],
+          "rockDropWeight": 0.5,
+          "rockDropCount": [
+            2,
+            4
+          ]
+        },
+        {
+          "mineralType": "Fossil",
+          "minDepth": 27,
+          "maxDepth": 53,
+          "rarity": "Common",
+          "perChunk": [
+            22,
+            38
+          ],
+          "rockDropWeight": 0.5,
+          "rockDropCount": [
+            2,
+            4
+          ]
+        },
+        {
+          "mineralType": "Silver",
+          "minDepth": 27,
+          "maxDepth": 53,
+          "rarity": "Common",
+          "perChunk": [
+            22,
+            38
+          ],
+          "rockDropWeight": 0.5,
+          "rockDropCount": [
+            2,
+            4
+          ]
+        },
+        {
+          "mineralType": "Topaz",
+          "minDepth": 27,
+          "maxDepth": 53,
+          "rarity": "Common",
+          "perChunk": [
+            22,
+            38
+          ],
+          "rockDropWeight": 0.5,
+          "rockDropCount": [
+            2,
+            4
+          ]
+        },
+        {
+          "mineralType": "Emerald",
+          "minDepth": 27,
+          "maxDepth": 53,
+          "rarity": "Rare",
+          "perChunk": [
+            8,
+            18
+          ],
+          "rockDropWeight": 0.5,
+          "rockDropCount": [
+            1,
+            2
+          ]
+        },
+        {
+          "mineralType": "Sapphire",
+          "minDepth": 27,
+          "maxDepth": 53,
+          "rarity": "Rare",
+          "perChunk": [
+            8,
+            18
+          ],
+          "rockDropWeight": 0.5,
+          "rockDropCount": [
+            1,
+            2
+          ]
+        }
+      ]
+    },
+    {
+      "tileType": "MagmaRock",
+      "maxStaminaReduction": 1.0,
+      "startDepth": -54,
+      "tier": 2,
+      "digRadiusModifier": 0.35,
+      "zoneStatusType": "Burn",
+      "zoneStatusPerSecond": 1.0,
+      "blendingProfileName": "heavy",
+      "mineralDensity": 1.0,
+      "caveEnabled": true,
+      "caveScale": 0.0006,
+      "caveThreshold": 0.84,
+      "caveDetail": 0.45,
+      "caveRegionScale": 0.00015,
+      "caveRegionThreshold": 0.3,
+      "caveRegionBand": 0.15,
+      "caveRegionFalloff": 0.16,
+      "caveEdgeMarginPx": 20.0,
+      "caveKeepLargestOnly": true,
+      "caveRockCount": 3,
+      "caveUseBlob": true,
+      "caveBlobChance": 0.7,
+      "caveBlobLengthMinPx": 600.0,
+      "caveBlobLengthMaxPx": 1000.0,
+      "caveBlobRadiusMinPx": 78.0,
+      "caveBlobRadiusMaxPx": 112.0,
+      "caveLinkChance": 0.85,
+      "caveLinkRadiusFactor": 0.85,
+      "caveMaxLinkedChunks": 4,
+      "caveBlobWaveAmpMinPx": 20.0,
+      "caveBlobWaveAmpMaxPx": 120.0,
+      "caveBlobWaveLenMinPx": 450.0,
+      "caveBlobWaveLenMaxPx": 700.0,
+      "caveBlobMinAspect": 2.4,
+      "caveBlobWaveMaxSlope": 0.5,
+      "caveBlobTiltMaxDeg": 25.0,
+      "caveBlobBulgeAmp": 0.35,
+      "caveBlobBulgeLenPx": 520.0,
+      "caveBlobWallAmpPx": 16.0,
+      "caveBlobWallScale": 0.004,
+      "caveBlobEndRoomGain": 0.35,
+      "caveBlobEndRoomLenPx": 180.0,
+      "caveHiddenUntilExposed": true,
+      "caveAspect": 2.0,
+      "caveMinRadiusPx": 15.0,
+      "caveRoughness": 0.1,
+      "caveRoughFreq1": 4.3,
+      "caveRoughFreq2": 8.5,
+      "minerals": [
+        {
+          "mineralType": "Obsidian",
+          "minDepth": 54,
+          "maxDepth": 80,
+          "rarity": "Common",
+          "perChunk": [
+            3,
+            9
+          ],
+          "rockDropWeight": 0.5,
+          "rockDropCount": [
+            2,
+            4
+          ]
+        },
+        {
+          "mineralType": "Quartz",
+          "minDepth": 54,
+          "maxDepth": 80,
+          "rarity": "Common",
+          "perChunk": [
+            3,
+            9
+          ],
+          "rockDropWeight": 0.5,
+          "rockDropCount": [
+            2,
+            4
+          ]
+        },
+        {
+          "mineralType": "Gold",
+          "minDepth": 54,
+          "maxDepth": 80,
+          "rarity": "Common",
+          "perChunk": [
+            3,
+            9
+          ],
+          "rockDropWeight": 0.5,
+          "rockDropCount": [
+            2,
+            4
+          ]
+        },
+        {
+          "mineralType": "Ruby",
+          "minDepth": 54,
+          "maxDepth": 80,
+          "rarity": "Common",
+          "perChunk": [
+            3,
+            9
+          ],
+          "rockDropWeight": 0.5,
+          "rockDropCount": [
+            2,
+            4
+          ]
+        },
+        {
+          "mineralType": "Diamond",
+          "minDepth": 54,
+          "maxDepth": 80,
+          "rarity": "Rare",
+          "perChunk": [
+            1,
+            5
+          ],
+          "rockDropWeight": 0.5,
+          "rockDropCount": [
+            1,
+            2
+          ]
+        },
+        {
+          "mineralType": "LavaStone",
+          "minDepth": 54,
+          "maxDepth": 80,
+          "rarity": "Rare",
+          "perChunk": [
+            1,
+            5
+          ],
+          "rockDropWeight": 0.5,
+          "rockDropCount": [
+            1,
+            2
+          ]
+        }
+      ]
+    },
+    {
+      "tileType": "MeteoriteRock",
+      "maxStaminaReduction": 2.0,
+      "startDepth": -81,
+      "tier": 3,
+      "digRadiusModifier": 0.28,
+      "zoneStatusType": "Radiation",
+      "zoneStatusPerSecond": 2.0,
+      "mineralDensity": 1.0,
+      "caveEnabled": true,
+      "caveScale": 0.0006,
+      "caveThreshold": 0.84,
+      "caveDetail": 0.45,
+      "caveRegionScale": 0.00015,
+      "caveRegionThreshold": 0.3,
+      "caveRegionBand": 0.15,
+      "caveRegionFalloff": 0.16,
+      "caveEdgeMarginPx": 20.0,
+      "caveKeepLargestOnly": true,
+      "caveRockCount": 3,
+      "caveUseBlob": true,
+      "caveBlobChance": 0.7,
+      "caveBlobLengthMinPx": 600.0,
+      "caveBlobLengthMaxPx": 1000.0,
+      "caveBlobRadiusMinPx": 78.0,
+      "caveBlobRadiusMaxPx": 112.0,
+      "caveLinkChance": 0.85,
+      "caveLinkRadiusFactor": 0.85,
+      "caveMaxLinkedChunks": 4,
+      "caveBlobWaveAmpMinPx": 20.0,
+      "caveBlobWaveAmpMaxPx": 120.0,
+      "caveBlobWaveLenMinPx": 450.0,
+      "caveBlobWaveLenMaxPx": 700.0,
+      "caveBlobMinAspect": 2.4,
+      "caveBlobWaveMaxSlope": 0.5,
+      "caveBlobTiltMaxDeg": 25.0,
+      "caveBlobBulgeAmp": 0.35,
+      "caveBlobBulgeLenPx": 520.0,
+      "caveBlobWallAmpPx": 16.0,
+      "caveBlobWallScale": 0.004,
+      "caveBlobEndRoomGain": 0.35,
+      "caveBlobEndRoomLenPx": 180.0,
+      "caveHiddenUntilExposed": true,
+      "caveAspect": 2.0,
+      "caveMinRadiusPx": 15.0,
+      "caveRoughness": 0.1,
+      "caveRoughFreq1": 4.3,
+      "caveRoughFreq2": 8.5,
+      "minerals": [
+        {
+          "mineralType": "Mithril",
+          "minDepth": 81,
+          "maxDepth": 107,
+          "rarity": "Common",
+          "perChunk": [
+            3,
+            9
+          ],
+          "rockDropWeight": 0.5,
+          "rockDropCount": [
+            2,
+            4
+          ]
+        },
+        {
+          "mineralType": "Gravitonium",
+          "minDepth": 81,
+          "maxDepth": 107,
+          "rarity": "Common",
+          "perChunk": [
+            3,
+            9
+          ],
+          "rockDropWeight": 0.5,
+          "rockDropCount": [
+            2,
+            4
+          ]
+        },
+        {
+          "mineralType": "Uranium",
+          "minDepth": 81,
+          "maxDepth": 107,
+          "rarity": "Common",
+          "perChunk": [
+            3,
+            9
+          ],
+          "rockDropWeight": 0.5,
+          "rockDropCount": [
+            2,
+            4
+          ]
+        },
+        {
+          "mineralType": "VoidStone",
+          "minDepth": 81,
+          "maxDepth": 107,
+          "rarity": "Rare",
+          "perChunk": [
+            1,
+            5
+          ],
+          "rockDropWeight": 0.5,
+          "rockDropCount": [
+            1,
+            2
+          ]
+        },
+        {
+          "mineralType": "StarFragment",
+          "minDepth": 81,
+          "maxDepth": 107,
+          "rarity": "Rare",
+          "perChunk": [
+            1,
+            5
+          ],
+          "rockDropWeight": 0.5,
+          "rockDropCount": [
+            1,
+            2
+          ]
+        }
+      ]
+    }
+  ],
+  "elevatorConfig": {
+    "stopOffsets": [ 0, 6, 15 ],
+    "layerStopOffsets": []
+  },
+  "layerBoundaryNoise": {
+    "noiseScale": 0.08,
+    "noiseAmplitude": 2.5
+  },
+  "defaultBlendingProfileName": "default",
+  "blendingProfiles": [
+    {
+      "name": "default",
+      "blendHeightRatio": 0.4,
+      "noiseScale": 0.02,
+      "blurRadius": 10,
+      "blurStrength": 0.8
+    },
+    {
+      "name": "heavy",
+      "blendHeightRatio": 0.55,
+      "noiseScale": 0.025,
+      "blurRadius": 5,
+      "blurStrength": 0.7
+    }
+  ]
+}

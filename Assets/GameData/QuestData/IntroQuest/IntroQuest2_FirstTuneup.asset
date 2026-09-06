@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 682ae6a06896061419f6bf06ef991709, type: 3}
+  m_Name: IntroQuest2_FirstTuneup
+  m_EditorClassIdentifier: Assembly-CSharp::QuestSO
+  questID: 102
+  questNameKey: quest_intro2_name
+  questDescriptionKey: quest_intro2_desc
+  questType: 0
+  requiredPreviousQuestID: 101
+  requiredMiningLevel: 0
+  requirements:
+  - requiredMineral: {fileID: 11400000, guid: 4d317cbff53c9744f8f19711974deaf1, type: 2}
+    requiredAmount: 1
+  rewards:
+  - rewardType: 0
+    moneyAmount: 800
+    itemReward: {fileID: 0}
+    equipmentReward: {fileID: 0}
+    mineralReward: {fileID: 0}
+    rewardAmount: 1
+  acceptDialogue: {fileID: 11400000, guid: e99603bf0486437a82e5946d82653004, type: 2}
+  progressDialogue: {fileID: 11400000, guid: 0e3f3b61a9bf412abad29790efcd90af, type: 2}
+  completeDialogue: {fileID: 11400000, guid: 2253ca5ab9084a7585faaa42c6b03449, type: 2}

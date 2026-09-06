@@ -1,0 +1,72 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 3
+  tags:
+  - dirt
+  - stone
+  - gem
+  - Wall
+  - MineralDug
+  - Ladder
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - Fog
+  - 
+  - Mineral
+  - NoGlobalLight
+  - Items
+  - Player
+  - RockFragmentGhost
+  - RockFragment
+  - Dirt
+  - Ground
+  - Groundmineral
+  - 
+  - DamageZone
+  - 
+  - 
+  - Wall
+  - Ladder
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: Fog
+    uniqueID: 2766684635
+    locked: 0
+  - name: BackGround
+    uniqueID: 3802769309
+    locked: 0
+  - name: Objects
+    uniqueID: 1791956103
+    locked: 0
+  - name: player
+    uniqueID: 2165094039
+    locked: 0
+  - name: Mineral
+    uniqueID: 3131700927
+    locked: 0
+  - name: Map
+    uniqueID: 954804937
+    locked: 0
+  - name: LoadingScreen
+    uniqueID: 2494725931
+    locked: 0
+  m_RenderingLayers:
+  - Default

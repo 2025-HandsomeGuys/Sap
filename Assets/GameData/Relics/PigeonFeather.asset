@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ccf05c1a207592c4dacf9fb73ddab62e, type: 3}
+  m_Name: PigeonFeather
+  m_EditorClassIdentifier: GameScripts::Relic.Data.RelicSO
+  id: 4002
+  displayNameKey: relic_pigeon_feather_name
+  descriptionKey: relic_pigeon_feather_desc
+  icon: {fileID: 0}
+  type: 0
+  maxLevel: 3
+  unlockNodeId: 
+  upgradeCosts:
+  - gold: 100
+    material: 0
+    materialCount: 0
+  - gold: 250
+    material: 0
+    materialCount: 0
+  behaviour:
+    rid: 4010175549867032662
+  references:
+    version: 2
+    RefIds:
+    - rid: 4010175549867032662
+      type: {class: DoubleJumpRelic, ns: Relic, asm: GameScripts}
+      data:
+        airJumpsPerLevel: 010000000100000002000000

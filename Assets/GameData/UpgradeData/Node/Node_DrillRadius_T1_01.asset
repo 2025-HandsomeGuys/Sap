@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 581f7dfb478769e4bba78e5ee790d6fd, type: 3}
+  m_Name: Node_DrillRadius_T1_01
+  m_EditorClassIdentifier: GameScripts::UpgradeNodeSO
+  nodeId: DrillRadius_T1_01
+  displayNameKey: "\uB4DC\uB9B4 \uD655\uC7A5 \uBE44\uD2B8 I"
+  descriptionKey: "\uB4DC\uB9B4\uC774 \uD30C\uB294 \uBC94\uC704\uAC00 +0.05 \uB113\uC5B4\uC9D1\uB2C8\uB2E4(\uAE30\uC900
+    0.5)."
+  icon: {fileID: 0}
+  tier: 1
+  parentNodes:
+  - {fileID: 11400000, guid: 971ec9cc0bbcb7f4399cb7f384ce26c2, type: 2}
+  cost: 3400
+  maxLevel: 1
+  costGrowth: 1.6
+  levelCosts: 
+  effect: {fileID: 11400000, guid: 64f262ad5c543074fa0fa6117aeddda7, type: 2}
+  uiPosition: {x: -87.5, y: 4890}
+  lineBends: []

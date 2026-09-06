@@ -1,0 +1,89 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &2803788051605971244
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2704023030693128336, guid: a724e6052f3f7ed46b7fd4c400a9f57e, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3737993121779897430, guid: a724e6052f3f7ed46b7fd4c400a9f57e, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 2.428
+      objectReference: {fileID: 0}
+    - target: {fileID: 3737993121779897430, guid: a724e6052f3f7ed46b7fd4c400a9f57e, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.53
+      objectReference: {fileID: 0}
+    - target: {fileID: 3737993121779897430, guid: a724e6052f3f7ed46b7fd4c400a9f57e, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3737993121779897430, guid: a724e6052f3f7ed46b7fd4c400a9f57e, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3737993121779897430, guid: a724e6052f3f7ed46b7fd4c400a9f57e, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3737993121779897430, guid: a724e6052f3f7ed46b7fd4c400a9f57e, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3737993121779897430, guid: a724e6052f3f7ed46b7fd4c400a9f57e, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3737993121779897430, guid: a724e6052f3f7ed46b7fd4c400a9f57e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3737993121779897430, guid: a724e6052f3f7ed46b7fd4c400a9f57e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3737993121779897430, guid: a724e6052f3f7ed46b7fd4c400a9f57e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8212192052686620193, guid: a724e6052f3f7ed46b7fd4c400a9f57e, type: 3}
+      propertyPath: m_Name
+      value: DungeonChest
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8212192052686620193, guid: a724e6052f3f7ed46b7fd4c400a9f57e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2742317815631372362}
+  m_SourcePrefab: {fileID: 100100000, guid: a724e6052f3f7ed46b7fd4c400a9f57e, type: 3}
+--- !u!1 &6277630070087051021 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8212192052686620193, guid: a724e6052f3f7ed46b7fd4c400a9f57e, type: 3}
+  m_PrefabInstance: {fileID: 2803788051605971244}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2742317815631372362
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6277630070087051021}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e3e32994ae3ef444bd13a1b486f696b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: GameScripts::DungeonRewardPickup
+  rewardId: reward_1
+  rewardGold: 0
+  mineralRewards: []
+  destination: 0
+  chestAnimator: {fileID: 0}
+  openStateName: Open

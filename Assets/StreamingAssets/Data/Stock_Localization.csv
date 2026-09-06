@@ -1,0 +1,674 @@
+key,kr,en,cn
+STOCK_COMP_MEDIGEN,메디젠 바이오,MediGen Bio,美迪根生物
+STOCK_COMP_MEDIGEN_DESC,백신 및 바이오 의약품 전문 기업,Vaccine and bio-pharma company,疫苗与生物制药公司
+STOCK_COMP_NEXCHIP,넥스칩,NexChip,内克斯芯片
+STOCK_COMP_NEXCHIP_DESC,차세대 반도체 및 파운드리 기업,Next-gen semiconductor and foundry company,下一代半导体与代工企业
+STOCK_COMP_AEROLINK,에어로링크,AeroLink,航空链接
+STOCK_COMP_AEROLINK_DESC,글로벌 물류 및 항공 운송 기업,Global logistics and air transport company,全球物流与航空运输企业
+STOCK_COMP_DEEPAI,딥AI,DeepAI,深度AI
+STOCK_COMP_DEEPAI_DESC,인공지능 및 클라우드 솔루션 제공,AI and cloud solutions provider,人工智能与云解决方案提供商
+STOCK_COMP_ECOENERGY,에코에너지,EcoEnergy,生态能源
+STOCK_COMP_ECOENERGY_DESC,재생 에너지 및 전기차 배터리 기업,Renewable energy and EV battery company,可再生能源与电动车电池企业
+STOCK_COMP_TITANIUM,타이타늄 디펜스,Titanium Defense,钛防务
+STOCK_COMP_TITANIUM_DESC,고강도 특수 합금 및 군용 우주 방산 소재 전문 기업,Special high-strength alloys and military aerospace defense materials company,特种高强度合金及军用航天防务材料公司
+STOCK_COMP_FUTUREFOOD,미래푸드 테크,Future Food Tech,未来食品科技
+STOCK_COMP_FUTUREFOOD_DESC,대체 육류 및 고부가가치 미래 식량 솔루션 선도 기업,Alternative meats and high-value future food solutions leader,替代肉类及高附加值未来食品解决方案领先企业
+STOCK_COMP_VITABANK,비타 핀테크,Vita Fintech,维他金融科技
+STOCK_COMP_VITABANK_DESC,초고속 개인 맞춤형 금융 자산 포트폴리오 플랫폼 기업,Ultra-fast personalized financial portfolio platform company,极速个性化金融资产组合平台企业
+STOCK_COMP_STARSPACE,스타 스페이스,Star Space,恒星航天
+STOCK_COMP_STARSPACE_DESC,민간 인공위성 발사 및 차세대 행성 탐사 개발 기업,Private satellite launches and next-gen planetary exploration developer,民营卫星发射及下一代行星探测开发企业
+STOCK_COMP_CYBERNET,사이버넷 엔터,CyberNet Enter,网际娱乐
+STOCK_COMP_CYBERNET_DESC,가상현실 기반 다중 접속 메타버스 플랫폼 개발사,Virtual reality-based multi-access metaverse platform developer,基于虚拟现实的多人联机元宇宙平台开发商
+STOCK_COMP_DAILYMART,데일리마트,DailyMart,每日超市
+STOCK_COMP_DAILYMART_DESC,전국 편의점·생활용품 유통 체인,Nationwide convenience store and daily goods chain,全国便利店与生活用品流通连锁
+STOCK_COMP_DEEPROCK,딥록 마이닝,DeepRock Mining,深岩矿业
+STOCK_COMP_DEEPROCK_DESC,소규모 광산 개발 및 원석 채굴 전문 기업,Small-scale mine development and ore extraction company,小型矿山开发与原石开采专业企业
+STOCK_COMP_SUNWELL,선웰 오일,SunWell Oil,阳井石油
+STOCK_COMP_SUNWELL_DESC,정유 및 주유소 네트워크 운영 기업,Oil refining and gas station network operator,炼油及加油站网络运营企业
+STOCK_COMP_PIXELWORKS,픽셀웍스,PixelWorks,像素工坊
+STOCK_COMP_PIXELWORKS_DESC,인디 게임 및 모바일 콘텐츠 개발 스튜디오,Indie game and mobile content studio,独立游戏与移动内容开发工作室
+STOCK_COMP_FROSTLINE,프로스트라인,FrostLine,冰霜航线
+STOCK_COMP_FROSTLINE_DESC,신선식품 콜드체인 물류 전문 기업,Fresh food cold-chain logistics specialist,生鲜食品冷链物流专业企业
+STOCK_COMP_STEELCORE,스틸코어,SteelCore,钢芯集团
+STOCK_COMP_STEELCORE_DESC,특수강 및 산업용 금속 소재 생산 기업,Special steel and industrial metal materials producer,特种钢与工业金属材料生产企业
+STOCK_COMP_BIOPURE,바이오퓨어,BioPure,倍优纯生物
+STOCK_COMP_BIOPURE_DESC,제네릭 의약품 및 건강기능식품 제조사,Generic drugs and health supplements manufacturer,仿制药与保健功能食品制造商
+STOCK_COMP_VOLTCELL,볼트셀,VoltCell,伏特电芯
+STOCK_COMP_VOLTCELL_DESC,전기차 2차전지 및 에너지 저장 장치 기업,EV batteries and energy storage systems company,电动车二次电池与储能装置企业
+STOCK_COMP_LUXORA,럭스오라,Luxora,璐克索拉
+STOCK_COMP_LUXORA_DESC,글로벌 명품 브랜드 및 프리미엄 유통 그룹,Global luxury brands and premium retail group,全球奢侈品牌与高端流通集团
+STOCK_COMP_AEGIS,이지스 다이내믹스,Aegis Dynamics,神盾动力
+STOCK_COMP_AEGIS_DESC,무인 방어 체계 및 정밀 유도 무기 개발사,Unmanned defense systems and precision weapons developer,无人防御体系与精确制导武器开发商
+STOCK_COMP_GOLDBRIDGE,골드브릿지 금융지주,GoldBridge Holdings,金桥金融控股
+STOCK_COMP_GOLDBRIDGE_DESC,초대형 종합 금융 지주 그룹,Mega-scale comprehensive financial holding group,超大型综合金融控股集团
+STOCK_COMP_HELIOS,헬리오스 퓨전,Helios Fusion,赫利俄斯聚变
+STOCK_COMP_HELIOS_DESC,소형 핵융합로 상용화 연구 개발 기업,Compact fusion reactor commercialization R&D company,小型核聚变堆商用化研发企业
+STOCK_COMP_GENOBIO,제노바이오,GenoBio,基诺生物
+STOCK_COMP_GENOBIO_DESC,유전자 편집 치료제 개발 전문 바이오 기업,Gene-editing therapeutics bio company,基因编辑治疗剂开发专业生物企业
+STOCK_COMP_QUANTUMCORE,퀀텀코어,QuantumCore,量子核
+STOCK_COMP_QUANTUMCORE_DESC,양자 컴퓨팅 칩 설계 및 극저온 하드웨어 기업,Quantum computing chip design and cryogenic hardware company,量子计算芯片设计与超低温硬件企业
+STOCK_COMP_COREDRILL,코어드릴 헤비,CoreDrill Heavy,核钻重工
+STOCK_COMP_COREDRILL_DESC,행성 심부 굴착 장비 및 희귀 자원 채굴 대기업,Planetary deep-drilling equipment and rare resource mining giant,行星深部钻探设备与稀有资源开采巨头
+STOCK_COMP_GAIA,가이아 에너지,Gaia Energy,盖亚能源
+STOCK_COMP_GAIA_DESC,궤도 태양광 발전 및 글로벌 전력망 운영 대기업,Orbital solar power and global grid operations giant,轨道太阳能发电与全球电网运营巨头
+STOCK_COMP_ORBITALX,오비탈X,OrbitalX,轨道X
+STOCK_COMP_ORBITALX_DESC,궤도 정거장 건설 및 심우주 수송 인프라 기업,Orbital station construction and deep-space transport infrastructure company,轨道空间站建设与深空运输基础设施企业
+STOCK_COMP_HYPERNET,하이퍼넷,HyperNet,超网科技
+STOCK_COMP_HYPERNET_DESC,초거대 AI 플랫폼 및 글로벌 클라우드 기업,Hyperscale AI platform and global cloud company,超大规模AI平台与全球云企业
+STOCK_COMP_ETERNA,이터나 바이오,Eterna Bio,永恒生物
+STOCK_COMP_ETERNA_DESC,수명 연장 및 세포 재생 치료 선도 기업,Life extension and cell regeneration therapy leader,延寿与细胞再生治疗领先企业
+STOCK_COMP_ATLAS,아틀라스 캐피탈,Atlas Capital,阿特拉斯资本
+STOCK_COMP_ATLAS_DESC,세계 최대 자산 운용 및 투자 은행 그룹,World's largest asset management and investment banking group,全球最大资产管理与投资银行集团
+CHAIN_PANDEMIC,감염병 사태,Pandemic Crisis,传染病事件
+CHAIN_CHIP_SHORTAGE,반도체 공급난,Chip Shortage,芯片供应危机
+CHAIN_AI_REGULATION,AI 규제 법안,AI Regulation Bill,AI监管法案
+CHAIN_SPACE_DEFENSE,우주 방산 협력,Space Defense Cooperation,航天防务合作
+CHAIN_RENEWABLE_BREAKTHROUGH,재생 에너지 혁신,Renewable Energy Breakthrough,可再生能源突破
+CHAIN_RESOURCE_RUSH,희귀 광맥 러시,Rare Vein Rush,稀有矿脉热潮
+CHAIN_OIL_SHOCK,국제 유가 파동,Oil Price Shock,国际油价波动
+CHAIN_GAME_BOOM,차세대 게임 대전,Next-Gen Gaming Boom,次世代游戏大战
+CHAIN_BANK_STRESS,소비재 신뢰 위기,Consumer Trust Crisis,消费品信任危机
+CHAIN_LOGISTICS_STRIKE,물류 총파업,Logistics General Strike,物流总罢工
+NEWS_PANDEMIC_001_TITLE,{region}에 원인불명 {disease} 확산 우려,Concerns over unknown {disease} spread in {region},{region}对不明{disease}扩散的担忧
+NEWS_PANDEMIC_001_SUMMARY,최근 {region} 지역에서 원인을 알 수 없는 {disease} 환자가 급증하고 있습니다.,There is a sudden increase in unknown {disease} patients in {region}.,最近{region}地区不明{disease}患者激增。
+NEWS_PANDEMIC_002A_TITLE,"보건당국, {region} {disease} 확산 공식 확인",Health authorities officially confirm {disease} spread in {region},卫生当局正式确认{region} {disease}扩散
+NEWS_PANDEMIC_002A_SUMMARY,보건당국이 감염병 확산을 공식 발표하며 제약업계가 주목받고 있습니다.,"Health authorities officially announced the spread, putting the pharma sector in the spotlight.",卫生当局正式宣布传染病扩散，制药行业备受瞩目。
+NEWS_PANDEMIC_002B_TITLE,{region} {disease} 확산 소식은 오보로 밝혀져,{disease} spread news in {region} turns out to be false,{region} {disease}扩散消息被证实为误报
+NEWS_PANDEMIC_002B_SUMMARY,보건당국의 조사 결과 단순 계절성 질환으로 확인되었습니다.,Investigation showed it was merely a seasonal illness.,调查结果显示这仅仅是季节性疾病。
+NEWS_PANDEMIC_003A_TITLE,"주요 제약사, 백신 개발 본격 착수",Major pharma companies begin vaccine development,主要制药公司开始疫苗开发
+NEWS_PANDEMIC_003A_SUMMARY,백신 개발 소식에 시장의 불안감이 점차 안정되고 있습니다.,Market anxiety is settling down with news of vaccine development.,随着疫苗开发的消息，市场焦虑逐渐平息。
+NEWS_PANDEMIC_003B_TITLE,"{region} 확산세 감소, 일상 복귀 조짐","{region} spread decreases, signs of return to normal",{region}扩散减少，恢复日常的迹象
+NEWS_PANDEMIC_003B_SUMMARY,확산세가 눈에 띄게 꺾이며 시장이 정상화되고 있습니다.,The spread has noticeably decreased and the market is normalizing.,扩散明显减少，市场正在恢复正常。
+NEWS_CHIP_001_TITLE,주요 파운드리 가동 중단 루머,Rumors of major foundry shutdown,主要代工厂停工传闻
+NEWS_CHIP_001_SUMMARY,반도체 생산 차질 우려로 관련 업계에 긴장감이 돌고 있습니다.,Concerns over semiconductor production disruptions are raising tensions.,对半导体生产中断的担忧令相关行业气氛紧张。
+NEWS_CHIP_002A_TITLE,"대형 팹 화재 발생, 반도체 공급 직격탄",Fire at mega fab hits semiconductor supply,大型晶圆厂火灾直击半导体供应
+NEWS_CHIP_002A_SUMMARY,화재로 인한 생산 중단이 공식 확인되어 기술주가 타격을 입고 있습니다.,"Production halt due to fire is confirmed, hitting tech stocks.",火灾导致的停工得到官方确认，科技股受到打击。
+NEWS_CHIP_002B_TITLE,"정부, 반도체 산업 특별 보조금 지원 발표",Gov announces special subsidies for semiconductor industry,政府宣布为半导体行业提供特别补贴
+NEWS_CHIP_002B_SUMMARY,정부의 지원책으로 반도체 업계가 큰 호재를 맞았습니다.,The government's support brings a big boost to the semiconductor industry.,政府的支持措施给半导体行业带来了巨大利好。
+NEWS_CHIP_003_TITLE,반도체 수급 점진적 안정화,Gradual stabilization of semiconductor supply,半导体供需逐步稳定
+NEWS_CHIP_003_SUMMARY,공급망이 서서히 회복되며 기술주가 정상 궤도에 오르고 있습니다.,"Supply chains are slowly recovering, bringing tech stocks back to normal.",供应链缓慢恢复，科技股重回正轨。
+NEWS_AI_001_TITLE,"정부, 인공지능 윤리 규제 법안 추진 루머",Rumors of gov pushing AI ethics regulation bill,政府推动人工智能伦理监管法案传闻
+NEWS_AI_001_SUMMARY,기술 오용 방지를 위한 인공지능 강력 규제 소식에 관련 업계가 긴장하고 있습니다.,Tensions rise as rumors spread of strict AI regulations to prevent technology misuse.,防止技术滥用的人工智能严厉监管传闻引发相关行业紧张。
+NEWS_AI_002A_TITLE,초강력 AI 규제 안건 통과 공식 확인,Official confirmation of passing strict AI regulation bill,超强AI监管议案通过得到官方确认
+NEWS_AI_002A_SUMMARY,정부가 고성능 AI 개발 통제 조치를 공식화하며 기술 기업들이 즉각 충격을 받았습니다.,"The gov formalized controls on high-performance AI, hitting tech firms immediately.",政府将高能AI开发控制措施正式化，科技企业立即受到冲击。
+NEWS_AI_002B_TITLE,인공지능 규제 가이드라인 대폭 완화 공식 발표,Official announcement of relaxed AI regulation guidelines,人工智能监管指南大幅放宽官方宣布
+NEWS_AI_002B_SUMMARY,업계의 반발을 수용해 완화된 가이드라인이 발표되자 AI 업계에 강력한 호재가 돌고 있습니다.,"A relaxed guideline has been announced, bringing a strong boost to the AI industry.",采纳行业反对意见的宽限指南发布，给AI行业带来了强力利好。
+NEWS_AI_003_TITLE,인공지능 시장 안정화 및 규제 적응,AI market stabilization and adaptation to regulations,人工智能市场稳定及监管适应
+NEWS_AI_003_SUMMARY,새로운 규제 가이드라인에 시장이 빠르게 적응하며 기술주들이 정상 궤도에 오르고 있습니다.,"The market is quickly adapting to the new guidelines, bringing tech stocks back to normal.",市场迅速适应新监管指南，科技股重回正轨。
+NEWS_DEF_001_TITLE,{region} 연합 궤도 방어망 공동 계약 체결설,{region} coalition orbital defense contract rumors,{region}联合轨道防御网共同签约传闻
+NEWS_DEF_001_SUMMARY,대규모 위성 국방 계약 체결 루머로 인해 방산 업계가 뜨겁게 달아오르고 있습니다.,Aerospace defense stocks are surging on rumors of a massive satellite defense contract.,由于大规模卫星国防签约传闻，防务行业正在急剧升温。
+NEWS_DEF_002A_TITLE,"연합 기구, {region} 궤도 방어망 공식 계약 발표",Coalition officially announces {region} orbital defense contract,联合机构正式宣布{region}轨道防御网签约
+NEWS_DEF_002A_SUMMARY,천문학적 규모의 우주 안보 사업 공동 계약이 확정되어 관련 방산주가 폭발적인 상승세를 탑니다.,"The joint contract for a multi-billion space security project has been finalized, sparking huge rises.",天文级规模的太空安全项目共同签约确立，相关防务股迎来爆发式上涨。
+NEWS_DEF_002B_TITLE,우주 방어망 공동 개발 프로젝트 무산 공식 선언,Official cancellation of joint space defense project,太空防御网共同开发项目宣告流产官方声明
+NEWS_DEF_002B_SUMMARY,예산 마찰 및 협상 결렬로 우주 국방 사업이 전면 무산되어 주주 신뢰가 흔들리고 있습니다.,"Negotiations fell through due to budget conflicts, shaking investor confidence.",由于预算摩擦和谈判破裂，太空国防项目全盘取消，股东信心动摇。
+NEWS_DEF_003A_TITLE,"차세대 미사일 요격 테스트 성공, 방산 시장 서서히 안정",Next-gen missile interception test succeeds; defense market settles,下一代导弹拦截测试成功，防务市场逐步稳定
+NEWS_DEF_003A_SUMMARY,전술 시험 성공 소식으로 시장의 단기 급변성이 안정적인 성장세로 복귀하고 있습니다.,Success in tactical tests has guided market volatility back to stable growth.,战术测试成功消息使市场短期波动性回归稳定增长。
+NEWS_DEF_003B_TITLE,우주 방산 충격 서서히 회복 추세,Space defense stock shock is slowly recovering,太空防务股冲击逐步呈现恢复趋势
+NEWS_DEF_003B_SUMMARY,악재 소진 이후 신소재 분야 핵심 매출을 기반으로 주가가 진정세를 찾고 있습니다.,"Following the bad news, stock prices are settling based on core new material sales.",恶质消退后，股价依托新材料领域核心营收逐步企稳。
+NEWS_REN_001_TITLE,초전도 하이브리드 솔라 셀 특허 획득 임박설,Rumors of superconducting hybrid solar cell patent acquisition imminent,超导混合太阳能电池专利获得临近传闻
+NEWS_REN_001_SUMMARY,신기술을 활용한 고효율 태양광 솔라 셀 상용화 기대감에 친환경 기술주들이 요동치고 있습니다.,Eco-friendly tech stocks are fluctuating on hopes of commercializing high-efficiency solar cells.,利用新技术的超高效率太阳能电池商用化期待感促使环保科技股波动。
+NEWS_REN_002A_TITLE,"에너지 특허청, 차세대 친환경 발전 하이브리드 특허 공식 승인",Energy Patent Office officially approves next-gen hybrid energy patent,能源专利局正式批准下一代环保发电混合专利
+NEWS_REN_002A_SUMMARY,특허 취득이 공식 확인되며 신재생 에너지 기업들이 독점적 지위를 확보해 급상승세에 들어섰습니다.,"With the patent confirmed, renewable energy firms secured dominant status and surged.",专利获取得到官方确认，新再生能源企业确保垄断地位，进入急剧上升期。
+NEWS_REN_002B_TITLE,실험 과부하 폭발 사고 공식 발표로 인한 논란,Controversy over official announcement of experimental overload explosion,实验超载爆炸事故官方公布引发争议
+NEWS_REN_002B_SUMMARY,학계 재현 실험에서 연쇄 합선 화재 사고가 터지며 핵심 데이터 신뢰성에 타격을 받았습니다.,"A series of short-circuit fires occurred during academic replications, hitting credibility.",学术界再现实验中爆发连环短路火灾事故，核心数据可靠性遭遇打击。
+NEWS_REN_003A_TITLE,"신재생 발전 시설 보급 확대 가속화, 친환경주 전반 안정화",Accelerating expansion of renewable energy plants; green stocks stabilize,新再生发电设施普及扩大加速，环保股整体稳定
+NEWS_REN_003A_SUMMARY,정부의 양산 가이드라인 도입으로 시장의 등락폭이 서서히 안정권에 접어들고 있습니다.,The introduction of government production guidelines has stabilized market fluctuations.,随着政府量产指南的引入，市场波动幅度逐渐进入稳定区间。
+NEWS_REN_003B_TITLE,안전성 정밀 정산 완료 및 하락 진정세,Safety checks completed; downward trend settles down,安全性精密盘点完毕，下跌趋势企稳
+NEWS_REN_003B_SUMMARY,국가 기관의 안전 재인증 및 신소재 보안 강화 대책 마련으로 낙폭이 멈추기 시작했습니다.,Recertification by national authorities and new material security measures have stopped the drop.,国家机构安全再认证和新材料安保强化对策出台使跌幅开始停步。
+NEWS_RUSH_001_TITLE,{region} 지하 심층부 대규모 희귀 광맥 발견설,Rumors of massive rare vein found deep beneath {region},{region}地下深层发现大规模稀有矿脉传闻
+NEWS_RUSH_001_SUMMARY,희귀 금속 광맥 발견 소문이 퍼지며 자원·채굴주가 들썩이고 있습니다.,Resource and mining stocks stir on rumors of a rare metal vein discovery.,稀有金属矿脉发现传闻扩散，资源与采矿股蠢蠢欲动。
+NEWS_RUSH_002A_TITLE,지질조사국 매장량 공식 확인 — 채굴권 경쟁 돌입,Geological survey confirms reserves; mining rights race begins,地质调查局正式确认储量，开采权竞争开启
+NEWS_RUSH_002A_SUMMARY,천문학적 매장량이 공식 확인되며 채굴 장비·소재 기업들이 폭등세를 타고 있습니다.,Mining equipment and materials firms surge as astronomical reserves are confirmed.,天文级储量得到官方确认，采矿设备与材料企业暴涨。
+NEWS_RUSH_002B_TITLE,시추 결과 발표 — 매장량 부풀리기로 판명,Drilling results reveal inflated reserve claims,钻探结果公布，储量夸大被证实
+NEWS_RUSH_002B_SUMMARY,실제 시추 결과가 기대에 크게 못 미치며 자원주 투자 심리가 급랭했습니다.,Resource stock sentiment freezes as drilling results fall far short of expectations.,实际钻探结果远低于预期，资源股投资情绪骤冷。
+NEWS_RUSH_003A_TITLE,채굴 설비 증설 본격화 — 자원주 안정세,Mining capacity expansion begins; resource stocks stabilize,采矿设备扩建全面启动，资源股企稳
+NEWS_RUSH_003A_SUMMARY,신규 광산 개발이 본궤도에 오르며 시장이 안정적인 성장세로 접어들고 있습니다.,The market settles into stable growth as new mine development gets on track.,新矿山开发步入正轨，市场进入稳定增长。
+NEWS_RUSH_003B_TITLE,광맥 소동 일단락 — 시장 진정 국면,Vein frenzy winds down; market calms,矿脉风波告一段落，市场趋于平静
+NEWS_RUSH_003B_SUMMARY,과열됐던 투기 수요가 빠져나가며 자원주가 제자리를 찾아가고 있습니다.,Resource stocks return to normal as speculative demand drains away.,过热的投机需求退场，资源股回归正常。
+NEWS_OIL_001_TITLE,주요 산유국 대규모 감산 합의 임박설,Rumors of major oil producers nearing output cut deal,主要产油国大规模减产协议临近传闻
+NEWS_OIL_001_SUMMARY,산유국들의 감산 논의 소문에 에너지 시장이 술렁이고 있습니다.,Energy markets stir on rumors of production cut talks.,产油国减产磋商传闻令能源市场躁动。
+NEWS_OIL_002A_TITLE,산유국 연합 감산 공식 발표 — 유가 급등,Oil coalition officially announces cuts; prices soar,产油国联盟正式宣布减产，油价飙升
+NEWS_OIL_002A_SUMMARY,감산 합의가 공식화되며 정유·에너지 기업의 마진 개선 기대가 커지고 있습니다.,Refining and energy firms expect better margins as the cut deal is formalized.,减产协议正式化，炼油与能源企业利润率改善预期升温。
+NEWS_OIL_002B_TITLE,감산 협상 결렬 — 증산 경쟁 선언,Output talks collapse; production war declared,减产谈判破裂，宣布增产竞争
+NEWS_OIL_002B_SUMMARY,협상 결렬로 공급 과잉 우려가 커지며 에너지주가 급락하고 있습니다.,Energy stocks plunge on oversupply fears after talks collapse.,谈判破裂令供应过剩担忧加剧，能源股急跌。
+NEWS_OIL_003A_TITLE,고유가 국면 적응 — 에너지 시장 안정,Markets adapt to high oil prices; energy stabilizes,市场适应高油价，能源板块稳定
+NEWS_OIL_003A_SUMMARY,고유가에 시장이 적응하며 에너지주의 변동성이 잦아들고 있습니다.,Energy stock volatility eases as markets adapt to higher prices.,市场逐渐适应高油价，能源股波动趋缓。
+NEWS_OIL_003B_TITLE,유가 급락세 진정 — 수급 재조정,Oil price slide settles; supply rebalances,油价急跌企稳，供需再平衡
+NEWS_OIL_003B_SUMMARY,공급 재조정이 이뤄지며 유가와 에너지주가 바닥을 다지고 있습니다.,Oil prices and energy stocks find a floor as supply rebalances.,供应再调整，油价与能源股筑底。
+NEWS_GAME_001_TITLE,차세대 풀다이브 VR 기기 연내 출시설,Rumors of next-gen full-dive VR device launching this year,次世代全潜入VR设备年内上市传闻
+NEWS_GAME_001_SUMMARY,풀다이브 기기 출시 소문에 게임·미디어주가 들썩이고 있습니다.,Gaming and media stocks stir on full-dive device launch rumors.,全潜入设备上市传闻令游戏与媒体股躁动。
+NEWS_GAME_002A_TITLE,풀다이브 VR 출시 첫 주 판매 신기록,Full-dive VR sets sales record in launch week,全潜入VR首周销售刷新纪录
+NEWS_GAME_002A_SUMMARY,출시 첫 주 판매 신기록을 세우며 게임 플랫폼 생태계 전반이 급성장하고 있습니다.,The whole gaming platform ecosystem booms after record-breaking launch sales.,首周销售刷新纪录，游戏平台生态全面高速增长。
+NEWS_GAME_002B_TITLE,출시 직후 대규모 서버 마비·환불 사태,Massive server outage and refund wave right after launch,上市伊始爆发大规模服务器瘫痪与退款潮
+NEWS_GAME_002B_SUMMARY,서버 마비와 환불 요구가 이어지며 게임·미디어주 투자 심리가 얼어붙었습니다.,Gaming and media stock sentiment freezes amid outages and refund demands.,服务器瘫痪与退款诉求不断，游戏与媒体股情绪冻结。
+NEWS_GAME_003A_TITLE,콘텐츠 라인업 확장 — 게임주 상승세 유지,Content lineup expands; gaming stocks hold gains,内容阵容扩充，游戏股维持涨势
+NEWS_GAME_003A_SUMMARY,후속 콘텐츠가 이어지며 게임주가 안정적인 상승 흐름을 유지하고 있습니다.,Gaming stocks hold a steady uptrend as follow-up content rolls out.,后续内容接连上线，游戏股保持稳定上行。
+NEWS_GAME_003B_TITLE,보상 패치 배포 — 게임주 낙폭 진정,Compensation patch ships; gaming stock slide eases,补偿补丁发布，游戏股跌幅趋缓
+NEWS_GAME_003B_SUMMARY,보상안이 발표되며 이용자 신뢰가 서서히 회복되고 있습니다.,User trust slowly recovers after compensation plans are announced.,补偿方案公布，用户信任逐步恢复。
+NEWS_BANK_001_TITLE,대형 소비재 기업 실적 부풀리기 의혹,Major consumer brand suspected of inflating results,大型消费品企业业绩虚增疑云
+NEWS_BANK_001_SUMMARY,매출·재고 부풀리기 루머가 돌며 소비재주 전반에 불안감이 번지고 있습니다.,Anxiety spreads across consumer stocks on sales and inventory inflation rumors.,销售与库存虚增传闻流传，消费品股整体弥漫不安。
+NEWS_BANK_002A_TITLE,실적 조작 공식 확인 — 대규모 리콜·환불 사태,Results manipulation confirmed; mass recall and refunds,业绩造假获官方确认，爆发大规模召回与退款
+NEWS_BANK_002A_SUMMARY,회계 부실이 사실로 드러나며 소비재주가 큰 충격을 받았습니다.,Consumer stocks take a heavy hit as the accounting fraud is confirmed.,会计造假被证实，消费品股遭受重创。
+NEWS_BANK_002B_TITLE,전 소비재 기업 회계 감리 통과 공식 발표,All consumer firms officially pass accounting audit,全部消费品企业通过会计审计官方公布
+NEWS_BANK_002B_SUMMARY,건전성 우려가 해소되며 소비재주에 안도 랠리가 펼쳐지고 있습니다.,A relief rally unfolds in consumer stocks as soundness fears clear.,稳健性担忧消除，消费品股上演安心反弹。
+NEWS_BANK_003A_TITLE,소비재 업계 구조조정 마무리 — 신뢰 회복 국면,Consumer industry restructuring wraps up; trust recovers,消费品行业重组收尾，信任恢复阶段
+NEWS_BANK_003A_SUMMARY,구조조정이 마무리 단계에 접어들며 소비 시장이 안정을 되찾고 있습니다.,Consumer markets regain stability as restructuring enters its final stage.,重组进入收尾阶段，消费市场恢复稳定。
+NEWS_BANK_003B_TITLE,소비재 시장 평온 회복,Consumer markets return to calm,消费品市场恢复平静
+NEWS_BANK_003B_SUMMARY,불안 요인이 해소된 소비재주가 정상 궤도로 복귀했습니다.,Consumer stocks return to normal as anxiety factors clear.,不安因素消除，消费品股重回正轨。
+NEWS_STRIKE_001_TITLE,전국 항만 노조 총파업 예고,Nationwide port unions announce general strike plan,全国港口工会预告总罢工
+NEWS_STRIKE_001_SUMMARY,항만 노조의 총파업 예고에 물류 대란 우려가 커지고 있습니다.,Fears of logistics chaos grow as port unions signal a general strike.,港口工会预告总罢工，物流混乱担忧加剧。
+NEWS_STRIKE_002A_TITLE,총파업 돌입 — 전국 물류망 마비,General strike begins; nationwide logistics paralyzed,总罢工开始，全国物流网瘫痪
+NEWS_STRIKE_002A_SUMMARY,물류망이 마비되며 운송·유통 업계 전반이 직격탄을 맞고 있습니다.,Transport and distribution sectors take a direct hit as logistics networks stall.,物流网瘫痪，运输与流通行业遭受正面打击。
+NEWS_STRIKE_002B_TITLE,노사 막판 협상 극적 타결,Last-minute labor deal dramatically reached,劳资最后关头戏剧性达成协议
+NEWS_STRIKE_002B_SUMMARY,파업이 철회되며 물류주가 안도 속에 반등하고 있습니다.,Logistics stocks rebound in relief as the strike is called off.,罢工撤回，物流股在安心情绪中反弹。
+NEWS_STRIKE_003A_TITLE,물류 정상화 단계적 진행,Logistics normalization proceeds in stages,物流分阶段恢复正常
+NEWS_STRIKE_003A_SUMMARY,적체됐던 물동량이 풀리며 물류 업계가 회복 국면에 들어섰습니다.,The logistics sector enters recovery as backlogged cargo clears.,积压货量疏解，物流行业进入恢复阶段。
+NEWS_STRIKE_003B_TITLE,물류 업계 안정세 복귀,Logistics sector returns to stability,物流行业回归稳定
+NEWS_STRIKE_003B_SUMMARY,파업 이슈가 마무리되며 물류주가 평소 흐름을 되찾았습니다.,Logistics stocks resume their usual course as the strike issue closes.,罢工议题落幕，物流股恢复常态。
+NEWS_INDIE_FOOD_001_TITLE,"보건당국, 인공 배양육 가공식품 유통 공식 허가 승인",Health authorities officially approve alternative meat processed food sales,卫生当局正式批准人工培养肉加工食品流通许可
+NEWS_INDIE_FOOD_001_SUMMARY,대체 식량 시장의 빗장이 풀리며 고부가가치 가공식품 개발사들의 실적 개선이 기대되고 있습니다.,"The barriers to the alternative food market have opened, raising expectation for developers.",替代食品市场壁垒解除，高附加值加工食品开发商的业绩改善令人期待。
+NEWS_INDIE_GAME_001_TITLE,차세대 다중 접속 메타버스 VR 게임 출시 첫날 백만 장 공식 돌파,Next-gen VR metaverse game sales officially surpass 1M copies on day one,下一代多人联机元宇宙VR游戏首发第一天官方突破百万张
+NEWS_INDIE_GAME_001_SUMMARY,글로벌 다운로드 순위 1위를 차지하며 가상현실 플랫폼 시장이 폭발적인 성장을 입증했습니다.,"Ranking first in global downloads, the virtual reality platform has proven explosive growth.",斩获全球下载排行第一，虚拟现实平台市场证明了其爆发式增长。
+NEWS_INDIE_FINANCE_001_TITLE,"정부, 대규모 내수 진작 대책 공식 발표",Government officially unveils major consumption stimulus,政府正式公布大规模内需刺激对策
+NEWS_INDIE_FINANCE_001_SUMMARY,내수 진작을 위한 소비 지원책 소식에 소비재 전반의 매출 증가가 기대됩니다.,Consumer spending support is expected to lift sales across consumer stocks.,提振内需的消费支持政策，预示消费品整体销售增长。
+NEWS_INDIE_FINANCE_002_TITLE,"공정위, 대형 유통·소비재 기업 불공정 거래 전수조사 개시",Antitrust regulator opens sweeping unfair-trade probe into retailers,公平交易委员会启动对大型零售与消费品企业的不公平交易普查
+NEWS_INDIE_FINANCE_002_SUMMARY,조사에 따른 규제 위험이 부각되며 주요 소비재 기업의 주가 변동성이 확대되고 있습니다.,Regulatory risk from the probe is raising volatility for major consumer firms.,调查带来的监管风险凸显，主要消费品企业股价波动性扩大。
+NEWS_INDIE_PHARMA_001_TITLE,국가 항암 백신 개발 임상 3상 데이터 통계적 유의성 확보 실패 공식 선언,National cancer vaccine phase 3 clinical trial officially fails,国家抗癌疫苗开发临床三期数据官方宣告未能确保统计学显著性
+NEWS_INDIE_PHARMA_001_SUMMARY,기대를 모았던 항암 파이프라인의 핵심 임상 시험이 목표치에 미치지 못해 투자 심리가 급격히 냉각되었습니다.,"The core trial for the highly anticipated cancer pipeline missed targets, freezing investor sentiment.",备受期待的抗癌研发管线核心临床试验未达预期目标，投资情绪急剧冷却。
+NEWS_INDIE_CHIP_001_TITLE,차세대 극자외선(EUV) 3나노 미세 공정 핵심 노광 기술 특허 공식 취득,Superconducting EUV 3nm process key lithography patent officially acquired,下一代极紫外(EUV) 3纳米微细工艺核心光刻技术专利官方获取
+NEWS_INDIE_CHIP_001_SUMMARY,나노 선폭 한계를 돌파한 특허 승인 소식에 기술적 독점력을 선점하며 칩 제조주가 큰 수혜를 입었습니다.,"Patent news breaking nano-width limits gave tech monopolies, benefiting chip makers.",突破纳米线宽极限的专利通过消息确立了技术独占力，芯片制造股大受裨益。
+NEWS_INDIE_LOGISTICS_001_TITLE,"글로벌 운하 정체 병목 현상 장기화, 운항 지수 최고치 경신 발표",Global canal bottleneck prolonged; shipping index officially hits record high,全球运河拥堵瓶颈现象长期化，航运指数官方刷新最高值
+NEWS_INDIE_LOGISTICS_001_SUMMARY,글로벌 해상 운송로 경색으로 운임 단가가 급상승하며 주요 종합 물류주가 강세를 띠고 있습니다.,Comprehensive logistics stocks surge as transport rates spike due to sea bottleneck.,全球海上运输通道梗阻导致运价单价急剧上涨，主要综合物流股呈现强势。
+NEWS_INDIE_HARDWARE_001_TITLE,핵심 소자 생산 기지 대규모 화재로 전력선 일부 소실 및 가동 중단 공식 발표,Mega fire at key manufacturing plant halts power lines and production,核心器件生产基地大火导致部分电力线烧毁，官方宣布停工
+NEWS_INDIE_HARDWARE_001_SUMMARY,핵심 트랜지스터 등 부품 가공 공장의 일시 중단이 공식 확인되며 하드웨어 섹터가 직격탄을 맞았습니다.,A shutdown at the key transistor plant hit the hardware sector directly.,核心晶体管等部件加工厂临时停工得到官方确认，硬件板块遭受正面打击。
+NEWS_INDIE_AI_001_TITLE,세계 최고 수준의 멀티모달 초거대 인공지능 추론 엔진 오픈소스 공식 배포,World-class multimodal giant AI inference engine officially open-sourced,全球最高水平的多模态超大型人工智能推理引擎开源官方发布
+NEWS_INDIE_AI_001_SUMMARY,어디서나 구동 가능한 고성능 모델의 무료 배포로 클라우드 및 AI 소프트웨어 업계 전반의 혁신이 예상됩니다.,Innovation expected in cloud and AI software with the free release of high-performance models.,可在任何地方运行的高性能模型免费发布，预计云和AI软件行业整体将迎来创新。
+NEWS_INDIE_ENERGY_001_TITLE,"정부, 신재생 에너지 설비 설치 기업 대상 특별 세액 공제 공식 공표",Gov officially announces special tax credits for installing renewable energy plants,政府官方公布面向新再生能源设施安装企业的特别税额减免
+NEWS_INDIE_ENERGY_001_SUMMARY,대규모 친환경 특별 보조금 조치가 실현되며 저탄소 솔루션 및 배터리 업계에 호재로 작동하고 있습니다.,"Eco-friendly subsidy measures are implemented, acting as good news for low-carbon and battery sectors.",大规模环保特别补贴措施落地，正为低碳解决方案及电池行业带来实质利好。
+ui_stock_phase_rumor,찌라시,Rumor,小道消息
+ui_stock_phase_official,공식,Official,官方
+ui_stock_phase_fade,소멸,Fading,消退
+ui_stock_sentiment_positive,긍정적,Positive,利好
+ui_stock_sentiment_negative,부정적,Negative,利空
+ui_stock_sentiment_neutral_news,중립,Neutral,中立
+ui_stock_sentiment_fear,공포,Fear,恐慌
+ui_stock_sentiment_greed,탐욕,Greed,贪婪
+ui_stock_sentiment_neutral,중립,Neutral,中立
+ui_stock_no_news,관련 뉴스 없음,No related news,无相关新闻
+ui_stock_no_holding,미보유,Not held,未持有
+ui_stock_price,₩{0:N0},₩{0:N0},₩{0:N0}
+ui_stock_gold,{0:N0} G,{0:N0} G,{0:N0} G
+ui_stock_next_tick,다음 갱신까지 {0},Next update in {0},距下次更新 {0}
+ui_stock_tick_paused,지하에서는 멈춤,Paused underground,地下暂停
+ui_stock_marketcap,시총 {0}등급,Cap {0},市值 {0}级
+ui_stock_holding,보유 {0}주 · 평단 ₩{1:N0} ({2}),Hold {0} sh · avg ₩{1:N0} ({2}),持有 {0}股 · 均价 ₩{1:N0} ({2})
+ui_stock_news_line,[{0}] {1},[{0}] {1},[{0}] {1}
+ui_stock_shares,{0}주,{0} sh,{0}股
+ui_stock_qty,{0} 주,{0} sh,{0} 股
+ui_stock_order_amount,₩{0:N0},₩{0:N0},₩{0:N0}
+ui_stock_avg,평단 ₩{0:N0},Avg ₩{0:N0},均价 ₩{0:N0}
+ui_stock_current,현재 ₩{0:N0},Now ₩{0:N0},现价 ₩{0:N0}
+ui_stock_total_value_label,총 평가금액,Total Value,总市值
+ui_stock_total_value_amount,₩{0:N0},₩{0:N0},₩{0:N0}
+ui_stock_profit_amount,평가 손익 {0},Profit/Loss {0},评估损益 {0}
+ui_stock_profit_rate,수익률 {0},Return {0},收益率 {0}
+ui_stock_holding_count,보유 종목 {0}개,Holdings {0},持仓 {0}支
+ui_stock_patience,인내심 {0}일 (초과 시 강제 매각),Patience {0}d (auto-sell after),耐心 {0}天 (超时强制卖出)
+ui_stock_portfolio_empty,보유 중인 종목이 없습니다,No holdings yet,暂无持仓
+ui_stock_news_active_info,{0} · {1} · 남은 {2}틱,{0} · {1} · {2} ticks left,{0} · {1} · 剩余{2}回合
+ui_stock_news_active_info_notag,{0} · 남은 {1}틱,{0} · {1} ticks left,{0} · 剩余{1}回合
+ui_stock_news_history_info,발생 {0}틱 · {1},Tick {0} · {1},{0}回合 · {1}
+ui_market_tab_stock,주식,Stocks,股票
+ui_market_tab_coin,코인,Coin,代币
+ui_market_sentiment_label,시장 심리,Sentiment,市场情绪
+ui_stock_tab_quotes,시세,Quotes,行情
+ui_stock_tab_news,뉴스,News,新闻
+ui_stock_tab_portfolio,보유,Holdings,持仓
+ui_stock_list_header,전체 종목,All Stocks,全部股票
+ui_stock_sort_default,기본순,Default,默认
+ui_stock_sort_price_desc,가격 높은순,Price ▼,价格 ▼
+ui_stock_sort_price_asc,가격 낮은순,Price ▲,价格 ▲
+ui_stock_sort_change_desc,등락률순,Change %,涨跌幅
+ui_stock_sort_name,이름순,Name,名称
+ui_stock_filter_tag_all,전체 태그,All Tags,全部标签
+ui_stock_orderbook,호가,Order Book,盘口
+ui_stock_latest_news,최신 뉴스,Latest News,最新新闻
+ui_stock_qty_label,수량,Qty,数量
+ui_stock_order_amount_label,주문 금액,Order Amount,订单金额
+ui_stock_buy,매수,Buy,买入
+ui_stock_sell,매도,Sell,卖出
+PARAM_REGION_A,A지역,Region A,A地区
+PARAM_REGION_B,B지역,Region B,B地区
+PARAM_REGION_NATION,전국,Nationwide,全国
+PARAM_DISEASE_RESPIRATORY,호흡기,respiratory,呼吸道
+PARAM_DISEASE_VIRUS,바이러스,virus,病毒
+PARAM_REGION_ALLIANCE,연합,Alliance,联合
+PARAM_REGION_FAREAST,극동,Far East,远东
+PARAM_REGION_EEUROPE,동유럽,Eastern Europe,东欧
+NEWS_INDIE_EV_001_TITLE,전기차 보조금 대폭 확대 발표,Major EV subsidy expansion announced,电动车补贴大幅扩大公布
+NEWS_INDIE_EV_001_SUMMARY,정부의 전기차·배터리 보조금 확대로 친환경 모빌리티 업계가 강세를 보이고 있습니다.,Green mobility stocks rally as the government expands EV and battery subsidies.,政府扩大电动车与电池补贴、绿色出行行业走强。
+NEWS_INDIE_CLOUD_001_TITLE,초대형 클라우드 인프라 위탁 계약 체결,Huge cloud infrastructure contract signed,签订超大型云基础设施委托合同
+NEWS_INDIE_CLOUD_001_SUMMARY,글로벌 기업의 대규모 클라우드 전환으로 소프트웨어 업계 수주가 급증하고 있습니다.,Software firms see orders surge as a global enterprise migrates to the cloud.,全球企业大规模上云、软件行业订单激增。
+NEWS_INDIE_SPACE_001_TITLE,차세대 발사체 시험 발사 성공,Next-gen launch vehicle test succeeds,新一代运载火箭试射成功
+NEWS_INDIE_SPACE_001_SUMMARY,재사용 발사체 시험에 성공하며 우주·항공 관련주가 일제히 상승했습니다.,Aerospace stocks jump after a successful reusable rocket test.,可重复使用火箭试验成功、航天航空相关股全线上涨。
+NEWS_INDIE_RETAIL_001_TITLE,소비 심리 반등에 유통 매출 급증,Retail sales surge on consumer rebound,消费回暖带动零售销售激增
+NEWS_INDIE_RETAIL_001_SUMMARY,소비 심리가 회복되며 유통·소비재 기업의 매출이 큰 폭으로 늘었습니다.,Consumer and retail revenues rise sharply as sentiment recovers.,消费信心回升、零售与消费品企业营收大幅增长。
+NEWS_INDIE_BANK_001_TITLE,소비재 업계 사상 최대 분기 실적,Consumer industry posts record quarterly earnings,消费品行业创历史最佳季度业绩
+NEWS_INDIE_BANK_001_SUMMARY,판매 호조로 주요 소비재 기업이 분기 최대 실적을 기록했습니다.,Major consumer firms hit record quarterly profits on strong sales.,销售强劲，主要消费品企业录得季度最高业绩。
+NEWS_INDIE_VACCINE_001_TITLE,혁신 신약 임상 3상 성공,Breakthrough drug passes phase 3 trial,创新新药三期临床成功
+NEWS_INDIE_VACCINE_001_SUMMARY,기대를 모으던 신약이 임상 3상에 성공하며 제약·바이오주가 급등했습니다.,Pharma and bio stocks spike after a key drug clears phase 3 trials.,备受期待的新药三期临床成功、制药与生物股大涨。
+NEWS_INDIE_FOUNDRY_001_TITLE,빅테크 파운드리 대규모 위탁 수주,Big tech places huge foundry order,大型科技公司大规模代工下单
+NEWS_INDIE_FOUNDRY_001_SUMMARY,글로벌 빅테크의 대규모 위탁 생산 계약으로 반도체 파운드리 업계가 호황입니다.,Foundry stocks boom on a massive outsourcing deal from big tech.,全球科技巨头大规模委托生产、半导体代工行业景气。
+NEWS_INDIE_OIL_001_TITLE,국제 유가 급등에 원가 부담 심화,Oil price surge deepens cost pressure,国际油价飙升加剧成本压力
+NEWS_INDIE_OIL_001_SUMMARY,국제 유가가 급등하며 에너지 의존 산업의 원가 부담이 커지고 있습니다.,Energy-reliant industries face rising costs as oil prices spike.,国际油价飙升、能源依赖型行业成本压力加大。
+NEWS_INDIE_DATABREACH_001_TITLE,대규모 개인정보 유출 사고 발생,Massive personal data breach reported,发生大规模个人信息泄露事故
+NEWS_INDIE_DATABREACH_001_SUMMARY,대형 플랫폼에서 개인정보 유출 사고가 터지며 소프트웨어·클라우드주가 급락했습니다.,Software and cloud stocks plunge after a major platform data breach.,大型平台发生信息泄露、软件与云股大跌。
+NEWS_INDIE_DEFCUT_001_TITLE,국방 예산 대폭 삭감 확정,Major defense budget cut confirmed,确定大幅削减国防预算
+NEWS_INDIE_DEFCUT_001_SUMMARY,정부의 국방 예산 삭감이 확정되며 방산 관련주가 약세를 보이고 있습니다.,Defense stocks weaken after the government confirms budget cuts.,政府确定削减国防预算、防务相关股走弱。
+NEWS_INDIE_FASHION_001_TITLE,소비 위축에 패션·유통 부진,Consumer slump hits fashion and retail,消费萎缩拖累时尚与零售
+NEWS_INDIE_FASHION_001_SUMMARY,경기 둔화로 소비가 위축되며 패션·유통 업계 실적이 부진합니다.,Fashion and retail earnings slump as a downturn curbs spending.,经济放缓导致消费萎缩、时尚与零售业绩低迷。
+NEWS_INDIE_FINTECHREG_001_TITLE,소비재 온라인 판매 규제 강화 법안 통과,Tougher rules on consumer online sales pass,加强消费品线上销售监管的法案通过
+NEWS_INDIE_FINTECHREG_001_SUMMARY,판매 규제 강화 법안이 통과되며 관련 소비재주가 하락했습니다.,Consumer stocks fall as tighter sales regulations pass.,销售监管强化法案通过，相关消费品股下跌。
+NEWS_INDIE_SEMIGLUT_001_TITLE,반도체 공급과잉에 재고 급증,Chip glut sends inventories soaring,芯片供过于求、库存激增
+NEWS_INDIE_SEMIGLUT_001_SUMMARY,수요 둔화로 반도체 재고가 급증하며 칩·하드웨어 업계가 압박받고 있습니다.,Chip and hardware firms struggle as inventories pile up on weak demand.,需求放缓导致芯片库存激增、芯片与硬件行业承压。
+NEWS_INDIE_MEDIAFLOP_001_TITLE,기대작 연이은 흥행 참패,Anticipated titles flop at box office,备受期待的作品接连票房惨败
+NEWS_INDIE_MEDIAFLOP_001_SUMMARY,기대를 모은 콘텐츠가 잇따라 흥행에 실패하며 미디어·게임주가 하락했습니다.,Media and gaming stocks drop as hyped releases flop.,备受期待的内容接连失利、媒体与游戏股下跌。
+NEWS_INDIE_MINE_001_TITLE,대형 광산 갱도 붕괴 사고 발생,Major mine tunnel collapse reported,大型矿山巷道坍塌事故发生
+NEWS_INDIE_MINE_001_SUMMARY,갱도 붕괴로 채굴 작업이 전면 중단되며 자원·소재주가 급락했습니다.,Resource and materials stocks plunge as mining halts after a tunnel collapse.,巷道坍塌导致开采全面中断，资源与材料股大跌。
+NEWS_INDIE_METAL_001_TITLE,산업용 희소 금속 가격 사상 최고치 경신,Industrial rare metal prices hit all-time high,工业稀有金属价格刷新历史最高
+NEWS_INDIE_METAL_001_SUMMARY,희소 금속 가격 급등으로 채굴·소재 기업의 실적 기대가 커지고 있습니다.,Earnings hopes rise for mining and materials firms on soaring rare metal prices.,稀有金属价格飙升，采矿与材料企业业绩预期升温。
+NEWS_INDIE_LUXURY_001_TITLE,명품 소비 붐 — 프리미엄 유통 실적 서프라이즈,Luxury spending boom delivers premium retail earnings surprise,奢侈品消费热潮，高端零售业绩惊喜
+NEWS_INDIE_LUXURY_001_SUMMARY,명품 수요가 폭발하며 프리미엄 유통 기업들이 깜짝 실적을 발표했습니다.,Premium retailers post surprise earnings as luxury demand explodes.,奢侈品需求爆发，高端零售企业公布惊喜业绩。
+ui_stock_patience_left,인내심 {0}일,Patience {0}d,耐心 {0}天
+ui_stock_sell_locked,당일,Same-day,当日
+ui_stock_sell_owned,보유 {0}주 · 현재 ₩{1:N0},Own {0} · Now ₩{1:N0},持有 {0}股 · 现价 ₩{1:N0}
+ui_stock_sell_proceeds,예상 수령액  ₩{0:N0},Est. proceeds  ₩{0:N0},预计所得  ₩{0:N0}
+ui_stock_sell_qty,매도 수량,Sell Qty,卖出数量
+ui_stock_sell_max,전량,All,全部
+ui_stock_cancel,취소,Cancel,取消
+STOCK_COMP_LEESUNG,이성전자,LeeSung,李成电子
+STOCK_COMP_LEESUNG_DESC,반도체·가전·모바일을 아우르는 한국 최대 전자 대기업,"Korea's largest electronics conglomerate spanning chips, appliances, and mobile",涵盖半导体、家电与移动的韩国最大电子集团
+STOCK_COMP_GREENHARVEST,그린하베스트,GreenHarvest,绿收
+STOCK_COMP_GREENHARVEST_DESC,스마트 수직농장 기반 도심형 작물 재배 기업,Urban crop cultivation based on smart vertical farms,基于智能垂直农场的城市作物栽培企业
+STOCK_COMP_SEEDCORE,시드코어,SeedCore,种芯
+STOCK_COMP_SEEDCORE_DESC,종자 개량 및 농업 바이오 연구 기업,Seed breeding and agricultural bio research company,种子改良与农业生物研究企业
+STOCK_COMP_BLUEWAVE,블루웨이브 수산,BlueWave Fishery,蓝浪水产
+STOCK_COMP_BLUEWAVE_DESC,원양 어업 및 스마트 양식 전문 기업,Deep-sea fishing and smart aquaculture company,远洋渔业与智能养殖专业企业
+STOCK_COMP_NOVACHEM,노바켐,NovaChem,诺瓦化工
+STOCK_COMP_NOVACHEM_DESC,정밀화학 및 첨단 소재 제조 기업,Fine chemicals and advanced materials manufacturer,精细化工与尖端材料制造企业
+STOCK_COMP_POLYBOND,폴리본드,PolyBond,聚邦
+STOCK_COMP_POLYBOND_DESC,고성능 고분자 폴리머 소재 기업,High-performance polymer materials company,高性能高分子聚合物材料企业
+STOCK_COMP_TERRACHEM,테라켐,TerraChem,泰拉化工
+STOCK_COMP_TERRACHEM_DESC,비료 및 농화학 제품 생산 기업,Fertilizer and agrochemical products producer,化肥与农用化学产品生产企业
+STOCK_COMP_SWIFTMOTORS,스위프트 모터스,Swift Motors,迅捷汽车
+STOCK_COMP_SWIFTMOTORS_DESC,대중형 완성차 제조 대기업,Mass-market vehicle manufacturer,大众型整车制造大企业
+STOCK_COMP_VOLTRIDE,볼트라이드,VoltRide,伏特驰
+STOCK_COMP_VOLTRIDE_DESC,전기차 및 자율주행 플랫폼 전문 기업,EV and autonomous driving platform specialist,电动车与自动驾驶平台专业企业
+STOCK_COMP_IRONWHEEL,아이언휠,IronWheel,铁轮重工
+STOCK_COMP_IRONWHEEL_DESC,상용차 및 대형 트럭 제조 기업,Commercial vehicle and heavy truck manufacturer,商用车与大型卡车制造企业
+STOCK_COMP_SKYTEL,스카이텔,SkyTel,天空电信
+STOCK_COMP_SKYTEL_DESC,전국 이동통신 서비스 운영 대기업,Nationwide mobile network carrier,全国移动通信服务运营大企业
+STOCK_COMP_WAVECOMM,웨이브컴,WaveComm,波讯
+STOCK_COMP_WAVECOMM_DESC,차세대 통신 장비 및 네트워크 인프라 기업,Next-gen telecom equipment and network infrastructure company,下一代通信设备与网络基础设施企业
+STOCK_COMP_ORBITLINK,오빗링크,OrbitLink,轨联
+STOCK_COMP_ORBITLINK_DESC,저궤도 위성 기반 글로벌 인터넷 기업,Low-orbit satellite-based global internet company,基于低轨卫星的全球互联网企业
+STOCK_COMP_BUILDPRO,빌드프로,BuildPro,建普
+STOCK_COMP_BUILDPRO_DESC,종합 건설 및 인프라 시공 기업,General construction and infrastructure company,综合建筑与基础设施施工企业
+STOCK_COMP_SKYTOWER,스카이타워,SkyTower,天塔建设
+STOCK_COMP_SKYTOWER_DESC,초고층 빌딩 전문 건설 대기업,Skyscraper specialist construction giant,超高层建筑专业建设大企业
+STOCK_COMP_URBANEST,어반네스트,UrbaNest,都巢地产
+STOCK_COMP_URBANEST_DESC,도심 부동산 개발 및 자산 운용 기업,Urban real estate development and asset management company,城市房地产开发与资产运营企业
+STOCK_COMP_ROBOMATE,로보메이트,RoboMate,罗博伴
+STOCK_COMP_ROBOMATE_DESC,가정용 서비스 로봇 개발 기업,Home service robot developer,家用服务机器人开发企业
+STOCK_COMP_MECHONIX,메카닉스,Mechonix,麦科尼
+STOCK_COMP_MECHONIX_DESC,산업용 자동화 로봇 제조 기업,Industrial automation robotics manufacturer,工业自动化机器人制造企业
+STOCK_COMP_AUTOLIMB,오토림,AutoLimb,奥托肢
+STOCK_COMP_AUTOLIMB_DESC,로봇 의수·의족 등 재활 로보틱스 기업,Robotic prosthetics and rehabilitation robotics company,机器人假肢等康复机器人企业
+STOCK_COMP_WANDERLUX,원더럭스,WanderLux,漫旅
+STOCK_COMP_WANDERLUX_DESC,글로벌 여행 예약 플랫폼 기업,Global travel booking platform company,全球旅游预订平台企业
+STOCK_COMP_BLUELAGOON,블루라군 리조트,BlueLagoon Resort,蓝湖度假
+STOCK_COMP_BLUELAGOON_DESC,프리미엄 휴양 리조트 체인 운영 기업,Premium resort chain operator,高端度假村连锁运营企业
+STOCK_COMP_SKYCRUISE,스카이크루즈,SkyCruise,天巡邮轮
+STOCK_COMP_SKYCRUISE_DESC,크루즈 및 항공 레저 여행 기업,Cruise and air leisure travel company,邮轮与航空休闲旅游企业
+STOCK_COMP_MEDICARE,메디케어,MediCare,美迪护
+STOCK_COMP_MEDICARE_DESC,종합 병원 및 의료 서비스 체인 기업,Hospital and medical service chain company,综合医院与医疗服务连锁企业
+STOCK_COMP_VITALINK,바이탈링크,VitaLink,生命联
+STOCK_COMP_VITALINK_DESC,첨단 의료기기 및 진단 장비 기업,Advanced medical devices and diagnostics company,尖端医疗器械与诊断设备企业
+STOCK_COMP_CAREHUB,케어허브,CareHub,护枢
+STOCK_COMP_CAREHUB_DESC,AI 기반 디지털 헬스케어 플랫폼 기업,AI-based digital healthcare platform company,基于AI的数字医疗平台企业
+STOCK_COMP_SHIELDSEC,실드섹,ShieldSec,盾安
+STOCK_COMP_SHIELDSEC_DESC,기업용 통합 보안 솔루션 기업,Enterprise integrated security solutions company,企业级综合安全解决方案企业
+STOCK_COMP_CRYPTOGUARD,크립토가드,CryptoGuard,密卫
+STOCK_COMP_CRYPTOGUARD_DESC,암호화 및 인증 보안 전문 기업,Encryption and authentication security specialist,加密与认证安全专业企业
+STOCK_COMP_FIREWALLX,파이어월엑스,FireWallX,火墙X
+STOCK_COMP_FIREWALLX_DESC,네트워크 방어 및 위협 대응 기업,Network defense and threat response company,网络防御与威胁应对企业
+STOCK_COMP_SHOPWAVE,샵웨이브,ShopWave,购浪
+STOCK_COMP_SHOPWAVE_DESC,종합 온라인 쇼핑 마켓플레이스 기업,Comprehensive online shopping marketplace company,综合在线购物平台企业
+STOCK_COMP_QUICKCART,퀵카트,QuickCart,快购车
+STOCK_COMP_QUICKCART_DESC,즉시 배송 기반 생필품 커머스 기업,Instant-delivery essential goods commerce company,基于即时配送的生活必需品电商企业
+STOCK_COMP_GLOBAMART,글로바마트,GlobaMart,环球集市
+STOCK_COMP_GLOBAMART_DESC,전 세계 물류망을 갖춘 이커머스 대기업,E-commerce giant with a worldwide logistics network,拥有全球物流网的电商巨头
+STOCK_COMP_COZYCAFE,코지카페,CozyCafe,暖咖
+STOCK_COMP_COZYCAFE_DESC,전국 프랜차이즈 카페 체인 기업,Nationwide franchise cafe chain company,全国连锁咖啡加盟企业
+STOCK_COMP_SNACKJOY,스낵조이,SnackJoy,乐脆
+STOCK_COMP_SNACKJOY_DESC,제과 및 스낵 식품 제조 기업,Confectionery and snack food manufacturer,糖果与零食食品制造企业
+STOCK_COMP_PUREBREW,퓨어브루,PureBrew,纯酿
+STOCK_COMP_PUREBREW_DESC,음료 및 주류 제조 유통 기업,Beverage and spirits manufacturing and distribution company,饮料与酒类制造流通企业
+STOCK_COMP_HOMESTYLE,홈스타일,HomeStyle,家韵
+STOCK_COMP_HOMESTYLE_DESC,가구 및 생활용품 유통 기업,Furniture and home goods retailer,家具与生活用品流通企业
+STOCK_COMP_PETPAL,펫팔,PetPal,宠伴
+STOCK_COMP_PETPAL_DESC,반려동물 사료 및 용품 전문 기업,Pet food and supplies specialist,宠物饲料与用品专业企业
+STOCK_COMP_SAFEGUARD,세이프가드 화재,SafeGuard Insurance,守护保险
+STOCK_COMP_SAFEGUARD_DESC,종합 손해보험 서비스 기업,Comprehensive property and casualty insurance company,综合财产保险服务企业
+STOCK_COMP_PAYWAVE,페이웨이브,PayWave,付浪
+STOCK_COMP_PAYWAVE_DESC,간편결제 및 송금 핀테크 플랫폼 기업,Mobile payment and remittance fintech platform company,移动支付与汇款金融科技平台企业
+STOCK_COMP_LENDHUB,렌드허브,LendHub,贷枢
+STOCK_COMP_LENDHUB_DESC,디지털 대출 및 신용평가 핀테크 기업,Digital lending and credit-scoring fintech company,数字借贷与信用评估金融科技企业
+STOCK_COMP_CAPITALSTONE,캐피탈스톤,CapitalStone,磐石资本
+STOCK_COMP_CAPITALSTONE_DESC,대형 사모펀드 및 투자 운용 그룹,Large private equity and investment management group,大型私募基金与投资管理集团
+STOCK_COMP_WINDFORCE,윈드포스,WindForce,风驰能源
+STOCK_COMP_WINDFORCE_DESC,해상 및 육상 풍력 발전 기업,Offshore and onshore wind power company,海上与陆上风力发电企业
+STOCK_COMP_HYDROCORE,하이드로코어,HydroCore,水核能源
+STOCK_COMP_HYDROCORE_DESC,수소 연료전지 및 에너지 저장 기업,Hydrogen fuel cell and energy storage company,氢燃料电池与储能企业
+STOCK_COMP_GRIDPOWER,그리드파워,GridPower,电网动力
+STOCK_COMP_GRIDPOWER_DESC,전력망 운영 및 전기 유틸리티 기업,Power grid operations and electric utility company,电网运营与电力公用事业企业
+STOCK_COMP_DEEPCOREGEO,딥코어 지열,DeepCore Geo,深核地热
+STOCK_COMP_DEEPCOREGEO_DESC,심부 지열 발전 개발 전문 기업,Deep geothermal power development specialist,深部地热发电开发专业企业
+STOCK_COMP_CLOUDNINE,클라우드나인,CloudNine,云九
+STOCK_COMP_CLOUDNINE_DESC,글로벌 클라우드 인프라 서비스 기업,Global cloud infrastructure service company,全球云基础设施服务企业
+STOCK_COMP_CODEFORGE,코드포지,CodeForge,码锻
+STOCK_COMP_CODEFORGE_DESC,개발자 대상 SaaS 툴 제공 기업,Developer-focused SaaS tools provider,面向开发者的SaaS工具提供企业
+STOCK_COMP_NEUROSYNTH,뉴로신스,NeuroSynth,神经合成
+STOCK_COMP_NEUROSYNTH_DESC,생성형 인공지능 모델 개발 스타트업,Generative AI model development startup,生成式人工智能模型开发初创企业
+STOCK_COMP_DATAPULSE,데이터펄스,DataPulse,数脉
+STOCK_COMP_DATAPULSE_DESC,빅데이터 분석 및 예측 솔루션 기업,Big data analytics and prediction solutions company,大数据分析与预测解决方案企业
+STOCK_COMP_MICRONIX,마이크로닉스,Micronix,微尼科
+STOCK_COMP_MICRONIX_DESC,메모리 반도체 설계 및 생산 기업,Memory semiconductor design and production company,存储半导体设计与生产企业
+STOCK_COMP_PHOTONCHIP,포톤칩,PhotonChip,光子芯
+STOCK_COMP_PHOTONCHIP_DESC,광반도체 및 광통신 소자 기업,Photonic semiconductor and optical component company,光子半导体与光通信器件企业
+STOCK_COMP_BOARDCRAFT,보드크래프트,BoardCraft,板匠
+STOCK_COMP_BOARDCRAFT_DESC,고집적 인쇄회로기판 제조 기업,High-density printed circuit board manufacturer,高集成印刷电路板制造企业
+STOCK_COMP_RAREEARTH,레어어스 코퍼레이션,RareEarth Corp,稀土集团
+STOCK_COMP_RAREEARTH_DESC,희토류 채굴 및 정제 전문 기업,Rare-earth mining and refining specialist,稀土开采与精炼专业企业
+STOCK_COMP_GLASSWORKS,글래스웍스,GlassWorks,玻工
+STOCK_COMP_GLASSWORKS_DESC,특수 유리 및 첨단 소재 기업,Specialty glass and advanced materials company,特种玻璃与尖端材料企业
+STOCK_COMP_CARBONFORGE,카본포지,CarbonForge,碳锻
+STOCK_COMP_CARBONFORGE_DESC,탄소섬유 복합재 소재 전문 기업,Carbon fiber composite materials specialist,碳纤维复合材料专业企业
+STOCK_COMP_VANGUARDDEF,뱅가드 디펜스,Vanguard Defense,先锋防务
+STOCK_COMP_VANGUARDDEF_DESC,지상 방어 체계 및 장갑 시스템 기업,Ground defense systems and armored systems company,地面防御体系与装甲系统企业
+STOCK_COMP_SKYFORTRESS,스카이포트리스,SkyFortress,天堡
+STOCK_COMP_SKYFORTRESS_DESC,전투기 및 항공 방산 시스템 개발사,Combat aircraft and aerospace defense systems developer,战斗机与航空防务系统开发商
+STOCK_COMP_DRONEWING,드론윙,DroneWing,无人翼
+STOCK_COMP_DRONEWING_DESC,군용·민간 무인기 드론 개발 기업,Military and civilian drone systems developer,军用与民用无人机系统开发企业
+STOCK_COMP_STREAMVERSE,스트림버스,StreamVerse,流媒宇
+STOCK_COMP_STREAMVERSE_DESC,글로벌 OTT 스트리밍 콘텐츠 기업,Global OTT streaming content company,全球OTT流媒体内容企业
+STOCK_COMP_PLAYFORGE,플레이포지,PlayForge,玩锻
+STOCK_COMP_PLAYFORGE_DESC,대형 콘솔 게임 개발 스튜디오,AAA console game development studio,大型主机游戏开发工作室
+STOCK_COMP_TOONLAB,툰랩,ToonLab,漫工坊
+STOCK_COMP_TOONLAB_DESC,웹툰 및 애니메이션 제작 스튜디오,Webtoon and animation production studio,网漫与动画制作工作室
+STOCK_COMP_CURALIFE,큐라라이프,CuraLife,康愈
+STOCK_COMP_CURALIFE_DESC,만성질환 치료제 개발 제약 기업,Chronic disease therapeutics pharmaceutical company,慢性病治疗剂开发制药企业
+STOCK_COMP_IMMUNOVA,이뮤노바,Immunova,免疫诺
+STOCK_COMP_IMMUNOVA_DESC,면역항암 신약 개발 바이오 기업,Immuno-oncology drug development bio company,免疫抗癌新药开发生物企业
+STOCK_COMP_SWIFTSHIP,스위프트십,SwiftShip,迅运
+STOCK_COMP_SWIFTSHIP_DESC,국제 특송 및 택배 물류 기업,International express and parcel logistics company,国际速递与快递物流企业
+STOCK_COMP_RAILCORE,레일코어,RailCore,轨芯
+STOCK_COMP_RAILCORE_DESC,화물 철도 운송 및 물류 기업,Freight rail transport and logistics company,货运铁路运输与物流企业
+STOCK_COMP_PORTLINK,포트링크,PortLink,港联
+STOCK_COMP_PORTLINK_DESC,항만 운영 및 해상 물류 터미널 기업,Port operations and maritime logistics terminal company,港口运营与海上物流码头企业
+STOCK_TAG_AGRICULTURE,농업,Agriculture,农业
+STOCK_TAG_BATTERY,배터리,Battery,电池
+STOCK_TAG_BIO,바이오,Bio,生物
+STOCK_TAG_CHEMICAL,화학,Chemical,化工
+STOCK_TAG_CONSTRUCTION,건설,Construction,建筑
+STOCK_TAG_CONSUMER,소비재,Consumer,消费品
+STOCK_TAG_ECOMMERCE,이커머스,E-Commerce,电商
+STOCK_TAG_ENERGY,에너지,Energy,能源
+STOCK_TAG_FOOD,식품,Food,食品
+STOCK_TAG_HARDWARE,하드웨어,Hardware,硬件
+STOCK_TAG_LOGISTICS,물류,Logistics,物流
+STOCK_TAG_MATERIALS,소재,Materials,材料
+STOCK_TAG_MINING,광업,Mining,采矿
+STOCK_TAG_PHARMA,제약,Pharma,制药
+STOCK_TAG_RENEWABLE,재생에너지,Renewable,可再生能源
+STOCK_TAG_RETAIL,유통,Retail,零售
+STOCK_TAG_SEMICONDUCTOR,반도체,Semiconductor,半导体
+STOCK_TAG_SOFTWARE,소프트웨어,Software,软件
+STOCK_TAG_TOURISM,여행,Tourism,旅游
+STOCK_TAG_TRANSPORT,운송,Transport,运输
+STOCK_TAG_VACCINE,백신,Vaccine,疫苗
+CHAIN_MEME_SURGE,밈 소비주 열풍,Meme Consumer Frenzy,迷因消费股狂潮
+CHAIN_RESOURCE_SQUEEZE,원자재 스퀴즈,Resource Squeeze,资源挤压
+CHAIN_TECH_MANIA,테크주 광풍,Tech Mania,科技股狂热
+NEWS_MEME_001_TITLE,"개미 세력, 소비주 대량 매집 포착",Retail crowd spotted loading up on consumer stocks,散户大举吸筹消费股
+NEWS_MEME_001_SUMMARY,온라인 커뮤니티發 매수세가 소비 관련주로 몰리고 있습니다.,Community-driven buying is pouring into consumer names.,来自社区的买盘正涌入消费类股票。
+NEWS_MEME_002_TITLE,소비주 폭등! 거래량 폭발,Consumer stocks explode as volume erupts,消费股暴涨 成交量爆发
+NEWS_MEME_002_SUMMARY,밈 열풍을 타고 소비 관련주가 하루 만에 급등하고 있습니다.,"Riding the meme wave, consumer stocks are spiking in a single day.",借迷因热潮 消费股一日之间飙升。
+NEWS_MEME_003_TITLE,차익실현 매물 쏟아져 소비주 급락,"Profit-taking floods in, consumer stocks tumble",获利抛盘涌出 消费股暴跌
+NEWS_MEME_003_SUMMARY,고점 경고 속 차익 매물이 나오며 거품이 빠지기 시작합니다.,"Amid peak warnings, profit-taking sets in and the bubble deflates.",高点警告声中获利了结出现 泡沫开始消退。
+NEWS_MEME_004_TITLE,소비주 광풍 진정 국면,Consumer frenzy cools off,消费股狂潮趋于平静
+NEWS_MEME_004_SUMMARY,과열됐던 소비주 테마가 서서히 관심에서 멀어지고 있습니다.,The overheated consumer theme is slowly fading from attention.,过热的消费主题正慢慢淡出视线。
+NEWS_RESQ_001_TITLE,"원자재 공급난 조짐, 세력 매집설","Supply crunch looms, whispers of accumulation",原材料供应吃紧 传闻主力吸筹
+NEWS_RESQ_001_SUMMARY,핵심 광물 수급 우려로 소재주에 매수세가 유입되고 있습니다.,Buying flows into materials on core mineral supply fears.,因核心矿物供应担忧 买盘涌入材料股。
+NEWS_RESQ_002_TITLE,원자재 대란! 소재주 폭등,Resource shock! Materials stocks soar,原材料告急 材料股暴涨
+NEWS_RESQ_002_SUMMARY,공급 병목이 현실화되며 소재 관련주가 폭발적으로 오르고 있습니다.,"As supply bottlenecks turn real, materials stocks surge explosively.",供应瓶颈成真 材料股爆发式上涨。
+NEWS_RESQ_003_TITLE,재고 방출에 소재주 급락 전환,Stockpile release sends materials tumbling,抛储令材料股急转直下
+NEWS_RESQ_003_SUMMARY,각국 비축분 방출 소식에 과열됐던 소재주가 무너지고 있습니다.,News of national reserve releases collapses the overheated rally.,各国释放储备的消息令过热的材料股崩落。
+NEWS_RESQ_004_TITLE,원자재 열기 식는 중,Resource fever cools,原材料热度降温
+NEWS_RESQ_004_SUMMARY,달아올랐던 소재 테마가 평년 수준으로 되돌아가고 있습니다.,The heated materials theme is settling back to normal.,火热的材料主题正回落至常态。
+NEWS_TECHM_001_TITLE,"차세대 플랫폼 기대감, 테크주 매집","Next-gen platform buzz, tech accumulation begins",次世代平台预期 科技股吸筹
+NEWS_TECHM_001_SUMMARY,신기술 발표 소문에 소프트웨어주로 자금이 몰리고 있습니다.,Rumors of a new tech reveal are drawing capital into software names.,新技术发布传闻吸引资金涌入软件股。
+NEWS_TECHM_002_TITLE,테크주 폭등! 신기술 대박 기대,Tech stocks rocket on breakthrough hype,科技股火箭般上涨 期待技术突破
+NEWS_TECHM_002_SUMMARY,차세대 플랫폼 공개 기대감에 소프트웨어주가 폭등하고 있습니다.,Anticipation of a next-gen platform sends software stocks soaring.,对次世代平台的期待令软件股暴涨。
+NEWS_TECHM_003_TITLE,기대 과열 논란에 테크주 급락,Overhype backlash sinks tech stocks,预期过热引争议 科技股急跌
+NEWS_TECHM_003_SUMMARY,실체 없는 기대였다는 회의론이 번지며 테크주가 급락합니다.,"Skepticism that it was all hype spreads, and tech stocks plunge.",质疑纯属炒作的声音蔓延 科技股大跌。
+NEWS_TECHM_004_TITLE,테크 열풍 잦아듦,Tech frenzy dies down,科技热潮平息
+NEWS_TECHM_004_SUMMARY,뜨거웠던 테크 테마가 서서히 진정되고 있습니다.,The red-hot tech theme is gradually calming down.,炙手可热的科技主题正逐渐冷却。
+CHAIN_ROBOTICS_BOOM,자동화 물결,Automation Wave,自动化浪潮
+NEWS_ROBOTICS_BOOM_001_TITLE,"대형 공장, 전면 무인화 라인 도입설",Major plant rumored to go fully lights-out,大型工厂传全面无人化产线
+NEWS_ROBOTICS_BOOM_001_SUMMARY,한 대형 제조사가 생산 라인을 전면 로봇으로 교체한다는 소문이 돕니다.,Rumors say a big manufacturer will replace its lines entirely with robots.,传闻某大型制造商将把产线全面替换为机器人。
+NEWS_ROBOTICS_BOOM_002A_TITLE,무인 공장 전환 공식 발표,Lights-out factory conversion made official,无人工厂改造正式公布
+NEWS_ROBOTICS_BOOM_002A_SUMMARY,무인화 전환이 공식화되며 로봇·자동화 종목에 매수세가 몰립니다.,"The automation shift is confirmed, drawing buyers into robotics names.",自动化转型获证实，资金涌入机器人板块。
+NEWS_ROBOTICS_BOOM_002B_TITLE,"자동화 비용 폭증, 프로젝트 보류","Automation costs balloon, project shelved",自动化成本暴涨，项目搁置
+NEWS_ROBOTICS_BOOM_002B_SUMMARY,도입 비용이 예상을 크게 넘겨 무인화 계획이 보류됐습니다.,Costs far exceeded estimates and the lights-out plan was shelved.,成本远超预期，无人化计划被搁置。
+NEWS_ROBOTICS_BOOM_003A_TITLE,자동화 기대감 진정,Automation hype settles,自动化热度回落
+NEWS_ROBOTICS_BOOM_003A_SUMMARY,초기 과열이 가라앉고 관련주가 제자리를 찾습니다.,The early frenzy cools and related shares find their level.,初期过热平息，相关股回归常态。
+NEWS_ROBOTICS_BOOM_003B_TITLE,무인화 논의 소강,Lights-out debate quiets,无人化讨论降温
+NEWS_ROBOTICS_BOOM_003B_SUMMARY,보류 이후 자동화 이슈가 시장에서 잊혀갑니다.,"After the shelving, the automation story fades from the market.",搁置后自动化话题逐渐淡出市场。
+CHAIN_CYBER_ATTACK,대규모 사이버 공격,Massive Cyber Attack,大规模网络攻击
+NEWS_CYBER_ATTACK_001_TITLE,주요 인프라 해킹 정황 포착,Signs of critical-infrastructure hack detected,发现关键基础设施被黑迹象
+NEWS_CYBER_ATTACK_001_SUMMARY,핵심 IT 인프라가 정체불명 세력에 침투당한 정황이 포착됐습니다.,Core IT infrastructure shows signs of intrusion by an unknown group.,核心IT基础设施疑遭不明势力入侵。
+NEWS_CYBER_ATTACK_002A_TITLE,사상 최대 규모 해킹 공식 확인,Record-scale breach officially confirmed,史上最大规模入侵获官方确认
+NEWS_CYBER_ATTACK_002A_SUMMARY,피해 규모가 사상 최대로 확인되며 보안주가 급등합니다.,"The breach is confirmed as record-scale, sending security stocks surging.",入侵被确认为史上最大，安全股飙升。
+NEWS_CYBER_ATTACK_002B_TITLE,"오탐 판명, 침투 흔적 없음",False alarm — no intrusion found,误报——未发现入侵痕迹
+NEWS_CYBER_ATTACK_002B_SUMMARY,정밀 조사 결과 침투 흔적이 없어 경보가 해제됐습니다.,A closer probe found no intrusion and the alert was lifted.,经详查未发现入侵，警报解除。
+NEWS_CYBER_ATTACK_003A_TITLE,보안 특수 진정,Security spending spike cools,安全支出热潮回落
+NEWS_CYBER_ATTACK_003A_SUMMARY,긴급 수요가 잦아들며 보안주 급등세가 진정됩니다.,Emergency demand eases and the security rally settles.,紧急需求缓和，安全股涨势趋稳。
+NEWS_CYBER_ATTACK_003B_TITLE,해킹 소동 마무리,Hacking scare wraps up,黑客风波平息
+NEWS_CYBER_ATTACK_003B_SUMMARY,오탐 판명 후 시장의 관심이 빠르게 식습니다.,"After the false alarm, market interest cools fast.",误报之后市场关注迅速降温。
+CHAIN_TELECOM_MERGER,통신사 합병설,Telecom Merger Talks,电信合并传闻
+NEWS_TELECOM_MERGER_001_TITLE,2·3위 통신사 합병 협상설,No.2 and No.3 carriers said to be in merger talks,二三名运营商传合并谈判
+NEWS_TELECOM_MERGER_001_SUMMARY,업계 2·3위 통신사가 물밑 합병 협상 중이라는 관측이 나옵니다.,Word spreads that the No.2 and No.3 carriers are quietly negotiating a merger.,市场传业内第二、三名运营商正私下洽谈合并。
+NEWS_TELECOM_MERGER_002A_TITLE,합병 최종 합의 발표,Merger deal finalized,合并最终达成
+NEWS_TELECOM_MERGER_002A_SUMMARY,합병이 최종 타결되며 통신주 재평가 기대가 커집니다.,"The merger is sealed, fueling a re-rating of telecom shares.",合并落定，电信股重估预期升温。
+NEWS_TELECOM_MERGER_002B_TITLE,"규제 당국, 합병 불허",Regulator blocks the merger,监管否决合并
+NEWS_TELECOM_MERGER_002B_SUMMARY,경쟁 당국이 독과점 우려로 합병을 불허했습니다.,Antitrust authorities blocked the deal over monopoly concerns.,反垄断机构以垄断顾虑否决交易。
+NEWS_TELECOM_MERGER_003A_TITLE,합병 재료 소화,Merger news digested,合并利好消化
+NEWS_TELECOM_MERGER_003A_SUMMARY,합병 기대가 주가에 반영되며 움직임이 잦아듭니다.,Merger hopes get priced in and the move calms.,合并预期已被消化，走势趋缓。
+NEWS_TELECOM_MERGER_003B_TITLE,합병 무산 후 정상화,Back to normal after the block,否决后回归常态
+NEWS_TELECOM_MERGER_003B_SUMMARY,불허 이후 통신주가 원래 수준으로 돌아갑니다.,"After the block, telecom shares revert to prior levels.",否决后电信股回到原有水平。
+CHAIN_AGRI_DROUGHT,가뭄과 흉작,Drought and Crop Failure,干旱与歉收
+NEWS_AGRI_DROUGHT_001_TITLE,곡창지대 기록적 가뭄 경보,Record drought warning in the breadbasket,粮仓地带发布创纪录干旱预警
+NEWS_AGRI_DROUGHT_001_SUMMARY,주요 곡창지대에 기록적 가뭄 경보가 내려졌습니다.,A record drought warning has been issued for a key grain belt.,主要产粮区发布创纪录干旱预警。
+NEWS_AGRI_DROUGHT_002A_TITLE,"흉작 공식화, 곡물값 급등","Crop failure confirmed, grain prices jump",歉收确认，粮价大涨
+NEWS_AGRI_DROUGHT_002A_SUMMARY,흉작이 공식 확인되며 농업·식품 관련주가 출렁입니다.,"The failed harvest is confirmed, jolting agriculture and food names.",歉收获确认，农业与食品股剧烈波动。
+NEWS_AGRI_DROUGHT_002B_TITLE,때늦은 강우로 작황 회복,Late rains rescue the harvest,及时降雨挽救收成
+NEWS_AGRI_DROUGHT_002B_SUMMARY,예상 밖 강우로 작황이 회복되며 우려가 걷힙니다.,Unexpected rains revive the crop and fears recede.,意外降雨令收成好转，忧虑消退。
+NEWS_AGRI_DROUGHT_003A_TITLE,곡물 수급 안정,Grain supply stabilizes,粮食供需趋稳
+NEWS_AGRI_DROUGHT_003A_SUMMARY,공급 우려가 진정되며 관련주가 안정을 찾습니다.,Supply fears ease and related shares steady.,供应忧虑缓解，相关股趋稳。
+NEWS_AGRI_DROUGHT_003B_TITLE,가뭄 이슈 소멸,Drought story fades,干旱话题消退
+NEWS_AGRI_DROUGHT_003B_SUMMARY,작황 회복 후 가뭄 재료가 시장에서 사라집니다.,"With the harvest saved, the drought story leaves the market.",收成无虞后干旱题材淡出市场。
+CHAIN_TOURISM_REOPEN,여행 재개 기대,Travel Reopening Hopes,旅游重启预期
+NEWS_TOURISM_REOPEN_001_TITLE,국경 전면 개방 임박설,Full border reopening said to be near,传全面开放边境在即
+NEWS_TOURISM_REOPEN_001_SUMMARY,장기 봉쇄가 곧 풀린다는 관측에 여행 수요 기대가 커집니다.,Talk that the long lockdown will lift soon lifts travel-demand hopes.,传长期封锁将解除，旅游需求预期升温。
+NEWS_TOURISM_REOPEN_002A_TITLE,무비자 전면 재개 확정,Visa-free travel fully restored,免签全面恢复
+NEWS_TOURISM_REOPEN_002A_SUMMARY,무비자 여행이 전면 재개되며 관광·운송주가 뜁니다.,"Visa-free travel fully resumes, lifting tourism and transport names.",免签旅游全面恢复，旅游与运输股走高。
+NEWS_TOURISM_REOPEN_002B_TITLE,재확산 우려로 개방 연기,Reopening delayed on resurgence fears,因疫情反弹推迟开放
+NEWS_TOURISM_REOPEN_002B_SUMMARY,재확산 우려로 개방이 연기되며 기대가 꺾입니다.,"Reopening is delayed over resurgence fears, deflating hopes.",因反弹忧虑推迟开放，预期受挫。
+NEWS_TOURISM_REOPEN_003A_TITLE,여행 특수 안정,Travel boom settles,旅游热潮趋稳
+NEWS_TOURISM_REOPEN_003A_SUMMARY,초기 폭발적 수요가 정상 궤도로 돌아옵니다.,The initial demand burst normalizes.,初期爆发需求回归正常。
+NEWS_TOURISM_REOPEN_003B_TITLE,개방 연기 후 관망,Wait-and-see after the delay,推迟后观望
+NEWS_TOURISM_REOPEN_003B_SUMMARY,연기 이후 여행주가 관망세로 돌아섭니다.,"After the delay, travel shares turn cautious.",推迟后旅游股转为观望。
+CHAIN_ECOMMERCE_WAR,이커머스 출혈 경쟁,E-Commerce Price War,电商价格战
+NEWS_ECOMMERCE_WAR_001_TITLE,최저가 전쟁 재점화 조짐,Signs a price war is reigniting,价格战重燃迹象
+NEWS_ECOMMERCE_WAR_001_SUMMARY,대형 플랫폼들이 최저가 경쟁을 다시 벌인다는 신호가 나옵니다.,Big platforms are signaling another round of deep discounting.,大型平台释放再度打价格战的信号。
+NEWS_ECOMMERCE_WAR_002A_TITLE,"전면 할인전 돌입, 마진 붕괴",All-out discounting craters margins,全面打折，利润率崩塌
+NEWS_ECOMMERCE_WAR_002A_SUMMARY,전면 할인전이 벌어지며 이커머스·유통주 마진 우려가 커집니다.,"All-out discounting erupts, hammering margins across e-commerce and retail.",全面打折爆发，电商与零售利润率承压。
+NEWS_ECOMMERCE_WAR_002B_TITLE,담합 아닌 휴전 합의,"Truce, not a war, is struck",达成休战而非开战
+NEWS_ECOMMERCE_WAR_002B_SUMMARY,업계가 출혈 대신 휴전에 합의하며 마진 우려가 완화됩니다.,"The industry opts for a truce over bloodshed, easing margin fears.",业界选择休战，利润率忧虑缓解。
+NEWS_ECOMMERCE_WAR_003A_TITLE,할인전 진정,Discount war cools,价格战降温
+NEWS_ECOMMERCE_WAR_003A_SUMMARY,경쟁 강도가 낮아지며 관련주가 안정됩니다.,Competitive intensity eases and shares steady.,竞争强度下降，相关股趋稳。
+NEWS_ECOMMERCE_WAR_003B_TITLE,휴전 후 정상화,Normalizing after the truce,休战后回归常态
+NEWS_ECOMMERCE_WAR_003B_SUMMARY,휴전 이후 유통주가 원래 수준으로 회복됩니다.,"After the truce, retail names recover to prior levels.",休战后零售股恢复至原水平。
+CHAIN_CHEMICAL_SPILL,화학 공장 사고,Chemical Plant Disaster,化工厂事故
+NEWS_CHEMICAL_SPILL_001_TITLE,화학 단지 누출 사고설,Rumored leak at a chemical complex,化工园区疑发生泄漏
+NEWS_CHEMICAL_SPILL_001_SUMMARY,대형 화학 단지에서 유독물질이 누출됐다는 소문이 퍼집니다.,Rumors spread of a toxic leak at a major chemical complex.,传大型化工园区发生有毒泄漏。
+NEWS_CHEMICAL_SPILL_002A_TITLE,"대형 누출 확인, 가동 전면 중단","Major leak confirmed, plant fully halted",确认重大泄漏，工厂全面停产
+NEWS_CHEMICAL_SPILL_002A_SUMMARY,대형 누출이 확인돼 공장이 멈추고 화학주가 급락합니다.,"A major leak is confirmed, halting the plant and sinking chemical shares.",重大泄漏获确认，工厂停产，化工股大跌。
+NEWS_CHEMICAL_SPILL_002B_TITLE,경미 사고로 판명,Turns out to be a minor incident,查明为轻微事故
+NEWS_CHEMICAL_SPILL_002B_SUMMARY,조사 결과 경미한 사고로 판명돼 우려가 해소됩니다.,"Investigators find only a minor incident, easing concern.",调查显示仅为轻微事故，忧虑消除。
+NEWS_CHEMICAL_SPILL_003A_TITLE,사고 수습 국면,Cleanup underway,事故进入善后
+NEWS_CHEMICAL_SPILL_003A_SUMMARY,복구가 진행되며 낙폭이 일부 회복됩니다.,"With cleanup underway, part of the drop recovers.",善后展开，跌幅部分收复。
+NEWS_CHEMICAL_SPILL_003B_TITLE,사고 여파 소멸,Aftermath fades,事故余波消退
+NEWS_CHEMICAL_SPILL_003B_SUMMARY,경미 판명 후 화학주가 정상화됩니다.,"Once ruled minor, chemical shares normalize.",确认轻微后化工股回归正常。
+CHAIN_CONSTRUCTION_BOOM,인프라 투자 붐,Infrastructure Spending Boom,基建投资热
+NEWS_CONSTRUCTION_BOOM_001_TITLE,초대형 인프라 예산 편성설,Talk of a giant infrastructure budget,传编制超大规模基建预算
+NEWS_CONSTRUCTION_BOOM_001_SUMMARY,정부가 초대형 인프라 예산을 준비 중이라는 관측이 나옵니다.,Word is the government is preparing a giant infrastructure budget.,传政府正筹备超大规模基建预算。
+NEWS_CONSTRUCTION_BOOM_002A_TITLE,"인프라 법안 통과, 발주 봇물","Infra bill passes, orders flood in",基建法案通过，订单涌现
+NEWS_CONSTRUCTION_BOOM_002A_SUMMARY,법안 통과로 발주가 쏟아지며 건설·소재주가 강세입니다.,"The bill passes and orders surge, lifting construction and materials.",法案通过订单激增，建筑与材料股走强。
+NEWS_CONSTRUCTION_BOOM_002B_TITLE,예산 삭감으로 규모 축소,"Budget slashed, scope cut",预算削减，规模缩水
+NEWS_CONSTRUCTION_BOOM_002B_SUMMARY,예산이 대폭 삭감되며 기대했던 발주 규모가 줄었습니다.,"The budget is slashed, shrinking the expected order pipeline.",预算大幅削减，预期订单规模缩水。
+NEWS_CONSTRUCTION_BOOM_003A_TITLE,발주 기대 소화,Order hopes digested,订单预期消化
+NEWS_CONSTRUCTION_BOOM_003A_SUMMARY,발주 기대가 반영되며 강세가 진정됩니다.,Order hopes get priced in and the rally cools.,订单预期已消化，涨势趋缓。
+NEWS_CONSTRUCTION_BOOM_003B_TITLE,예산 축소 후 조정,Pullback after the cut,削减后回调
+NEWS_CONSTRUCTION_BOOM_003B_SUMMARY,삭감 이후 건설주가 되돌림을 보입니다.,"After the cut, construction names give back gains.",削减后建筑股出现回吐。
+CHAIN_AUTOMOTIVE_RECALL,대규모 리콜 사태,Mass Recall Scandal,大规模召回风波
+NEWS_AUTOMOTIVE_RECALL_001_TITLE,결함 은폐 의혹 제기,Defect cover-up suspected,疑隐瞒缺陷
+NEWS_AUTOMOTIVE_RECALL_001_SUMMARY,한 완성차 업체가 결함을 은폐했다는 의혹이 제기됩니다.,An automaker is suspected of covering up a defect.,一家整车厂被指隐瞒缺陷。
+NEWS_AUTOMOTIVE_RECALL_002A_TITLE,사상 최대 리콜 명령,Record recall ordered,下达史上最大召回令
+NEWS_AUTOMOTIVE_RECALL_002A_SUMMARY,사상 최대 규모 리콜이 명령되며 자동차주가 급락합니다.,"A record recall is ordered, sending auto shares tumbling.",下达史上最大召回令，汽车股大跌。
+NEWS_AUTOMOTIVE_RECALL_002B_TITLE,결함 무관 판정,Cleared of the defect claim,缺陷指控被驳回
+NEWS_AUTOMOTIVE_RECALL_002B_SUMMARY,조사에서 결함과 무관한 것으로 판정돼 주가가 반등합니다.,The probe clears the defect claim and shares rebound.,调查判定与缺陷无关，股价反弹。
+NEWS_AUTOMOTIVE_RECALL_003A_TITLE,리콜 충격 진정,Recall shock eases,召回冲击缓和
+NEWS_AUTOMOTIVE_RECALL_003A_SUMMARY,리콜 비용 우려가 반영되며 낙폭이 진정됩니다.,Recall-cost fears get priced in and the drop steadies.,召回成本忧虑消化，跌势趋稳。
+NEWS_AUTOMOTIVE_RECALL_003B_TITLE,무혐의 후 회복,Recovery after the clearance,无责后恢复
+NEWS_AUTOMOTIVE_RECALL_003B_SUMMARY,무혐의 판정 후 자동차주가 회복됩니다.,"After the clearance, auto shares recover.",无责判定后汽车股恢复。
+CHAIN_HEALTH_REFORM,의료 개혁안,Healthcare Reform Bill,医疗改革法案
+NEWS_HEALTH_REFORM_001_TITLE,약가 인하 개혁안 추진설,Drug-price cut reform said to be coming,传推动药价下调改革
+NEWS_HEALTH_REFORM_001_SUMMARY,정부가 약가를 대폭 낮추는 개혁안을 추진한다는 소문이 돕니다.,Rumors say the government will push a bill to sharply cut drug prices.,传政府将推动大幅下调药价的改革案。
+NEWS_HEALTH_REFORM_002A_TITLE,약가 인하 법안 통과,Drug-price cut bill passes,药价下调法案通过
+NEWS_HEALTH_REFORM_002A_SUMMARY,약가 인하가 확정되며 제약·헬스주 이익 우려가 커집니다.,"The price cut is confirmed, pressuring pharma and health margins.",药价下调落定，制药与医疗利润承压。
+NEWS_HEALTH_REFORM_002B_TITLE,업계 반발로 법안 후퇴,Bill retreats amid industry pushback,业界反对，法案退让
+NEWS_HEALTH_REFORM_002B_SUMMARY,업계 반발로 인하 폭이 크게 완화됩니다.,Industry pushback softens the cuts considerably.,业界反对令降价幅度大幅缓和。
+NEWS_HEALTH_REFORM_003A_TITLE,개혁 우려 진정,Reform fears settle,改革忧虑趋稳
+NEWS_HEALTH_REFORM_003A_SUMMARY,인하 우려가 반영되며 헬스주가 안정됩니다.,Price-cut fears get priced in and health names steady.,降价忧虑消化，医疗股趋稳。
+NEWS_HEALTH_REFORM_003B_TITLE,법안 후퇴 후 반등,Rebound after the retreat,退让后反弹
+NEWS_HEALTH_REFORM_003B_SUMMARY,법안 후퇴로 제약주가 반등합니다.,"With the bill softened, pharma shares rebound.",法案退让后制药股反弹。
+CHAIN_CRYPTO_CRACKDOWN,가상자산 규제,Crypto Crackdown,加密资产监管
+NEWS_CRYPTO_CRACKDOWN_001_TITLE,가상자산 전면 규제 임박설,Sweeping crypto rules said to be imminent,传全面加密监管在即
+NEWS_CRYPTO_CRACKDOWN_001_SUMMARY,당국이 가상자산 전면 규제를 예고했다는 관측이 나옵니다.,Regulators are said to be signaling sweeping crypto rules.,传监管机构预告全面加密监管。
+NEWS_CRYPTO_CRACKDOWN_002A_TITLE,거래 전면 규제 발표,Sweeping trading curbs announced,公布全面交易限制
+NEWS_CRYPTO_CRACKDOWN_002A_SUMMARY,전면 규제가 발표되며 핀테크·금융주가 흔들립니다.,"Sweeping curbs are announced, rattling fintech and finance.",全面监管出台，金融科技与金融股震荡。
+NEWS_CRYPTO_CRACKDOWN_002B_TITLE,규제 대폭 완화 선회,Regulators pivot to lighter rules,监管转向大幅放宽
+NEWS_CRYPTO_CRACKDOWN_002B_SUMMARY,당국이 완화된 규제로 선회하며 우려가 걷힙니다.,"Regulators pivot to lighter rules, lifting the gloom.",监管转向宽松，忧虑消散。
+NEWS_CRYPTO_CRACKDOWN_003A_TITLE,규제 충격 소화,Regulatory shock digested,监管冲击消化
+NEWS_CRYPTO_CRACKDOWN_003A_SUMMARY,규제 여파가 반영되며 관련주가 진정됩니다.,The regulatory hit gets priced in and shares steady.,监管影响消化，相关股趋稳。
+NEWS_CRYPTO_CRACKDOWN_003B_TITLE,완화 선회 후 반등,Rebound after the pivot,转向后反弹
+NEWS_CRYPTO_CRACKDOWN_003B_SUMMARY,완화 기대로 핀테크주가 반등합니다.,Hopes for lighter rules rebound fintech names.,放宽预期令金融科技股反弹。
+CHAIN_FOOD_SAFETY,식품 안전 파동,Food Safety Scare,食品安全风波
+NEWS_FOOD_SAFETY_001_TITLE,유명 식품 이물질 검출설,Contaminant rumored in a popular food,传知名食品检出异物
+NEWS_FOOD_SAFETY_001_SUMMARY,인기 식품에서 이물질이 나왔다는 소문이 SNS로 번집니다.,Rumors of a contaminant in a popular food spread on social media.,传人气食品检出异物，社媒扩散。
+NEWS_FOOD_SAFETY_002A_TITLE,대규모 회수 조치 발표,Mass product recall announced,宣布大规模召回
+NEWS_FOOD_SAFETY_002A_SUMMARY,대규모 회수가 발표되며 식품·소비주가 하락합니다.,"A mass recall is announced, dragging food and consumer names down.",宣布大规模召回，食品与消费股下挫。
+NEWS_FOOD_SAFETY_002B_TITLE,검사 결과 이상 없음,Tests come back clean,检测结果无异常
+NEWS_FOOD_SAFETY_002B_SUMMARY,정밀 검사에서 이상이 없어 논란이 진화됩니다.,"Lab tests come back clean, quelling the uproar.",精密检测无异常，风波平息。
+NEWS_FOOD_SAFETY_003A_TITLE,불매 여파 진정,Boycott impact eases,抵制影响缓和
+NEWS_FOOD_SAFETY_003A_SUMMARY,회수 조치 후 불매 여파가 잦아듭니다.,"After the recall, boycott effects subside.",召回后抵制影响趋缓。
+NEWS_FOOD_SAFETY_003B_TITLE,논란 종결,Controversy closes out,争议落幕
+NEWS_FOOD_SAFETY_003B_SUMMARY,이상 없음 판정 후 소비주가 회복됩니다.,"After the clean result, consumer names recover.",无异常判定后消费股恢复。
+CHAIN_BIOTECH_FRENZY,바이오 광풍,Biotech Frenzy,生物科技狂潮
+NEWS_BIOTECH_FRENZY_001_TITLE,신약 '기적의 데이터' 소문,Rumor of 'miracle data' for a new drug,新药'奇迹数据'传闻
+NEWS_BIOTECH_FRENZY_001_SUMMARY,한 바이오벤처의 신약 데이터가 기적적이라는 소문이 커뮤니티에 퍼집니다.,Talk of miraculous trial data for a biotech's drug spreads online.,传某生物新药试验数据堪称奇迹，网络疯传。
+NEWS_BIOTECH_FRENZY_002_TITLE,"임상 대성공 발표, 폭등",Blockbuster trial success — shares moon,临床大成功，股价暴涨
+NEWS_BIOTECH_FRENZY_002_SUMMARY,임상 성공이 발표되며 바이오주가 폭등합니다.,Trial success is announced and the biotech name moons.,临床成功公布，生物股暴涨。
+NEWS_BIOTECH_FRENZY_003_TITLE,고평가 논란에 급락 시작,Overvaluation talk sparks a slide,估值过高引发下滑
+NEWS_BIOTECH_FRENZY_003_SUMMARY,고평가 논란이 불거지며 급등분을 토해내기 시작합니다.,Overvaluation chatter begins unwinding the spike.,估值过高争议起，涨幅开始回吐。
+NEWS_BIOTECH_FRENZY_004_TITLE,광풍 종료,Frenzy over,狂潮落幕
+NEWS_BIOTECH_FRENZY_004_SUMMARY,과열이 식으며 바이오주가 잊혀갑니다.,The frenzy cools and the biotech name is forgotten.,过热平息，生物股被遗忘。
+CHAIN_DEFENSE_SCRAMBLE,방산 특수 광풍,Defense Scramble,军工抢购潮
+NEWS_DEFENSE_SCRAMBLE_001_TITLE,긴급 대량 발주 소문,Rumor of a sudden mega-order,突发巨额订单传闻
+NEWS_DEFENSE_SCRAMBLE_001_SUMMARY,한 방산업체에 긴급 대량 발주가 임박했다는 소문이 돕니다.,Word spreads of an imminent mega-order for a defense firm.,传某军工企业即将获得巨额紧急订单。
+NEWS_DEFENSE_SCRAMBLE_002_TITLE,"초대형 계약 체결, 폭등",Giant contract signed — shares moon,签下超大合同，股价暴涨
+NEWS_DEFENSE_SCRAMBLE_002_SUMMARY,초대형 계약이 체결되며 방산주가 폭등합니다.,A giant contract is signed and the defense name moons.,签下超大合同，军工股暴涨。
+NEWS_DEFENSE_SCRAMBLE_003_TITLE,차익 실현에 급락 시작,Profit-taking sparks a slide,获利了结引发下滑
+NEWS_DEFENSE_SCRAMBLE_003_SUMMARY,차익 실현 매물이 쏟아지며 급등분이 되돌려집니다.,Profit-taking floods in and the spike unwinds.,获利盘涌出，涨幅回吐。
+NEWS_DEFENSE_SCRAMBLE_004_TITLE,특수 종료,Scramble over,抢购潮结束
+NEWS_DEFENSE_SCRAMBLE_004_SUMMARY,발주 특수가 끝나며 방산주가 잊혀갑니다.,The order boom ends and the defense name is forgotten.,订单热潮结束，军工股被遗忘。
+NEWS_INDIE_ROBOTICS_001_TITLE,협동로봇 대량 수주,Cobot maker lands a big order,协作机器人斩获大单
+NEWS_INDIE_ROBOTICS_001_SUMMARY,한 로봇 업체가 대형 물류사에 협동로봇을 대량 납품합니다.,A robotics firm wins a big cobot order from a logistics giant.,一家机器人公司向物流巨头大批供货协作机器人。
+NEWS_INDIE_CYBER_001_TITLE,제로데이 방어 솔루션 출시,Zero-day defense product launched,零日防御方案发布
+NEWS_INDIE_CYBER_001_SUMMARY,보안업체가 제로데이 공격을 막는 신제품을 내놓아 주목받습니다.,A security firm launches a product that blocks zero-day attacks.,安全公司推出可拦截零日攻击的新品受关注。
+NEWS_INDIE_TELECOM_001_TITLE,전국 통신망 대규모 장애,Nationwide network outage,全国通信网络大面积中断
+NEWS_INDIE_TELECOM_001_SUMMARY,전국 통신망에 대규모 장애가 발생해 신뢰도 우려가 커집니다.,A nationwide network outage raises reliability concerns.,全国通信网络大面积中断，可靠性受质疑。
+NEWS_INDIE_AGRI_001_TITLE,풍작으로 농업주 강세,Bumper harvest lifts agri names,丰收提振农业股
+NEWS_INDIE_AGRI_001_SUMMARY,이상적 기후로 풍작이 예상되며 농업주가 강세를 보입니다.,"Ideal weather points to a bumper crop, lifting agri shares.",理想天气预示丰收，农业股走强。
+NEWS_INDIE_TOURISM_001_TITLE,성수기 예약 사상 최대,Record peak-season bookings,旺季预订创新高
+NEWS_INDIE_TOURISM_001_SUMMARY,성수기 여행 예약이 사상 최대를 기록하며 관광주가 오릅니다.,"Peak-season travel bookings hit a record, lifting tourism.",旺季旅游预订创纪录，旅游股上涨。
+NEWS_INDIE_ECOMMERCE_001_TITLE,대형 세일 거래액 신기록,Mega-sale sets GMV record,大促成交额创纪录
+NEWS_INDIE_ECOMMERCE_001_SUMMARY,연중 최대 세일에서 거래액이 신기록을 세웠습니다.,The year's biggest sale set a new GMV record.,年度最大促销成交额创新高。
+NEWS_INDIE_CHEMICAL_001_TITLE,특수화학 수요 급증,Specialty-chemical demand jumps,特种化学需求激增
+NEWS_INDIE_CHEMICAL_001_SUMMARY,전기차·반도체향 특수화학 수요가 급증합니다.,Demand for specialty chemicals from EV and chip makers jumps.,电动车与芯片带动特种化学需求激增。
+NEWS_INDIE_CONSTRUCTION_001_TITLE,대형 건설현장 공사 중단,Major construction site halted,大型工地停工
+NEWS_INDIE_CONSTRUCTION_001_SUMMARY,자금난으로 대형 건설현장 공사가 중단됐습니다.,A funding crunch halts work at a major construction site.,资金紧张导致大型工地停工。
+NEWS_INDIE_AUTOMOTIVE_001_TITLE,전기차 판매 사상 최대,Record EV sales,电动车销量创新高
+NEWS_INDIE_AUTOMOTIVE_001_SUMMARY,한 완성차 업체의 전기차 판매가 사상 최대를 기록합니다.,An automaker posts record EV sales.,某整车厂电动车销量创历史新高。
+NEWS_INDIE_HEALTH_001_TITLE,혁신 의료기기 승인,Breakthrough medical device approved,创新医疗器械获批
+NEWS_INDIE_HEALTH_001_SUMMARY,혁신 의료기기가 규제 승인을 받아 헬스주가 오릅니다.,"A breakthrough medical device wins approval, lifting health names.",创新医疗器械获批，医疗股上涨。
+NEWS_INDIE_GAMING_001_TITLE,기대작 출시 흥행 참패,Hyped title flops at launch,期待大作上市遇冷
+NEWS_INDIE_GAMING_001_SUMMARY,기대를 모은 대작 게임이 출시 직후 혹평에 시달립니다.,A hotly anticipated game draws harsh reviews right after launch.,备受期待的大作上市即遭差评。
+NEWS_INDIE_AGRICULTURE_002_TITLE,병충해 확산 경보,Pest outbreak alert,病虫害扩散警报
+NEWS_INDIE_AGRICULTURE_002_SUMMARY,주요 산지에 병충해가 번지며 수확 차질이 우려됩니다.,A pest outbreak in key regions threatens the harvest.,主产区病虫害蔓延，收成堪忧。
+NEWS_INDIE_ROBOTICS_002_TITLE,산업용 로봇 안전사고,Industrial robot safety incident,工业机器人安全事故
+NEWS_INDIE_ROBOTICS_002_SUMMARY,산업용 로봇 오작동 사고로 안전 규제 강화 우려가 나옵니다.,A robot malfunction sparks fears of tougher safety rules.,工业机器人误动作事故引发监管收紧担忧。
+NEWS_INDIE_TELECOM_002_TITLE,차세대 주파수 대량 확보,Carrier wins big spectrum block,运营商赢得大块频谱
+NEWS_INDIE_TELECOM_002_SUMMARY,한 통신사가 차세대 주파수를 대량 확보해 성장 기대가 커집니다.,"A carrier secures a large next-gen spectrum block, boosting growth hopes.",某运营商斩获大量新一代频谱，成长预期升温。
+NEWS_INDIE_CYBER_002_TITLE,핀테크 결제망 침해 사고,Fintech payment breach,金融科技支付系统被入侵
+NEWS_INDIE_CYBER_002_SUMMARY,핀테크 결제망이 침해돼 개인정보 유출 우려가 번집니다.,"A fintech payment network is breached, raising data-leak fears.",金融科技支付网络遭入侵，个资外泄忧虑扩散。
+NEWS_INDIE_TOURISM_002_TITLE,유류할증료 인상에 여행 위축,Fuel surcharge hike chills travel,燃油附加费上调抑制出行
+NEWS_INDIE_TOURISM_002_SUMMARY,유류할증료 인상으로 여행 수요가 위축될 것이란 우려가 나옵니다.,A fuel-surcharge hike is expected to dampen travel demand.,燃油附加费上调，出行需求料受抑制。
+ui_stock_buy_qty,매수 수량,Buy Qty,买入数量
+ui_stock_buy_max,최대,Max,最大
+ui_stock_buy_info,구매 가능 {0}주 · 현재 ₩{1:N0},Can buy {0} · Now ₩{1:N0},可买 {0}股 · 现价 ₩{1:N0}
+ui_stock_buy_cost,주문 금액  ₩{0:N0},Order amount  ₩{0:N0},订单金额  ₩{0:N0}
+ui_stock_filter_holdings,보유중,Holdings,持有中
+ui_stock_search_placeholder,종목 검색...,Search...,搜索股票...
+ui_stock_filter_holdings_header,보유,Holdings,持有
+ui_stock_list_header_holdings,보유 종목,Holdings,持有股票
+ui_stock_filter_sort_header,정렬,Sort,排序
+NEWS_INDIE_FINANCE_003_TITLE,기준금리 인하 기대 확산,Rate-cut hopes spread,降息预期升温
+NEWS_INDIE_FINANCE_003_SUMMARY,기준금리 인하 기대가 커지며 금융주에 매수세가 몰립니다.,Growing rate-cut expectations draw buyers into financial names.,降息预期升温，资金涌入金融股。
+NEWS_INDIE_FINANCE_004_TITLE,가계대출 연체율 급등,Household loan delinquencies spike,家庭贷款逾期率飙升
+NEWS_INDIE_FINANCE_004_SUMMARY,가계대출 연체율이 급등해 금융사 부실 우려가 커집니다.,A spike in household loan delinquencies stokes fears of bad debt at lenders.,家庭贷款逾期率飙升，放贷机构坏账忧虑加剧。
+NEWS_INDIE_TELECOM_003_TITLE,전국 초고속망 조기 구축,Nationwide network rollout accelerates,全国高速网络提前铺设
+NEWS_INDIE_TELECOM_003_SUMMARY,전국 초고속망 구축이 앞당겨지며 통신사 실적 기대가 오릅니다.,An accelerated nationwide rollout lifts earnings hopes for carriers.,全国高速网络提前铺设，运营商业绩预期上调。
+NEWS_INDIE_TELECOM_004_TITLE,통신 요금 인하 압박,Pressure to cut mobile fees,下调通信资费压力
+NEWS_INDIE_TELECOM_004_SUMMARY,통신 요금 인하 압박이 커지며 수익성 우려가 번집니다.,Mounting pressure to cut fees raises margin concerns.,下调资费压力加大，盈利担忧扩散。
+NEWS_INDIE_DEFENSE_002_TITLE,대규모 방산 수출 계약,Major defense export contract,大型防务出口合同
+NEWS_INDIE_DEFENSE_002_SUMMARY,대규모 방산 수출 계약이 체결돼 관련주가 들썩입니다.,"A large defense export deal is signed, stirring the sector.",大型防务出口合同签署，相关个股躁动。
+NEWS_INDIE_DEFENSE_003_TITLE,차세대 무기체계 개발 지연,Next-gen weapons program delayed,新一代武器项目延期
+NEWS_INDIE_DEFENSE_003_SUMMARY,차세대 무기체계 개발이 지연되며 납품 일정에 차질이 생깁니다.,"A next-gen weapons program slips, disrupting delivery schedules.",新一代武器项目延期，交付进度受阻。
+STOCK_TAG_FINANCE,금융,Finance,金融
+STOCK_TAG_TELECOM,통신,Telecom,通信
+STOCK_TAG_DEFENSE,방산,Defense,国防
+ui_stock_chart_tick_now,현재 틱,Latest tick,当前刻度
+ui_stock_chart_tick_ago,{0}틱 전,{0} ticks ago,{0} 刻度前

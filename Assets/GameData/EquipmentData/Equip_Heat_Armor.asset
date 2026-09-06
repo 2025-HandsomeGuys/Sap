@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba20e9d7d6c4d6e4a86867f93d4e679a, type: 3}
+  m_Name: Equip_Heat_Armor
+  m_EditorClassIdentifier: Assembly-CSharp::EquipmentSO
+  equipmentID: 3107
+  equipmentNameKey: equip_heat_armor_name
+  icon: {fileID: 1496553011986245393, guid: 775b19dabc31b3041bf796d4817fcc56, type: 3}
+  descriptionKey: equip_heat_armor_desc
+  previewSprite: {fileID: 5115219902307278066, guid: f9d8df370781f1e4f809535b9681b0d0, type: 3}
+  equipmentType: 2
+  level: 0
+  defense: 4
+  durability: 0
+  price: 1000
+  statModifiers:
+  - statType: 35
+    modifierType: 0
+    value: 12
+  weight: 1
+  stackable: 0
+  maxStackSize: 1

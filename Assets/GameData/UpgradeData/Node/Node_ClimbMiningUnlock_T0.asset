@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 581f7dfb478769e4bba78e5ee790d6fd, type: 3}
+  m_Name: Node_ClimbMiningUnlock_T0
+  m_EditorClassIdentifier: GameScripts::UpgradeNodeSO
+  nodeId: ClimbMiningUnlock_T0
+  displayNameKey: "\uD55C \uC190 \uCC44\uAD74"
+  descriptionKey: "\uBCBD\uC5D0 \uB9E4\uB2EC\uB9B0 \uCC44\uB85C \uC0BD\uC9C8\xB7\uACE1\uAD2D\uC774\uC9C8\uC744
+    \uD560 \uC218 \uC788\uAC8C \uB429\uB2C8\uB2E4."
+  icon: {fileID: 0}
+  tier: 0
+  parentNodes:
+  - {fileID: 11400000, guid: df0f718f6e24cb941ad5fac50358dbf5, type: 2}
+  cost: 130
+  maxLevel: 1
+  costGrowth: 1.6
+  levelCosts: 
+  effect: {fileID: 11400000, guid: 2efa9e0ae5aacbf47b750a43d8cdec5c, type: 2}
+  uiPosition: {x: 175, y: 1170}
+  lineBends: []

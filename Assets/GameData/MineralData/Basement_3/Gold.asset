@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0d528b2d5e4abd4ea20c99a65b89b33, type: 3}
+  m_Name: Gold
+  m_EditorClassIdentifier: Assembly-CSharp::MineralSO
+  mineralID: 302
+  mineralNameKey: mineral_gold_name
+  descriptionKey: mineral_gold_desc
+  spawnRate: 0
+  basementLevel: 0
+  weight: 1
+  stackable: 1
+  maxStackSize: 999
+  icon: {fileID: 21300000, guid: c742e8081341f614d938c5ada1c96c6a, type: 3}
+  mineralPrefab: {fileID: 7651248375382586064, guid: 6db6d514c81120b48a0d482ab689412c, type: 3}

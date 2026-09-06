@@ -1,0 +1,64 @@
+{
+ "run_id": "9123576e646442f4ab3c0e70db0405ca",
+ "days": {
+  "15": {
+   "question": "중층 엘리베이터에 도달 가능한지",
+   "incidents": [
+    {
+     "t": "14:20",
+     "tag": "버그",
+     "sev": 3,
+     "obs": "아래로 땅파다가 땅에 박힘",
+     "why": "",
+     "idea": "",
+     "fix": true,
+     "done": false
+    }
+   ],
+   "expected": "충분히 갈 수 있을거라 생각했는데, 완전 일직선으로 파야 갈 수 있었다. ",
+   "quit": "어제 파고 내려갔는데 그대로 떨어져서 낙사 당했을때. 맵 디자인 다시 해야 할듯",
+   "again": true,
+   "mismatch": "",
+   "next_question": "중층 앨베 가면 얼마나 돈이 더 벌리는지",
+   "stage": 2,
+   "submitted_at": "2026-08-31T05:21:12.085Z",
+   "done_at": "2026-08-31T05:21:44.213Z"
+  },
+  "16": {
+   "question": "중층 앨베 가면 얼마나 돈이 더 벌리는지",
+   "incidents": [
+    {
+     "t": "14:27",
+     "tag": "짜증",
+     "sev": 3,
+     "obs": "던전 들어가졌는데 못나와서 그대로 긴급탈출로 나왔음",
+     "why": "",
+     "idea": "안깨고도 나올 방법 만들어두기",
+     "fix": true,
+     "done": false
+    }
+   ],
+   "expected": "",
+   "quit": "",
+   "again": false,
+   "mismatch": "",
+   "next_question": "중층 엘배가면 얼마나 벌지",
+   "stage": 2,
+   "submitted_at": "2026-08-31T05:28:25.925Z",
+   "done_at": "2026-08-31T05:28:37.509Z"
+  },
+  "17": {
+   "question": "중층 엘배가면 얼마나 벌지",
+   "incidents": [],
+   "expected": "하층 엘베까지 갔고 1400골드 가까이 벌었다",
+   "quit": "",
+   "again": true,
+   "mismatch": "하층가면 또 얼마나 벌지",
+   "next_question": "",
+   "stage": 2,
+   "submitted_at": "2026-08-31T06:26:23.601Z",
+   "done_at": "2026-08-31T06:26:41.137Z"
+  }
+ },
+ "updated_at": "2026-08-31T15:26:41"
+}

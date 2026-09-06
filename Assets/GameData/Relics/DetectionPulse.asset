@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ccf05c1a207592c4dacf9fb73ddab62e, type: 3}
+  m_Name: DetectionPulse
+  m_EditorClassIdentifier: GameScripts::Relic.Data.RelicSO
+  id: 4021
+  displayNameKey: relic_detection_pulse_name
+  descriptionKey: relic_detection_pulse_desc
+  icon: {fileID: 0}
+  type: 1
+  maxLevel: 3
+  unlockNodeId: 
+  upgradeCosts:
+  - gold: 100
+    material: 0
+    materialCount: 0
+  - gold: 250
+    material: 0
+    materialCount: 0
+  behaviour:
+    rid: 4010175549867032682
+  references:
+    version: 2
+    RefIds:
+    - rid: 4010175549867032682
+      type: {class: DetectionPulseRelic, ns: Relic, asm: GameScripts}
+      data:
+        radiusPerLevel: 040000000500000006000000
+        cooldown: 60
+        pulseSpeed: 6
+        ringColor: {r: 0.5, g: 0.85, b: 1, a: 0.85}
+        ringWidth: 0.18
+        pingColor: {r: 1, g: 0.9, b: 0.4, a: 1}

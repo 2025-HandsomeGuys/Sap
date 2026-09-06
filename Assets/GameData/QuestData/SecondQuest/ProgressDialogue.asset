@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 53ebe6861071d2849ac4935aa8e1aada, type: 3}
+  m_Name: ProgressDialogue
+  m_EditorClassIdentifier: Assembly-CSharp::DialogueData
+  dialogueLines:
+  - speakerName: TruckQuest
+    text: "\uD018\uC2A4\uD2B8 \uC9C4\uD589\uC911 2\uBC88 \uC608\uC2DC\uC5D0\uC6A9~\n\uC544\uC9C1
+      \uD018\uC2A4\uD2B8 \uBBF8\uC644\uB8CC\uB2E4\uC787 \uAD11\uBB3C\uC774\uB098
+      \uAC00\uC838\uC640\uB77C\uC787"
+    speakerSide: 0
+    leftSprite: {fileID: -2173568095341107445, guid: 7d8ae296c597904419619f3b64329c7c, type: 3}
+    rightSprite: {fileID: -8263897675722398590, guid: 6e0ebd75022127341a1b567fd27cc4b6, type: 3}
+  - speakerName: Player
+    text: "\uAC00\uC838\uC624\uAC9F\uB2E4\uC787"
+    speakerSide: 1
+    leftSprite: {fileID: -2173568095341107445, guid: 7d8ae296c597904419619f3b64329c7c, type: 3}
+    rightSprite: {fileID: -8263897675722398590, guid: 6e0ebd75022127341a1b567fd27cc4b6, type: 3}
+  openShopAfterDialogue: 0
+  openUpgradeAfterDialogue: 0

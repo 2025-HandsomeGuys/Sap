@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 581f7dfb478769e4bba78e5ee790d6fd, type: 3}
+  m_Name: Node_ShovelStamina_T0_01
+  m_EditorClassIdentifier: GameScripts::UpgradeNodeSO
+  nodeId: ShovelStamina_T0_01
+  displayNameKey: "\uAC00\uBCBC\uC6B4 \uC0BD\uC9C8 I"
+  descriptionKey: "\uC0BD\uC9C8 1\uD68C \uBE44\uC6A9\uC774 0.025 \uC904\uC5B4\uB4ED\uB2C8\uB2E4(\uAE30\uC900
+    0.5)."
+  icon: {fileID: 0}
+  tier: 0
+  parentNodes:
+  - {fileID: 11400000, guid: ac5899f927db1774a9f097102f8546c7, type: 2}
+  cost: 30
+  maxLevel: 1
+  costGrowth: 1.6
+  levelCosts: 
+  effect: {fileID: 11400000, guid: bbae0e3795211344b8f579fcfb55ef4b, type: 2}
+  uiPosition: {x: -262.5, y: 270}
+  lineBends:
+  - parentId: MiningRange_T0_01
+    points:
+    - {x: -262.5, y: 210}

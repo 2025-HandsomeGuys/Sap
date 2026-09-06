@@ -1,0 +1,63 @@
+key,kr,en,cn
+equip_mining_hat_name,광부의 모자,Miner's Hat,矿工帽
+equip_mining_hat_desc,초보 광부들에게 지급되는 기본적인 안전모.,Basic hard hat given to novice miners.,发给新手矿工的基本安全帽。
+equip_sturdy_clothes_name,튼튼한 작업복,Sturdy Work Clothes,结实的工作服
+equip_sturdy_clothes_desc,스크래치와 열로부터 몸을 보호해줍니다.,Protects the body from scratches and heat.,保护身体免受刮伤和高温。
+equip_light_shoes_name,가벼운 신발,Light Shoes,轻便的鞋子
+equip_light_shoes_desc,이동 속도를 조금 높여주는 편안한 신발.,Comfortable shoes that slightly increase movement speed.,稍微提高移动速度的舒适鞋子。
+equip_test_relic_name,테스트 유물,Test Relic,测试遗物
+equip_test_relic_desc,테스트용 유물입니다.,A relic for testing.,用于测试的遗物。
+equip_climber_helmet_name,등반가의 헬멧,Climber's Helmet,登山者头盔
+equip_climber_helmet_desc,험한 벽을 오르는 등반가를 위한 가벼운 헬멧.,A light helmet for climbers scaling rough walls.,为攀爬险壁的登山者准备的轻便头盔。
+equip_climber_armor_name,등반가의 복장,Climber's Gear,登山者服装
+equip_climber_armor_desc,벽타기에 최적화된 신축성 있는 복장.,Stretchy gear optimized for wall climbing.,为攀爬优化的弹性服装。
+equip_climber_boots_name,등반가의 신발,Climber's Boots,登山者靴子
+equip_climber_boots_desc,접지력이 뛰어나 벽을 잘 타게 해주는 신발.,Grippy boots that make wall climbing easier.,抓地力出色便于攀爬的靴子。
+equip_miner_helmet_name,광부의 헬멧,Miner's Helmet,矿工头盔
+equip_miner_helmet_desc,채굴 작업에 특화된 튼튼한 헬멧.,A sturdy helmet specialized for mining.,专为采矿作业打造的坚固头盔。
+equip_miner_armor_name,광부의 복장,Miner's Outfit,矿工服装
+equip_miner_armor_desc,낙석과 먼지로부터 몸을 지켜주는 작업복.,Work clothes that protect against falling rocks and dust.,保护身体免受落石与粉尘的工作服。
+equip_miner_boots_name,광부의 부츠,Miner's Boots,矿工靴子
+equip_miner_boots_desc,거친 갱도에서도 발을 보호하는 튼튼한 부츠.,Tough boots that protect feet in rough mines.,在崎岖矿道中也能保护双脚的坚固靴子。
+equip_carrier_helmet_name,운반가의 모자,Carrier's Cap,搬运工帽子
+equip_carrier_helmet_desc,무거운 짐을 나르는 운반가를 위한 실용적인 모자.,A practical cap for carriers hauling heavy loads.,为搬运重物的搬运工准备的实用帽子。
+equip_carrier_armor_name,운반가의 복장,Carrier's Vest,搬运工背心
+equip_carrier_armor_desc,짐의 무게를 분산시켜주는 튼튼한 복장.,Sturdy gear that distributes the weight of cargo.,分散货物重量的坚固服装。
+equip_carrier_boots_name,운반가의 부츠,Carrier's Boots,搬运工靴子
+equip_carrier_boots_desc,무거운 짐을 지고도 안정적인 부츠.,Stable boots even under heavy loads.,即便负重也稳固的靴子。
+equip_winter_helmet_name,방한 모자,Winter Hood,防寒帽
+equip_winter_helmet_desc,혹한으로부터 머리를 보호하는 방한 모자.,A winter hood that shields the head from extreme cold.,保护头部免受严寒的防寒帽。
+equip_winter_armor_name,방한복,Winter Coat,防寒服
+equip_winter_armor_desc,얼어붙는 추위를 막아주는 두꺼운 방한복.,A thick winter coat that blocks freezing cold.,抵御刺骨严寒的厚实防寒服。
+equip_winter_boots_name,방한 부츠,Winter Boots,防寒靴
+equip_winter_boots_desc,얼음 위에서도 따뜻함을 유지하는 방한 부츠.,Winter boots that stay warm even on ice.,即使在冰面也能保暖的防寒靴。
+equip_heat_helmet_name,방열 헬멧,Heat-Resistant Helmet,隔热头盔
+equip_heat_helmet_desc,뜨거운 열기로부터 머리를 지키는 방열 헬멧.,A heat-resistant helmet that guards against scorching heat.,防止高温灼伤头部的隔热头盔。
+equip_heat_armor_name,방열복,Heat-Resistant Suit,隔热服
+equip_heat_armor_desc,용암 지대의 열을 견디는 방열복.,A heat-resistant suit that endures the heat of magma zones.,承受熔岩地带高温的隔热服。
+equip_heat_boots_name,방열 부츠,Heat-Resistant Boots,隔热靴
+equip_heat_boots_desc,달아오른 땅 위에서도 발을 지키는 방열 부츠.,Heat-resistant boots that protect feet on scorching ground.,在灼热地面也能保护双脚的隔热靴。
+equip_engineer_helmet_name,엔지니어의 헬멧,Engineer's Helmet,工程师头盔
+equip_engineer_helmet_desc,정밀 작업에 유용한 라이트가 달린 헬멧.,A helmet with a light useful for precision work.,配有照明灯便于精密作业的头盔。
+equip_engineer_armor_name,엔지니어의 복장,Engineer's Suit,工程师服装
+equip_engineer_armor_desc,각종 장비를 다루기 편한 기능성 복장.,A functional suit for handling various equipment.,便于操作各种装备的功能性服装。
+equip_engineer_boots_name,엔지니어의 부츠,Engineer's Boots,工程师靴子
+equip_engineer_boots_desc,기계 작업 현장에 어울리는 튼튼한 부츠.,Sturdy boots suited to machine worksites.,适合机械作业现场的坚固靴子。
+equip_scientist_helmet_name,과학자의 고글,Scientist's Goggles,科学家护目镜
+equip_scientist_helmet_desc,어두운 곳도 또렷하게 보여주는 과학자의 고글.,Scientist's goggles that reveal even dark places clearly.,让黑暗处也清晰可见的科学家护目镜。
+equip_scientist_armor_name,과학자의 가운,Scientist's Coat,科学家外套
+equip_scientist_armor_desc,탐사와 분석에 특화된 가운.,A coat specialized for exploration and analysis.,专为勘探与分析设计的外套。
+equip_scientist_boots_name,과학자의 신발,Scientist's Shoes,科学家鞋子
+equip_scientist_boots_desc,오랜 탐사에도 편안한 신발.,Comfortable shoes even during long expeditions.,长时间勘探也舒适的鞋子。
+equip_shovel_helmet_name,삽 전문가의 모자,Digger's Cap,铲子专家帽子
+equip_shovel_helmet_desc,삽질에 능한 전문가를 위한 가벼운 모자.,A light cap for experts skilled with the shovel.,为擅长挖掘的专家准备的轻便帽子。
+equip_shovel_armor_name,삽 전문가의 복장,Digger's Gear,铲子专家服装
+equip_shovel_armor_desc,오래 파도 지치지 않게 돕는 복장.,Gear that helps you dig longer without tiring.,助你长时间挖掘不疲惫的服装。
+equip_shovel_boots_name,삽 전문가의 부츠,Digger's Boots,铲子专家靴子
+equip_shovel_boots_desc,발판을 단단히 딛고 삽질하게 해주는 부츠.,Boots that let you dig with firm footing.,让你稳固落脚挖掘的靴子。
+equip_marathon_helmet_name,마라톤 헤드밴드,Marathon Headband,马拉松头带
+equip_marathon_helmet_desc,오래 달려도 가뿐한 마라톤 헤드밴드.,A marathon headband that stays light over long runs.,长跑也轻盈的马拉松头带。
+equip_marathon_armor_name,마라톤 복장,Marathon Outfit,马拉松服装
+equip_marathon_armor_desc,지구력을 살려주는 가벼운 마라톤 복장.,A light marathon outfit that boosts endurance.,提升耐力的轻便马拉松服装。
+equip_marathon_boots_name,마라톤 운동화,Marathon Sneakers,马拉松跑鞋
+equip_marathon_boots_desc,이동 속도를 높여주는 가벼운 운동화.,Light sneakers that increase movement speed.,提升移动速度的轻便跑鞋。

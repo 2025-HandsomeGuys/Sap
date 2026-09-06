@@ -1,0 +1,159 @@
+{
+  "spawning": {
+    "minChunkSpacing": 1,
+    "layerBoundarySpacing": 0,
+    "spawnChances": [
+      {
+        "chunkTypeName": "ScrapExplosion",
+        "chance": 80.0
+      },
+      {
+        "chunkTypeName": "DelayedBlast",
+        "chance": 0.0
+      },
+      {
+        "chunkTypeName": "CollapseFloor",
+        "chance": 0.0
+      },
+      {
+        "chunkTypeName": "GuideLine",
+        "chance": 0.0
+      },
+      {
+        "chunkTypeName": "Pitfall",
+        "chance": 0.0
+      },
+      {
+        "chunkTypeName": "DropSpike",
+        "chance": 0.0
+      },
+      {
+        "chunkTypeName": "CompressedTrashWall",
+        "chance": 0.0
+      },
+      {
+        "chunkTypeName": "Mine",
+        "chance": 0.0
+      },
+      {
+        "chunkTypeName": "DokkaebiCauldron",
+        "chance": 0.0
+      }
+    ]
+  },
+  "traps": {
+    "collapseFloor": {
+      "collapseDelay": 0.2,
+      "floorThicknessPx": 200
+    },
+    "delayedBlast": {
+      "blastDelay": 2.0,
+      "blastRadius": 0.3,
+      "damageRadius": 1.5,
+      "staminaDamage": 20.0
+    },
+    "rollingRock": {
+      "launchSpeed": 8.0,
+      "clearInterval": 0.15,
+      "clearRadius": 0.4,
+      "staminaDamage": 30.0,
+      "knockbackForce": 12.0
+    },
+    "stalactite": {
+      "detectionRange": 5.0,
+      "staminaDamage": 20.0,
+      "slowMultiplier": 0.6,
+      "slowDuration": 2.0,
+      "impactVibrationRadius": 2.0
+    },
+    "scrapExplosion": {
+      "explosionRadius": 3.0,
+      "staminaDamage": 30.0,
+      "maxHp": 30.0,
+      "scrapMin": 3,
+      "scrapMax": 6,
+      "copperChance": 0.20,
+      "ironChance": 0.15
+    }
+  },
+  "entities": {
+    "snowman": {
+      "maxHp": 5.0
+    },
+    "cable": {
+      "maxHp": 3.0
+    },
+    "trashWall": {
+      "maxHp": 30.0
+    },
+    "crystalBlock": {
+      "maxHp": 25.0
+    }
+  },
+  "drops": {
+    "trashWall": {
+      "scrapMin": 3,
+      "scrapMax": 5,
+      "copperChance": 0.15,
+      "leadChance": 0.10,
+      "scatterX": 0.3,
+      "scatterY": 0.2
+    }
+  },
+  "zones": {
+    "oxidized": {
+      "penaltyPerTick": 5.0,
+      "tickInterval": 1.0,
+      "minMaxStamina": 20.0
+    },
+    "blackHole": {
+      "pullForce": 8.0,
+      "tickInterval": 1.0,
+      "damagePerTick": 10.0,
+      "knockbackForce": 12.0
+    }
+  },
+  "physics": {
+    "icicleImpactRadius": 2.0,
+    "vibrationDefaultRadius": 3.0,
+    "damageStagedThresholds": [
+      0.66,
+      0.33
+    ]
+  },
+  "sinkingPillar": {
+    "sinkSpeed": 0.5,
+    "riseSpeed": 0.5,
+    "maxSinkDistance": 2.0,
+    "sinkDelay": 0.5,
+    "riseDelay": 1.0
+  },
+  "mineralRock": {
+    "defaultMaxHp": 8.0,
+    "defaultMinDrop": 2,
+    "defaultMaxDrop": 4,
+    "overrides": [
+      {
+        "mineralID": "Copper",
+        "maxHp": 6.0,
+        "minDrop": 2,
+        "maxDrop": 4
+      },
+      {
+        "mineralID": "Iron",
+        "maxHp": 10.0,
+        "minDrop": 1,
+        "maxDrop": 3
+      }
+    ]
+  },
+  "cauldron": {
+    "greatSuccessChance": 0.15,
+    "successChance": 0.45,
+    "failChance": 0.25,
+    "greatFailChance": 0.15,
+    "explosiveMin": 3,
+    "explosiveMax": 6,
+    "maxUses": 3
+  }
+}

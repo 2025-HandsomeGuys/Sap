@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 581f7dfb478769e4bba78e5ee790d6fd, type: 3}
+  m_Name: Node_DrillDrain_T1_01
+  m_EditorClassIdentifier: GameScripts::UpgradeNodeSO
+  nodeId: DrillDrain_T1_01
+  displayNameKey: "\uB4DC\uB9B4 \uC808\uC804 \uBAA8\uB4DC I"
+  descriptionKey: "\uB4DC\uB9B4 \uBC30\uD130\uB9AC \uC18C\uBAA8\uAC00 15% \uC904\uC5B4\uB4ED\uB2C8\uB2E4(\uAE30\uC900
+    1)."
+  icon: {fileID: 0}
+  tier: 1
+  parentNodes:
+  - {fileID: 11400000, guid: cce5036e4b1df7d45a6321fdb2921cb3, type: 2}
+  cost: 3500
+  maxLevel: 1
+  costGrowth: 1.6
+  levelCosts: 
+  effect: {fileID: 11400000, guid: cf802a383de2b3049b1f9ea7a8a97d2a, type: 2}
+  uiPosition: {x: -262.5, y: 5010}
+  lineBends: []

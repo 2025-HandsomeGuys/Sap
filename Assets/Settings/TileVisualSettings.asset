@@ -1,0 +1,81 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f3a97f09bed5314aafcf8d80664f907, type: 3}
+  m_Name: TileVisualSettings
+  m_EditorClassIdentifier: Assembly-CSharp::TileVisualSettings
+  settings:
+  - tileType: 10
+    mainTexture: {fileID: 2800000, guid: b931f58abeb3d1447b6b03c4356bb466, type: 3}
+    borderTexture: {fileID: 2800000, guid: d7329b18f640c3f42bfaa3e2b208349c, type: 3}
+    rockPrefabs:
+    - {fileID: 3046616906822242646, guid: 5bf5c08dd1f3f17468b879f318230e2c, type: 3}
+    - {fileID: 7683614269638011860, guid: 66b71a5764c2e0c40bc4cb133c9a25d1, type: 3}
+    - {fileID: 4878957738522061992, guid: 5a6caa5cce0d24c499b2e88cd963aca8, type: 3}
+    fragmentMixRules: []
+    rockSpacingBuffer: 0
+    rockSpriteSets:
+    - normal: {fileID: 6722789742352733923, guid: d0674b1a65881cf46892e00500a2ca59, type: 3}
+      crack1: {fileID: 8808156821673506232, guid: d0674b1a65881cf46892e00500a2ca59, type: 3}
+      crack2: {fileID: -7781822090433132207, guid: d0674b1a65881cf46892e00500a2ca59, type: 3}
+      tier: 2
+      fragmentSets:
+      - sprites:
+        - {fileID: -6341683648597759424, guid: d0674b1a65881cf46892e00500a2ca59, type: 3}
+        - {fileID: -6521250300293723539, guid: d0674b1a65881cf46892e00500a2ca59, type: 3}
+        - {fileID: -5836551062008700879, guid: d0674b1a65881cf46892e00500a2ca59, type: 3}
+        - {fileID: 502032636476885704, guid: d0674b1a65881cf46892e00500a2ca59, type: 3}
+    - normal: {fileID: 8138793573098484789, guid: d0674b1a65881cf46892e00500a2ca59, type: 3}
+      crack1: {fileID: 1381824272351185359, guid: d0674b1a65881cf46892e00500a2ca59, type: 3}
+      crack2: {fileID: 1657099829402664868, guid: d0674b1a65881cf46892e00500a2ca59, type: 3}
+      tier: 1
+      fragmentSets:
+      - sprites:
+        - {fileID: 3202649505567321787, guid: d0674b1a65881cf46892e00500a2ca59, type: 3}
+        - {fileID: 3523834496555722321, guid: d0674b1a65881cf46892e00500a2ca59, type: 3}
+        - {fileID: -5674036856118988368, guid: d0674b1a65881cf46892e00500a2ca59, type: 3}
+        - {fileID: 746113985966028212, guid: d0674b1a65881cf46892e00500a2ca59, type: 3}
+    - normal: {fileID: -5345392631048483672, guid: d0674b1a65881cf46892e00500a2ca59, type: 3}
+      crack1: {fileID: 7825447940024912995, guid: d0674b1a65881cf46892e00500a2ca59, type: 3}
+      crack2: {fileID: -2962169919726833171, guid: d0674b1a65881cf46892e00500a2ca59, type: 3}
+      tier: 0
+      fragmentSets:
+      - sprites:
+        - {fileID: 3252683250287222480, guid: d0674b1a65881cf46892e00500a2ca59, type: 3}
+        - {fileID: -4639060752344950749, guid: d0674b1a65881cf46892e00500a2ca59, type: 3}
+        - {fileID: -8961805447186785634, guid: d0674b1a65881cf46892e00500a2ca59, type: 3}
+  - tileType: 13
+    mainTexture: {fileID: 2800000, guid: a7d35282e4c50eb4f90c689384318250, type: 3}
+    borderTexture: {fileID: 2800000, guid: 39756e5f7a0557147b3945211020298d, type: 3}
+    rockPrefabs:
+    - {fileID: 7654123615884282564, guid: 0657c0060946232478c62e387ec36b5b, type: 3}
+    fragmentMixRules: []
+    rockSpacingBuffer: 0
+    rockSpriteSets:
+    - normal: {fileID: 4892886648813330081, guid: 42da69daba03410499944b1192fb251c, type: 3}
+      crack1: {fileID: 574988631182555130, guid: 42da69daba03410499944b1192fb251c, type: 3}
+      crack2: {fileID: -9111016055580082769, guid: 42da69daba03410499944b1192fb251c, type: 3}
+      tier: 0
+      fragmentSets: []
+  - tileType: 15
+    mainTexture: {fileID: 2800000, guid: 09e8444d0e87e4046bfe960c326dfec1, type: 3}
+    borderTexture: {fileID: 2800000, guid: e4820d7c51bf30a42ab911bc80902ca7, type: 3}
+    rockPrefabs: []
+    fragmentMixRules: []
+    rockSpacingBuffer: 0
+    rockSpriteSets: []
+  - tileType: 16
+    mainTexture: {fileID: 2800000, guid: 11346412eefe3ba40a081f5869ef1564, type: 3}
+    borderTexture: {fileID: 2800000, guid: 366e6b9c291348141b404d921870ac11, type: 3}
+    rockPrefabs: []
+    fragmentMixRules: []
+    rockSpacingBuffer: 0
+    rockSpriteSets: []

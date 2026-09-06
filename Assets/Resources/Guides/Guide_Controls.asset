@@ -1,0 +1,55 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c9e4f2a3b1d8e6f4a2c5d9b0e3f1a7c, type: 3}
+  m_Name: Guide_Controls
+  m_EditorClassIdentifier: GameScripts::GuideSO
+  guideId: controls_basic
+  showOnce: 1
+  bannerTitleKey: ui_guide_controls_title
+  bannerTitleFallback: "\uC870\uC791"
+  pages:
+  - mediaType: 1
+    image: {fileID: 0}
+    video: {fileID: 0}
+    frames: []
+    framesPerSecond: 8
+    titleKey: ui_guide_ctrl_move_title
+    titleFallback: "\uC774\uB3D9\uACFC \uC810\uD504"
+    bodyKey: ui_guide_ctrl_move_body
+    bodyFallback: "A \u00B7 D \uD0A4\uB85C \uC88C\uC6B0\uB85C \uC774\uB3D9\uD558\uACE0, Space \uD0A4\uB85C \uC810\uD504\uD569\uB2C8\uB2E4.\n\uB3D9\uAD74\uC740 \uC544\uB798\uB85C \uAC08\uC218\uB85D \uC5B4\uB450\uC6CC\uC9C0\uB2C8 \uBC1C\uBC11\uC744 \uC798 \uC0B4\uD53C\uC138\uC694."
+  - mediaType: 1
+    image: {fileID: 0}
+    video: {fileID: 0}
+    frames: []
+    framesPerSecond: 8
+    titleKey: ui_guide_ctrl_dig_title
+    titleFallback: "\uB545 \uD30C\uAE30"
+    bodyKey: ui_guide_ctrl_dig_body
+    bodyFallback: "\uC88C\uD074\uB9AD\uC73C\uB85C \uC9C0\uD615\uC744 \uD31D\uB2C8\uB2E4. \uAFB9 \uB204\uB974\uBA74 \uB354 \uB113\uAC8C \uD30C\uB0BC \uC218 \uC788\uC2B5\uB2C8\uB2E4.\n\uB3C4\uAD6C \uB4F1\uAE09\uBCF4\uB2E4 \uB2E8\uB2E8\uD55C \uB545\uC740 \uD314 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4."
+  - mediaType: 1
+    image: {fileID: 0}
+    video: {fileID: 0}
+    frames: []
+    framesPerSecond: 8
+    titleKey: ui_guide_ctrl_interact_title
+    titleFallback: "\uC0C1\uD638\uC791\uC6A9"
+    bodyKey: ui_guide_ctrl_interact_body
+    bodyFallback: "E \uD0A4\uB85C \uC8FC\uBCC0 \uB300\uC0C1\uACFC \uC0C1\uD638\uC791\uC6A9\uD569\uB2C8\uB2E4. \uC5D8\uB9AC\uBCA0\uC774\uD130\u00B7NPC\u00B7\uCE68\uB300 \uBAA8\uB450 \uAC19\uC740 \uD0A4\uC785\uB2C8\uB2E4."
+  - mediaType: 1
+    image: {fileID: 0}
+    video: {fileID: 0}
+    frames: []
+    framesPerSecond: 8
+    titleKey: ui_guide_ctrl_map_title
+    titleFallback: "\uC9C0\uB3C4"
+    bodyKey: ui_guide_ctrl_map_body
+    bodyFallback: "\uD654\uBA74 \uAD6C\uC11D\uC758 \uBBF8\uB2C8\uB9F5\uC774 \uC8FC\uBCC0 \uC9C0\uD615\uC744 \uBCF4\uC5EC\uC90D\uB2C8\uB2E4. M \uD0A4\uB97C \uB204\uB974\uBA74 \uC804\uCCB4 \uC9C0\uB3C4\uAC00 \uC5F4\uB9BD\uB2C8\uB2E4."

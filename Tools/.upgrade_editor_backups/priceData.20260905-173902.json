@@ -1,0 +1,948 @@
+{
+    "minerals": [
+        {
+            "id": "ScrapMetal",
+            "price": 4,
+            "weight": 0.30000001192092898,
+            "layer": "L0_Dirt"
+        },
+        {
+            "id": "GarbageBag",
+            "price": 3,
+            "weight": 0.3499999940395355,
+            "layer": "L0_Dirt"
+        },
+        {
+            "id": "PETBottle",
+            "price": 6,
+            "weight": 0.4000000059604645,
+            "layer": "L0_Dirt"
+        },
+        {
+            "id": "Coal",
+            "price": 12,
+            "weight": 0.5,
+            "layer": "L0_Dirt"
+        },
+        {
+            "id": "Copper",
+            "price": 30,
+            "weight": 0.800000011920929,
+            "layer": "L0_Dirt"
+        },
+        {
+            "id": "Iron",
+            "price": 45,
+            "weight": 1.2000000476837159,
+            "layer": "L0_Dirt"
+        },
+        {
+            "id": "Meteorite",
+            "price": 82,
+            "weight": 0.949999988079071,
+            "layer": "L1_Ice"
+        },
+        {
+            "id": "Fossil",
+            "price": 47,
+            "weight": 0.6499999761581421,
+            "layer": "L1_Ice"
+        },
+        {
+            "id": "Silver",
+            "price": 63,
+            "weight": 0.800000011920929,
+            "layer": "L1_Ice"
+        },
+        {
+            "id": "Topaz",
+            "price": 100,
+            "weight": 1.100000023841858,
+            "layer": "L1_Ice"
+        },
+        {
+            "id": "Emerald",
+            "price": 168,
+            "weight": 1.7000000476837159,
+            "layer": "L1_Ice"
+        },
+        {
+            "id": "Sapphire",
+            "price": 242,
+            "weight": 2.299999952316284,
+            "layer": "L1_Ice"
+        },
+        {
+            "id": "Obsidian",
+            "price": 150,
+            "weight": 1.0,
+            "layer": "L2_MagmaRock"
+        },
+        {
+            "id": "Quartz",
+            "price": 130,
+            "weight": 1.0,
+            "layer": "L2_MagmaRock"
+        },
+        {
+            "id": "Gold",
+            "price": 200,
+            "weight": 1.0,
+            "layer": "L2_MagmaRock"
+        },
+        {
+            "id": "Ruby",
+            "price": 280,
+            "weight": 1.0,
+            "layer": "L2_MagmaRock"
+        },
+        {
+            "id": "Diamond",
+            "price": 350,
+            "weight": 1.0,
+            "layer": "L2_MagmaRock"
+        },
+        {
+            "id": "LavaStone",
+            "price": 160,
+            "weight": 1.0,
+            "layer": "L2_MagmaRock"
+        },
+        {
+            "id": "Mithril",
+            "price": 500,
+            "weight": 1.0,
+            "layer": "L3_MeteoriteRock"
+        },
+        {
+            "id": "Gravitonium",
+            "price": 650,
+            "weight": 1.0,
+            "layer": "L3_MeteoriteRock"
+        },
+        {
+            "id": "Uranium",
+            "price": 600,
+            "weight": 1.0,
+            "layer": "L3_MeteoriteRock"
+        },
+        {
+            "id": "VoidStone",
+            "price": 800,
+            "weight": 1.0,
+            "layer": "L3_MeteoriteRock"
+        },
+        {
+            "id": "StarFragment",
+            "price": 1000,
+            "weight": 1.0,
+            "layer": "L3_MeteoriteRock"
+        }
+    ],
+    "shopItems": [
+        {
+            "id": "FrostbiteResist",
+            "price": 200
+        },
+        {
+            "id": "BurnResist",
+            "price": 15
+        },
+        {
+            "id": "ClimbPotion",
+            "price": 150
+        }
+    ],
+    "shopEquipment": [
+        {
+            "id": "MinerHelmet",
+            "price": 1700,
+            "layer": "L0_Dirt",
+            "unlockNodeId": "PickaxeUnlock_T0_01"
+        },
+        {
+            "id": "MinerBoots",
+            "price": 2000,
+            "layer": "L0_Dirt",
+            "unlockNodeId": "PickaxeUnlock_T0_01"
+        },
+        {
+            "id": "MinerArmor",
+            "price": 2300,
+            "layer": "L0_Dirt",
+            "unlockNodeId": "PickaxeUnlock_T0_01"
+        },
+        {
+            "id": "CarrierHelmet",
+            "price": 9000,
+            "layer": "L1_Ice",
+            "unlockNodeId": "Facility_Computer_T0"
+        },
+        {
+            "id": "WinterHelmet",
+            "price": 10000,
+            "layer": "L1_Ice",
+            "unlockNodeId": "MiningLevel_T0_Final"
+        },
+        {
+            "id": "CarrierBoots",
+            "price": 11000,
+            "layer": "L1_Ice",
+            "unlockNodeId": "Facility_Computer_T0"
+        },
+        {
+            "id": "ClimberHelmet",
+            "price": 11000,
+            "layer": "L1_Ice",
+            "unlockNodeId": "Facility_Computer_T0"
+        },
+        {
+            "id": "WinterBoots",
+            "price": 12000,
+            "layer": "L1_Ice",
+            "unlockNodeId": "MiningLevel_T0_Final"
+        },
+        {
+            "id": "CarrierArmor",
+            "price": 13000,
+            "layer": "L1_Ice",
+            "unlockNodeId": "Facility_Computer_T0"
+        },
+        {
+            "id": "ClimberBoots",
+            "price": 13000,
+            "layer": "L1_Ice",
+            "unlockNodeId": "Facility_Computer_T0"
+        },
+        {
+            "id": "WinterArmor",
+            "price": 14000,
+            "layer": "L1_Ice",
+            "unlockNodeId": "MiningLevel_T0_Final"
+        },
+        {
+            "id": "ClimberArmor",
+            "price": 15000,
+            "layer": "L1_Ice",
+            "unlockNodeId": "Facility_Computer_T0"
+        },
+        {
+            "id": "EngineerHelmet",
+            "price": 36000,
+            "layer": "L2_MagmaRock",
+            "unlockNodeId": "DrillCapacity_T1_01"
+        },
+        {
+            "id": "ShovelHelmet",
+            "price": 38000,
+            "layer": "L2_MagmaRock",
+            "unlockNodeId": "Facility_Coin_T1"
+        },
+        {
+            "id": "EngineerBoots",
+            "price": 42000,
+            "layer": "L2_MagmaRock",
+            "unlockNodeId": "DrillCapacity_T1_01"
+        },
+        {
+            "id": "HeatHelmet",
+            "price": 42000,
+            "layer": "L2_MagmaRock",
+            "unlockNodeId": "MiningLevel_T1_Final"
+        },
+        {
+            "id": "ShovelBoots",
+            "price": 46000,
+            "layer": "L2_MagmaRock",
+            "unlockNodeId": "Facility_Coin_T1"
+        },
+        {
+            "id": "EngineerArmor",
+            "price": 48000,
+            "layer": "L2_MagmaRock",
+            "unlockNodeId": "DrillCapacity_T1_01"
+        },
+        {
+            "id": "HeatBoots",
+            "price": 50000,
+            "layer": "L2_MagmaRock",
+            "unlockNodeId": "MiningLevel_T1_Final"
+        },
+        {
+            "id": "ShovelArmor",
+            "price": 54000,
+            "layer": "L2_MagmaRock",
+            "unlockNodeId": "Facility_Coin_T1"
+        },
+        {
+            "id": "HeatArmor",
+            "price": 58000,
+            "layer": "L2_MagmaRock",
+            "unlockNodeId": "MiningLevel_T1_Final"
+        },
+        {
+            "id": "ScientistHelmet",
+            "price": 150000,
+            "layer": "L3_MeteoriteRock",
+            "unlockNodeId": "MiningLevel_T1_Final"
+        },
+        {
+            "id": "ScientistBoots",
+            "price": 180000,
+            "layer": "L3_MeteoriteRock",
+            "unlockNodeId": "MiningLevel_T1_Final"
+        },
+        {
+            "id": "MarathonHelmet",
+            "price": 190000,
+            "layer": "L3_MeteoriteRock",
+            "unlockNodeId": "MiningLevel_T1_Final"
+        },
+        {
+            "id": "ScientistArmor",
+            "price": 210000,
+            "layer": "L3_MeteoriteRock",
+            "unlockNodeId": "MiningLevel_T1_Final"
+        },
+        {
+            "id": "MarathonBoots",
+            "price": 220000,
+            "layer": "L3_MeteoriteRock",
+            "unlockNodeId": "MiningLevel_T1_Final"
+        },
+        {
+            "id": "MarathonArmor",
+            "price": 250000,
+            "layer": "L3_MeteoriteRock",
+            "unlockNodeId": "MiningLevel_T1_Final"
+        },
+        {
+            "id": "LeatherHelmet",
+            "price": 15,
+            "layer": "Unlisted",
+            "unlockNodeId": ""
+        }
+    ],
+    "shopRelics": [
+        {
+            "id": "TestStatRelic",
+            "price": 100
+        },
+        {
+            "id": "PigeonFeather",
+            "price": 12000
+        },
+        {
+            "id": "Magnet",
+            "price": 12000
+        },
+        {
+            "id": "Invincibility",
+            "price": 200000
+        },
+        {
+            "id": "SpiderGlove",
+            "price": 12000
+        },
+        {
+            "id": "Generator",
+            "price": 46000
+        },
+        {
+            "id": "GamblerGlasses",
+            "price": 46000
+        },
+        {
+            "id": "Anvil",
+            "price": 46000
+        },
+        {
+            "id": "Steroid",
+            "price": 46000
+        },
+        {
+            "id": "PlasmaCutter",
+            "price": 200000
+        },
+        {
+            "id": "DrillDrone",
+            "price": 200000
+        },
+        {
+            "id": "JunkSpring",
+            "price": 12000
+        },
+        {
+            "id": "GravityFlip",
+            "price": 46000
+        },
+        {
+            "id": "DashBomb",
+            "price": 46000
+        },
+        {
+            "id": "Furnace",
+            "price": 46000
+        },
+        {
+            "id": "Lightning",
+            "price": 200000
+        },
+        {
+            "id": "ToolSwap",
+            "price": 12000
+        },
+        {
+            "id": "BlackMarket",
+            "price": 46000
+        },
+        {
+            "id": "MinerDrone",
+            "price": 200000
+        },
+        {
+            "id": "Jetpack",
+            "price": 200000
+        },
+        {
+            "id": "DetectionPulse",
+            "price": 46000
+        },
+        {
+            "id": "OverloadBattery",
+            "price": 46000
+        },
+        {
+            "id": "Mp3",
+            "price": 12000
+        },
+        {
+            "id": "Blind",
+            "price": 12000
+        },
+        {
+            "id": "XRay",
+            "price": 200000
+        },
+        {
+            "id": "Hourglass",
+            "price": 200000
+        },
+        {
+            "id": "OneWayPortal",
+            "price": 46000
+        },
+        {
+            "id": "Trident",
+            "price": 46000
+        }
+    ],
+    "relicUpgrades": [
+        {
+            "id": "Anvil",
+            "gold": [
+                23000,
+                69000
+            ]
+        },
+        {
+            "id": "BlackMarket",
+            "gold": [
+                23000,
+                69000
+            ]
+        },
+        {
+            "id": "Blind",
+            "gold": [
+                6000,
+                18000
+            ]
+        },
+        {
+            "id": "DashBomb",
+            "gold": [
+                23000,
+                69000
+            ]
+        },
+        {
+            "id": "DetectionPulse",
+            "gold": [
+                23000,
+                69000
+            ]
+        },
+        {
+            "id": "DrillDrone",
+            "gold": [
+                100000,
+                300000
+            ]
+        },
+        {
+            "id": "ElevatorTracker",
+            "gold": [
+                100,
+                250
+            ]
+        },
+        {
+            "id": "Furnace",
+            "gold": [
+                23000,
+                69000
+            ]
+        },
+        {
+            "id": "GamblerGlasses",
+            "gold": [
+                23000,
+                69000
+            ]
+        },
+        {
+            "id": "Generator",
+            "gold": [
+                23000,
+                69000
+            ]
+        },
+        {
+            "id": "GravityFlip",
+            "gold": [
+                23000,
+                69000
+            ]
+        },
+        {
+            "id": "Hourglass",
+            "gold": [
+                100000,
+                300000
+            ]
+        },
+        {
+            "id": "Invincibility",
+            "gold": [
+                100000,
+                300000
+            ]
+        },
+        {
+            "id": "Jetpack",
+            "gold": [
+                100000,
+                300000
+            ]
+        },
+        {
+            "id": "JunkSpring",
+            "gold": [
+                6000,
+                18000
+            ]
+        },
+        {
+            "id": "Lightning",
+            "gold": [
+                100000,
+                300000
+            ]
+        },
+        {
+            "id": "Magnet",
+            "gold": [
+                6000,
+                18000
+            ]
+        },
+        {
+            "id": "MinerDrone",
+            "gold": [
+                100000,
+                300000
+            ]
+        },
+        {
+            "id": "Mp3",
+            "gold": [
+                6000,
+                18000
+            ]
+        },
+        {
+            "id": "OneWayPortal",
+            "gold": [
+                23000,
+                69000
+            ]
+        },
+        {
+            "id": "OverloadBattery",
+            "gold": [
+                23000,
+                69000
+            ]
+        },
+        {
+            "id": "PigeonFeather",
+            "gold": [
+                6000,
+                18000
+            ]
+        },
+        {
+            "id": "PlasmaCutter",
+            "gold": [
+                100000,
+                300000
+            ]
+        },
+        {
+            "id": "SpiderGlove",
+            "gold": [
+                6000,
+                18000
+            ]
+        },
+        {
+            "id": "Steroid",
+            "gold": [
+                23000,
+                69000
+            ]
+        },
+        {
+            "id": "ToolSwap",
+            "gold": [
+                6000,
+                18000
+            ]
+        },
+        {
+            "id": "Trident",
+            "gold": [
+                23000,
+                69000
+            ]
+        },
+        {
+            "id": "XRay",
+            "gold": [
+                100000,
+                300000
+            ]
+        }
+    ],
+    "upgradeNodes": [
+        {
+            "id": "MiningRange_T0_01",
+            "cost": 20
+        },
+        {
+            "id": "ShovelStamina_T0_01",
+            "cost": 30
+        },
+        {
+            "id": "InventoryWeight_T0_01",
+            "cost": 40
+        },
+        {
+            "id": "Facility_Map_T0",
+            "cost": 50
+        },
+        {
+            "id": "MiningRange_T0_02",
+            "cost": 50
+        },
+        {
+            "id": "MiningSpeed_T0_01",
+            "cost": 50
+        },
+        {
+            "id": "MaxStamina_T0_01",
+            "cost": 60
+        },
+        {
+            "id": "RelicUnlock_ElevatorTracker_T0",
+            "cost": 60
+        },
+        {
+            "id": "PickaxeUnlock_T0_01",
+            "cost": 70
+        },
+        {
+            "id": "ClimbSpeed_T0_01",
+            "cost": 100
+        },
+        {
+            "id": "PickaxeStamina_T0_01",
+            "cost": 100
+        },
+        {
+            "id": "ClimbMiningUnlock_T0",
+            "cost": 130
+        },
+        {
+            "id": "MiningRange_T0_03",
+            "cost": 130
+        },
+        {
+            "id": "PickaxeDamage_T0_01",
+            "cost": 130
+        },
+        {
+            "id": "InventoryWeight_T0_02",
+            "cost": 150
+        },
+        {
+            "id": "JumpForce_T0_01",
+            "cost": 160
+        },
+        {
+            "id": "MiningSpeed_T0_02",
+            "cost": 160
+        },
+        {
+            "id": "InventorySlot_T0_01",
+            "cost": 170
+        },
+        {
+            "id": "PickaxeDamage_T0_02",
+            "cost": 170
+        },
+        {
+            "id": "InventoryWeight_T0_03",
+            "cost": 190
+        },
+        {
+            "id": "MiningRange_T0_04",
+            "cost": 190
+        },
+        {
+            "id": "MiningSpeed_T0_03",
+            "cost": 190
+        },
+        {
+            "id": "MineralPrice_Recycle",
+            "cost": 200
+        },
+        {
+            "id": "Facility_Computer_T0",
+            "cost": 400
+        },
+        {
+            "id": "RareMineral_T0_01",
+            "cost": 450
+        },
+        {
+            "id": "ShovelStamina_T0_02",
+            "cost": 450
+        },
+        {
+            "id": "InventoryWeight_T0_04",
+            "cost": 500
+        },
+        {
+            "id": "MaxStamina_T0_02",
+            "cost": 500
+        },
+        {
+            "id": "MineralPrice_Coal",
+            "cost": 550
+        },
+        {
+            "id": "Defense_T0_01",
+            "cost": 600
+        },
+        {
+            "id": "PickaxeDamage_T0_03",
+            "cost": 600
+        },
+        {
+            "id": "RelicSlot_T0_01",
+            "cost": 600
+        },
+        {
+            "id": "MineralExtraDrop_T0_01",
+            "cost": 700
+        },
+        {
+            "id": "MiningRange_T0_05",
+            "cost": 700
+        },
+        {
+            "id": "MiningSpeed_T0_04",
+            "cost": 700
+        },
+        {
+            "id": "MineralPrice_Copper",
+            "cost": 750
+        },
+        {
+            "id": "ClimbSpeed_T0_02",
+            "cost": 800
+        },
+        {
+            "id": "MoveSpeed_T0_01",
+            "cost": 800
+        },
+        {
+            "id": "Nap_T0_01",
+            "cost": 850
+        },
+        {
+            "id": "InventoryWeight_T0_05",
+            "cost": 900
+        },
+        {
+            "id": "MaxStamina_T0_03",
+            "cost": 900
+        },
+        {
+            "id": "PickaxeStamina_T0_02",
+            "cost": 900
+        },
+        {
+            "id": "MineralPrice_Iron",
+            "cost": 950
+        },
+        {
+            "id": "PickaxeDamage_T0_04",
+            "cost": 1000
+        },
+        {
+            "id": "RareMineral_T0_02",
+            "cost": 1000
+        },
+        {
+            "id": "MiningRange_T0_06",
+            "cost": 1050
+        },
+        {
+            "id": "MiningLevel_T0_Final",
+            "cost": 1500
+        },
+        {
+            "id": "InventoryWeight_T1_06",
+            "cost": 1600
+        },
+        {
+            "id": "ShovelStamina_T1_03",
+            "cost": 1700
+        },
+        {
+            "id": "InventorySlot_T1_02",
+            "cost": 1900
+        },
+        {
+            "id": "MineralPrice_Fossil",
+            "cost": 2000
+        },
+        {
+            "id": "MaxStamina_T1_04",
+            "cost": 2100
+        },
+        {
+            "id": "RelicSlot_T1_02",
+            "cost": 2100
+        },
+        {
+            "id": "MiningRange_T1_07",
+            "cost": 2200
+        },
+        {
+            "id": "DrillCapacity_T1_01",
+            "cost": 2700
+        },
+        {
+            "id": "InventoryWeight_T1_07",
+            "cost": 3000
+        },
+        {
+            "id": "MineralPrice_Silver",
+            "cost": 3000
+        },
+        {
+            "id": "DrillRegen_T1_01",
+            "cost": 3300
+        },
+        {
+            "id": "DrillRadius_T1_01",
+            "cost": 3400
+        },
+        {
+            "id": "Defense_T1_01",
+            "cost": 3500
+        },
+        {
+            "id": "DrillDrain_T1_01",
+            "cost": 3500
+        },
+        {
+            "id": "RareMineral_T1_03",
+            "cost": 3600
+        },
+        {
+            "id": "ShovelStamina_T1_04",
+            "cost": 4100
+        },
+        {
+            "id": "Facility_Coin_T1",
+            "cost": 4500
+        },
+        {
+            "id": "MiningRange_T1_08",
+            "cost": 5000
+        },
+        {
+            "id": "MineralPrice_Meteorite",
+            "cost": 5100
+        },
+        {
+            "id": "StaminaCost_T1_01",
+            "cost": 5500
+        },
+        {
+            "id": "Nap_T1_02",
+            "cost": 5600
+        },
+        {
+            "id": "MaxStamina_T1_05",
+            "cost": 6100
+        },
+        {
+            "id": "MiningSpeed_T1_05",
+            "cost": 6300
+        },
+        {
+            "id": "MineralPrice_Topaz",
+            "cost": 7000
+        },
+        {
+            "id": "InventoryWeight_T1_08",
+            "cost": 7600
+        },
+        {
+            "id": "PickaxeStamina_T1_03",
+            "cost": 7800
+        },
+        {
+            "id": "MineralExtraDrop_T1_02",
+            "cost": 8700
+        },
+        {
+            "id": "MiningRange_T1_09",
+            "cost": 9000
+        },
+        {
+            "id": "ClimbSpeed_T1_03",
+            "cost": 9500
+        },
+        {
+            "id": "MiningLevel_T1_Final",
+            "cost": 12300
+        }
+    ]
+}

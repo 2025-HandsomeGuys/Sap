@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba20e9d7d6c4d6e4a86867f93d4e679a, type: 3}
+  m_Name: Equip_Scientist_Boots
+  m_EditorClassIdentifier: Assembly-CSharp::EquipmentSO
+  equipmentID: 3209
+  equipmentNameKey: equip_scientist_boots_name
+  icon: {fileID: 8989385959802793413, guid: d245a13ed6b90f64b99934eda32624e2, type: 3}
+  descriptionKey: equip_scientist_boots_desc
+  previewSprite: {fileID: -892986906, guid: dd19ce4057d3c9e4ba5577b6bc312e69, type: 3}
+  equipmentType: 3
+  level: 0
+  defense: 5
+  durability: 0
+  price: 1000
+  statModifiers:
+  - statType: 38
+    modifierType: 0
+    value: 12
+  weight: 1
+  stackable: 0
+  maxStackSize: 1

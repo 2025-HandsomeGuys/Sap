@@ -1,0 +1,54 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ccf05c1a207592c4dacf9fb73ddab62e, type: 3}
+  m_Name: XRay
+  m_EditorClassIdentifier: GameScripts::Relic.Data.RelicSO
+  id: 4025
+  displayNameKey: relic_xray_name
+  descriptionKey: relic_xray_desc
+  icon: {fileID: 0}
+  type: 1
+  maxLevel: 3
+  unlockNodeId: 
+  upgradeCosts:
+  - gold: 100
+    material: 0
+    materialCount: 0
+  - gold: 250
+    material: 0
+    materialCount: 0
+  behaviour:
+    rid: 4010175549867032666
+  references:
+    version: 2
+    RefIds:
+    - rid: 4010175549867032666
+      type: {class: XRayRelic, ns: Relic, asm: GameScripts}
+      data:
+        durationPerLevel:
+        - 3
+        - 4
+        - 5
+        cooldown: 120
+        highlightColor: {r: 0.4, g: 1, b: 0.9, a: 1}
+        highlightBlend: 0.8
+        fadeSpeed: 6
+        cameraPadding: 3
+        toneTint: {r: 0.05, g: 0.95, b: 0.85, a: 1}
+        toneDim: 0.6
+        toneHighlightCut: 0.45
+        flatTerrainMat: {fileID: 2100000, guid: b7e21a3c9d4f40e2ab815c6d7f930a11, type: 2}
+        flatBackgroundMat: {fileID: 2100000, guid: c8f32b4dae5051f3bc926d7e80a41b22, type: 2}
+        flatObjectMat: {fileID: 2100000, guid: d9a43c5ebf6162a4cda37e8f91b52c33, type: 2}
+        flatTerrainColor: {r: 0.22, g: 0.3, b: 0.34, a: 1}
+        flatBackgroundColor: {r: 0.05, g: 0.09, b: 0.11, a: 1}
+        flatObjectColor: {r: 0.55, g: 1, b: 0.92, a: 1}

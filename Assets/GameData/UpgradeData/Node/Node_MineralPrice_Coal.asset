@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 581f7dfb478769e4bba78e5ee790d6fd, type: 3}
+  m_Name: Node_MineralPrice_Coal
+  m_EditorClassIdentifier: GameScripts::UpgradeNodeSO
+  nodeId: MineralPrice_Coal
+  displayNameKey: "\uC11D\uD0C4 \uB4F1\uAE09 \uC778\uC99D"
+  descriptionKey: "\uC11D\uD0C4 \uD310\uB9E4\uAC00\uAC00 +15\uACE8\uB4DC \uC624\uB985\uB2C8\uB2E4."
+  icon: {fileID: 0}
+  tier: 0
+  parentNodes:
+  - {fileID: 11400000, guid: 1a4f8ddc9894fea44859b87c31a4c76a, type: 2}
+  cost: 550
+  maxLevel: 1
+  costGrowth: 1.6
+  levelCosts: 
+  effect: {fileID: 11400000, guid: 45cf824baa2458b45b483ed2ff4a457a, type: 2}
+  uiPosition: {x: 262.5, y: 2400}
+  lineBends: []

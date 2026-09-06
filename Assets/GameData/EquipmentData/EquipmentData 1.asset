@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba20e9d7d6c4d6e4a86867f93d4e679a, type: 3}
+  m_Name: EquipmentData 1
+  m_EditorClassIdentifier: Assembly-CSharp::EquipmentSO
+  equipmentID: 3101
+  equipmentNameKey: equip_sturdy_clothes_name
+  icon: {fileID: 3047563889767398707, guid: 2454938e41b8be34abbe520526c71350, type: 3}
+  descriptionKey: equip_sturdy_clothes_desc
+  equipmentType: 2
+  level: 1
+  defense: 5
+  durability: 30
+  price: 150
+  statModifiers:
+  - statType: 11
+    modifierType: 0
+    value: 3
+  - statType: 23
+    modifierType: 0
+    value: 10
+  - statType: 32
+    modifierType: 0
+    value: 2
+  weight: 1
+  stackable: 0
+  maxStackSize: 1

@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c9e4f2a3b1d8e6f4a2c5d9b0e3f1a7c, type: 3}
+  m_Name: Guide_Mining
+  m_EditorClassIdentifier: GameScripts::GuideSO
+  guideId: mining_basic
+  showOnce: 1
+  bannerTitleKey: ui_guide_mining_title
+  bannerTitleFallback: "\uAD11\uBB3C"
+  pages:
+  - mediaType: 1
+    image: {fileID: 0}
+    video: {fileID: 0}
+    frames: []
+    framesPerSecond: 8
+    titleKey: ui_guide_mining_charge_title
+    titleFallback: "\uAD11\uBB3C \uC90D\uAE30"
+    bodyKey: ui_guide_mining_charge_body
+    bodyFallback: "\uAD11\uBB3C \uAC00\uAE4C\uC774 \uB2E4\uAC00\uAC00\uC11C F \uD0A4\uB97C
+      \uB204\uB974\uBA74 \uC778\uBCA4\uD1A0\uB9AC\uB85C \uD68D\uB4DD\uD560 \uC218
+      \uC788\uC2B5\uB2C8\uB2E4."
+  - mediaType: 1
+    image: {fileID: 0}
+    video: {fileID: 0}
+    frames: []
+    framesPerSecond: 8
+    titleKey: ui_guide_mining_stamina_title
+    titleFallback: "\uBB34\uAC8C\uC640 \uAC00\uCE58"
+    bodyKey: ui_guide_mining_stamina_body
+    bodyFallback: "\uAD11\uBB3C\uB9C8\uB2E4 \uACE0\uC720\uC758 '\uBB34\uAC8C'\uC640
+      '\uAC00\uCE58(\uAC00\uACA9)'\uAC00 \uB2E4\uB985\uB2C8\uB2E4. \uAC00\uBC29\uC758
+      \uC5EC\uC720 \uACF5\uAC04\uACFC \uBB34\uAC8C\uB97C \uACE0\uB824\uD558\uC5EC
+      \uAC00\uCE58 \uC788\uB294 \uAD11\uBB3C\uC744 \uC120\uBCC4\uD558\uC138\uC694!"

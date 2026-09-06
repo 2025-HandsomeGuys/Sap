@@ -1,0 +1,59 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 581f7dfb478769e4bba78e5ee790d6fd, type: 3}
+  m_Name: Node_MiningLevel_T1_Final
+  m_EditorClassIdentifier: GameScripts::UpgradeNodeSO
+  nodeId: MiningLevel_T1_Final
+  displayNameKey: "\uCC44\uAD11 \uBA74\uD5C8 II"
+  descriptionKey: "\uC6A9\uC554 \uC9C0\uCE35\uC744 \uD314 \uC218 \uC788\uB294 \uBA74\uD5C8\uC785\uB2C8\uB2E4."
+  icon: {fileID: 0}
+  tier: 1
+  parentNodes:
+  - {fileID: 11400000, guid: c8fbd4d749488734aa97f9ba28451157, type: 2}
+  - {fileID: 11400000, guid: ab380c6c0cb469c46b0f18532f439d97, type: 2}
+  - {fileID: 11400000, guid: 2e60012a7c43ea84bb82c1dffbcd214e, type: 2}
+  - {fileID: 11400000, guid: 72b5b723c8f25904babeaf346720bf2a, type: 2}
+  cost: 12300
+  maxLevel: 1
+  costGrowth: 1.6
+  levelCosts: 
+  effect: {fileID: 11400000, guid: c2ec59de44508c54ba3ff04039411393, type: 2}
+  uiPosition: {x: 0, y: 6870}
+  lineBends:
+  - parentId: MiningRange_T1_09
+    points:
+    - {x: -262.5, y: 6660}
+    - {x: -262.5, y: 6720}
+    - {x: 0, y: 6795}
+  - parentId: ClimbSpeed_T1_03
+    points:
+    - {x: 0, y: 6795}
+  - parentId: MineralExtraDrop_T1_02
+    points:
+    - {x: 87.5, y: 6540}
+    - {x: 87.5, y: 6600}
+    - {x: 87.5, y: 6660}
+    - {x: 87.5, y: 6720}
+    - {x: 0, y: 6795}
+  - parentId: MineralPrice_Topaz
+    points:
+    - {x: 262.5, y: 6180}
+    - {x: 262.5, y: 6240}
+    - {x: 262.5, y: 6300}
+    - {x: 262.5, y: 6360}
+    - {x: 262.5, y: 6420}
+    - {x: 262.5, y: 6480}
+    - {x: 262.5, y: 6540}
+    - {x: 262.5, y: 6600}
+    - {x: 262.5, y: 6660}
+    - {x: 262.5, y: 6720}
+    - {x: 0, y: 6795}

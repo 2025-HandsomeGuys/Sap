@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba20e9d7d6c4d6e4a86867f93d4e679a, type: 3}
+  m_Name: Equip_Winter_Armor
+  m_EditorClassIdentifier: Assembly-CSharp::EquipmentSO
+  equipmentID: 3106
+  equipmentNameKey: equip_winter_armor_name
+  icon: {fileID: -2692220507292900848, guid: fbc0d02691646f64db6feaa2dd857a09, type: 3}
+  descriptionKey: equip_winter_armor_desc
+  previewSprite: {fileID: -5674918346994996643, guid: 89a995ce1cf51f24a9e0efffd35d8126, type: 3}
+  equipmentType: 2
+  level: 0
+  defense: 2
+  durability: 0
+  price: 1000
+  statModifiers:
+  - statType: 34
+    modifierType: 0
+    value: 8
+  weight: 1
+  stackable: 0
+  maxStackSize: 1

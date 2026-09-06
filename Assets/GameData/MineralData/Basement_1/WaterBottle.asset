@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0d528b2d5e4abd4ea20c99a65b89b33, type: 3}
+  m_Name: WaterBottle
+  m_EditorClassIdentifier: 
+  mineralID: 102
+  mineralNameKey: mineral_petbottle_name
+  descriptionKey: mineral_petbottle_desc
+  spawnRate: 0
+  basementLevel: 1
+  weight: 0.4
+  stackable: 1
+  maxStackSize: 5
+  icon: {fileID: 21300000, guid: 6d96bd5223be0ce408513ad20c27bf63, type: 3}
+  mineralPrefab: {fileID: 7651248375382586064, guid: a5db47db4ee3e454d969ec4221df7b83, type: 3}

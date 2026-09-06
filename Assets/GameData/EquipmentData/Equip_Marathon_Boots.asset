@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba20e9d7d6c4d6e4a86867f93d4e679a, type: 3}
+  m_Name: Equip_Marathon_Boots
+  m_EditorClassIdentifier: Assembly-CSharp::EquipmentSO
+  equipmentID: 3211
+  equipmentNameKey: equip_marathon_boots_name
+  icon: {fileID: 7274643207169075291, guid: 8fc572708ac53a2428c9df3879fccec8, type: 3}
+  descriptionKey: equip_marathon_boots_desc
+  previewSprite: {fileID: 6174362881872369836, guid: 55da71b9053da3341812d75f5ac2416b, type: 3}
+  equipmentType: 3
+  level: 0
+  defense: 5
+  durability: 0
+  price: 1000
+  statModifiers:
+  - statType: 12
+    modifierType: 0
+    value: 0.2
+  - statType: 17
+    modifierType: 0
+    value: 7
+  weight: 1
+  stackable: 0
+  maxStackSize: 1

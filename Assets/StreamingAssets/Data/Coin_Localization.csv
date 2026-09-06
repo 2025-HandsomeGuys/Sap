@@ -1,0 +1,84 @@
+key,kr,en,cn
+COIN_FLAVOR_GRAVEL,흔하디흔해 거의 움직이지 않는다,So common it barely moves,常见到几乎不动
+COIN_FLAVOR_MOLE,땅 파다 나온 가벼운 밈코인,A light meme coin dug from the dirt,挖地挖出来的轻量迷因币
+COIN_FLAVOR_LUCKY,제발 올라라 기원으로 가득한 코인,Powered by pure please-pump prayers,满载求涨祈愿的币
+COIN_FLAVOR_VEIN,광부들이 사랑하는 광맥 코인,The miners' beloved ore coin,矿工钟爱的矿脉币
+COIN_FLAVOR_QUARTZ,반짝이지만 변동이 제법 크다,Shiny but fairly volatile,闪亮但波动不小
+COIN_FLAVOR_GOBLIN,종잡을 수 없는 변덕쟁이,An unpredictable trickster,捉摸不定的捣蛋鬼
+COIN_FLAVOR_MAGMA,뜨겁게 과열된 위험한 코인,A red-hot overheated risk,炽热过热的危险币
+COIN_FLAVOR_BOOM,펑펑 터지는 폭죽 같은 코인,Goes off like fireworks,像烟花一样砰砰炸开
+COIN_FLAVOR_JACKPOT,한 방을 노리는 자들의 코인,For those chasing the big one,搏一把的人的币
+COIN_FLAVOR_ABYSS,바닥이 보이지 않는 룰렛,A roulette with no bottom,看不见底的轮盘
+COIN_FLAVOR_PEBBLE,주머니에 굴러다니는 잔돈 같은 코인,Loose change that rolls around your pocket,像口袋里的零钱一样的币
+COIN_FLAVOR_GRIT,씹히는 모래알 하나만큼 움직인다,Moves about as much as a grain of sand,只动一粒沙子那么多
+COIN_FLAVOR_WORM,꿈틀대며 조금씩 기어오르는 밈코인,A meme coin that wriggles upward bit by bit,一点点蠕动向上的迷因币
+COIN_FLAVOR_GOPHER,여기저기 구멍만 파고 다니는 코인,Digs holes everywhere and calls it a roadmap,到处打洞还说这是路线图
+COIN_FLAVOR_CLOVER,네 잎을 찾을 때까지 못 멈춘다,You can't stop until you find the fourth leaf,找不到第四片叶子就停不下来
+COIN_FLAVOR_WISH,소원 하나에 전 재산을 건다,Bet the whole wallet on a single wish,为一个愿望押上全部身家
+COIN_FLAVOR_NUGGET,작지만 손맛은 확실한 덩어리,Small, but the tug is unmistakable,块头虽小手感十足
+COIN_FLAVOR_SEAM,끊길 듯 이어지는 광맥의 결,A seam that always seems about to run out,眼看要断却又续上的矿脉
+COIN_FLAVOR_GEODE,깨보기 전엔 속을 알 수 없다,No telling what's inside until it cracks,不敲开就不知道里面是什么
+COIN_FLAVOR_PRISM,보는 각도마다 값이 달라 보인다,The price looks different from every angle,每个角度看到的价格都不同
+COIN_FLAVOR_GREMLIN,밤사이 차트를 뜯어고쳐 놓는다,It rewires the chart overnight,一夜之间把图表拆了重装
+COIN_FLAVOR_IMP,웃으면서 지갑을 비운다,Empties your wallet with a grin,笑着掏空你的钱包
+COIN_FLAVOR_EMBER,꺼진 줄 알았는데 아직 뜨겁다,Looks burnt out — still red hot,以为熄了其实还烫手
+COIN_FLAVOR_CINDER,다 타고 남은 자리에서 또 튄다,Flares up again from the ashes,在灰烬里又蹦起来
+COIN_FLAVOR_BLAST,한 발에 판이 갈린다,One shot decides the whole round,一发定胜负
+COIN_FLAVOR_FUSE,심지는 이미 타들어가고 있다,The fuse is already burning,引信已经在烧了
+COIN_FLAVOR_BONANZA,한 번 터지면 광맥째 쏟아진다,When it hits, the whole vein pours out,一旦爆发整条矿脉都涌出来
+COIN_FLAVOR_MOONSHOT,돌아올 길은 계산에 없다,The return trip isn't in the math,返程不在计算之内
+COIN_FLAVOR_VOID,넣은 것이 어디로 갔는지 모른다,Nobody knows where the money went,没人知道钱去了哪里
+COIN_FLAVOR_OBLIVION,이름조차 남지 않는다,Not even the name survives,连名字都不会留下
+ui_coin_swing,변동 {0:P0}~{1:P0},Swing {0:P0}~{1:P0},波动 {0:P0}~{1:P0}
+ui_coin_bet_range,베팅 ₩{0:N0}~{1},Bet ₩{0:N0}~{1},投注 ₩{0:N0}~{1}
+ui_coin_price,₩{0:N0},₩{0:N0},₩{0:N0}
+ui_coin_entry,입장 ₩{0:N0},Entry ₩{0:N0},入场 ₩{0:N0}
+ui_coin_need,필요 ₩{0:N0},Need ₩{0:N0},需要 ₩{0:N0}
+ui_coin_gold,{0:N0} G,{0:N0} G,{0:N0} G
+ui_coin_stake_pct,투자 ₩{0:N0} ({1}%),Stake ₩{0:N0} ({1}%),投注 ₩{0:N0} ({1}%)
+ui_coin_hold,소지금 ₩{0:N0},Balance ₩{0:N0},持有 ₩{0:N0}
+ui_coin_pnl_preview,적중 +₩{0:N0} / 빗나감 −₩{1:N0},Hit +₩{0:N0} / Miss −₩{1:N0},命中 +₩{0:N0} / 落空 −₩{1:N0}
+ui_coin_rounds_left,오늘 남은 판 {0}/{1},Rounds left {0}/{1},今日剩余 {0}/{1}
+ui_coin_delist,💀 상장폐지,💀 DELISTED,💀 退市
+ui_coin_moon,🚀 떡상!,🚀 MOON!,🚀 暴涨!
+ui_coin_crash,💥 폭락,💥 CRASH,💥 暴跌
+ui_coin_win,적중!,HIT!,命中!
+ui_coin_lose,빗나감,MISS,落空
+ui_coin_streak,🔥 {0}연승,🔥 {0} streak,🔥 {0}连胜
+ui_coin_session,세션 {0}₩{1:N0},Session {0}₩{1:N0},本场 {0}₩{1:N0}
+ui_coin_new_listing,🌱 신규 상장: {0},🌱 New listing: {0},🌱 新上市: {0}
+ui_coin_news_0,익명의 고래가 전량 매도 후 잠적…,Anonymous whale dumps everything and vanishes…,匿名巨鲸清仓后消失…
+ui_coin_news_1,개발자 깃허브 삭제 — 먹튀 의혹 확산,Dev wipes GitHub — rug-pull fears spread,开发者删库 跑路质疑扩散
+ui_coin_news_2,거래소 상장 루머에 커뮤니티 들썩,Listing rumor sets the community abuzz,上市传闻引社区骚动
+ui_coin_news_3,재단 지갑에서 대규모 이체 포착,Huge transfer spotted from the foundation wallet,基金会钱包现大额转账
+ui_coin_news_4,인플루언서 한마디에 가격 출렁,One influencer post rocks the price,网红一句话价格剧震
+ui_coin_news_5,백서 표절 논란에 신뢰도 흔들,Whitepaper plagiarism claim shakes trust,白皮书抄袭争议动摇信任
+ui_coin_list_title,코인 목록,Coin List,代币列表
+ui_coin_list_locked,오늘은 '{0}' 진행 중 — 다른 코인은 내일,'{0}' in progress today — other coins tomorrow,今日进行中 '{0}' — 其他代币明日开放
+ui_coin_list_rounds_done,오늘 남은 판 없음 (내일 다시),No rounds left today (back tomorrow),今日无剩余场次 (明日再来)
+ui_coin_list_limit_done,출금 한도 도달 (적중해도 +₩0),Withdrawal limit reached (wins pay +₩0),已达提现限额 (盈利+₩0)
+ui_coin_locked_name,🔒 {0},🔒 {0},🔒 {0}
+ui_coin_liquidated,🧨 청산!,🧨 LIQUIDATED!,🧨 爆仓!
+ui_coin_break_label,📰 속보,📰 BREAKING,📰 快讯
+ui_coin_break_hint,클릭하면 넘어가기 ▶,Click to continue ▶,点击继续 ▶
+ui_coin_break_bull_0,🚀 거물 인플루언서 '풀매수' 인증에 매수벽 폭발,🚀 Star influencer flexes a full-port buy — bids explode,🚀 大V晒满仓买入 买盘暴涨
+ui_coin_break_bull_1,🐳 정체불명 고래 대량 매집 — 호가창이 비었다,🐳 Mystery whale scoops the order book clean,🐳 神秘巨鲸扫空卖单
+ui_coin_break_bull_2,📈 대형 거래소 상장 확정 루머에 패닉 바잉,📈 Major-exchange listing rumor sparks panic buying,📈 大所上市传闻引恐慌性买入
+ui_coin_break_bull_3,🔥 커뮤니티 밈 떡상 — 신규 유입 폭증,🔥 Meme goes viral — fresh money floods in,🔥 社区梗爆火 新资金涌入
+ui_coin_break_bear_0,💀 개발팀 잠적 — 공식 채널 전체 삭제,💀 Dev team vanishes — all channels wiped,💀 开发团队跑路 频道全删
+ui_coin_break_bear_1,🐳 초기 투자자 전량 덤핑 후 잠적,🐳 Early backers dump everything and ghost,🐳 早期投资者清仓消失
+ui_coin_break_bear_2,📉 규제 당국 조사 착수 소식에 투매,📉 Regulators open a probe — sell-off ensues,📉 监管启动调查 引发抛售
+ui_coin_break_bear_3,🧨 유동성 증발 — 출구가 막혔다,🧨 Liquidity evaporates — no way out,🧨 流动性枯竭 出口被堵
+ui_coin_liq_tag,⚠ 청산,⚠ LIQUIDATION,⚠ 爆仓
+ui_coin_withdraw_limit,출금 한도까지 +₩{0:N0} (한도 ₩{1:N0}),+₩{0:N0} to withdrawal limit (limit ₩{1:N0}),距提现限额 +₩{0:N0} (限额 ₩{1:N0})
+ui_coin_withdraw_limit_idle,오늘 출금 한도 = 첫 베팅액 x{0} (첫 베팅에 확정),Daily withdrawal limit = first bet x{0} (set on first bet),今日提现限额 = 首注金额 x{0} (首注确定)
+ui_coin_withdraw_limit_done,🎉 출금 한도 도달 — 적중해도 +₩0 (잃은 만큼만 회복 가능),🎉 Withdrawal limit reached — wins now pay +₩0 (only losses can be won back),🎉 已达提现限额 — 盈利+₩0 (仅可赢回亏损)
+ui_coin_enter,스테이지 진입,Enter Stage,进入关卡
+ui_coin_leverage,배율 x{0},Leverage x{0},杠杆 x{0}
+ui_coin_leverage_liq,변동 {0}%↑ 청산,Liquidate at {0}%↑,波动 {0}%↑ 强平
+ui_coin_risk_high,고위험 스테이지,High-Risk Stage,高风险阶段
+ui_coin_risk_mid,변동성 스테이지,Volatile Stage,波动阶段
+ui_coin_risk_low,안전 스테이지,Safe Stage,安全阶段
+ui_coin_swing_short,{0}% ~ {1}%,{0}% ~ {1}%,{0}% ~ {1}%
+ui_coin_extreme_none,없음,None,无
+ui_coin_bet_max,최대 {0},Max {0},最高 {0}

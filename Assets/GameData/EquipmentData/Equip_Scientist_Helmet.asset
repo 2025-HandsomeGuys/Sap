@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba20e9d7d6c4d6e4a86867f93d4e679a, type: 3}
+  m_Name: Equip_Scientist_Helmet
+  m_EditorClassIdentifier: Assembly-CSharp::EquipmentSO
+  equipmentID: 3009
+  equipmentNameKey: equip_scientist_helmet_name
+  icon: {fileID: 1962123974001493055, guid: 20b40aa650f540f4fb9106312b8819f4, type: 3}
+  descriptionKey: equip_scientist_helmet_desc
+  previewSprite: {fileID: -6332038862612102954, guid: 5a101b4a67ccbe34a826ec34c38013c2, type: 3}
+  equipmentType: 1
+  level: 0
+  defense: 4
+  durability: 0
+  price: 1000
+  statModifiers:
+  - statType: 38
+    modifierType: 0
+    value: 12
+  weight: 1
+  stackable: 0
+  maxStackSize: 1

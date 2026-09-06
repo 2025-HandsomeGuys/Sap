@@ -1,0 +1,32 @@
+{
+  "world": {
+    "seed": 0,
+    "viewDistance": 1
+  },
+  "save": {
+    "enableMemoryCache": true,
+    "enableDiskSave": false
+  },
+  "rendering": {
+    "enableLayerBlending": true,
+    "globalLightFalloff": 30.0,
+    "textureUpdateInterval": 0.05,
+    "enableRound1Preview": false
+  },
+  "performance": {
+    "chunkSpawningBatchSize": 2,
+    "maxTimePerBatchMs": 4,
+    "maxTimePerFramePh2Ms": 3
+  },
+  "chunk": {
+    "verticalScale": 1.5,
+    "useIslandRemoval": true,
+    "maxIslandSize": 90000,
+    "solidThickness": 1.6,
+    "textureThickness": 4.0,
+    "colliderUpdateInterval": 0.2,
+    "colliderSimplifyTolerance": 0.05,
+    "rimThicknessPx": 2,
+    "rimColor": "#241009"
+  }
+}

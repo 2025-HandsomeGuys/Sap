@@ -1,0 +1,235 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 556ecc9c1a3292946b27b8e18cc03422, type: 3}
+  m_Name: DefaultTerrianProfile
+  m_EditorClassIdentifier: 
+  layers:
+  - description: 
+    layerType: 0
+    startDepth: 0
+    baseTileType: 10
+    mineralConfigs:
+    - description: 
+      minableType: 106
+      spawnChanceByDepth:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 0.8
+          inSlope: -0.3
+          outSlope: -0.3
+          tangentMode: 34
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0.33333334
+        - serializedVersion: 3
+          time: 1
+          value: 0.5
+          inSlope: -0.3
+          outSlope: -0.3
+          tangentMode: 34
+          weightedMode: 0
+          inWeight: 0.33333334
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 0
+      veinsPerChunk: {x: 5, y: 5}
+      veinLength: {x: 5, y: 5}
+      veinSpacing: 3
+    - description: 
+      minableType: 101
+      spawnChanceByDepth:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 0.3
+          inSlope: 0.099999994
+          outSlope: 0.099999994
+          tangentMode: 34
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0.33333334
+        - serializedVersion: 3
+          time: 1
+          value: 0.4
+          inSlope: 0.099999994
+          outSlope: 0.099999994
+          tangentMode: 34
+          weightedMode: 0
+          inWeight: 0.33333334
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 0
+      veinsPerChunk: {x: 3, y: 3}
+      veinLength: {x: 3, y: 3}
+      veinSpacing: 3
+    - description: 
+      minableType: 100
+      spawnChanceByDepth:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 0.6
+          inSlope: 0.099999964
+          outSlope: 0.099999964
+          tangentMode: 34
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0.33333334
+        - serializedVersion: 3
+          time: 1
+          value: 0.7
+          inSlope: 0.099999964
+          outSlope: 0.099999964
+          tangentMode: 34
+          weightedMode: 0
+          inWeight: 0.33333334
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 0
+      veinsPerChunk: {x: 4, y: 4}
+      veinLength: {x: 4, y: 4}
+      veinSpacing: 4
+    - description: 
+      minableType: 103
+      spawnChanceByDepth:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 0.1
+          inSlope: 0.20000002
+          outSlope: 0.20000002
+          tangentMode: 34
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0.33333334
+        - serializedVersion: 3
+          time: 1
+          value: 0.3
+          inSlope: 0.20000002
+          outSlope: 0.20000002
+          tangentMode: 34
+          weightedMode: 0
+          inWeight: 0.33333334
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 0
+      veinsPerChunk: {x: 5, y: 5}
+      veinLength: {x: 5, y: 5}
+      veinSpacing: 5
+    hasDiagonalVeins: 1
+    diagonalVeinTile: 13
+    veinNoiseScale: 0.1
+    veinAngleRange: {x: 30, y: 60}
+    veinAngleNoiseScale: 0.02
+    veinThreshold: 0.4
+    veinThicknessNoiseScale: 0.02
+    periodicMaxStaminaDamage: 0
+  - description: 
+    layerType: 0
+    startDepth: -400
+    baseTileType: 11
+    mineralConfigs: []
+    hasDiagonalVeins: 1
+    diagonalVeinTile: 0
+    veinNoiseScale: 0.1
+    veinAngleRange: {x: 30, y: 60}
+    veinAngleNoiseScale: 0.02
+    veinThreshold: 0.5
+    veinThicknessNoiseScale: 0.05
+    periodicMaxStaminaDamage: 0
+  - description: 
+    layerType: 1
+    startDepth: -800
+    baseTileType: 12
+    mineralConfigs: []
+    hasDiagonalVeins: 0
+    diagonalVeinTile: 0
+    veinNoiseScale: 0.1
+    veinAngleRange: {x: 30, y: 60}
+    veinAngleNoiseScale: 0.02
+    veinThreshold: 0.7
+    veinThicknessNoiseScale: 0.05
+    periodicMaxStaminaDamage: 1
+  - description: 
+    layerType: 2
+    startDepth: -1200
+    baseTileType: 13
+    mineralConfigs: []
+    hasDiagonalVeins: 0
+    diagonalVeinTile: 0
+    veinNoiseScale: 0.1
+    veinAngleRange: {x: 30, y: 60}
+    veinAngleNoiseScale: 0.02
+    veinThreshold: 0.7
+    veinThicknessNoiseScale: 0.05
+    periodicMaxStaminaDamage: 2
+  - description: 
+    layerType: 3
+    startDepth: -1600
+    baseTileType: 14
+    mineralConfigs: []
+    hasDiagonalVeins: 0
+    diagonalVeinTile: 0
+    veinNoiseScale: 0.1
+    veinAngleRange: {x: 30, y: 60}
+    veinAngleNoiseScale: 0.02
+    veinThreshold: 0.7
+    veinThicknessNoiseScale: 0.05
+    periodicMaxStaminaDamage: 3
+  - description: 
+    layerType: 4
+    startDepth: -2000
+    baseTileType: 15
+    mineralConfigs: []
+    hasDiagonalVeins: 0
+    diagonalVeinTile: 0
+    veinNoiseScale: 0.1
+    veinAngleRange: {x: 30, y: 60}
+    veinAngleNoiseScale: 0.02
+    veinThreshold: 0.7
+    veinThicknessNoiseScale: 0.05
+    periodicMaxStaminaDamage: 4
+  - description: 
+    layerType: 5
+    startDepth: -2400
+    baseTileType: 16
+    mineralConfigs: []
+    hasDiagonalVeins: 0
+    diagonalVeinTile: 0
+    veinNoiseScale: 0.1
+    veinAngleRange: {x: 30, y: 60}
+    veinAngleNoiseScale: 0.02
+    veinThreshold: 0.7
+    veinThicknessNoiseScale: 0.05
+    periodicMaxStaminaDamage: 5
+  - description: 
+    layerType: 6
+    startDepth: -2800
+    baseTileType: 1
+    mineralConfigs: []
+    hasDiagonalVeins: 0
+    diagonalVeinTile: 0
+    veinNoiseScale: 0.1
+    veinAngleRange: {x: 30, y: 60}
+    veinAngleNoiseScale: 0.02
+    veinThreshold: 0.7
+    veinThicknessNoiseScale: 0.05
+    periodicMaxStaminaDamage: 6

@@ -1,0 +1,46 @@
+{
+  "patterns": [
+    {
+      "patternId": "Blizzard_Lvl1",
+      "phases": [
+        {
+          "direction": { "x": 1.0, "y": 0.0 },
+          "breezeStrength": 1.5,
+          "breezeDuration": 2.0,
+          "activeStrength": 5.0,
+          "activeDuration": 4.0,
+          "restDuration": 2.0
+        },
+        {
+          "direction": { "x": -1.0, "y": 0.0 },
+          "breezeStrength": 1.5,
+          "breezeDuration": 2.0,
+          "activeStrength": 5.0,
+          "activeDuration": 4.0,
+          "restDuration": 2.0
+        }
+      ]
+    },
+    {
+      "patternId": "Blizzard_Hard",
+      "phases": [
+        {
+          "direction": { "x": 1.0, "y": 0.0 },
+          "breezeStrength": 2.0,
+          "breezeDuration": 1.5,
+          "activeStrength": 8.0,
+          "activeDuration": 6.0,
+          "restDuration": 1.5
+        },
+        {
+          "direction": { "x": -1.0, "y": 0.0 },
+          "breezeStrength": 2.0,
+          "breezeDuration": 1.5,
+          "activeStrength": 8.0,
+          "activeDuration": 6.0,
+          "restDuration": 1.5
+        }
+      ]
+    }
+  ]
+}

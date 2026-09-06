@@ -1,0 +1,148 @@
+{
+    "originalMaxStamina": 500.0,
+    "currentStamina": 499.79998779296877,
+    "originalStaminaCostPerSecond": 10.0,
+    "originalMoveSpeed": 2.5,
+    "originalJumpForce": 5.0,
+    "originalWallClimbingSpeed": 2.0,
+    "originalEncumberedSpeedMultiplier": 0.5,
+    "itemInventory": {
+        "slots": []
+    },
+    "mineralInventory": {
+        "slots": [
+            {
+                "itemId": "Copper",
+                "quantity": 1
+            },
+            {
+                "itemId": "GarbageBag",
+                "quantity": 1
+            }
+        ]
+    },
+    "equipmentInventory": {
+        "slots": []
+    },
+    "originalMiningEfficiency": 1.0,
+    "originalMiningPower": 1,
+    "originalMiningRange": 0.5,
+    "originalMiningCooldown": 0.05000000074505806,
+    "gold": 90,
+    "warehouseData": {
+        "itemInventory": {
+            "slots": [
+                {
+                    "itemId": "FrostbiteResist",
+                    "quantity": 7
+                },
+                {
+                    "itemId": "BurnResist",
+                    "quantity": 2
+                }
+            ]
+        },
+        "mineralInventory": {
+            "slots": []
+        },
+        "equipmentInventory": {
+            "slots": [
+                {
+                    "itemId": "LeatherBoots",
+                    "quantity": 1
+                },
+                {
+                    "itemId": "LeatherBoots",
+                    "quantity": 1
+                },
+                {
+                    "itemId": "WoodRelic",
+                    "quantity": 1
+                },
+                {
+                    "itemId": "LeatherHelmet",
+                    "quantity": 1
+                },
+                {
+                    "itemId": "WoodRelic",
+                    "quantity": 1
+                },
+                {
+                    "itemId": "LeatherBoots",
+                    "quantity": 1
+                },
+                {
+                    "itemId": "LeatherArmor",
+                    "quantity": 1
+                },
+                {
+                    "itemId": "WoodRelic",
+                    "quantity": 1
+                },
+                {
+                    "itemId": "WoodRelic",
+                    "quantity": 1
+                },
+                {
+                    "itemId": "WoodRelic",
+                    "quantity": 1
+                },
+                {
+                    "itemId": "LeatherArmor",
+                    "quantity": 1
+                },
+                {
+                    "itemId": "LeatherHelmet",
+                    "quantity": 1
+                },
+                {
+                    "itemId": "LeatherArmor",
+                    "quantity": 1
+                },
+                {
+                    "itemId": "WoodRelic",
+                    "quantity": 1
+                },
+                {
+                    "itemId": "LeatherHelmet",
+                    "quantity": 1
+                },
+                {
+                    "itemId": "WoodRelic",
+                    "quantity": 1
+                },
+                {
+                    "itemId": "WoodRelic",
+                    "quantity": 1
+                },
+                {
+                    "itemId": "LeatherHelmet",
+                    "quantity": 1
+                }
+            ]
+        }
+    },
+    "upgradeTreeState": {
+        "unlockedNodeIds": [],
+        "unlockedTiers": [
+            0
+        ]
+    },
+    "questProgress": {
+        "questIDs": [
+            1,
+            2,
+            101,
+            102
+        ],
+        "questStatuses": [
+            1,
+            0,
+            1,
+            1
+        ],
+        "activeSubQuestSlots": []
+    },
+    "currentDay": 1,
+    "currentTime": 0
+}

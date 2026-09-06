@@ -1,0 +1,61 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 53ebe6861071d2849ac4935aa8e1aada, type: 3}
+  m_Name: AcceptDialogue
+  m_EditorClassIdentifier: Assembly-CSharp::DialogueData
+  dialogueLines:
+  - speakerName:
+      kr: "\uC0C1\uC810\uC8FC\uC778"
+      en: Shopkeeper
+      cn: 
+    text:
+      kr: "\uBA54\uC778\uD018\uC2A4\uD2B8 \uD14C\uC2A4\uD2B8\uB2E4\uC774"
+      en: MainQuest Test
+      cn: 
+    speakerSide: 0
+    leftSprite: {fileID: -2173568095341107445, guid: 7d8ae296c597904419619f3b64329c7c, type: 3}
+    rightSprite: {fileID: -8263897675722398590, guid: 6e0ebd75022127341a1b567fd27cc4b6, type: 3}
+  - speakerName:
+      kr: "\uAE40\uC544\uBB34\uAC1C"
+      en: Anyone
+      cn: 
+    text:
+      kr: "\uC544\uBB34\uAC1C\uC528 \uB9D0\uD558\uB294 \uD0C0\uC774\uBC0D\uC774\uB2E4\uC774"
+      en: Something
+      cn: 
+    speakerSide: 1
+    leftSprite: {fileID: -2173568095341107445, guid: 7d8ae296c597904419619f3b64329c7c, type: 3}
+    rightSprite: {fileID: -8263897675722398590, guid: 6e0ebd75022127341a1b567fd27cc4b6, type: 3}
+  - speakerName:
+      kr: "\uC0C1\uC810\uC8FC\uC778"
+      en: Shopkeeper
+      cn: 
+    text:
+      kr: "\uBA54\uC778\uD018\uC2A4\uD2B8 \uC218\uB77D\uD558\uAC9F\uB0D0\uC774?"
+      en: MainQuest Test Accpet?
+      cn: 
+    speakerSide: 0
+    leftSprite: {fileID: -2173568095341107445, guid: 7d8ae296c597904419619f3b64329c7c, type: 3}
+    rightSprite: {fileID: -8263897675722398590, guid: 6e0ebd75022127341a1b567fd27cc4b6, type: 3}
+  - speakerName:
+      kr: "\uAE40\uC544\uBB34\uAC1C"
+      en: Anyone
+      cn: 
+    text:
+      kr: "\uC218\uB77D\uD55C\uB2E4?"
+      en: Accept??
+      cn: 
+    speakerSide: 1
+    leftSprite: {fileID: -2173568095341107445, guid: 7d8ae296c597904419619f3b64329c7c, type: 3}
+    rightSprite: {fileID: -8263897675722398590, guid: 6e0ebd75022127341a1b567fd27cc4b6, type: 3}
+  openShopAfterDialogue: 0
+  openUpgradeAfterDialogue: 0

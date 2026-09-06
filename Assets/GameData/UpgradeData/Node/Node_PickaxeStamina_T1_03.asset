@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 581f7dfb478769e4bba78e5ee790d6fd, type: 3}
+  m_Name: Node_PickaxeStamina_T1_03
+  m_EditorClassIdentifier: GameScripts::UpgradeNodeSO
+  nodeId: PickaxeStamina_T1_03
+  displayNameKey: "\uAC00\uBCBC\uC6B4 \uACE1\uAD2D\uC774\uC9C8 III"
+  descriptionKey: "\uACE1\uAD2D\uC774\uC9C8 1\uD68C \uBE44\uC6A9\uC774 0.025 \uC904\uC5B4\uB4ED\uB2C8\uB2E4(\uAE30\uC900
+    0.5)."
+  icon: {fileID: 0}
+  tier: 1
+  parentNodes:
+  - {fileID: 11400000, guid: e39a485268e905345bfe72f4e81e309d, type: 2}
+  cost: 7800
+  maxLevel: 1
+  costGrowth: 1.6
+  levelCosts: 
+  effect: {fileID: 11400000, guid: 552b29394e1bc764d9187a83ea6c81d9, type: 2}
+  uiPosition: {x: -262.5, y: 6360}
+  lineBends: []

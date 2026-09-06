@@ -1,0 +1,9 @@
+key,kr,en,cn
+upg_mining_speed_Lv1_name,채광 속도 Lv.1,Mining Speed Lv.1,采矿速度 Lv.1
+upg_mining_speed_Lv1_desc,채광 속도가 10% 증가합니다.,Mining speed increases by 10%.,采矿速度提升10%。
+upg_stamina_max_Lv1_name,최대 체력 Lv.1,Max Stamina Lv.1,最大体力 Lv.1
+upg_stamina_max_Lv1_desc,스태미나 최대치가 20 증가합니다.,Max stamina increases by 20.,最大体力增加20。
+upg_tier_1_name,1단계 업그레이드,Tier 1 Upgrades,第一阶段升级
+upg_tier_1_cond,조건 없음,No conditions,无条件
+upg_tier_2_name,2단계 업그레이드,Tier 2 Upgrades,第二阶段升级
+upg_tier_2_cond,채광 레벨 5 달성시 해금,Unlocks at Mining Lv.5,达到采矿等级5时解锁

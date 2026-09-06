@@ -1,0 +1,5 @@
+{
+  "unlockNodeIds": ["", "", "PickaxeUnlock_T0_01", "DrillCapacity_T1_01"],
+  "names": ["손", "삽", "곡괭이", "드릴"],
+  "debugAliases": ["hand", "shovel", "pickaxe", "drill"]
+}

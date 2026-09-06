@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0d528b2d5e4abd4ea20c99a65b89b33, type: 3}
+  m_Name: Garbage
+  m_EditorClassIdentifier: 
+  mineralID: 101
+  mineralNameKey: mineral_garbagebag_name
+  descriptionKey: mineral_garbagebag_desc
+  spawnRate: 0
+  basementLevel: 1
+  weight: 0.35
+  stackable: 1
+  icon: {fileID: 3633595000873903127, guid: e95683f9c140dd142bcf9d4d9c8f4705, type: 3}
+  mineralPrefab: {fileID: 7651248375382586064, guid: 45fbb4afe71826b4ebbb40a807d8a215, type: 3}

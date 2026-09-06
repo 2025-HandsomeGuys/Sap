@@ -1,0 +1,52 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ccf05c1a207592c4dacf9fb73ddab62e, type: 3}
+  m_Name: PlasmaCutter
+  m_EditorClassIdentifier: GameScripts::Relic.Data.RelicSO
+  id: 4010
+  displayNameKey: relic_plasma_cutter_name
+  descriptionKey: relic_plasma_cutter_desc
+  icon: {fileID: 3448378903008818861, guid: 81e995052c5befc4fa5c71ff3520e18f, type: 3}
+  type: 1
+  maxLevel: 3
+  unlockNodeId: 
+  upgradeCosts:
+  - gold: 100
+    material: 0
+    materialCount: 0
+  - gold: 250
+    material: 0
+    materialCount: 0
+  behaviour:
+    rid: 4010175549867032665
+  references:
+    version: 2
+    RefIds:
+    - rid: 4010175549867032665
+      type: {class: PlasmaCutterRelic, ns: Relic, asm: GameScripts}
+      data:
+        durationPerLevel:
+        - 3
+        - 5
+        - 7
+        cooldown: 60
+        beamLength: 12
+        carveLength: 1
+        carveInterval: 0.05
+        rockDpsPerLevel:
+        - 6
+        - 9
+        - 12
+        moveSlowMultiplier: 0.5
+        turnSmoothTime: 0.6
+        beamColor: {r: 1, g: 0.25, b: 0.1, a: 0.9}
+        beamWidth: 0.35

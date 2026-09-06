@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 285e854e11e18974384bb20a45f10d6e, type: 3}
+  m_Name: MarketSfxSet
+  m_EditorClassIdentifier: GameScripts::Market.MarketSfxSet
+  type: {fileID: 8300000, guid: 28fe709a5b22ce5418fa16b3b8c43951, type: 3}
+  click: {fileID: 8300000, guid: 28fe709a5b22ce5418fa16b3b8c43951, type: 3}
+  select: {fileID: 8300000, guid: 28fe709a5b22ce5418fa16b3b8c43951, type: 3}
+  scroll: {fileID: 0}
+  tab: {fileID: 8300000, guid: 28fe709a5b22ce5418fa16b3b8c43951, type: 3}
+  confirm: {fileID: 0}
+  deny: {fileID: 0}
+  win: {fileID: 0}
+  crash: {fileID: 0}
+  mouseUp: {fileID: 0}
+  volume: 1

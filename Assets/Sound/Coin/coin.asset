@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e5c3d787d766774bbb0a9aec0704b47, type: 3}
+  m_Name: coin
+  m_EditorClassIdentifier: GameScripts::SoundDataSO
+  bgmClips: []
+  sfxClips:
+  - soundName: coin_bet
+    audioClip: {fileID: 8300000, guid: 24773e41adcb0b14a9b75943c1e1b264, type: 3}
+  - soundName: coin_crash
+    audioClip: {fileID: 8300000, guid: 6506988a77a2e0844ac7c961c6e37ae1, type: 3}
+  - soundName: coin_delist
+    audioClip: {fileID: 8300000, guid: b8e67797d55614940a8cbd0fa6521e24, type: 3}
+  - soundName: coin_lose
+    audioClip: {fileID: 8300000, guid: b48659d98d529774f9b2be1a5b9cf3d6, type: 3}
+  - soundName: coin_moon
+    audioClip: {fileID: 8300000, guid: 6add7638e775ded40a0e79c3551d324b, type: 3}
+  - soundName: coin_tick
+    audioClip: {fileID: 8300000, guid: 0bc87433cb1ba0c42b5c387655184962, type: 3}
+  - soundName: coin_win
+    audioClip: {fileID: 8300000, guid: a4fa7d3567a7b0245bc76310ae804c58, type: 3}

@@ -1,0 +1,47 @@
+key,kr,en,cn
+mineral_scrapmetal_name,고철,Scrap Metal,废铁
+mineral_scrapmetal_desc,쓸모없어 보이지만 모아두면 돈이 될 것 같다.,Looks useless but can be sold for money.,看起来没用但可以卖钱。
+mineral_garbagebag_name,쓰레기봉지,Garbage Bag,垃圾袋
+mineral_garbagebag_desc,누군가 버린 쓰레기입니다.,Trash thrown away by someone.,有人丢弃的垃圾。
+mineral_petbottle_name,페트병,PET Bottle,塑料瓶
+mineral_petbottle_desc,재활용 가능한 페트병입니다.,Recyclable PET bottle.,可回收的塑料瓶。
+mineral_coal_name,석탄,Coal,煤炭
+mineral_coal_desc,불태우기 좋은 까만 돌입니다.,A black stone good for burning.,适合燃烧的黑石头。
+mineral_copper_name,구리,Copper,铜
+mineral_copper_desc,흔하게 쓰이는 기본적인 금속입니다.,A common and basic metal.,常见的普通金属。
+mineral_iron_name,철,Iron,铁
+mineral_iron_desc,단단하고 활용도가 높은 금속입니다.,Hard and highly versatile metal.,坚硬且用途广泛的金属。
+mineral_meteorite_name,운석,Meteorite,陨石
+mineral_meteorite_desc,우주에서 떨어져 내린 신비한 돌입니다.,A mysterious stone fallen from space.,从太空中掉落的神秘石头。
+mineral_fossil_name,화석,Fossil,化石
+mineral_fossil_desc,고대 생물의 흔적이 남아있습니다.,Remains of an ancient creature.,古代生物的遗迹。
+mineral_silver_name,은,Silver,银
+mineral_silver_desc,아름답게 반짝이는 귀금속입니다.,A beautifully shining precious metal.,闪烁着美丽光芒的贵金属。
+mineral_sapphire_name,사파이어,Sapphire,蓝宝石
+mineral_sapphire_desc,푸른빛을 내는 아름다운 보석입니다.,A beautiful blue gemstone.,闪耀着蓝光的蓝色宝石。
+mineral_emerald_name,에메랄드,Emerald,绿宝石
+mineral_emerald_desc,초록빛을 띠는 고가의 보석입니다.,A high-priced green gemstone.,昂贵的绿色宝石。
+mineral_topaz_name,토파즈,Topaz,黄玉
+mineral_topaz_desc,노란빛이 매력적인 보석입니다.,A gemstone with attractive yellow light.,散发迷人黄光的宝石。
+mineral_obsidian_name,흑요석,Obsidian,黑曜石
+mineral_obsidian_desc,매우 예리하고 단단한 검은 돌입니다.,A very sharp and hard black stone.,非常锋利且坚硬的黑石头。
+mineral_quartz_name,석영,Quartz,石英
+mineral_quartz_desc,투명하고 영롱한 광물입니다.,A transparent and bright mineral.,透明明亮的矿石。
+mineral_gold_name,금,Gold,金
+mineral_gold_desc,누구나 탐내는 가장 유명한 귀금속입니다.,The most famous and coveted precious metal.,所有人都渴望拥有的著名贵金属。
+mineral_ruby_name,루비,Ruby,红宝石
+mineral_ruby_desc,열정을 닮은 붉은 보석입니다.,A red gemstone resembling passion.,如同热情般的红色宝石。
+mineral_diamond_name,다이아몬드,Diamond,钻石
+mineral_diamond_desc,세상에서 가장 단단하고 빛나는 보석입니다.,The hardest and brightest gemstone in the world.,世界上最坚硬、最闪亮的宝石。
+mineral_lavastone_name,용암석,Lava Stone,熔岩石
+mineral_lavastone_desc,뜨거운 열기를 품고 있는 돌입니다.,A stone holding intense heat.,蕴含高温的石头。
+mineral_mithril_name,미스릴,Mithril,秘银
+mineral_mithril_desc,가볍지만 강한 마법의 금속입니다.,A light but strong magical metal.,轻巧但坚固的魔法金属。
+mineral_gravitonium_name,중력석,Gravitonium,重力石
+mineral_gravitonium_desc,주변의 중력을 왜곡시키는 신비한 광석입니다.,A mysterious ore that distorts surrounding gravity.,扭曲周围重力的神秘矿石。
+mineral_uranium_name,우라늄,Uranium,铀
+mineral_uranium_desc,엄청난 에너지를 뿜어내는 위험한 광물입니다.,A dangerous mineral emitting massive energy.,释放巨大危险能量的矿物。
+mineral_voidstone_name,공허석,Void Stone,虚空石
+mineral_voidstone_desc,빛조차 빨아들이는 심연의 광물입니다.,A mineral of the abyss that absorbs even light.,连光都能吞噬的深渊矿石。
+mineral_starfragment_name,별조각,Star Fragment,星之碎片
+mineral_starfragment_desc,밤하늘의 별자리에서 떨어져 나온 조각입니다.,A fragment fallen from the stellar constellations.,从星空中掉落的碎片。

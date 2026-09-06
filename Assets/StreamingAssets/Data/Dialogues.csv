@@ -1,0 +1,50 @@
+key,kr,en,cn
+npc_guide_name,길잡이 마스터,Guide Master,向导大师
+npc_truck_name,트럭,Truck,卡车
+dialogue_intro_1,환영합니다! 오늘부터 당신도 훌륭한 광부입니다.,Welcome! From today, you are a great miner.,欢迎！从今天起，你也是名出色的矿工了。
+dialogue_intro_2,먼저 지하로 내려가 가볍게 돌부터 캐보시죠.,First, go underground and try mining some stones.,首先，下到地下试着开采一些石头吧。
+dialogue_quest_thanks,수고하셨습니다! 여기 약속한 보상입니다.,Great job! Here is the promised reward.,辛苦了！这是答应过的报酬。
+npc_shopkeeper_name,상점 주인,Shopkeeper,店主
+npc_player_name,광부,Miner,矿工
+dlg_start_1,어서 와. 여기가 네 첫 현장이야.,Welcome. This is your first site.,欢迎。这就是你的第一个工地。
+dlg_start_2,정말 여기서 뭐가 나오긴 하나요?,Is there really anything down there?,这下面真的能挖到东西吗？
+dlg_start_3,나오지. 팔 줄만 안다면 말이야.,It does. If you know how to dig.,能挖到。前提是你会挖。
+dlg_start_4,알겠습니다. 일단 내려가 볼게요.,Got it. I'll head down first.,明白了。我先下去看看。
+dlg_firstdig_1,곡괭이는 챙겼지? 스태미나부터 살펴.,Got your pickaxe? Watch your stamina.,镐子带了吧？先注意体力。
+dlg_firstdig_2,스태미나가 바닥나면 어떻게 되죠?,What happens if it runs out?,体力见底会怎么样？
+dlg_firstdig_3,올라오는 길이 아주 길어지지.,The climb back up gets very long.,回来的路会变得很长。
+dlg_firstdig_4,겁주지 마세요… 조심할게요.,Don't scare me... I'll be careful.,别吓我……我会小心的。
+dlg_firstsell_1,오늘 캔 건 여기다 넘기면 돼.,Sell whatever you dug up here.,今天挖到的东西可以卖给我。
+dlg_firstsell_2,값은 제대로 쳐주시는 거죠?,"You'll give me a fair price, right?",你会给个公道价吧？
+dlg_firstsell_3,나는 정직해. 시세가 정직하지 않을 뿐이지.,I'm honest. The market isn't.,我很诚实，只是行情不诚实。
+dlg_firstsell_4,…일단 팔아 볼게요.,...Let me sell them anyway.,……那我先卖了。
+dlg_firstupgrade_1,돈이 좀 모였으면 장비부터 손봐.,Got some gold? Fix up your gear first.,攒了点钱就先修装备。
+dlg_firstupgrade_2,어떤 걸 먼저 올리는 게 좋아요?,What should I upgrade first?,先升级哪个比较好？
+dlg_firstupgrade_3,깊게 파고 싶으면 채광 면허부터.,Want to dig deep? Start with the mining license.,想挖得深就先弄采矿执照。
+dlg_firstupgrade_4,면허라니… 광부도 서류가 필요하군요.,A license... even miners need paperwork.,执照啊……矿工也要文件。
+dlg_second_1,장비가 슬슬 한계지? 손볼 때가 됐어.,Your gear's near its limit. Time for a tune-up.,装备快到极限了吧？该保养了。
+dlg_second_2,수리비가 만만치 않겠는데요.,The repair bill won’t be cheap.,修理费可不便宜吧。
+dlg_second_3,구리 한 덩이만 가져와. 그럼 봐주지.,Bring me one lump of copper and I’ll cut you a deal.,带一块铜来，我给你便宜点。
+dlg_second_4,구리라면 아래층에 있겠네요.,Copper. That’d be a floor down.,铜的话应该在下一层。
+dlg_secondprog_1,구리는 좀 더 깊은 데 묻혀 있어.,Copper sits a little deeper.,铜埋得更深一些。
+dlg_secondprog_2,아직 한 덩이도 못 찾았어요.,I haven’t found a single lump yet.,我一块都还没找到。
+dlg_secondprog_3,서두르지 마. 밤이 되기 전에만 올라와.,No rush. Just come up before nightfall.,别急，天黑前上来就行。
+dlg_idle_1,오늘도 살아서 돌아왔군.,Back alive again, I see.,今天也活着回来了啊。
+dlg_idle_2,팔 것도 있고 살 것도 있어요.,I’ve got things to sell and things to buy.,我有东西要卖，也有东西要买。
+tutorial0_1,오늘인가..? 일하기로 한 날이.,Is today the day...? The day I'm supposed to work.,就是今天吗……？说好要打工的日子。
+tutorial0_2,우선 밖으로 나가보자.,I should head outside first.,先出去看看吧。
+tutorial1_1,자네가 연락한 그사람인가?,You the one who reached out?,你就是联系我的那个人吗？
+tutorial1_2,...안녕하세요.,...Hello.,……你好。
+tutorial1_3,요즘에 이렇게 돈을 벌고 싶다는 사람이 흔치는 않은데 말이야. 여기로 와보게.,Not many folks looking to make money this way nowadays. Come on over here.,最近想赚这种钱的人可不多见了，过来吧。
+tutorial2_1,우선 이거부터 받게.,First, take this.,首先，先把这个拿着。
+tutorial2_2,이건..?,This is..?,这是..？
+tutorial2_3,삽이네 보면 모르나. 이제 이걸로 광물을 캐서 가져오면 내가 값을 쳐줌세.,It's a shovel, can't you tell? Mine some minerals with this and bring them to me, and I'll pay you for them.,是铲子啊，看不出来吗。用这个挖些矿物带回来，我会按价收购的。
+tutorial2_4,.......,.......,.......
+tutorial2_5,아 그리고 왼쪽에 구덩이가 있으니 거기서 파면 딱 좋을것같구먼.,Oh and there's a pit on the left  so it'd be perfect to start digging there.,啊 还有左边有个坑，在那儿挖正合适
+tutorial2_6,....네..,....Yes..,....好的..
+tutorial3_1,오 수고했네. 땅 밑은 어떠던가?,Good work. How was it underground?,哦，辛苦了。地下感觉怎么样？
+tutorial3_2,.....힘들어요.,.....It was tough.,……太累了。
+tutorial3_3,허허 원래 돈버는게 쉬운일은 아니지.,Haha, making money is never easy.,呵呵，赚钱本来就不是件容易的事。
+tutorial3_4,아무튼 고생했네. 캐온 광물을 보여주겠나? 값을 매겨주지.,Anyway, good job. Show me the minerals you mined, and I'll appraise them.,总之辛苦了。把你挖到的矿石给我看看吧？我来给你估个价。
+tutorial4_1,앞으로도 잘 부탁하네. 피곤할텐데 좀 쉬지 그러나?,I look forward to working with you. You must be tired, why don't you get some rest?,以后也请多关照。你一定很累了吧，去休息一下吧？
+tutorial4_2,...네. 좀 쉬어야겠어요.,...Yes. I think I need some rest.,……嗯. 我得休息一下了。
